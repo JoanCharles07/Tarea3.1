@@ -12,14 +12,24 @@
 
 /**
  * Esta función nos aseguraremos con la promesa que se ejecute antes que cualquier otra cosa.
+ * Crearemos dos variables ya que haremos dos imports uno para las funciones de impresión en el DOM
+ * y otra para funciones que darán funcionalidad que siempre debe estar presente.
  * @returns Devuelve el resultado de la promesa
  */
 function requerimientosComunes(){
+    let metodosPlantilla;
+    let metodosGeneral;
+    //Lo primero es la cabezera y la barra de navegación
     return import("../Vistas/plantillaGeneral.js")
-    .then((metodosPlantilla) => {
-        
-        return metodosPlantilla.imprimirCabezera();
+    .then((moduloPlantilla) => {
+        metodosPlantilla=moduloPlantilla
+        return import("../Modelo/funcionesGenerales.js");
        
+      }).then((moduloGeneral)=>{
+        metodosGeneral=moduloGeneral;
+        return metodosPlantilla.imprimirCabezera();
+      }).then(()=>{
+        return metodosGeneral.METODOQUESEA();
       })
     .catch(error => console.log(error));
 }

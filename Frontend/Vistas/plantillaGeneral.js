@@ -47,6 +47,8 @@ export function imprimirCabezera() {
             </nav>
             `;
             document.body.innerHTML=headerNav;
+
+            //Tras esto debemos añadir funcionalidad a las cosas
         } catch (error) {
 
         }
