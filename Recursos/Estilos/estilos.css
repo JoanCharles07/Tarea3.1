@@ -1,0 +1,255 @@
+:root {
+    --color-fondo: rgb(9, 122, 66);
+    --color-texto: rgb(243, 219, 81);
+    --color-fondo-hover: rgb(219, 111, 129);
+    --color-texto-hover: black;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+ul{
+    list-style: none;
+}
+/*Imagen de fondo*/
+body {
+    /*Con el gradiente conseguimos que solo tenga opacidad el fondo para que no destaque sobre las imagenes*/
+    background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("../Imagenes/fondoFruta3.webp");
+    background-repeat: repeat;
+    background-size: 100vw 100vh;
+}
+
+/********************************************************************************************/
+/**************** HEADER********************************************************************/
+/********************************************************************************************/
+
+header {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    display: flex;
+    position: fixed;
+    flex-direction: row;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    z-index: 2;
+}
+/*Dividimos los espacios*/
+#containerLogo{
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#containerBuscador{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+}
+#containerSpan{
+    width: 15%;
+    display: flex;
+    justify-content: end;
+}
+.bienvenida{
+    display: flex;
+    justify-content: center;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    border: 2px solid var(--color-texto);
+    padding: 5px;
+    width: 100%;
+}
+.bienvenidaLog{
+    display: flex;
+    justify-content: end;
+    font-size: 16px;
+    font-weight:bolder ;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    padding: 5px;
+    width: 100%;
+}
+#containerOpciones{
+    
+    width: 35%;
+}
+#iconos{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+.iconosHeader{
+    height: 30px;
+    width: 30px;
+}
+#logo{
+    height: 50px;
+    width: 50px;
+}
+#lista, #lista2{
+    
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    transition: all 0.5s ease-in;
+    z-index: 0;
+}
+.listaIconos{
+    border: 1px solid var(--color-texto);
+    padding: 5px;
+    transition: all 0.65s ease;
+}
+.listaIconos:hover{
+    border: 1px solid black;
+    color:var(--color-texto-hover);
+    background-color: var(--color-fondo-hover);
+}
+
+#inicio:hover + ul, #lista:hover,#accesibilidad:hover +ul, #lista2:hover{
+    background-color: var(--color-fondo);
+    display: flex;
+    visibility: visible;
+    flex-direction: column;
+    opacity: 1;
+    
+}
+#carrito{
+    position: relative;
+}
+#cantidadProductosCarro{
+    position: absolute;
+    border: 2px solid black;
+    background-color: var(--color-fondo-hover);
+    color:var(--color-texto-hover);
+    width: 20px;
+    text-align: center;
+    border-radius: 20px;
+    bottom: 60%;
+    right: 4.5%;
+    visibility: visible;
+}
+
+/********************************************************************************************/
+/**************** Nav********************************************************************/
+/********************************************************************************************/
+
+nav {
+    align-items: center;
+    background-color: var(--color-fondo);
+    display: flex;
+    flex-direction: row;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    justify-content: space-between;
+    position: fixed;
+    top: 60px;
+    width: 100%;
+    z-index: 1;
+}
+
+#boton {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+}
+
+#boton a {
+    color: var(--color-texto);
+    font-weight: bolder;
+    height: 100%;
+    padding: 10px;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.65s ease;
+    width: 100%;
+
+
+}
+
+#boton a:hover {
+    color: var(--color-texto-hover);
+    background-color: var(--color-fondo-hover);
+    font-weight: bolder;
+    font-weight: bolder;
+
+}
+
+/********************************************************************************************/
+/**************** TABLA********************************************************************/
+/********************************************************************************************/
+table {
+    border-collapse: collapse;
+    text-align: center;
+}
+
+th {
+    background-color: lightblue;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+tr:nth-child(odd) {
+    background-color: lightgoldenrodyellow;
+}
+
+tr:nth-child(even) {
+    background-color: lightblue;
+}
+
+/********************************************************************************************/
+/**************** main********************************************************************/
+/********************************************************************************************/
+
+
+#footer {
+    background-color: var(--color-fondo);
+    border: 1px solid black;
+    height: 60px;
+}
+
+#contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#cuadrado {
+
+    height: 150px;
+    width: 150px;
+    background-color: burlywood;
+    border: 1px solid black;
+}
+
+#buscador {
+    height: 30px;
+    width: 500px;
+    background-color: white;
+}
+
+#botones {
+    width: 20%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+table {
+    border: 1px solid black;
+
+}
+
+#filtro {
+    width: 80%;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
