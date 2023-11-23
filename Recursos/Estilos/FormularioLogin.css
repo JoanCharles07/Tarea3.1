@@ -1,0 +1,26 @@
+/*Damos estilos especifico de nuestro formulario para el login*/
+#mainForm{
+    align-items: center;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+    width: 100%;
+}
+form{
+    font-size: 25px;
+    gap: 15px;
+    margin:120px;
+    padding: 30px;
+    width: 15%;
+    
+}
+/*Estilo de la linea que separa iniciar sesión y crear usuario*/
+hr{
+    color:var(--color-texto);
+    width: 80%;
+    
+}
+
+
+

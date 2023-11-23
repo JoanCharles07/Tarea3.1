@@ -1,0 +1,23 @@
+/*Colocamos  el main para que quede en el centro de la pantalla*/
+main{
+    padding: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+/*Damos un tamaño más idoneo al input del email*/
+
+
+/*Estilos especificos de nuestro formulario de registro*/
+form{
+    
+    font-size: 18px;
+    gap: 8px;
+    padding: 30px;
+    width: 40%;
+    
+    
+}
+
+

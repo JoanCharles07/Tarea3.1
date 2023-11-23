@@ -14,7 +14,7 @@ export function getProductos(){
         let datos={
             llamada:"productos"
         }
-        return fetch("Backend/Controlador/controlador.php", {
+        return fetch("../../Backend/Controlador/controlador.php", {
             method: 'POST',
             body:JSON.stringify(datos)
             

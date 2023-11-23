@@ -10,12 +10,26 @@ include_once '../Modelo/funciones.php';
 include_once '../Modelo/funcionesBBDD.php';
 header('Content-Type: application/json');
 session_start();
-$datos=json_decode(file_get_contents('php://input'));
-if($datos->llamada=="productos"){
-    $respuesta=recuperarProductos();
-    $respuesta=encriptarTodasPalabras($respuesta);
-    echo json_encode($respuesta);
+/**En primer lugar comprobaremos si existe POST de existir entraremos en nuestro controlador
+ * que según la propiedad llamada entrará en un if u otro.
+ */
+if(isset($_POST)){
+    $direccion=json_decode(file_get_contents('php://input'));
+    if($direccion->llamada=="productos"){
+        $respuesta=recuperarProductos();
+        $respuesta=encriptarTodasPalabras($respuesta);
+        echo json_encode($respuesta);
+    }
+    else if($direccion->llamada=="usuario"){
+        $respuesta=recuperarProductos();
+        $respuesta=encriptarTodasPalabras($respuesta);
+        echo json_encode($respuesta);
+    }
 }
+else{
+    echo "Hola a Todos";
+}
+
 
 
 ?>

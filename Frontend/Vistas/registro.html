@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <script src="./plantillaGeneral.js" type="module"></script>
+    <script src="../Controlador/controlador.js" type="module"></script>
+    <link rel="stylesheet" href="../../Recursos/Estilos/estilos.css">
+    <link rel="stylesheet" href="../../Recursos/Estilos/FormEstandar.css">
+    <link rel="stylesheet" href="../../Recursos/Estilos/FormularioRegistro.css">
+
+    
+</head>
+<body>
+    <header id="header"></header>
+    <nav id="nav"></nav>
+    <main id="main">
+        
+        <form id="formulario" action="" method="post" enctype="application/x-www-form-urlencoded">
+            <label for="usuario">Usuario</label>
+            <input type="text" name="usuario" id="usuario" required minlength="4" maxlength="25" 
+            pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
+            title="Usuario no válido">
+            <span id="errorU"></span>
+            <label for="pass">Contraseña</label>
+            <input type="password" name="pass" id="pass" required minlength="4" maxlength="25" 
+            pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
+            title="Contraseña no válida">
+            <span id="errorP"></span>
+            <label for="pass2">Repetir Contraseña</label>
+            <input type="password" name="pass2" id="pass2" required minlength="4" maxlength="25" 
+            pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
+            title="Contraseña no válida">
+            <span id="errorP2"></span>
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre" required minlength="4" maxlength="25" 
+            pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
+            title="Nombre no válido">
+            <span id="errorN"></span>
+            <label for="apellidos">Apellidos</label>
+            <input type="text" name="apellidos" id="apellidos" required minlength="4" maxlength="50"
+            pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
+            title="Apellidos no válidos">
+            <span id="errorA"></span>
+            <label for="direccion">Dirección</label>
+            <input type="text" name="direccion" id="direccion" required minlength="4" maxlength="25"
+            pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
+            title="Dirección no válido">
+            <span id="errorD"></span>
+            <label for="provincia">Provincia</label>
+            <input type="text" name="provincia" id="provincia" required minlength="4" maxlength="25"
+            pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
+            title="Provincia no válida">
+            <span id="errorProvincia"></span>
+            <label for="ciudad">Ciudad</label>
+            <input type="text" name="ciudad" id="ciudad" required minlength="4" maxlength="25"
+            pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
+            title="Ciudad no válida">
+            <span id="errorCiudad"></span>
+            <label for="cpostal">Código Postal</label>
+            <input type="text" name="cpostal" id="cposta" required minlength="5" maxlength="5"
+            pattern="^[0-9]{3,5}$"
+            title="Solo compuesto por 5 números">
+            <span id="errorCpostal"></span>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required minlength="4" maxlength="25"
+             pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(^.{4,25}$)"
+             title="Emailno válido">
+            <span id="errorE"></span>
+            <label for="DNI">DNI</label>
+            <input type="text" name="DNI" id="DNI" required minlength="9" maxlength="9"
+            pattern="^[0-9]{8}[A-Za-z]$"
+            title="Debe tener 8 digitos y una letra">
+            <span id="errorDNI"></span>
+            <label for="rol">¿Que desea ser?</label>
+            <select name="rol" id="rol" required>
+                <option value="usuario" selected>Usuario</option>
+                <option value="agricultor">Agricultor</option>
+            </select>
+            <input class="botonSubmit" type="submit" value="Crear Usuario">
+        </form>
+    </main>
+    
+</body>
+</html>

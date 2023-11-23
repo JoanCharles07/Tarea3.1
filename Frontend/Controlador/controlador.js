@@ -27,7 +27,7 @@ function requerimientosComunes(){
           for(let respuesta of respuestas){
             console.log(respuesta);
           }
-          resolve("HECHO");
+          resolve();
           
         })
     } catch (error) {
@@ -52,11 +52,13 @@ function interaccionesControlador(){
     })
     .then(()=>{
         
-    if(window.location.pathname.includes("index.html")){
-
-        console.log("Hola");
+    if(window.location.pathname.includes("tienda.html")){
+      console.log("Hola3");
     }
-    })
+    else if(window.location.pathname.includes("registro.html")){
+        console.log("Adios");
+    }
+    });
     
 
 }

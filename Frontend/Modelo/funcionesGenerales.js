@@ -18,12 +18,11 @@ export function comprobarProductos() {
         //Comprobamos si no existe los productos para que siempre esten en nuestra sesión y podamos usarlo correctamente.
         
         try{
-            
             if(!sessionStorage.getItem("Productos")){
-                //Llamamos a la base de datos
+                //Llamamos a la base de datos y esperamos a que termine.
                 const Productos=await getProductos();
                 sessionStorage.setItem("Productos",JSON.stringify(Productos));
-                resolve("TerminoBase");
+                resolve();
             }else{  
     
                 resolve();
