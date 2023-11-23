@@ -11,15 +11,18 @@
  */
 export function getProductos(){
     //DATOS NECESARIOS PARA EL SERVIDOR
-    
+        let datos={
+            llamada:"productos"
+        }
         return fetch("Backend/Controlador/controlador.php", {
-            method: 'GET'
+            method: 'POST',
+            body:JSON.stringify(datos)
             
         })
             .then(response => response.text())
             .then(data => {
-                //return
-                console.log(data);
+                const datos=JSON.parse(data);
+                return datos;
                 
         });
     
