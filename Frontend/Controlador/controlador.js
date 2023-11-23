@@ -53,7 +53,9 @@ function interaccionesControlador(){
     .then(()=>{
         
     if(window.location.pathname.includes("tienda.html")){
-      console.log("Hola3");
+      import("../Vistas/plantillasEspecificas.js").then( (plantilla)=> {
+         plantilla.imprimirProductos();
+      })
     }
     else if(window.location.pathname.includes("registro.html")){
         console.log("Adios");

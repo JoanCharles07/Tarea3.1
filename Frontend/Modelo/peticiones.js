@@ -27,3 +27,36 @@ export function getProductos(){
         });
     
 }
+
+export function agregarUsuario(){
+    //DATOS NECESARIOS PARA EL SERVIDOR
+        let datos={
+            llamada:"usuario"
+        }
+        let datosRegistro={
+            usuario:"El que sea",
+            pass:"El que sea",
+            pass2:"El que sea",
+            nombre:"El que sea",
+            apellidos:"El que sea",
+            direccion:"El que sea",
+            provincia:"El que sea",
+            ciudad:"El que sea",
+            cpostal:"El que sea",
+            email:"El que sea",
+            DNI:"El que sea",
+            rol:"El que sea",
+        }
+        return fetch("../../Backend/Controlador/controlador.php", {
+            method: 'POST',
+            body:JSON.stringify(datos)
+            
+        })
+            .then(response => response.text())
+            .then(data => {
+                const datos=JSON.parse(data);
+                return datos;
+                
+        });
+    
+}
