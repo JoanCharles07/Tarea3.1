@@ -5,11 +5,15 @@
 * @version 1.0.0
 */
 
-export function imprimirCabezera() {
+
+/**
+ * Esta función imprimirá la cabezera que compartiran toda nuestra página, la cual es identica en todas las vistas.
+ */
+function imprimirCabezera() {
 
     return new Promise((resolve, reject) => {
         try {
-
+            
             let headerNav = `<header>
             <div class="divheader" id="containerLogo"><img id="logo"   src="Recursos/Imagenes/logo.webp" alt="Logo de la tierra"></div>
             <div class="divheader" id="containerBuscador"><input type="text" name="texto" id="buscador"><img id="lupa"
@@ -47,10 +51,10 @@ export function imprimirCabezera() {
             </nav>
             `;
             document.body.innerHTML=headerNav;
-
+            resolve("FIN");
             //Tras esto debemos añadir funcionalidad a las cosas
         } catch (error) {
-
+            console.log(error);
         }
     });
 }
@@ -78,3 +82,5 @@ export function imprimirCabezera3() {
         }
     });
 }
+
+export{imprimirCabezera};

@@ -9,29 +9,34 @@
 
 
 //Importaciones necesarias para el funcionamiento de controlador.js
-
+import { imprimirCabezera} from "../Vistas/plantillaGeneral.js";
+import { comprobarProductos} from "../Modelo/funcionesGenerales.js";
 /**
  * Esta función nos aseguraremos con la promesa que se ejecute antes que cualquier otra cosa.
- * Crearemos dos variables ya que haremos dos imports uno para las funciones de impresión en el DOM
- * y otra para funciones que darán funcionalidad que siempre debe estar presente.
+ * Crearemos las promesas necesarias de todas las funciones que queremos que se ejecuten antes de empezar.
  * @returns Devuelve el resultado de la promesa
  */
 function requerimientosComunes(){
-    let metodosPlantilla;
-    let metodosGeneral;
+  return new Promise((resolve, reject) => {
+    try {
+
+        const Promesa1= imprimirCabezera();
+        const Promesa2=comprobarProductos();
+        Promise.all([Promesa1,Promesa2]).then(respuestas =>{
+          
+          for(let respuesta of respuestas){
+            console.log(respuesta);
+          }
+          resolve("HECHO");
+          
+        })
+    } catch (error) {
+        reject(error);
+    }
+});
+    
     //Lo primero es la cabezera y la barra de navegación
-    return import("../Vistas/plantillaGeneral.js")
-    .then((moduloPlantilla) => {
-        metodosPlantilla=moduloPlantilla
-        return import("../Modelo/funcionesGenerales.js");
-       
-      }).then((moduloGeneral)=>{
-        metodosGeneral=moduloGeneral;
-        return metodosPlantilla.imprimirCabezera();
-      }).then(()=>{
-        return metodosGeneral.METODOQUESEA();
-      })
-    .catch(error => console.log(error));
+    
 }
 /**
  * Esta función se encargará de activar las distintas funciones según la vista en la que este.
@@ -43,6 +48,7 @@ function interaccionesControlador(){
     requerimientosComunes()
     .then((respuesta)=>{
         console.log(respuesta);
+        console.log("respuesta");
     })
     .then(()=>{
         
