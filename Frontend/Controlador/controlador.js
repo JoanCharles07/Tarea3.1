@@ -58,11 +58,25 @@ function interaccionesControlador(){
       })
     }
     else if(window.location.pathname.includes("registro.html")){
+      
+        import("../Modelo/funcionesUsuario.js").then(async (funciones)=> {
+            
+            
+          const objetoComprobaciones=  await funciones.recepcionDeDatosUsuario();
+              console.log("entro8");
+              console.log(objetoComprobaciones);
+            
+          
+        }).then(respuesta => {
+         
+          console.log("entro7");
+          
+         
+        });
 
+     
         //comprobar que hay submit y si lo hay ver que recibimos y hacer todas las comparaciones.
-        import("../Modelo/funcionesUsuario.js").then( (funciones)=> {
-          funciones.recepcionDeDatosUsuario();
-        })
+        
         
     }
     });

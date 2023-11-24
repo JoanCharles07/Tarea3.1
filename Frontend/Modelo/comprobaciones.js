@@ -22,14 +22,21 @@ function comprobarRegex(valor) {
     return respuesta;
   }
 
-
-  function comprobarDatosRegex(datos) {
-    let respuesta = false;
+  /**
+ * Valora todos los datos del FORMDATA y entrega JSON con respuestas false o true
+ * @param {*} datos es el FormData con los datos del formulario
+ *  
+ * @returns JSON con los resultados.
+ */
+  export function comprobarDatosRegex(datos) {
+    let objeto = new Object();
     //Con esta expresión regular podemos confirmar var
-  
-    let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,25}$)/);
-    respuesta = !(regex.test(valor));
-  
-    return respuesta;
+    
+    for (const dato of datos.entries()) {
+        objeto[dato[0]]=comprobarRegex(dato[1]);
+    }
+
+    
+    return objeto;
   }
  
