@@ -35,8 +35,8 @@
             <span id="errorP2"></span>
             <label for="nombre">Nombre</label>
             <input type="text" name="nombre" id="nombre" required minlength="4" maxlength="25" 
-           
-            >
+            pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
+            title="Nombre no válido">
             <span id="errorN"></span>
             <label for="apellidos">Apellidos</label>
             <input type="text" name="apellidos" id="apellidos" required minlength="4" maxlength="50"
@@ -59,7 +59,7 @@
             title="Ciudad no válida">
             <span id="errorCiudad"></span>
             <label for="cpostal">Código Postal</label>
-            <input type="text" name="cpostal" id="cposta" required minlength="5" maxlength="5"
+            <input type="text" name="cpostal" id="cpostal" required minlength="5" maxlength="5"
             pattern="^[0-9]{3,5}$"
             title="Solo compuesto por 5 números">
             <span id="errorCpostal"></span>

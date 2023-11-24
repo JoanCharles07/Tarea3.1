@@ -60,19 +60,15 @@ function interaccionesControlador(){
     else if(window.location.pathname.includes("registro.html")){
       
         import("../Modelo/funcionesUsuario.js").then(async (funciones)=> {
-            
-            
+          //Distintas funciones a las que llamar
           const objetoComprobaciones=  await funciones.recepcionDeDatosUsuario();
-              console.log("entro8");
-              console.log(objetoComprobaciones);
+          const funcionesPlantilla= await import("../Vistas/plantillasEspecificas.js");
+          
+            funcionesPlantilla.imprimirTodosResultados(objetoComprobaciones);
+          
             
           
-        }).then(respuesta => {
-         
-          console.log("entro7");
-          
-         
-        });
+        })
 
      
         //comprobar que hay submit y si lo hay ver que recibimos y hacer todas las comparaciones.

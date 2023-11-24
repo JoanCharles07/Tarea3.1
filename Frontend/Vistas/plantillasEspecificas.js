@@ -28,3 +28,34 @@ export function imprimirProductos(){
     seccion.innerHTML=texto;
     
 }
+/**
+ * Esta función se usa para llamar varias veces a la función imprimirResultado cuando queremos
+ * mostrar más de un error a la vez.
+ * @see imprimirResultado.
+ */
+export function imprimirTodosResultados(objetoComprobaciones){
+    console.log(objetoComprobaciones);
+    for(let clave in objetoComprobaciones){
+        //Esto se envia a imprimir resultado y borde rojo si no es correcto
+        imprimirResultado(clave,objetoComprobaciones[clave]);
+    }
+    
+}
+
+/**
+ * Esta función imprime el texto correspondiente en el span posterior al input
+ * que contenga el error en caso de que resultado sea true, de lo contrario no imprimirá nada.
+ * Estos datos llegan a través de 
+ * @see comprobarDatosRegex de comprobaciones.js
+ * @see recepcionDeDatosUsuario de funcionesUsuario.js
+ */
+function imprimirResultado(id,resultado){
+   
+    if(resultado){
+        let input=document.getElementById(id);
+        let span=input.nextElementSibling;
+        let texto=input.title;
+        input.style.border="3px solid red";
+        span.textContent=texto;
+    }
+}

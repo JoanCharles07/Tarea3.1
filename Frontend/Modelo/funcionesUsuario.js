@@ -7,6 +7,8 @@
 /**
  * Esta función recibe los datos del Usuario y devolverá un array con los resultados.
  * devolverá una promesa que entregará el array y así seguir con el código.
+ * 
+ * returns promesa con los datos JSON recibidos por comprobarDatosRegex.
  */
 export function recepcionDeDatosUsuario() {
     return new Promise((resolve, reject) => {
