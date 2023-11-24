@@ -58,7 +58,12 @@ function interaccionesControlador(){
       })
     }
     else if(window.location.pathname.includes("registro.html")){
-        console.log("Adios");
+
+        //comprobar que hay submit y si lo hay ver que recibimos y hacer todas las comparaciones.
+        import("../Modelo/funcionesUsuario.js").then( (funciones)=> {
+          funciones.recepcionDeDatosUsuario();
+        })
+        
     }
     });
     

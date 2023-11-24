@@ -1,6 +1,6 @@
 /**
  * @file Este script imprimirá  los datos especificamente en cada una de las vistas especificas
- * @description Este script imprimirá los datos recibidos por la base de datos. 
+ * @description Este script imprimirá los datos recibidos por la base de datos además de  notificar los errores producidos. 
  * @author Juan Carlos Rodríguez Miranda.
  * @version 1.0.0
 */
