@@ -30,34 +30,20 @@ export function getProductos(){
 
 export function agregarUsuario(datosUsuario){
     //DATOS NECESARIOS PARA EL SERVIDOR
-    console.log(datosUsuario.usuario + " HOLA");
-        let datos={
-            llamada:"usuario"
+        //Trasnformo el formdata a objeto para mejor manejo en PHP
+        let datosRegistro = new Object();
+        let llamada={
+            llamada:"registro"
         }
-        let datosRegistro={
-            usuario:"El que sea",
-            pass:"El que sea",
-            pass2:"El que sea",
-            nombre:"El que sea",
-            apellidos:"El que sea",
-            direccion:"El que sea",
-            provincia:"El que sea",
-            ciudad:"El que sea",
-            cpostal:"El que sea",
-            email:"El que sea",
-            DNI:"El que sea",
-            rol:"El que sea",
+
+  //Con esta expresión regular podemos confirmar var
+
+        for (const dato of datosUsuario.entries()) {
+            datosRegistro[dato[0]] = dato[1];
+           
         }
-        return fetch("../../Backend/Controlador/controlador.php", {
-            method: 'POST',
-            body:JSON.stringify(datos)
-            
-        })
-            .then(response => response.text())
-            .then(data => {
-                const datos=JSON.parse(data);
-                return datos;
-                
-        });
-    
+    //enviar llamada y datos registro a php
+        let datos={llamada,datosRegistro};
+
+        console.log(datos);
 }

@@ -4,6 +4,8 @@
  * @author Juan Carlos Rodríguez Miranda.
  * @version 1.0.0
 */
+
+import { agregarUsuario } from "../Modelo/peticiones.js";
 /**
  * Esta función recibe los datos del Usuario y devolverá un array con los resultados.
  * devolverá una promesa que entregará el array y así seguir con el código.
@@ -14,14 +16,16 @@ export function recepcionDeDatosUsuario() {
     return new Promise((resolve, reject) => {
        
             
-            let datosform = new FormData(document.getElementById("formulario"));
+            let datosUsuario = new FormData(document.getElementById("formulario"));
             import("../Modelo/comprobaciones.js").then((funciones) => {
-                const datos = funciones.comprobarDatosRegex(datosform);
+                const datos = funciones.comprobarDatosRegex(datosUsuario);
+                console.log(datosUsuario.get("usuario") + "Hola");
                 if(datos!=null){
                     let control= Object.values(datos).filter(elemento => elemento == true);
                     if(control.length==0){
-                        //agregarUsuario(objetoComprobaciones);
-                        console.log("entro");
+                       
+                        agregarUsuario(datosUsuario);
+                        
                         resolve();
                     }
                     else{

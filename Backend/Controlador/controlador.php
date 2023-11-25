@@ -20,9 +20,8 @@ if(isset($_POST)){
         $respuesta=encriptarTodasPalabras($respuesta);
         echo json_encode($respuesta);
     }
-    else if($direccion->llamada=="usuario"){
-        $respuesta=recuperarProductos();
-        $respuesta=encriptarTodasPalabras($respuesta);
+    else if($direccion->llamada=="registro"){
+        $respuesta="recuperarProductos();";
         echo json_encode($respuesta);
     }
 }

@@ -57,10 +57,7 @@ async function interaccionesControlador() {
 
       }
       else if (window.location.pathname.includes("registro.html")) {
-
-
-
-      try {
+        try {
           document.getElementById("pass").addEventListener("blur", async function () {
               let pass = await passIguales();
               imprimirIgualdadPass(pass);

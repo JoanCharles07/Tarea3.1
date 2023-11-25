@@ -34,6 +34,7 @@ export function comprobarDatosRegex(datos) {
 
   for (const dato of datos.entries()) {
     objeto[dato[0]] = comprobarRegex(dato[1]);
+   
   }
 
 
