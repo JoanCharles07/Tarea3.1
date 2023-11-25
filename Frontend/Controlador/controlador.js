@@ -10,9 +10,10 @@
 
 //Importaciones necesarias para el funcionamiento de controlador.js
 import { imprimirCabezera } from "../Vistas/plantillaGeneral.js";
-import { comprobarProductos } from "../Modelo/funcionesGenerales.js";
-import { passIguales, recepcionDeDatosUsuario } from "../Modelo/funcionesUsuario.js";
+import { comprobarProductos } from "./controladorGenerales.js";
+import { passIguales, recepcionDeDatosUsuario } from "./controladorUsuario.js";
 import { imprimirIgualdadPass, imprimirTodosResultados } from "../Vistas/plantillasEspecificas.js";
+
 /**
  * Esta función nos aseguraremos con la promesa que se ejecute antes que cualquier otra cosa.
  * Crearemos las promesas necesarias de todas las funciones que queremos que se ejecuten antes de empezar.
@@ -69,22 +70,24 @@ async function interaccionesControlador() {
               let pass = await passIguales();
               imprimirIgualdadPass(pass);
           });
-
+          //Si hay un submit  comprobaremos las pass primero y luego el resto de inputs enviamos al controladorUsuario
+          //para que conecte con las distintas funciones del modelo y de tener errores llamaremos a funciones de la Vista.
           document.getElementById("formulario").addEventListener("submit", async function (e) {
               e.preventDefault();
-              let pass = false;
-              let control = [];
-              const objetoComprobaciones = await recepcionDeDatosUsuario();
-              imprimirTodosResultados(objetoComprobaciones);
-              control = Object.values(objetoComprobaciones).filter(elemento => elemento == true);
-              pass = await passIguales();
-              imprimirIgualdadPass(pass);
-              if (control.length == 0 && pass == true) {
-
+              let pass = await passIguales();
+              if(pass){
+                const objetoComprobaciones = await recepcionDeDatosUsuario();
+                if(objetoComprobaciones!=null){
+                  imprimirTodosResultados(objetoComprobaciones);
+                }
+                else{
+                  //redirección
+                }
               }
-              else {
-
+              else{
+                imprimirIgualdadPass(pass);
               }
+             
           });
         }catch (error) {
           //Por aquí veremos el error para depurar

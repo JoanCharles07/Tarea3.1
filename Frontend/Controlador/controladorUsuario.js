@@ -1,6 +1,6 @@
 /**
  * @file Este script se encargará de las funciones relacionadas con usuarios
- * @description Este script realizará distintas funciones como pueden ser funciones de login o registros de usuarios.
+ * @description Este script realizará la funciones como pueden ser funciones de login o registros de usuarios.
  * @author Juan Carlos Rodríguez Miranda.
  * @version 1.0.0
 */
@@ -18,7 +18,16 @@ export function recepcionDeDatosUsuario() {
             import("../Modelo/comprobaciones.js").then((funciones) => {
                 const datos = funciones.comprobarDatosRegex(datosform);
                 if(datos!=null){
-                    resolve(datos);
+                    let control= Object.values(datos).filter(elemento => elemento == true);
+                    if(control.length==0){
+                        //agregarUsuario(objetoComprobaciones);
+                        console.log("entro");
+                        resolve();
+                    }
+                    else{
+                        resolve(datos);
+                    }
+                    
                }
                else{
                     reject("Hubo un error Recepción de Datos Usuario");

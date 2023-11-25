@@ -28,8 +28,9 @@ export function getProductos(){
     
 }
 
-export function agregarUsuario(){
+export function agregarUsuario(datosUsuario){
     //DATOS NECESARIOS PARA EL SERVIDOR
+    console.log(datosUsuario.usuario + " HOLA");
         let datos={
             llamada:"usuario"
         }
