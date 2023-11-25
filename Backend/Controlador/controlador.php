@@ -15,12 +15,14 @@ session_start();
  */
 if(isset($_POST)){
     $direccion=json_decode(file_get_contents('php://input'));
+    
     if($direccion->llamada=="productos"){
         $respuesta=recuperarProductos();
         $respuesta=encriptarTodasPalabras($respuesta);
         echo json_encode($respuesta);
     }
     else if($direccion->llamada=="registro"){
+       
         $respuesta="recuperarProductos();";
         echo json_encode($respuesta);
     }

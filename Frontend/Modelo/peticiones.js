@@ -27,23 +27,32 @@ export function getProductos(){
         });
     
 }
-
+/**
+ * Esta función hará una petición a la base de datos para conseguir todos los productos de la tienda.
+ * @returns Objeto con datos del usuario y efectividad del registro.
+ */
 export function agregarUsuario(datosUsuario){
     //DATOS NECESARIOS PARA EL SERVIDOR
         //Trasnformo el formdata a objeto para mejor manejo en PHP
         let datosRegistro = new Object();
-        let llamada={
-            llamada:"registro"
-        }
-
+       
   //Con esta expresión regular podemos confirmar var
-
         for (const dato of datosUsuario.entries()) {
             datosRegistro[dato[0]] = dato[1];
            
         }
     //enviar llamada y datos registro a php
-        let datos={llamada,datosRegistro};
-
-        console.log(datos);
+        let datos={llamada:"registro",datosRegistro};
+        return fetch("../../Backend/Controlador/controlador.php", {
+            method: 'POST',
+            body:JSON.stringify(datos)
+            
+        })
+            .then(response => response.text())
+            .then(data => {
+                const datos=JSON.parse(data);
+                console.log(datos);
+                
+        });
+    
 }

@@ -23,7 +23,6 @@
     $retorno=hash('sha512',$WORD.$palabra);
     return $retorno;
  }
-
  /**
  * Encripta cualquier Array.
  *
@@ -39,3 +38,11 @@
     }
     return $array;
  }
+
+ /**
+ * Saneamiento de los datos recibidos por el fetch.
+ *
+ * Esta función sanea cualquier palabra que le llegue para evitar código malicioso.
+ *  @param String cadena sin sanear
+ * @return String cadena saneada.
+ */
