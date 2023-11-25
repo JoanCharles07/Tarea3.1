@@ -40,9 +40,33 @@
  }
 
  /**
- * Saneamiento de los datos recibidos por el fetch.
+ * Saneamiento de la cadena recibidos por el fetch.
  *
  * Esta función sanea cualquier palabra que le llegue para evitar código malicioso.
  *  @param String cadena sin sanear
  * @return String cadena saneada.
  */
+function saneamientoDatos($cadena){
+   $cadenaSaneado=filter_var($cadena,FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+}
+
+ /**
+ * Saneamiento de los datos recibidos por el fetch.
+ *
+ * Esta función sanea todas las palabras que le llegan llamando mediante un bucle for a senamientoDatos.
+ * @see saneamiendoDatos.
+ * @param Array  sin sanear.
+ * @return Array cadena saneada.
+ */
+function saneamientoArray($array){
+   foreach($array as $name => $value){
+      if($name == "email"){
+         $_SESSION["datos"][$name]=filter_var($value,FILTER_SANITIZE_EMAIL);
+         $_SESSION["datos"][$name]=filter_var($_SESSION["datos"][$name],FILTER_VALIDATE_EMAIL);
+      }
+      else{
+         $_SESSION["datos"][$name]=saneamientoDatos($value);
+      }
+      
+   }
+}

@@ -22,7 +22,7 @@ if(isset($_POST)){
         echo json_encode($respuesta);
     }
     else if($direccion->llamada=="registro"){
-       
+        saneamientoArray($direccion->datosRegistro);
         $respuesta="recuperarProductos();";
         echo json_encode($respuesta);
     }
