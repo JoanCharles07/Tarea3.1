@@ -12,14 +12,43 @@
  */
 export function recepcionDeDatosUsuario() {
     return new Promise((resolve, reject) => {
-        document.getElementById("formulario").addEventListener("submit", function (e) {
-            e.preventDefault();
+       
+            
             let datosform = new FormData(document.getElementById("formulario"));
-            import("../Modelo/comprobaciones.js").then( (funciones) => {
-                console.log("entro4");
-                const datos =  funciones.comprobarDatosRegex(datosform);
-                resolve(datos);
+            import("../Modelo/comprobaciones.js").then((funciones) => {
+                const datos = funciones.comprobarDatosRegex(datosform);
+                if(datos!=null){
+                    resolve(datos);
+               }
+               else{
+                    reject("Hubo un error Recepción de Datos Usuario");
+               }
             })
         })
-    });
+
+    
 }
+
+/**
+ * Esta función llama a la función validarPass que devolverá el resultado.
+ * 
+ * @return Promise con el resultado de la función validarPass
+ */
+export function passIguales() {
+    return new Promise((resolve, reject) => {
+
+        import("../Modelo/comprobaciones.js").then((funciones) => {
+
+            let pass = funciones.validarPass();
+           if(pass!=null){
+                resolve(pass);
+           }
+           else{
+                reject("Hubo un error en PassIguales");
+           }
+            
+        });
+    })
+
+
+};

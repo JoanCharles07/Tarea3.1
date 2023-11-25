@@ -13,30 +13,51 @@
  * @returns Boolean con resultado de la expresión regular.
  */
 function comprobarRegex(valor) {
-    let respuesta = false;
-    //Con esta expresión regular podemos confirmar var
-  
-    let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,25}$)/);
-    respuesta = !(regex.test(valor));
-  
-    return respuesta;
+  let respuesta = false;
+  //Con esta expresión regular podemos confirmar var
+
+  let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,25}$)/);
+  respuesta = !(regex.test(valor));
+
+  return respuesta;
+}
+
+/**
+* Valora todos los datos del FORMDATA y entrega JSON con respuestas false o true
+* @param {*} datos es el FormData con los datos del formulario
+*  
+* @returns JSON con los resultados.
+*/
+export function comprobarDatosRegex(datos) {
+  let objeto = new Object();
+  //Con esta expresión regular podemos confirmar var
+
+  for (const dato of datos.entries()) {
+    objeto[dato[0]] = comprobarRegex(dato[1]);
   }
 
-  /**
- * Valora todos los datos del FORMDATA y entrega JSON con respuestas false o true
- * @param {*} datos es el FormData con los datos del formulario
- *  
- * @returns JSON con los resultados.
- */
-  export function comprobarDatosRegex(datos) {
-    let objeto = new Object();
-    //Con esta expresión regular podemos confirmar var
-    
-    for (const dato of datos.entries()) {
-        objeto[dato[0]]=comprobarRegex(dato[1]);
+
+  return objeto;
+}
+
+/**
+* Verifica que los inputs de contraseña coincida o no 
+*  
+* @returns Boolean con el resultado.
+*/
+export function validarPass() {
+  
+
+    let pass2 = document.getElementById("pass2").value;
+    let pass = document.getElementById("pass").value;
+    if (pass != pass2) {
+
+      return false;
     }
-
+    else {
+      return true;
+    }
     
-    return objeto;
-  }
  
+}
+

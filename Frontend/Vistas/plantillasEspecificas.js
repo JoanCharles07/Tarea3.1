@@ -10,14 +10,14 @@
  * Esta función imprime los productos que tenemos en nuestra página principal tienda.html.
  * Mediante la sessionStorage consigue imprimir todos los productos con innerHTML.
  */
-export function imprimirProductos(){
-    const productos=JSON.parse(sessionStorage.getItem("productos"));
+export function imprimirProductos() {
+    const productos = JSON.parse(sessionStorage.getItem("productos"));
     let seccion = document.getElementById("containerProductos");
-    let texto="";
-    
-    if(productos!=null){
+    let texto = "";
+
+    if (productos != null) {
         for (const producto of productos) {
-            texto+=`<div class="producto">
+            texto += `<div class="producto">
             <img src="data:image/webp;base64,${producto["imagen"]}" class="productos"></img>
             <p>${producto["Nombre_Producto"]} €/kilo</p>
             <p>${producto["precio"]} €/kilo</p>
@@ -25,21 +25,21 @@ export function imprimirProductos(){
             </div>`;
         }
     }
-    seccion.innerHTML=texto;
-    
+    seccion.innerHTML = texto;
+
 }
 /**
  * Esta función se usa para llamar varias veces a la función imprimirResultado cuando queremos
  * mostrar más de un error a la vez.
  * @see imprimirResultado.
  */
-export function imprimirTodosResultados(objetoComprobaciones){
-    console.log(objetoComprobaciones);
-    for(let clave in objetoComprobaciones){
-        //Esto se envia a imprimir resultado y borde rojo si no es correcto
-        imprimirResultado(clave,objetoComprobaciones[clave]);
-    }
+export function imprimirTodosResultados(objetoComprobaciones) {
     
+    for (let clave in objetoComprobaciones) {
+        //Esto se envia a imprimir resultado y borde rojo si no es correcto
+        imprimirResultado(clave, objetoComprobaciones[clave]);
+    }
+
 }
 
 /**
@@ -49,13 +49,33 @@ export function imprimirTodosResultados(objetoComprobaciones){
  * @see comprobarDatosRegex de comprobaciones.js
  * @see recepcionDeDatosUsuario de funcionesUsuario.js
  */
-function imprimirResultado(id,resultado){
-   
-    if(resultado){
-        let input=document.getElementById(id);
-        let span=input.nextElementSibling;
-        let texto=input.title;
-        input.style.border="3px solid red";
-        span.textContent=texto;
+function imprimirResultado(id, resultado) {
+    let input = document.getElementById(id);
+    let span = input.nextElementSibling;
+    let texto = input.title;
+    if (resultado) {
+      
+        input.style.border = "3px solid red";
+        span.textContent = texto;
+    }
+    else{
+        input.style.border = "none";
+        span.textContent = "";
+    }
+}
+
+export function imprimirIgualdadPass(resultado) {
+    
+    if (resultado) {
+        document.getElementById("pass").style.border = "";
+        document.getElementById("pass2").style.border = "";
+        document.getElementById("errorP2").innerHTML = "";
+
+
+    }
+    else {
+        document.getElementById("pass").style.border = "3px solid rgb(234,98,98)";
+        document.getElementById("pass2").style.border = "3px solid rgb(234,98,98)";
+        document.getElementById("errorP2").innerHTML = "No coinciden contraseñas";
     }
 }

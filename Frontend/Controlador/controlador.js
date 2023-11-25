@@ -9,34 +9,36 @@
 
 
 //Importaciones necesarias para el funcionamiento de controlador.js
-import { imprimirCabezera} from "../Vistas/plantillaGeneral.js";
-import { comprobarProductos} from "../Modelo/funcionesGenerales.js";
+import { imprimirCabezera } from "../Vistas/plantillaGeneral.js";
+import { comprobarProductos } from "../Modelo/funcionesGenerales.js";
+import { passIguales, recepcionDeDatosUsuario } from "../Modelo/funcionesUsuario.js";
+import { imprimirIgualdadPass, imprimirTodosResultados } from "../Vistas/plantillasEspecificas.js";
 /**
  * Esta función nos aseguraremos con la promesa que se ejecute antes que cualquier otra cosa.
  * Crearemos las promesas necesarias de todas las funciones que queremos que se ejecuten antes de empezar.
  * @returns Devuelve el resultado de la promesa
  */
-function requerimientosComunes(){
+function requerimientosComunes() {
   return new Promise((resolve, reject) => {
     try {
 
-        const Promesa1= imprimirCabezera();
-        const Promesa2=comprobarProductos();
-        Promise.all([Promesa1,Promesa2]).then(respuestas =>{
-          
-          for(let respuesta of respuestas){
-            console.log(respuesta);
-          }
-          resolve();
-          
-        })
+      const Promesa1 = imprimirCabezera();
+      const Promesa2 = comprobarProductos();
+      Promise.all([Promesa1, Promesa2]).then(respuestas => {
+
+        for (let respuesta of respuestas) {
+          console.log(respuesta);
+        }
+        resolve();
+
+      })
     } catch (error) {
-        reject(error);
+      reject(error);
     }
-});
-    
-    //Lo primero es la cabezera y la barra de navegación
-    
+  });
+
+  //Lo primero es la cabezera y la barra de navegación
+
 }
 /**
  * Esta función se encargará de activar las distintas funciones según la vista en la que este.
@@ -44,39 +46,55 @@ function requerimientosComunes(){
  *  
  * @throws(error)Saltará si alguna de las promesas no puede llevar a cabo su función.
  */
-function interaccionesControlador(){
-    requerimientosComunes()
-    .then((respuesta)=>{
-        console.log(respuesta);
-        console.log("respuesta");
+async function interaccionesControlador() {
+  requerimientosComunes()
+    .then(() => {
+
+      if (window.location.pathname.includes("tienda.html")) {
+
+        imprimirProductos();
+
+      }
+      else if (window.location.pathname.includes("registro.html")) {
+
+
+
+      try {
+          document.getElementById("pass").addEventListener("blur", async function () {
+              let pass = await passIguales();
+              imprimirIgualdadPass(pass);
+          });
+
+          document.getElementById("pass2").addEventListener("blur", async function () {
+              let pass = await passIguales();
+              imprimirIgualdadPass(pass);
+          });
+
+          document.getElementById("formulario").addEventListener("submit", async function (e) {
+              e.preventDefault();
+              let pass = false;
+              let control = [];
+              const objetoComprobaciones = await recepcionDeDatosUsuario();
+              imprimirTodosResultados(objetoComprobaciones);
+              control = Object.values(objetoComprobaciones).filter(elemento => elemento == true);
+              pass = await passIguales();
+              imprimirIgualdadPass(pass);
+              if (control.length == 0 && pass == true) {
+
+              }
+              else {
+
+              }
+          });
+        }catch (error) {
+          //Por aquí veremos el error para depurar
+          //console.log(error);
+        }
+
+
+      }
+      //comprobar que hay submit y si lo hay ver que recibimos y hacer todas las comparaciones.
+
     })
-    .then(()=>{
-        
-    if(window.location.pathname.includes("tienda.html")){
-      import("../Vistas/plantillasEspecificas.js").then( (plantilla)=> {
-         plantilla.imprimirProductos();
-      })
-    }
-    else if(window.location.pathname.includes("registro.html")){
-      
-        import("../Modelo/funcionesUsuario.js").then(async (funciones)=> {
-          //Distintas funciones a las que llamar
-          const objetoComprobaciones=  await funciones.recepcionDeDatosUsuario();
-          const funcionesPlantilla= await import("../Vistas/plantillasEspecificas.js");
-          
-            funcionesPlantilla.imprimirTodosResultados(objetoComprobaciones);
-          
-            
-          
-        })
-
-     
-        //comprobar que hay submit y si lo hay ver que recibimos y hacer todas las comparaciones.
-        
-        
-    }
-    });
-    
-
 }
 interaccionesControlador();
