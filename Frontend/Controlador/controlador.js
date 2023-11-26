@@ -10,9 +10,9 @@
 
 //Importaciones necesarias para el funcionamiento de controlador.js
 import { imprimirCabezera } from "../Vistas/plantillaGeneral.js";
-import { comprobarProductos } from "./controladorGenerales.js";
+import { comprobarProductos,comprobarUsuario } from "./controladorInicial.js";
 import { passIguales, recepcionDeDatosUsuario } from "./controladorUsuario.js";
-import { imprimirIgualdadPass, imprimirTodosResultados } from "../Vistas/plantillasEspecificas.js";
+import { imprimirIgualdadPass, imprimirTodosResultados,imprimirProductos } from "../Vistas/plantillasEspecificas.js";
 
 /**
  * Esta función nos aseguraremos con la promesa que se ejecute antes que cualquier otra cosa.
@@ -25,7 +25,8 @@ function requerimientosComunes() {
 
       const Promesa1 = imprimirCabezera();
       const Promesa2 = comprobarProductos();
-      Promise.all([Promesa1, Promesa2]).then(respuestas => {
+      const Promesa3 = comprobarUsuario();
+      Promise.all([Promesa1, Promesa2,Promesa3]).then(respuestas => {
 
         for (let respuesta of respuestas) {
           console.log(respuesta);
@@ -78,7 +79,7 @@ async function interaccionesControlador() {
                   imprimirTodosResultados(objetoComprobaciones);
                 }
                 else{
-                  //redirección
+                  location.href="./tienda.html";
                 }
               }
               else{

@@ -32,6 +32,7 @@ export function getProductos(){
  * @returns Objeto con datos del usuario y efectividad del registro.
  */
 export function agregarUsuario(datosUsuario){
+    return new Promise((resolve, reject) => {
     //DATOS NECESARIOS PARA EL SERVIDOR
         //Trasnformo el formdata a objeto para mejor manejo en PHP
         let datosRegistro = new Object();
@@ -43,7 +44,7 @@ export function agregarUsuario(datosUsuario){
         }
     //enviar llamada y datos registro a php
         let datos={llamada:"registro",datosRegistro};
-        return fetch("../../Backend/Controlador/controlador.php", {
+        fetch("../../Backend/Controlador/controlador.php", {
             method: 'POST',
             body:JSON.stringify(datos)
             
@@ -52,8 +53,8 @@ export function agregarUsuario(datosUsuario){
             .then(data => {
                 const datos=JSON.parse(data);
                 console.log(datos);
-                return datos;
+                resolve(datos);
                 
         });
-    
+    });
 }

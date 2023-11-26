@@ -153,3 +153,16 @@ function RegexCodigoPostal($dato)
     }
     return $resultado;
 }
+
+/** Función que se encarga de indicarnos el tipo de usuario que es agricultor o usuario.
+ * No se añade el Administrador porque solo lo puede otorgar otro administrador y no
+ * se realizará mediante registro.*/ 
+function IDrol(){
+   if($_SESSION["datos"]["rol"]=="usuario"){
+       $_SESSION["datos"]["rol"]=1;
+   }
+   elseif($_SESSION["datos"]["rol"]=="agricultor"){
+       $_SESSION["datos"]["rol"]=2;
+   }
+
+}

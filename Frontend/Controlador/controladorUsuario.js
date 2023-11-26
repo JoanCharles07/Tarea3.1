@@ -16,17 +16,27 @@ export function recepcionDeDatosUsuario() {
     return new Promise((resolve, reject) => {
        
             
-            let datosUsuario = new FormData(document.getElementById("formulario"));
-            import("../Modelo/comprobaciones.js").then((funciones) => {
-                let datos = funciones.comprobarDatosRegex(datosUsuario);
-                console.log(datosUsuario.get("usuario") + "Hola");
+            let datosRegistro = new FormData(document.getElementById("formulario"));
+            import("../Modelo/comprobaciones.js").then(async(funciones) => {
+                let datos = funciones.comprobarDatosRegex(datosRegistro);
                 if(datos!=null){
                     let control= Object.values(datos).filter(elemento => elemento == true);
                     if(control.length==0){
-                       
-                        let datosServidor=agregarUsuario(datosUsuario);
+                       //Nos aseguramos de tener los datos antes de continuar
+                        let datosServidor= await agregarUsuario(datosRegistro);
                         //if si hay datos habra errores else si no hay datos se habrá completado el registro
-                        resolve(datosServidor);
+                        
+                        if(datosServidor.datosUsuario){
+                            //codificar datos antes de meterlos
+                            sessionStorage.setItem("usuario",btoa(JSON.stringify(datosServidor.datosUsuario)));
+                            let prueba= sessionStorage.getItem("usuario");
+                            console.log( atob(prueba));
+                            resolve();
+                        }else{
+                            resolve(datosServidor);
+                        }
+                        resolve();
+                        
                     }
                     else{
                         resolve(datos);

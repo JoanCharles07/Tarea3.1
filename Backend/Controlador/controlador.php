@@ -27,21 +27,29 @@ if(isset($_POST)){
     else if($direccion->llamada=="registro"){
         //Saneamos
         saneamientoArray($direccion->datosRegistro);
-        //Comprobamos que no haya palabras no validas
-        
+       
+       
+         //Comprobamos que no haya palabras no validas
         RegexRespuesta($errores);
         //Hacemos otras comprobaciones
         otrasComprobaciones($errores);
+        //transformamos el dato de Rol para la BBDD.
+        IDrol();
+       
         //Si hay errores nno es necesario seguir y evitamos que entre a las funciones de la BBDD
         if(empty((array) $errores)){
             
             $respuesta=registro($errores);
+           
             //Segunda Ronda de errores dentro de BBDD
             if($respuesta){
-                $session->registrado=true;
+                
+                unset($_SESSION["datos"]);
+                $session->datosUsuario=[$_SESSION["datosUsuario"]["usuario"],$_SESSION["datosUsuario"]["rol"]];
                 echo json_encode($session);
             }
             else{
+              
                 $session=$errores;
                 echo json_encode($session);
             }
@@ -49,7 +57,7 @@ if(isset($_POST)){
         else{
             //El valor sesion que devolverremos lo convertimos en los errores
             
-            $session=$errores;
+            session_destroy();
             echo json_encode($session);
         }
     }

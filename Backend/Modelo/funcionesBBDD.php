@@ -15,8 +15,6 @@
  */
 function recuperarProductos()
 {
-
-
     $array = [];
     $sql = "select * from producto";
     $ret = false;
@@ -30,7 +28,7 @@ function recuperarProductos()
 
             if ($ret != false) {
                 /**Hacer for númerico con $ret */
-
+                
                 for ($x = 0; $x < count($ret); $x++) {
                     $clase = new stdClass();
                     $clase->id = $ret[$x][0];
@@ -100,15 +98,13 @@ function datosDuplicados(&$errores)
                     }
                 }
             } else {
-
+                
                 $res = true;
             }
         } else {
             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
         }
 
-
-        return $res;
     } catch (PDOException $ex) {
         /**En caso de haber excepción será atrapada por el catch*/
         $ret = false;
@@ -117,7 +113,7 @@ function datosDuplicados(&$errores)
 
     };
 
-    return $ret;
+    return $res;
 }
 /**
  * Esta función registrará un nuevo usuario en la base de datos.
@@ -133,13 +129,14 @@ function registro(&$errores)
     $respuesta = false;
     if ($NoDuplicado) {
         $ret = false;
-
+        
         $sql = "INSERT INTO `usuario` (`Nombre`, `Apellido`, `nickname`,`email`, `dirección`, `ciudad`, `provincia`, `Codigo_Postal`, `DNI`, `pass`, `Id_Rol`) 
         VALUES (:nombre, :apellido,:usuario,:email, :direccion, :ciudad, :provincia, :codigopostal, :DNI, :pass, :rol);";
 
         try {
             $pdo = conectar();
             $stmt = $pdo->prepare($sql);
+            
             $data = [
                 'usuario' =>  $_SESSION["datos"]["usuario"],
                 'pass' =>  $_SESSION["datos"]["pass"],
@@ -157,15 +154,20 @@ function registro(&$errores)
             if ($stmt->execute($data)) {
                 $ret = $stmt->rowCount();
                 if ($ret == 1) {
+                    
+
                     $respuesta = true;
                     //Añadimos datos que nos faltan para el usuario dentro del servidor.
-                    $_SESSION["datos"]["id"] = $pdo->lastInsertId();
+                    $_SESSION["datosUsuario"]["id"] = $pdo->lastInsertId();
+                    $_SESSION["datosUsuario"]["usuario"]= $_SESSION["datos"]["usuario"];
+                    $_SESSION["datosUsuario"]["rol"]= $_SESSION["datos"]["rol"];
                 } else {
 
 
                     $errores->errorBBDD[] = "No se ha registrado correctamente";
                 }
             } else {
+
                 $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
             }
         }
@@ -173,9 +175,10 @@ function registro(&$errores)
         //Else por si hay algún error
         catch (PDOException $ex) {
             /**En caso de haber excepción será atrapada por el catch*/
-
+            
             //Usarlo si es necesario.
-            //$_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+            $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+            var_dump($_SESSION["ErrorDepuracion"]);
         };
     }
     return $respuesta;

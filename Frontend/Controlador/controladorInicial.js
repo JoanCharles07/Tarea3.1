@@ -37,3 +37,33 @@ export function comprobarProductos() {
     });
 }
 
+/**
+ * Esta función comprobará si tenemos en el sessionStorage lo productos, si no los tenemos hará una llamada a la
+ * base de datos para recuperarlos, esto será asincrono por lo que usaremos async await para esperar la respuesta
+ * de la BBDD antes de continuar.
+ * 
+ */
+export function comprobarUsuario() {
+    return new Promise(async(resolve, reject) => {
+        //Comprobamos si no existe los productos para que siempre esten en nuestra sesión y podamos usarlo correctamente.
+        
+        try{
+            if(sessionStorage.getItem("usuario")){
+                //Llamamos a la base de datos y esperamos a que termine.
+                
+                resolve("Hay usuario");
+            }else{  
+                
+                resolve("No hay usuario");
+            }  
+        }catch(e){
+            console.log(e);
+            reject(e);
+        }
+         
+
+    });
+}
+
+
+
