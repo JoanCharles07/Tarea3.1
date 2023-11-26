@@ -52,7 +52,10 @@ function imprimirCabezera() {
             `;
             document.getElementById("header").innerHTML=header;
             document.getElementById("nav").innerHTML=nav;
-            resolve("FIN");
+
+            //Una vez imprimido damos funcionalidad visual.
+            
+            resolve();
             //Tras esto debemos añadir funcionalidad a las cosas
         } catch (error) {
             reject(error);
@@ -60,28 +63,32 @@ function imprimirCabezera() {
     });
 }
 
-function imprimirCabezera2() {
-    return new Promise((resolve, reject) => {
-        try {
-            let respuesta = "Yo segundo";
 
-            resolve(respuesta);
-        } catch (error) {
-            reject(error);
-        }
-    });
+function mostrarUsuario() {
+    const nombreUsuario=JSON.parse(atob(sessionStorage.getItem("usuario")));
+    document.getElementById("spanBienvenida").textContent=`Hola ${nombreUsuario[0] }`;
 }
 
-export function imprimirCabezera3() {
-    return new Promise((resolve, reject) => {
-        try {
-
-            let respuesta = "Yo tercero";
-            resolve(respuesta);
-        } catch (error) {
-            reject(error);
+function acciones(){
+    const rol=JSON.parse(atob(sessionStorage.getItem("usuario")));
+    const acciones = ["Perfil", "Carrito", "Pedidos", "Productos", "Lista Productos", "Lista Usuarios", "Lista Roles", "Lista Noticias", "Lista Permisos"];
+    const listaOpciones = document.querySelector("#lista");
+    for (let i = 0; i < acciones.length; i++) {
+        let opcion = document.createElement("li");
+        opcion.className = "listaIconos";
+        opcion.textContent = acciones[i];
+        if (rol[1] == 1 && i <= 2) {
+            listaOpciones.appendChild(opcion);
         }
-    });
-}
+        else if (rol[1]==2 && i <= 4) {
+            listaOpciones.appendChild(opcion);
+        } else if (rol[1]== 3) {
+            listaOpciones.appendChild(opcion);
+        } else {
+            break;
+            //borrar cosas porque se ha alterado
+        }
+    }
 
-export{imprimirCabezera};
+}
+export{imprimirCabezera,mostrarUsuario,acciones};

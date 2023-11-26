@@ -9,8 +9,8 @@
 
 
 //Importaciones necesarias para el funcionamiento de controlador.js
-import { imprimirCabezera } from "../Vistas/plantillaGeneral.js";
-import { comprobarProductos,comprobarUsuario } from "./controladorInicial.js";
+import { imprimirCabezera,mostrarUsuario,acciones } from "../Vistas/plantillaGeneral.js";
+import { comprobarProductos } from "./controladorInicial.js";
 import { passIguales, recepcionDeDatosUsuario } from "./controladorUsuario.js";
 import { imprimirIgualdadPass, imprimirTodosResultados,imprimirProductos } from "../Vistas/plantillasEspecificas.js";
 
@@ -25,13 +25,18 @@ function requerimientosComunes() {
 
       const Promesa1 = imprimirCabezera();
       const Promesa2 = comprobarProductos();
-      const Promesa3 = comprobarUsuario();
-      Promise.all([Promesa1, Promesa2,Promesa3]).then(respuestas => {
+     
+      Promise.all([Promesa1, Promesa2]).then(respuestas => {
 
-        for (let respuesta of respuestas) {
-          console.log(respuesta);
-        }
-        resolve();
+           if(sessionStorage.getItem("usuario")){
+                //pondremos lo siguiente.
+            
+                mostrarUsuario();
+                acciones();
+                comprobarCarrito();
+                redireccionesConectado();
+            } 
+            resolve();
 
       })
     } catch (error) {
@@ -51,7 +56,7 @@ function requerimientosComunes() {
 async function interaccionesControlador() {
   requerimientosComunes()
     .then(() => {
-
+      console.log("Entro otro bloque");
       if (window.location.pathname.includes("tienda.html")) {
 
         imprimirProductos();

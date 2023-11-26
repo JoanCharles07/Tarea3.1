@@ -57,20 +57,11 @@ header {
 }
 .bienvenida{
     display: flex;
+    cursor: pointer;
     justify-content: center;
     background-color: var(--color-fondo);
     color: var(--color-texto);
     border: 2px solid var(--color-texto);
-    padding: 5px;
-    width: 100%;
-}
-.bienvenidaLog{
-    display: flex;
-    justify-content: end;
-    font-size: 16px;
-    font-weight:bolder ;
-    background-color: var(--color-fondo);
-    color: var(--color-texto);
     padding: 5px;
     width: 100%;
 }
@@ -87,13 +78,17 @@ header {
 .iconosHeader{
     height: 30px;
     width: 30px;
+    cursor: pointer;
 }
 #logo{
+    cursor: pointer;
     height: 50px;
     width: 50px;
 }
+
+
 #lista, #lista2{
-    
+    cursor: pointer;
     display: block;
     visibility: hidden;
     opacity: 0;
@@ -253,3 +248,6 @@ table {
     justify-content: center;
     align-items: center;
 }
+
+
+
