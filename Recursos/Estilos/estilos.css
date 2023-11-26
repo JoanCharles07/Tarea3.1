@@ -20,6 +20,15 @@ body {
     background-repeat: repeat;
     background-size: 100vw 100vh;
 }
+a{
+    text-decoration: none;
+    color: var(--color-texto);
+    transition: all 0.65s ease;
+}
+a:hover{
+    
+    color: var(--color-texto-hover);
+}
 
 /********************************************************************************************/
 /**************** HEADER********************************************************************/
@@ -103,8 +112,12 @@ header {
 }
 .listaIconos:hover{
     border: 1px solid black;
-    color:var(--color-texto-hover);
     background-color: var(--color-fondo-hover);
+    color:var(--color-texto-hover);
+}
+.listaIconos:hover a{
+    color:var(--color-texto-hover);
+    
 }
 
 #inicio:hover + ul, #lista:hover,#accesibilidad:hover +ul, #lista2:hover{

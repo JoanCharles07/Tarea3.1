@@ -53,8 +53,8 @@ function imprimirCabezera() {
             document.getElementById("header").innerHTML=header;
             document.getElementById("nav").innerHTML=nav;
 
-            //Una vez imprimido damos funcionalidad visual.
-            
+            //Una vez imprimido dirección de imagenes.
+            redireccionesBasicas();
             resolve();
             //Tras esto debemos añadir funcionalidad a las cosas
         } catch (error) {
@@ -63,32 +63,81 @@ function imprimirCabezera() {
     });
 }
 
+/**
+ * Esta función dara direccionalidad a nuestras imagenes según la vista donde este, no afecta estar conectado.
+ */
+function redireccionesBasicas(){
+    document.getElementById("logo").addEventListener("click",function(){
+        location.href="tienda.html";
+    });
+    document.getElementById("spanBienvenida").addEventListener("click",function(){
+        location.href="login.html";
+    });
+    document.getElementById("carrito").addEventListener("click",function(){
+        location.href="carrito.html";
+    });
+    document.getElementById("inicio").addEventListener("click",function(){
+        location.href="login.html";
+    });
+    document.getElementById("lupa").addEventListener("click",function(){
+        if(!window.location.pathname.includes("tienda.html")){
+            const palabraBuscador = document.getElementById("buscador").value;
+            sessionStorage.setItem("busqueda",palabraBuscador);
+            location.href="tienda.html";
+        }
+    });
+}
 
+/**
+ * Esta función dará direccionalidad a nuestras imagenes pero solo en caso de que estemos conectados
+ */
+function redireccionesConectado(){
+    
+    document.getElementById("spanBienvenida").addEventListener("click",function(){
+        location.href="perfil.html";
+    });
+    document.getElementById("inicio").addEventListener("click",function(){
+        location.href="perfil.html";
+    });
+    
+}
+/**
+ * Esta funcón saludará al usuario con un Hola y su nombre de usuario
+ */
 function mostrarUsuario() {
     const nombreUsuario=JSON.parse(atob(sessionStorage.getItem("usuario")));
     document.getElementById("spanBienvenida").textContent=`Hola ${nombreUsuario[0] }`;
 }
 
+/**
+ * Esta función imprimira las opciones según el rol que tengamos.
+ * Usando los dos arrays acciones y direcciones insertará en nuestra vista la correspondiente acción con su href teniendo
+ * en cuenta el rol.
+ */
 function acciones(){
     const rol=JSON.parse(atob(sessionStorage.getItem("usuario")));
     const acciones = ["Perfil", "Carrito", "Pedidos", "Productos", "Lista Productos", "Lista Usuarios", "Lista Roles", "Lista Noticias", "Lista Permisos"];
+    const direcciones = ["Perfil.html", "Carrito.html", "Pedidos.html", "Productos.html", "ListaProductos.html",
+     "ListaUsuarios.html", "ListaRoles.html", "ListaNoticias.html", "ListaPermisos.html"];
     const listaOpciones = document.querySelector("#lista");
-    for (let i = 0; i < acciones.length; i++) {
-        let opcion = document.createElement("li");
-        opcion.className = "listaIconos";
-        opcion.textContent = acciones[i];
-        if (rol[1] == 1 && i <= 2) {
-            listaOpciones.appendChild(opcion);
-        }
-        else if (rol[1]==2 && i <= 4) {
-            listaOpciones.appendChild(opcion);
-        } else if (rol[1]== 3) {
-            listaOpciones.appendChild(opcion);
-        } else {
-            break;
-            //borrar cosas porque se ha alterado
-        }
+    let accionesPermitidas=0
+    let contador=0;
+    let lista="";
+    if (rol[1] == 1) {
+        accionesPermitidas=2
+    }
+    else if (rol[1]==2 ) {
+        accionesPermitidas=4
+    } else if (rol[1]== 3) {
+        accionesPermitidas=acciones.length-1;
+    }
+    while(contador <= accionesPermitidas){
+        lista=`<li class="listaIconos">
+               <a href="${direcciones[contador]}">${acciones[contador]} </a>
+                </li>`
+        listaOpciones.innerHTML+=lista;
+        contador ++;
     }
 
 }
-export{imprimirCabezera,mostrarUsuario,acciones};
+export{imprimirCabezera,mostrarUsuario,acciones,redireccionesConectado};

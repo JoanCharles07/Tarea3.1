@@ -43,5 +43,7 @@ export function comprobarCarrito(){
 
 }
 
+//enviar a opción de lupa
+
 
 

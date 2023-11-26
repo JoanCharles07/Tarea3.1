@@ -9,7 +9,7 @@
 
 
 //Importaciones necesarias para el funcionamiento de controlador.js
-import { imprimirCabezera,mostrarUsuario,acciones } from "../Vistas/plantillaGeneral.js";
+import { imprimirCabezera,mostrarUsuario,acciones,redireccionesConectado } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
 import { passIguales, recepcionDeDatosUsuario } from "./controladorUsuario.js";
 import { imprimirIgualdadPass, imprimirTodosResultados,imprimirProductos } from "../Vistas/plantillasEspecificas.js";
@@ -33,8 +33,8 @@ function requerimientosComunes() {
             
                 mostrarUsuario();
                 acciones();
-                comprobarCarrito();
-                redireccionesConectado();
+               // comprobarCarrito();
+               redireccionesConectado();
             } 
             resolve();
 
