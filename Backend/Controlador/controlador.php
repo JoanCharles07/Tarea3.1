@@ -32,12 +32,23 @@ if(isset($_POST)){
         RegexRespuesta($errores);
         //Hacemos otras comprobaciones
         otrasComprobaciones($errores);
-
-        if(empty($errores)){
-            //entramos base datos
+        //Si hay errores nno es necesario seguir y evitamos que entre a las funciones de la BBDD
+        if(empty((array) $errores)){
+            
+            $respuesta=registro($errores);
+            //Segunda Ronda de errores dentro de BBDD
+            if($respuesta){
+                $session->registrado=true;
+                echo json_encode($session);
+            }
+            else{
+                $session=$errores;
+                echo json_encode($session);
+            }
         }
         else{
             //El valor sesion que devolverremos lo convertimos en los errores
+            
             $session=$errores;
             echo json_encode($session);
         }

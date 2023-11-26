@@ -51,6 +51,7 @@ export function agregarUsuario(datosUsuario){
             .then(response => response.text())
             .then(data => {
                 const datos=JSON.parse(data);
+                console.log(datos);
                 return datos;
                 
         });

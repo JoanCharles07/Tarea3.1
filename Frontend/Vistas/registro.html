@@ -18,6 +18,7 @@
     <main id="main">
         
         <form id="formulario" action="" method="post" enctype="application/x-www-form-urlencoded">
+            <span id="errorBBDD"></span>
             <label for="usuario">Usuario</label>
             <input type="text" name="usuario" id="usuario" required minlength="4" maxlength="25" 
             pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
