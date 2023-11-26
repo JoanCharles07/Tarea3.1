@@ -10,6 +10,9 @@ include_once '../Modelo/funciones.php';
 include_once '../Modelo/funcionesBBDD.php';
 header('Content-Type: application/json');
 session_start();
+
+$errores=new stdClass;
+$session=new stdClass;
 /**En primer lugar comprobaremos si existe POST de existir entraremos en nuestro controlador
  * que según la propiedad llamada entrará en un if u otro.
  */
@@ -22,9 +25,22 @@ if(isset($_POST)){
         echo json_encode($respuesta);
     }
     else if($direccion->llamada=="registro"){
+        //Saneamos
         saneamientoArray($direccion->datosRegistro);
-        $respuesta="recuperarProductos();";
-        echo json_encode($respuesta);
+        //Comprobamos que no haya palabras no validas
+        
+        RegexRespuesta($errores);
+        //Hacemos otras comprobaciones
+        otrasComprobaciones($errores);
+
+        if(empty($errores)){
+            //entramos base datos
+        }
+        else{
+            //El valor sesion que devolverremos lo convertimos en los errores
+            $session=$errores;
+            echo json_encode($session);
+        }
     }
 }
 else{

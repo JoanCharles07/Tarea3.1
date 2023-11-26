@@ -54,7 +54,6 @@ function imprimirResultado(id, resultado) {
     let span = input.nextElementSibling;
     let texto = input.title;
     if (resultado) {
-      
         input.style.border = "3px solid red";
         span.textContent = texto;
     }

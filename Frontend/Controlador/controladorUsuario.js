@@ -18,15 +18,15 @@ export function recepcionDeDatosUsuario() {
             
             let datosUsuario = new FormData(document.getElementById("formulario"));
             import("../Modelo/comprobaciones.js").then((funciones) => {
-                const datos = funciones.comprobarDatosRegex(datosUsuario);
+                let datos = funciones.comprobarDatosRegex(datosUsuario);
                 console.log(datosUsuario.get("usuario") + "Hola");
                 if(datos!=null){
                     let control= Object.values(datos).filter(elemento => elemento == true);
                     if(control.length==0){
                        
-                        agregarUsuario(datosUsuario);
-                        
-                        resolve();
+                        let datosServidor=agregarUsuario(datosUsuario);
+                        //if si hay datos habra errores else si no hay datos se habrá completado el registro
+                        resolve(datosServidor);
                     }
                     else{
                         resolve(datos);
