@@ -118,7 +118,8 @@ function RegexBoolean($dato)
 */
 function RegexRespuesta(&$errores)
 {    
-  
+   $session=$errores;
+               
    foreach($_SESSION["datos"] as $name => $value){
       if (RegexBoolean($value)) {
          $errores->$name = true;

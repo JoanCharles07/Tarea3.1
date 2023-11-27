@@ -26,7 +26,7 @@ if(isset($_POST)){
     }
     else if($direccion->llamada=="Registro"){
         //Saneamos
-        saneamientoArray($direccion->datosRegistro);
+        saneamientoArray($direccion->datosIntroducidos);
        
          //Comprobamos que no haya palabras no validas
         RegexRespuesta($errores);
@@ -44,6 +44,7 @@ if(isset($_POST)){
                 echo json_encode($session);
             }
             else{
+                unset($_SESSION["datos"]);
                 $session=$errores;
                 echo json_encode($session);
             }
@@ -54,8 +55,28 @@ if(isset($_POST)){
             echo json_encode($session);
         }
     }else if($direccion->llamada=="Usuario"){
-        $session->datosUsuario=["Berenjenas",1];
-        echo json_encode($session);
+        
+        saneamientoArray($direccion->datosIntroducidos);
+         //Comprobamos que no haya palabras no validas
+        RegexRespuesta($errores);
+        if(empty((array) $errores)){
+            $respuesta=usuario($errores);
+            if($respuesta){
+                unset($_SESSION["datos"]);
+                $session->datosUsuario=[$_SESSION["datosUsuario"]["usuario"],$_SESSION["datosUsuario"]["rol"]];
+                echo json_encode($session);
+            }
+            else{
+                unset($_SESSION["datos"]);
+                $session=$errores;
+                echo json_encode($session);
+            }
+        }
+        else{
+            $session=$errores;
+            echo json_encode($session);
+        }
+        
 
     }
 }

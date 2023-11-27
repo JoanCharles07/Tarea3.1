@@ -177,25 +177,26 @@ function registro(&$errores)
             /**En caso de haber excepción será atrapada por el catch*/
             
             //Usarlo si es necesario.
-            $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
-            var_dump($_SESSION["ErrorDepuracion"]);
+           // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+            //($_SESSION["ErrorDepuracion"]);
         };
     }
     return $respuesta;
 }
 
-function usuario()
+function usuario(&$errores)
 {   
     $ret = false;
     //Por comodidad y ya que no son muchas variables usaremos una para usuario y otra para la contraseña
-    $usuario= $_SESSION["datos"][0]["usuario"];
-    $pass=$_SESSION["datos"][0]["pass"];
+    $usuario= $_SESSION["datos"]["usuario"];
+    $pass=$_SESSION["datos"]["pass"];
     //Sentencia sql para conseguir los datos del usuario que deseamos usar.
     $sql = "select * from usuario where nickname = :usuario and pass = :password ";
     try {
         //Conectamos la base de datos
         $ret = false;
         $pdo = conectar();
+        
         //Hacemos la sentencia preparada
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":usuario",$usuario,PDO::PARAM_STR);
@@ -205,34 +206,20 @@ function usuario()
             //Si es correcta insertamos datos
             if ($res != null) {
                 $ret = true;
+                
                 //Insertamos o cambios los datos de la sesión si todo es correcto
-                foreach ($res as $valor => $clave) {
-                    if($valor=="nickname"){
-                        $_SESSION["datos"][0]["usuario"]=$clave;
-                        $_SESSION["datos"][1][$valor]=$valor;
-                    }elseif($valor=="Id_Rol"){
-                        $_SESSION["datos"][0]["rol"]=$clave;
-                        $_SESSION["datos"][1][$valor]=$valor;
-                    }
-                    elseif($valor=="ID"){
-                        $_SESSION["datos"][0]["ID"]=$clave;
-                        $_SESSION["datos"][1][$valor]=$valor;
-                    }
-                    else{
-                        $_SESSION["datos"][0][$valor]=$clave;
-                        $_SESSION["datos"][1][$valor]=$valor;
-                    }
-                   
-                }
+                    $_SESSION["datosUsuario"]["id"] = $res["ID"];
+                    $_SESSION["datosUsuario"]["usuario"]= $res["nickname"];
+                    $_SESSION["datosUsuario"]["rol"]= $res["Id_Rol"];
+                
             }
             else{
-                $_SESSION["error"]["BBDD"] = "BBDD";
-                $_SESSION["errorDesc"]["BBDD"]="No se ha encontrado usuario correctamente";
+                $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
             }
             
         }else{
-            $_SESSION["error"]["BBDD"] = "BBDD";
-            $_SESSION["errorDesc"]["BBDD"]="Ha habido algún problema intenteló de nuevo";
+            
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
         }
 
        
@@ -241,10 +228,8 @@ function usuario()
     //Else por si hay algún error
     catch (PDOException $ex) {
         /**En caso de haber excepción será atrapada por el catch*/
-        
-        $_SESSION["error"]["BBDD"] = "BBDD";
-        $_SESSION["errorDesc"]["BBDD"]=$ex->getMessage();
-        $_SESSION["depuración"]["BBDD"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+        // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+        //($_SESSION["ErrorDepuracion"]);
     };
 
     return $ret;
