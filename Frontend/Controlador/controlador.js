@@ -1,8 +1,7 @@
 /**
  * @file Este script controlará las interacciones entre usuario y aplicación.
  * @description Este script controla la interaccion de datos tanto entre la vista y el modelo
- * como entre distintos modelos, haciendo este su punto de unión. Además cuenta con una función donde
- * se llama a todas las funciones comunes a todas ls vistas.
+ * como entre distintos controladores, haciendo este su punto de unión.
  * @author Juan Carlos Rodríguez Miranda.
  * @version 1.0.0
 */
@@ -27,7 +26,7 @@ function requerimientosComunes() {
       const Promesa2 = comprobarProductos();
      
       Promise.all([Promesa1, Promesa2]).then(respuestas => {
-
+            //Tras tener nuestra plantilla y los datos que necesitamos comprobamos si esta conectado el usuario
            if(sessionStorage.getItem("usuario")){
                 //pondremos lo siguiente.
             
@@ -57,12 +56,15 @@ async function interaccionesControlador() {
   requerimientosComunes()
     .then(() => {
       console.log("Entro otro bloque");
+      //
       if (window.location.pathname.includes("tienda.html")) {
 
         imprimirProductos();
+        //Implementación busqueda
 
       }
       else if (window.location.pathname.includes("registro.html")) {
+
         try {
           document.getElementById("pass").addEventListener("blur", async function () {
               let pass = await passIguales();
@@ -77,9 +79,16 @@ async function interaccionesControlador() {
           //para que conecte con las distintas funciones del modelo y de tener errores llamaremos a funciones de la Vista.
           document.getElementById("formulario").addEventListener("submit", async function (e) {
               e.preventDefault();
+              let usuario=false;
               let pass = await passIguales();
-              if(pass){
-                const objetoComprobaciones = await recepcionDeDatosUsuario();
+              if(usuario){
+                //Aviso de que ya esta con inicio de sesión que desconecte primero.
+                
+              }
+              else if(pass){
+                
+                const objetoComprobaciones = await recepcionDeDatosUsuario("Registro");
+                
                 if(objetoComprobaciones!=null){
                   imprimirTodosResultados(objetoComprobaciones);
                 }
@@ -91,6 +100,30 @@ async function interaccionesControlador() {
                 imprimirIgualdadPass(pass);
               }
              
+          });
+        }catch (error) {
+          //Por aquí veremos el error para depurar
+          console.log(error);
+        }
+
+
+      }
+      else if (window.location.pathname.includes("login.html")) {
+        try {
+          
+          
+          document.getElementById("formulario").addEventListener("submit", async function (e) {
+              e.preventDefault();
+              let usuario=false;
+              if(usuario){
+
+              }
+              else{
+                const objetoComprobaciones = await recepcionDeDatosUsuario("Usuario");
+                if(objetoComprobaciones!=null){
+                  imprimirTodosResultados(objetoComprobaciones);
+                }
+              }
           });
         }catch (error) {
           //Por aquí veremos el error para depurar

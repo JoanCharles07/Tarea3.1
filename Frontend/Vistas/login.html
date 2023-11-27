@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <script src="./plantillaGeneral.js" type="module"></script>
+    <script src="../Controlador/controlador.js" type="module"></script>
+    <link rel="stylesheet" href="../../Recursos/Estilos/estilos.css">
+    <link rel="stylesheet" href="../../Recursos/Estilos/FormEstandar.css">
+    <link rel="stylesheet" href="../../Recursos/Estilos/FormularioLogin.css">
+
+    
+</head>
+<body>
+    <header id="header"></header>
+    <nav id="nav"> </nav>
+    <main id="mainForm">
+        
+            <form id="formulario" action="" method="post" enctype="application/x-www-form-urlencoded">
+                <span id="errorBBDD"></span>
+                <label for="usuario">Usuario</label>
+                <input type="text" name="usuario" id="usuario" required minlength="4" maxlength="25"
+                pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
+                title="Usuario no válido">
+                <span id="errorU"></span>
+                <label for="pass">Contraseña</label>
+                <input type="password" name="pass" id="pass" required minlength="4" maxlength="25"
+                pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
+                title="Contraseña no válida">
+                <span id="errorP"></span>
+                <input class="botonSubmit" type="submit" value="Iniciar Sesión">
+                <hr>
+                <input type="button" class="botonSubmit" id="registro" value="Crear Cuenta">
+            </form>
+    </main>
+
+    
+</body>
+</html>
