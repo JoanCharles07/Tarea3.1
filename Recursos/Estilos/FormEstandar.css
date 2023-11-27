@@ -10,10 +10,9 @@
     border: 2px solid var(--color-texto); 
     border-radius: 20px;
     color:var(--color-texto);
-    padding: 15px;
+    font-size: 14px;
     text-align: center;
     transition: ease 0.50s;
-    margin: auto;
 }
 /*Al pasar con el hover haremos el mismo efecto que en el 
 navegador*/

@@ -36,6 +36,7 @@ if(isset($_POST)){
         IDrol();
         //Si hay errores nno es necesario seguir y evitamos que entre a las funciones de la BBDD
         if(empty((array) $errores)){
+            $_SESSION["datos"]["pass"]=encriptarPalabra($_SESSION["datos"]["pass"]);
             $respuesta=registro($errores);
             //Segunda Ronda de errores dentro de BBDD
             if($respuesta){
@@ -60,6 +61,7 @@ if(isset($_POST)){
          //Comprobamos que no haya palabras no validas
         RegexRespuesta($errores);
         if(empty((array) $errores)){
+            $_SESSION["datos"]["pass"]=encriptarPalabra($_SESSION["datos"]["pass"]);
             $respuesta=usuario($errores);
             if($respuesta){
                 unset($_SESSION["datos"]);

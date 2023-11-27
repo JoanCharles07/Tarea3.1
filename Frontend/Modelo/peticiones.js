@@ -28,8 +28,10 @@ export function getProductos(){
     
 }
 /**
- * Esta función hará una petición a la base de datos para conseguir todos los productos de la tienda.
- * @returns Objeto con datos del usuario y efectividad del registro.
+ * Esta función hará una petición a la base de datos para registrar o iniciar sesión del usuario
+ * @param {datosUsuario} Object con datos proporcionador por el usuario.
+ * @param {direccion} String cadena de texto que indica si se ha producido desde el registro o desde el login.
+ * @returns Objeto con datos del usuario o errores producidos en la BBDD
  */
 export function usuario(datosUsuario,direccion){
     return new Promise((resolve, reject) => {
@@ -53,7 +55,6 @@ export function usuario(datosUsuario,direccion){
             .then(response => response.text())
             .then(data => {
                 const datos=JSON.parse(data);
-                console.log(datos);
                 resolve(datos);
                 
         });

@@ -5,10 +5,67 @@
  * @version 1.0.0
 */
 
+/**
+ * Esta función nos llevará a detalle producto del producto seleccionado.
+ * 
+ * @see imprimirProductos
+ */
+function paginaProducto(clase) {
+    const containerProductos = document.getElementsByClassName(clase);
+  
+    for (let item of containerProductos) {
+      item.addEventListener('click', function (e) {
+        
+        sessionStorage.setItem("productoSeleccionado", item.id);
+        location.href = "detalleProducto.html";
+      })
+    }
+  }
+
+  /**
+ * Esta función nos llevará a detalle producto del producto seleccionado.
+ * 
+ * @see imprimirProductos
+ */
+export function mostrarResultadoBusqueda(resultado) {
+    todosDisplay(false);
+    for(let id of resultado){
+        document.getElementById(id).style.display = "flex";
+    }
+  }
+
+ export function mostrarResultadoAside(resultado,contador) {
+    if(contador==0){
+        todosDisplay(true);
+    }
+    else{
+        todosDisplay(false);
+        for(let id of resultado){
+            document.getElementById(id).style.display = "flex";
+        }
+    }
+    
+    
+  }
+function todosDisplay(boolean) {
+    let producto = document.getElementsByClassName("producto");
+    for (let i = 0; i < producto.length; i++) {
+      if (!boolean) {
+        producto[i].style.display = "none";
+      }
+      else {
+        producto[i].style.display = "flex";
+      }
+  
+    }
+  }
+
 
 /**
  * Esta función imprime los productos que tenemos en nuestra página principal tienda.html.
  * Mediante la sessionStorage consigue imprimir todos los productos con innerHTML.
+ * 
+ * 
  */
 export function imprimirProductos() {
     const productos = JSON.parse(sessionStorage.getItem("productos"));
@@ -17,7 +74,7 @@ export function imprimirProductos() {
 
     if (productos != null) {
         for (const producto of productos) {
-            texto += `<div class="producto">
+            texto += `<div class="producto" id=${producto["id"]}>
             <img src="data:image/webp;base64,${producto["imagen"]}" class="productos"></img>
             <p>${producto["Nombre_Producto"]} €/kilo</p>
             <p>${producto["precio"]} €/kilo</p>
@@ -26,6 +83,9 @@ export function imprimirProductos() {
         }
     }
     seccion.innerHTML = texto;
+
+    //Damos funcionalidad a los productos
+    paginaProducto("producto");
 
 }
 /**

@@ -183,7 +183,12 @@ function registro(&$errores)
     }
     return $respuesta;
 }
-
+/**
+ * Esta función confirmara que el usuario con la contraseña proporcionada existe en la BBDD.
+ * 
+ * @author Juan Carlos Rodríguez Miranda
+ * @version 1.0.0
+ */
 function usuario(&$errores)
 {   
     $ret = false;

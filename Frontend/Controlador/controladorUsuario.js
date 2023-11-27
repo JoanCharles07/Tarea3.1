@@ -1,6 +1,6 @@
 /**
- * @file Este script se encargará de las funciones relacionadas con usuarios
- * @description Este script realizará la funciones como pueden ser funciones de login o registros de usuarios.
+ * @file Este script se encargará de controlar lo relacionado con el usuario
+ * @description Este script conectará a funciones de la BBDD y comprobaciones de los inputs.
  * @author Juan Carlos Rodríguez Miranda.
  * @version 1.0.0
 */
@@ -10,7 +10,7 @@ import { usuario } from "../Modelo/peticiones.js";
  * Esta función recibe los datos del Usuario y devolverá un array con los resultados.
  * devolverá una promesa que entregará el array y así seguir con el código.
  * 
- * returns promesa con los datos JSON recibidos por comprobarDatosRegex.
+ * @returns promesa con los datos JSON recibidos por comprobarDatosRegex.
  */
 export function recepcionDeDatosUsuario(direccion) {
     return new Promise((resolve, reject) => {
@@ -29,7 +29,6 @@ export function recepcionDeDatosUsuario(direccion) {
                             //codificar datos antes de meterlos
                             sessionStorage.setItem("usuario",btoa(JSON.stringify(datosServidor.datosUsuario)));
                             let prueba= sessionStorage.getItem("usuario");
-                            console.log( atob(prueba));
                             resolve();
                         }else{
                             resolve(datosServidor);

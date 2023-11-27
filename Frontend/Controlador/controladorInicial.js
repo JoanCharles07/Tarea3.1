@@ -29,7 +29,7 @@ export function comprobarProductos() {
                 resolve();
             }  
         }catch(e){
-            console.log(e);
+            
             reject(e);
         }
          

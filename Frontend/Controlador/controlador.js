@@ -8,10 +8,11 @@
 
 
 //Importaciones necesarias para el funcionamiento de controlador.js
-import { imprimirCabezera,mostrarUsuario,acciones,redireccionesConectado,imprimirConectadoRegistro,imprimirConectadoLogin } from "../Vistas/plantillaGeneral.js";
+import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
 import { passIguales, recepcionDeDatosUsuario } from "./controladorUsuario.js";
-import { imprimirIgualdadPass, imprimirTodosResultados,imprimirProductos } from "../Vistas/plantillasEspecificas.js";
+import { imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside } from "../Vistas/plantillasEspecificas.js";
+import { datosLupa, datosFiltroLateral } from "./controladorProductos.js";
 
 /**
  * Esta función nos aseguraremos con la promesa que se ejecute antes que cualquier otra cosa.
@@ -24,18 +25,18 @@ function requerimientosComunes() {
 
       const Promesa1 = imprimirCabezera();
       const Promesa2 = comprobarProductos();
-     
+
       Promise.all([Promesa1, Promesa2]).then(respuestas => {
-            //Tras tener nuestra plantilla y los datos que necesitamos comprobamos si esta conectado el usuario
-           if(sessionStorage.getItem("usuario")){
-                //pondremos lo siguiente.
-            
-                mostrarUsuario();
-                acciones();
-               // comprobarCarrito();
-               redireccionesConectado();
-            } 
-            resolve();
+        //Tras tener nuestra plantilla y los datos que necesitamos comprobamos si esta conectado el usuario
+        if (sessionStorage.getItem("usuario")) {
+          //pondremos lo siguiente.
+
+          mostrarUsuario();
+          acciones();
+          // comprobarCarrito();
+          redireccionesConectado();
+        }
+        resolve();
 
       })
     } catch (error) {
@@ -55,50 +56,72 @@ function requerimientosComunes() {
 async function interaccionesControlador() {
   requerimientosComunes()
     .then(() => {
-      console.log("Entro otro bloque");
-      //
-      if (window.location.pathname.includes("tienda.html")) {
 
+      if (window.location.pathname.includes("tienda.html")) {
+        //Implementación busqueda dentro de tienda.html
+        //comprobar si hay una busqueda. Y usamos controlador productos para enviar las distintas respuestas
         imprimirProductos();
-        //Implementación busqueda
+        //Si existe es que alguien ha iniciado una busqueda
+        //NO PODEMOS INICIAR BUSQUEDA SI ALGUIEN HA BORRADO PRODUCTOS
+
+        if (sessionStorage.getItem("busqueda")) {
+          let palabraBuscador = sessionStorage.getItem("busqueda");
+          sessionStorage.removeItem("busqueda");
+          datosLupa(palabraBuscador).then(respuesta => {
+            mostrarResultadoBusqueda(respuesta);
+          });
+
+
+        }
+        document.getElementById("lupa").addEventListener("click", async function () {
+          let palabraBuscador = document.getElementById("buscador").value
+          console.log(palabraBuscador);
+          const resultado = await datosLupa(palabraBuscador);
+          mostrarResultadoBusqueda(resultado);
+        });
+
+        document.querySelector("aside").addEventListener("click", async function () {
+          const resultado = await datosFiltroLateral();
+          mostrarResultadoAside(resultado.array, resultado.contador);
+        });
 
       }
       else if (window.location.pathname.includes("registro.html")) {
 
         try {
           document.getElementById("pass").addEventListener("blur", async function () {
-              let pass = await passIguales();
-              imprimirIgualdadPass(pass);
+            let pass = await passIguales();
+            imprimirIgualdadPass(pass);
           });
 
           document.getElementById("pass2").addEventListener("blur", async function () {
-              let pass = await passIguales();
-              imprimirIgualdadPass(pass);
+            let pass = await passIguales();
+            imprimirIgualdadPass(pass);
           });
           //Si hay un submit  comprobaremos las pass primero y luego el resto de inputs enviamos al controladorUsuario
           //para que conecte con las distintas funciones del modelo y de tener errores llamaremos a funciones de la Vista.
           document.getElementById("formulario").addEventListener("submit", async function (e) {
-              e.preventDefault();
-              let usuario=false;
-              let pass = await passIguales();
-              if(sessionStorage.getItem("usuario")){
-                  imprimirConectadoRegistro();
+            e.preventDefault();
+            let usuario = false;
+            let pass = await passIguales();
+            if (sessionStorage.getItem("usuario")) {
+              imprimirConectadoRegistro();
+            }
+            else if (pass) {
+              const objetoComprobaciones = await recepcionDeDatosUsuario("Registro");
+              if (objetoComprobaciones != null) {
+                imprimirTodosResultados(objetoComprobaciones);
               }
-              else if(pass){
-                const objetoComprobaciones = await recepcionDeDatosUsuario("Registro");
-                if(objetoComprobaciones!=null){
-                  imprimirTodosResultados(objetoComprobaciones);
-                }
-                else{
-                  location.href="./tienda.html";
-                }
+              else {
+                location.href = "./tienda.html";
               }
-              else{
-                imprimirIgualdadPass(pass);
-              }
-             
+            }
+            else {
+              imprimirIgualdadPass(pass);
+            }
+
           });
-        }catch (error) {
+        } catch (error) {
           //Por aquí veremos el error para depurar
           console.log(error);
         }
@@ -107,24 +130,24 @@ async function interaccionesControlador() {
       }
       else if (window.location.pathname.includes("login.html")) {
         try {
-          
-          
+
+
           document.getElementById("formulario").addEventListener("submit", async function (e) {
-              e.preventDefault();
-              if(sessionStorage.getItem("usuario")){
-                imprimirConectadoLogin();
+            e.preventDefault();
+            if (sessionStorage.getItem("usuario")) {
+              imprimirConectadoLogin();
+            }
+            else {
+              const objetoComprobaciones = await recepcionDeDatosUsuario("Usuario");
+              if (objetoComprobaciones != null) {
+                imprimirTodosResultados(objetoComprobaciones);
               }
-              else{
-                const objetoComprobaciones = await recepcionDeDatosUsuario("Usuario");
-                if(objetoComprobaciones!=null){
-                  imprimirTodosResultados(objetoComprobaciones);
-                }
-                else{
-                  location.href="./tienda.html";
-                }
+              else {
+                location.href = "./tienda.html";
               }
+            }
           });
-        }catch (error) {
+        } catch (error) {
           //Por aquí veremos el error para depurar
           //console.log(error);
         }
