@@ -183,3 +183,71 @@ function registro(&$errores)
     }
     return $respuesta;
 }
+
+function usuario()
+{   
+    $ret = false;
+    //Por comodidad y ya que no son muchas variables usaremos una para usuario y otra para la contraseña
+    $usuario= $_SESSION["datos"][0]["usuario"];
+    $pass=$_SESSION["datos"][0]["pass"];
+    //Sentencia sql para conseguir los datos del usuario que deseamos usar.
+    $sql = "select * from usuario where nickname = :usuario and pass = :password ";
+    try {
+        //Conectamos la base de datos
+        $ret = false;
+        $pdo = conectar();
+        //Hacemos la sentencia preparada
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":usuario",$usuario,PDO::PARAM_STR);
+        $stmt->bindParam(":password",$pass,PDO::PARAM_STR);
+        if ($stmt->execute()) {
+            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+            //Si es correcta insertamos datos
+            if ($res != null) {
+                $ret = true;
+                //Insertamos o cambios los datos de la sesión si todo es correcto
+                foreach ($res as $valor => $clave) {
+                    if($valor=="nickname"){
+                        $_SESSION["datos"][0]["usuario"]=$clave;
+                        $_SESSION["datos"][1][$valor]=$valor;
+                    }elseif($valor=="Id_Rol"){
+                        $_SESSION["datos"][0]["rol"]=$clave;
+                        $_SESSION["datos"][1][$valor]=$valor;
+                    }
+                    elseif($valor=="ID"){
+                        $_SESSION["datos"][0]["ID"]=$clave;
+                        $_SESSION["datos"][1][$valor]=$valor;
+                    }
+                    else{
+                        $_SESSION["datos"][0][$valor]=$clave;
+                        $_SESSION["datos"][1][$valor]=$valor;
+                    }
+                   
+                }
+            }
+            else{
+                $_SESSION["error"]["BBDD"] = "BBDD";
+                $_SESSION["errorDesc"]["BBDD"]="No se ha encontrado usuario correctamente";
+            }
+            
+        }else{
+            $_SESSION["error"]["BBDD"] = "BBDD";
+            $_SESSION["errorDesc"]["BBDD"]="Ha habido algún problema intenteló de nuevo";
+        }
+
+       
+    }
+
+    //Else por si hay algún error
+    catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        
+        $_SESSION["error"]["BBDD"] = "BBDD";
+        $_SESSION["errorDesc"]["BBDD"]=$ex->getMessage();
+        $_SESSION["depuración"]["BBDD"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+    };
+
+    return $ret;
+    /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
+        que coinciden con los de la sesión iniciada*/
+}

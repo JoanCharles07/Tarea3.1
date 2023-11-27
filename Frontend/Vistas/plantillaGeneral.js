@@ -140,4 +140,11 @@ function acciones(){
     }
 
 }
-export{imprimirCabezera,mostrarUsuario,acciones,redireccionesConectado};
+function imprimirConectadoRegistro(){
+    alert("No puede registrarse mientras siga conectado, cierre sesión si quiere realizar otro registro");
+}
+
+function imprimirConectadoLogin(){
+    alert("No puede iniciar sesión mientras siga conectado, cierre sesión si quiere realizar otro inicio de sesión");
+}
+export{imprimirCabezera,mostrarUsuario,acciones,redireccionesConectado,imprimirConectadoRegistro,imprimirConectadoLogin};

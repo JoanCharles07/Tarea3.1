@@ -23,9 +23,7 @@ export function recepcionDeDatosUsuario(direccion) {
                     let control= Object.values(datos).filter(elemento => elemento == true);
                     if(control.length==0){
                        //Nos aseguramos de tener los datos antes de continuar
-                       
                         let datosServidor= await usuario(datosRegistro,direccion);
-                        
                         //En caso de tener la propiedad datosUuario quiere decir que ha sido correcto
                         if(datosServidor.datosUsuario){
                             //codificar datos antes de meterlos

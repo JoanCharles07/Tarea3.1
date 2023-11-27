@@ -38,9 +38,12 @@ export function imprimirTodosResultados(objetoComprobaciones) {
     for (let clave in objetoComprobaciones) {
 
         if(clave == "errorBBDD"){
-            let span=document.getElementById(clave);
-            span.style.border = "3px solid red";
-            span.innerHTML+= `<p>${objetoComprobaciones[clave]}</p> <br>`;
+            
+            for (let errorBBDD of objetoComprobaciones[clave]){
+                let span=document.getElementById(clave);
+                span.style.border = "3px solid red";
+                span.innerHTML+= `<p>${errorBBDD}</p> </br>`;
+            }
         }else{
              //Esto se envia a imprimir resultado y borde rojo si no es correcto
             imprimirResultado(clave, objetoComprobaciones[clave]);

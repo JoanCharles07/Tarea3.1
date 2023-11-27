@@ -46,3 +46,6 @@ span{
     color: black;
     font-size: 14px;
 }
+span p{
+    padding: 5px;
+}

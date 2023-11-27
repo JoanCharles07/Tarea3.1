@@ -8,7 +8,7 @@
 
 
 //Importaciones necesarias para el funcionamiento de controlador.js
-import { imprimirCabezera,mostrarUsuario,acciones,redireccionesConectado } from "../Vistas/plantillaGeneral.js";
+import { imprimirCabezera,mostrarUsuario,acciones,redireccionesConectado,imprimirConectadoRegistro,imprimirConectadoLogin } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
 import { passIguales, recepcionDeDatosUsuario } from "./controladorUsuario.js";
 import { imprimirIgualdadPass, imprimirTodosResultados,imprimirProductos } from "../Vistas/plantillasEspecificas.js";
@@ -81,14 +81,11 @@ async function interaccionesControlador() {
               e.preventDefault();
               let usuario=false;
               let pass = await passIguales();
-              if(usuario){
-                //Aviso de que ya esta con inicio de sesión que desconecte primero.
-                
+              if(sessionStorage.getItem("usuario")){
+                  imprimirConectadoRegistro();
               }
               else if(pass){
-                
                 const objetoComprobaciones = await recepcionDeDatosUsuario("Registro");
-                
                 if(objetoComprobaciones!=null){
                   imprimirTodosResultados(objetoComprobaciones);
                 }
@@ -114,14 +111,16 @@ async function interaccionesControlador() {
           
           document.getElementById("formulario").addEventListener("submit", async function (e) {
               e.preventDefault();
-              let usuario=false;
-              if(usuario){
-
+              if(sessionStorage.getItem("usuario")){
+                imprimirConectadoLogin();
               }
               else{
                 const objetoComprobaciones = await recepcionDeDatosUsuario("Usuario");
                 if(objetoComprobaciones!=null){
                   imprimirTodosResultados(objetoComprobaciones);
+                }
+                else{
+                  location.href="./tienda.html";
                 }
               }
           });
