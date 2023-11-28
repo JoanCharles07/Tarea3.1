@@ -1,7 +1,7 @@
 
 /**
  * Esta función  recibe una cadena y la compara con los nombres de todos los productos que tengamos
- * 
+ * @see palabraPreparada
  * @returns {Array} resultado con los ids que contengan la palabra que se busca por el buscador.
  */
 export function resultadoBusqueda(palabraBuscador) {
@@ -19,6 +19,12 @@ export function resultadoBusqueda(palabraBuscador) {
 
     return resultado;
 }
+/**
+ * Esta función  recibe una cadena y la transforma en minúscula y sin acentos por si hay fallos de ortografía poder
+ * encontrar lo que se busca.
+ * @param {String} texto cadena sin modificar
+ * @returns {String} cadena modificada en minúscula y sin acentos.
+ */
 
 function palabraPreparada(texto) {
     let palabra = "";
@@ -30,7 +36,15 @@ function palabraPreparada(texto) {
 
     return palabra;
 }
-
+/**
+ * Esta función contiene distintos arrays con grupos de frutas y verduras y un contador para saber si han sido clicados todos o ninguno.
+ * se llamará a la función filtroComparación donde se añadirán los productos que esten en la tienda que cumplan con los que están dentro del
+ * array de fruta en concreto.
+ * @example
+ * Si clicamos en tropicales se enviará al método filtroComparacion donde mirará en el array productos cuales coinciden.
+ * @see filtroComparacion
+ * @returns {Array} resultado con los ids que contengan cada uno de los arrays enviados a filtroComparacion.
+ */
 export function filtroLateral() {
     const tropicales = ["Mango", "Piña", "Aguacate", "Papaya", "Chirimoya", "Coco", "Granada", "Guayaba", "Níspero", "Litchi", "Melón", "Sandía"];
     const seco = ["Almendra", "Pistacho", "Nuez", "Nueces", "Anacardo", "Avellana", "Castaña"]
@@ -62,7 +76,7 @@ export function filtroLateral() {
     }
 
     if (document.getElementById("secos").checked) {
-        arrayResultado=arrayResultado.concat(filtroComparacion(secos));
+        arrayResultado=arrayResultado.concat(filtroComparacion(seco));
         contador++;
     }
 
@@ -78,6 +92,12 @@ export function filtroLateral() {
     return resultado;
 }
 
+/**
+ * Esta función  recibe un array con nombres de productos y se comparán con los que están dentro de sessionStorage para devolverlos con un
+ * array
+ * @see palabraPreparada
+ * @returns {Array} resultado con los ids que contengan la palabra que se busca por el buscador.
+ */
 function filtroComparacion(tipo) {
     let datos = JSON.parse(sessionStorage.getItem("productos"));
     let palabraTipo = "";

@@ -47,6 +47,11 @@ export function mostrarResultadoBusqueda(resultado) {
     
     
   }
+
+  /**
+   * Esta función activará o desactivará todos los productos según el valor que tenga el parametro boolean.
+   * @param {Boolean} boolean 
+   */
 function todosDisplay(boolean) {
     let producto = document.getElementsByClassName("producto");
     for (let i = 0; i < producto.length; i++) {
@@ -64,7 +69,8 @@ function todosDisplay(boolean) {
 /**
  * Esta función imprime los productos que tenemos en nuestra página principal tienda.html.
  * Mediante la sessionStorage consigue imprimir todos los productos con innerHTML.
- * 
+ * Además  daremos funcionalidad a los divs llamando a la función paginaProducto.
+ * @see paginaProducto
  * 
  */
 export function imprimirProductos() {
@@ -133,7 +139,10 @@ function imprimirResultado(id, resultado) {
         span.textContent = "";
     }
 }
-
+/**
+ * Esta función dará estilos a nuestro input pass si no coinciden además de avisar al usuario del error.
+ * @param {Boolean} resultado  
+ */
 export function imprimirIgualdadPass(resultado) {
     
     if (resultado) {
@@ -148,4 +157,17 @@ export function imprimirIgualdadPass(resultado) {
         document.getElementById("pass2").style.border = "3px solid rgb(234,98,98)";
         document.getElementById("errorP2").innerHTML = "No coinciden contraseñas";
     }
+}
+/**
+ * Función que alertará si se quiere registrar mientrás se esta conectado.
+ */
+export function imprimirConectadoRegistro(){
+    alert("No puede registrarse mientras siga conectado, cierre sesión si quiere realizar otro registro");
+}
+
+/**
+ * Función que alertará si se quiere logear de nuevo mientrás se esta conectado.
+ */
+export function imprimirConectadoLogin(){
+    alert("No puede iniciar sesión mientras siga conectado, cierre sesión si quiere realizar otro inicio de sesión");
 }

@@ -8,10 +8,10 @@
 
 
 //Importaciones necesarias para el funcionamiento de controlador.js
-import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillaGeneral.js";
+import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
 import { passIguales, recepcionDeDatosUsuario } from "./controladorUsuario.js";
-import { imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside } from "../Vistas/plantillasEspecificas.js";
+import { imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillasEspecificas.js";
 import { datosLupa, datosFiltroLateral } from "./controladorProductos.js";
 
 /**

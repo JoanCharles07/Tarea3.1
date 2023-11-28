@@ -8,6 +8,8 @@
 
 /**
  * Esta función imprimirá la cabezera que compartiran toda nuestra página, la cual es identica en todas las vistas.
+ * y llamará a la función redireccionesBasicas que dará funcionalidad a algunas de las zonas creadas
+ * @see redireccionesBasicas
  */
 function imprimirCabezera() {
 
@@ -64,7 +66,7 @@ function imprimirCabezera() {
 }
 
 /**
- * Esta función dara direccionalidad a nuestras imagenes según la vista donde este, no afecta estar conectado.
+ * Esta función dara direccionalidad a nuestras imagenes del header según la vista donde este, no afecta estar conectado.
  */
 function redireccionesBasicas(){
     document.getElementById("logo").addEventListener("click",function(){
@@ -89,7 +91,7 @@ function redireccionesBasicas(){
 }
 
 /**
- * Esta función dará direccionalidad a nuestras imagenes pero solo en caso de que estemos conectados
+ * Esta función dará direccionalidad a nuestras imagenes del header pero solo en caso de que estemos conectados
  */
 function redireccionesConectado(){
     
@@ -140,11 +142,6 @@ function acciones(){
     }
 
 }
-function imprimirConectadoRegistro(){
-    alert("No puede registrarse mientras siga conectado, cierre sesión si quiere realizar otro registro");
-}
 
-function imprimirConectadoLogin(){
-    alert("No puede iniciar sesión mientras siga conectado, cierre sesión si quiere realizar otro inicio de sesión");
-}
+
 export{imprimirCabezera,mostrarUsuario,acciones,redireccionesConectado,imprimirConectadoRegistro,imprimirConectadoLogin};
