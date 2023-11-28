@@ -5,6 +5,39 @@
  * @version 1.0.0
 */
 
+
+export function imprimirDetalleProducto(producto){
+        
+        const texto=`
+        <div id="imagen" class="imagenProducto">
+        <img src="data:image/webp;base64,${producto["imagen"]}" class ="producto">
+        </div>
+        <div id="detalles">
+                <h2 id="nombreProducto">${producto["nombre"]}</h2>
+                <div id="containerPrecio" class="flex">
+                    <div id="stock"></div>
+                    <p>Precio: <span id="precio">${producto["precio"]}</span> €/kilo</p>
+                </div>
+                <div id="containerCantidad" class="flex">
+                    <label name="cantidad">Cantidad: </label>
+                    <input type="number" name="cantidad" id="cantidad" class="inputCantidad">
+                    <p>Total: <span id="total"></span> €</p>
+                </div>
+                <input type="button" name="validar" id="validar" value="Comprar" class="botonesProducto">
+                
+            <div id="numeroComentarios" class="flex">
+            
+                <p>Comentarios: <span id="comentariosTotal">${producto["comentariosTotales"]}</span></p>
+            </div>
+
+        </div>
+        `;
+        //<img src="../../Recursos/Imagenes/${producto["valoracionTotal"]}estrellas.webp" id="valoracionTotal" alt="Valoracion">
+        document.getElementById("container_producto").innerHTML=texto;
+  
+     
+    
+}
 /**
  * Esta función nos llevará a detalle producto del producto seleccionado.
  * 
@@ -82,7 +115,7 @@ export function imprimirProductos() {
         for (const producto of productos) {
             texto += `<div class="producto" id=${producto["id"]}>
             <img src="data:image/webp;base64,${producto["imagen"]}" class="productos"></img>
-            <p>${producto["Nombre_Producto"]} €/kilo</p>
+            <p>${producto["nombre_producto"]} €/kilo</p>
             <p>${producto["precio"]} €/kilo</p>
             
             </div>`;

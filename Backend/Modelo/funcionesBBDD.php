@@ -32,12 +32,12 @@ function recuperarProductos()
                 for ($x = 0; $x < count($ret); $x++) {
                     $clase = new stdClass();
                     $clase->id = $ret[$x][0];
-                    $clase->Nombre_Producto = $ret[$x][1];
-                    $clase->Stock = $ret[$x][2];
+                    $clase->nombre_producto = $ret[$x][1];
+                    $clase->stock = $ret[$x][2];
                     $clase->precio = $ret[$x][3];
                     /**Leemos la imagen para que pueda verse correctamente en la aplicación web*/
                     $clase->imagen = base64_encode($ret[$x][4]);
-                    $clase->valoacion_total = $ret[$x][5];
+                    $clase->valoracion_total = $ret[$x][5];
                     $clase->comentarios_totales = $ret[$x][6];
                     $clase->descuento = $ret[$x][7];
                     //He decidido no introducir el id del vendedor por privacidad.

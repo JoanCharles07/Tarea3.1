@@ -6,12 +6,14 @@
 */
 
 import { resultadoBusqueda, filtroLateral } from "../Modelo/funcionesBusqueda.js";
+import { datosProducto} from "../Modelo/funcionesProducto.js";
 import { getProductos } from "../Modelo/peticiones.js";
 
 
-export function recepcionDeDatosProductos() {
-    return new Promise((resolve, reject) => {
-
+export function recepcionDeDatosProducto() {
+    return new Promise(async(resolve, reject) => {
+        const resultado=await datosProducto();
+        resolve(resultado);
     })
 
 

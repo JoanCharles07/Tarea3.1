@@ -144,4 +144,4 @@ function acciones(){
 }
 
 
-export{imprimirCabezera,mostrarUsuario,acciones,redireccionesConectado,imprimirConectadoRegistro,imprimirConectadoLogin};
+export{imprimirCabezera,mostrarUsuario,acciones,redireccionesConectado};

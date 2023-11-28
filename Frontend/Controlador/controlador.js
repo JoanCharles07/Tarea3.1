@@ -11,8 +11,8 @@
 import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
 import { passIguales, recepcionDeDatosUsuario } from "./controladorUsuario.js";
-import { imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillasEspecificas.js";
-import { datosLupa, datosFiltroLateral } from "./controladorProductos.js";
+import { imprimirDetalleProducto,imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillasEspecificas.js";
+import { datosLupa, datosFiltroLateral, recepcionDeDatosProducto } from "./controladorProductos.js";
 
 /**
  * Esta función nos aseguraremos con la promesa que se ejecute antes que cualquier otra cosa.
@@ -154,7 +154,20 @@ async function interaccionesControlador() {
 
 
       }
-      //comprobar que hay submit y si lo hay ver que recibimos y hacer todas las comparaciones.
+
+      else if(window.location.pathname.includes("detalleProducto.html")){
+        //Antes de continuar nos aseguramos que productoSeleccionado esta en nuestra sessionStorage.
+        if (sessionStorage.getItem("productoSeleccionado")) {
+              recepcionDeDatosProducto().then(resultado => {
+                  console.log(resultado);
+                  imprimirDetalleProducto(resultado);
+              });
+        }
+        else{
+            location.href="tienda.html";
+        }
+      }
+     
 
     })
 }

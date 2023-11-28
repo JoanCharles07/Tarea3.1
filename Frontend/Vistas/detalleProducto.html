@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Producto</title>
+
+    <script src="./plantillaGeneral.js" type="module"></script>
+    <script src="../Controlador/controlador.js" type="module"></script>
+    <link rel="stylesheet" href="../../Recursos/Estilos/estilos.css">
+    <link rel="stylesheet" href="../../Recursos/Estilos/detalleProductos.css">
+</head>
+
+<body>
+    <header id="header"></header>
+    <nav id="nav"> </nav>
+    <main id="main">
+        <div id="container_producto">
+            <div id="imagen" class="imagenProducto">
+
+            </div>
+            <div id="detalles">
+               
+                    <h2 id="nombreProducto"></h2>
+                    <div id="containerPrecio" class="flex">
+                        <div id="stock"></div>
+                        <p>Precio: <span id="precio"></span> €/kilo</p>
+                    </div>
+                    <div id="containerCantidad" class="flex">
+                        <label name="cantidad">Cantidad: </label>
+                        <input type="number" name="cantidad" id="cantidad" class="inputCantidad">
+                        <p>Total: <span id="total"></span> €</p>
+                    </div>
+                    <input type="button" name="validar" id="validar" value="Comprar" class="botonesProducto">
+                    
+                <div id="numeroComentarios" class="flex">
+                    <img id="valoracionTotal" alt="Valoracion">
+                    <p>Comentarios: <span id="comentariosTotal"></span></p>
+                </div>
+    
+            </div>
+            <h3 id="encabezadoOtrosProductos" class="todoAnchoGrid">Otros Productos</h3>
+            <div id="otrosProductos">
+                
+            </div>
+        </div>
+        
+        <hr class="todoAnchoGrid">
+    </main>
+    <section>
+        <div id="filtroValoracion" class="flexComentarios">
+            <h3>Filtrar por valoración</h3>
+            <div id="todas" class="estrellas">Reiniciar
+            </div>
+            <img src="../../Recursos/Imagenes/5estrellas.webp" id="5estrellas" alt="5 estrellas" class="estrellas">
+            <img src="../../Recursos/Imagenes/4estrellas.webp" id="4estrellas" alt="4 estrellas" class="estrellas">
+            <img src="../../Recursos/Imagenes/3estrellas.webp" id="3estrellas" alt="3 estrellas" class="estrellas">
+            <img src="../../Recursos/Imagenes/2estrellas.webp" id="2estrellas" alt="2 estrellas" class="estrellas">
+            <img src="../../Recursos/Imagenes/1estrellas.webp" id="1estrellas" alt="1 estrellas" class="estrellas">
+        </div>
+        <div id="zonaComentarios" class="flexComentarios">
+            <h3>Comentarios y Valoraciones</h3>
+            <div id="container_Comentarios">
+                <div class="comentario">
+                    <div id="parteSuperiorComentario" class="parteSuperiorComentario">
+                        <div class="zonanombre">
+                            <img src="../../Recursos/Imagenes/usuarioAnonimo.webp" alt="imagen de usuario estandar" id="imagenUsuario">
+                             <p id="nombreUsuario">Juan Carlos Rodríguez Miranda</p>
+                        </div>
+                        <img src="../../Recursos/Imagenes/5estrellas.webp" alt="valoración" class="5_Estrellas">
+                    </div>
+                    <p>07/11/2023</p>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi modi, error similique quidem reiciendis accusantium enim non fuga,
+                         repellat minus corporis officiis dolore adipisci quae odit mollitia voluptatibus laboriosam nisi!
+                         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi modi, error similique quidem reiciendis accusantium enim non fuga,
+                         repellat minus corporis officiis dolore adipisci quae odit mollitia voluptatibus laboriosam nisi!</p>
+                </div>
+                <div class="comentario">
+                    <div id="parteSuperiorComentario" class="parteSuperiorComentario">
+                        <div class="zonanombre">
+                            <img src="../../Recursos/Imagenes/usuarioAnonimo.webp" alt="imagen de usuario estandar" id="imagenUsuario">
+                            <p id="nombreUsuario">Juan Carlos Rodríguez Miranda</p>
+                        </div>
+                        
+                        <img src="../../Recursos/Imagenes/4estrellas.webp" alt="valoración" class="4_Estrellas">
+                    </div>
+                    <p>07/11/2023</p>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi modi, error similique quidem reiciendis accusantium enim non fuga,
+                         repellat minus corporis officiis dolore adipisci quae odit mollitia voluptatibus laboriosam nisi!
+                         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi modi, error similique quidem reiciendis accusantium enim non fuga,
+                         repellat minus corporis officiis dolore adipisci quae odit mollitia voluptatibus laboriosam nisi!</p>
+                </div>
+                
+
+            </div>
+            <h3>Deja tu comentario</h3>
+            <form action="" method="post" id="formEnvioComentario">
+                <div id="containerCantidadEstrellas">
+                    <label for="estrellasEscogidas">Escoja el número de estrellas</label>
+                    <input type="number" name="estrellasEscogidas" id="estrellasEscogidas" min="1" max="5">
+                </div>
+                <textarea name="" id="" cols="30" rows="5"></textarea>
+                <input type="submit" id="enviarComentario" class="botonesProducto" value="Comentar">
+            </form>
+            
+        </div>
+    </section>
+
+</body>
+
+</html>
