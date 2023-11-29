@@ -5,7 +5,27 @@
  * @version 1.0.0
 */
 
-
+export function imprimirImagenesAzar() {
+    const productos=JSON.parse(sessionStorage.getItem("productos"));
+    let contador = 0;
+    let elegidos = [];
+    //Para que no incluya el que ya tenemos elegido
+    elegidos.push(sessionStorage.getItem("productoSeleccionado"));
+    while(contador < 4){
+      let azar = Math.floor(Math.random() * (productos.length));
+      console.log(elegidos);
+      console.log(productos[azar].id)
+      if (!elegidos.includes(productos[azar].id)) {
+        elegidos.push(productos[azar]["id"]);
+        let img = `<img src="data:image/webp;base64,${productos[azar]["imagen"]}" class="otrasImagenes" id="${productos[azar]["id"]}"</img>`;
+        contador ++;
+        document.getElementById("otrosProductos").innerHTML+=img;
+        
+      }
+     
+    }
+    paginaProducto("otrasImagenes");
+  }
 export function imprimirDetalleProducto(producto){
         
         const texto=`
@@ -34,7 +54,8 @@ export function imprimirDetalleProducto(producto){
         `;
         //<img src="../../Recursos/Imagenes/${producto["valoracionTotal"]}estrellas.webp" id="valoracionTotal" alt="Valoracion">
         document.getElementById("container_producto").innerHTML=texto;
-  
+        
+        //dar funcionalidades visuales a detalle producto
      
     
 }

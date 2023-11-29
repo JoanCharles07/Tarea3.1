@@ -5,9 +5,8 @@
  * @version 1.0.0
 */
 
-export function datosProducto(){
-    const idProducto=sessionStorage.getItem("productoSeleccionado");
-    const productos=JSON.parse(sessionStorage.getItem("productos"));
+export function datosProducto(idProducto,productos){
+    
     let datosProductoSeleccionado={};
     for (const producto of productos) {
         

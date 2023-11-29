@@ -12,7 +12,7 @@
 export function getProductos(){
     //DATOS NECESARIOS PARA EL SERVIDOR
         let datos={
-            llamada:"productos"
+            llamada:"Productos"
         }
         return fetch("../../Backend/Controlador/controlador.php", {
             method: 'POST',
@@ -61,3 +61,21 @@ export function usuario(datosUsuario,direccion){
     });
 }
 
+
+export function peticionComentarios(idProducto){
+    return new Promise((resolve, reject) => {
+    
+        let datos={llamada:"Comentarios",id:idProducto};
+        fetch("../../Backend/Controlador/controlador.php", {
+            method: 'POST',
+            body:JSON.stringify(datos)
+            
+        })
+            .then(response => response.text())
+            .then(data => {
+                const datos=JSON.parse(data);
+                resolve("datos Comentarios");
+                
+        });
+    });
+}

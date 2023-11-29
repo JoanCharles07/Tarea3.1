@@ -18,6 +18,7 @@
 .otrasImagenes{
     width: 120px;
     height: 120px;
+    cursor: pointer;
     border: 1px solid black;
 }
 /*Imagen en el comentario*/

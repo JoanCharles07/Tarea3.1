@@ -11,8 +11,8 @@
 import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
 import { passIguales, recepcionDeDatosUsuario } from "./controladorUsuario.js";
-import { imprimirDetalleProducto,imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillasEspecificas.js";
-import { datosLupa, datosFiltroLateral, recepcionDeDatosProducto } from "./controladorProductos.js";
+import { imprimirImagenesAzar,imprimirDetalleProducto,imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillasEspecificas.js";
+import { datosLupa, datosFiltroLateral, recepcionDeDatosProducto,recepcionDeComentarios } from "./controladorProductos.js";
 
 /**
  * Esta función nos aseguraremos con la promesa que se ejecute antes que cualquier otra cosa.
@@ -56,7 +56,7 @@ function requerimientosComunes() {
 async function interaccionesControlador() {
   requerimientosComunes()
     .then(() => {
-
+      //crear variable con productos de la session
       if (window.location.pathname.includes("tienda.html")) {
         //Implementación busqueda dentro de tienda.html
         //comprobar si hay una busqueda. Y usamos controlador productos para enviar las distintas respuestas
@@ -158,9 +158,12 @@ async function interaccionesControlador() {
       else if(window.location.pathname.includes("detalleProducto.html")){
         //Antes de continuar nos aseguramos que productoSeleccionado esta en nuestra sessionStorage.
         if (sessionStorage.getItem("productoSeleccionado")) {
-              recepcionDeDatosProducto().then(resultado => {
-                  console.log(resultado);
+              recepcionDeDatosProducto().then(resultado => {;
                   imprimirDetalleProducto(resultado);
+                  imprimirImagenesAzar();
+                  recepcionDeComentarios().then(comentarios =>{
+                    
+                  })
               });
         }
         else{

@@ -7,12 +7,24 @@
 
 import { resultadoBusqueda, filtroLateral } from "../Modelo/funcionesBusqueda.js";
 import { datosProducto} from "../Modelo/funcionesProducto.js";
-import { getProductos } from "../Modelo/peticiones.js";
+import { getProductos,peticionComentarios } from "../Modelo/peticiones.js";
 
 
 export function recepcionDeDatosProducto() {
     return new Promise(async(resolve, reject) => {
-        const resultado=await datosProducto();
+        const idProducto=sessionStorage.getItem("productoSeleccionado");
+        const productos=JSON.parse(sessionStorage.getItem("productos"));
+        const resultado= datosProducto(idProducto,productos);
+        resolve(resultado);
+    })
+
+
+}
+
+export function recepcionDeComentarios() {
+    return new Promise(async(resolve, reject) => {
+        const idProducto=sessionStorage.getItem("productoSeleccionado");
+        const resultado=await peticionComentarios(idProducto);
         resolve(resultado);
     })
 

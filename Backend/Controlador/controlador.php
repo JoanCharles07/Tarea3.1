@@ -19,7 +19,7 @@ $session=new stdClass;
 if(isset($_POST)){
     $direccion=json_decode(file_get_contents('php://input'));
     
-    if($direccion->llamada=="productos"){
+    if($direccion->llamada=="Productos"){
         $respuesta=recuperarProductos();
         $respuesta=encriptarTodasPalabras($respuesta);
         echo json_encode($respuesta);
@@ -80,6 +80,8 @@ if(isset($_POST)){
         }
         
 
+    }else if($direccion->llamada=="Comentarios"){
+        echo json_encode("Hola");
     }
 }
 else{
