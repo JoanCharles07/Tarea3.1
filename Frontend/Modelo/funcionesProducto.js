@@ -26,3 +26,38 @@ export function datosProducto(idProducto,productos){
     }
     return datosProductoSeleccionado;
 }
+
+export function filtradoEstrellas(id){
+    let respuesta="";
+    
+        switch (id) {
+          case "5estrellas":
+            respuesta = "5_Estrellas";
+            break;
+          case "4estrellas":
+            respuesta = "4_Estrellas";
+  
+            break;
+          case "3estrellas":
+            respuesta = "3_Estrellas";
+  
+            break;
+          case "2estrellas":
+            respuesta = "2_Estrellas";
+  
+            break;
+          case "1estrellas":
+            respuesta = "1_Estrellas";
+  
+            break;
+           case "todas":
+            respuesta = "todas";
+            break;
+
+            default:
+              respuesta = "";
+              break;
+        }
+   
+    return respuesta;
+}

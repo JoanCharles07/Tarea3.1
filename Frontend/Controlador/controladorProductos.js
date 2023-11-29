@@ -6,7 +6,7 @@
 */
 
 import { resultadoBusqueda, filtroLateral } from "../Modelo/funcionesBusqueda.js";
-import { datosProducto} from "../Modelo/funcionesProducto.js";
+import { datosProducto,filtradoEstrellas} from "../Modelo/funcionesProducto.js";
 import { getProductos,peticionComentarios } from "../Modelo/peticiones.js";
 
 
@@ -27,8 +27,14 @@ export function recepcionDeComentarios() {
         const resultado=await peticionComentarios(idProducto);
         resolve(resultado);
     })
+}
 
-
+export function recepcionDeFiltro(id) {
+    return new Promise(async(resolve, reject) => {
+        
+        const filtro= filtradoEstrellas(id);
+        resolve(filtro);
+    })
 }
 /**
  * Esta función recibe la palabra del buscador lupa y tras confirmar que existe en la sessionStorage de productos, llama

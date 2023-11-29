@@ -13,8 +13,6 @@ export function imprimirImagenesAzar() {
     elegidos.push(sessionStorage.getItem("productoSeleccionado"));
     while(contador < 4){
       let azar = Math.floor(Math.random() * (productos.length));
-      console.log(elegidos);
-      console.log(productos[azar].id)
       if (!elegidos.includes(productos[azar].id)) {
         elegidos.push(productos[azar]["id"]);
         let img = `<img src="data:image/webp;base64,${productos[azar]["imagen"]}" class="otrasImagenes" id="${productos[azar]["id"]}"</img>`;
@@ -54,7 +52,7 @@ export function imprimirDetalleProducto(producto){
         `;
         //<img src="../../Recursos/Imagenes/${producto["valoracionTotal"]}estrellas.webp" id="valoracionTotal" alt="Valoracion">
         document.getElementById("container_producto").innerHTML=texto;
-        
+
         //dar funcionalidades visuales a detalle producto
      
     
@@ -212,6 +210,27 @@ export function imprimirIgualdadPass(resultado) {
         document.getElementById("errorP2").innerHTML = "No coinciden contraseñas";
     }
 }
+
+/**Filtrado por estrellas */
+export function imprimirFiltradoEstrellas(filtro) {
+        let todos = document.getElementsByClassName("parteSuperiorComentario");
+        if (filtro != "todas") {
+          for (let i = 0; i < todos.length; i++) {
+            if (todos[i].childNodes[3].className != filtro) {
+              document.getElementsByClassName("comentario")[i].style.display = "none";
+            }
+            else {
+              document.getElementsByClassName("comentario")[i].style.display = "flex";
+            }
+          }
+        }
+        else {
+          for (let i = 0; i < todos.length; i++) {
+            document.getElementsByClassName("comentario")[i].style.display = "flex";
+          }
+        }
+  
+    }
 /**
  * Función que alertará si se quiere registrar mientrás se esta conectado.
  */

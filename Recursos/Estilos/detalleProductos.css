@@ -188,6 +188,9 @@ textarea{
   flex-direction: column;
   gap:40px;
 }
+.estrellas{
+  cursor: pointer;
+}
 #containerCantidadEstrellas{
   display: flex;
   flex-direction: row;
