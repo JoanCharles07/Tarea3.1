@@ -231,6 +231,25 @@ export function imprimirFiltradoEstrellas(filtro) {
         }
   
     }
+export function imprimirComentarios(datos) {
+      let container = document.getElementById("container_Comentarios");
+      for (let dato of datos) {
+    
+        let comentario = `<div class="comentario"><div id="parteSuperiorComentario" class="parteSuperiorComentario">
+        <div class="zonanombre">
+        <img src="../../Recursos/Imagenes/usuarioAnonimo.webp" alt="imagen de usuario estandar" id="imagenUsuario">
+        <p id="nombreUsuario">${dato.nombre_comprador}</p>
+        </div>
+        <img src="../../Recursos/Imagenes/${dato.valoracion}estrellas.webp" alt="valoración" class="${dato.valoracion}_Estrellas">
+        </div>
+        <p>01/01/2020</p>
+        <p>${dato.mensaje}</p>
+       
+        </div>`;
+    
+        container.innerHTML += comentario;
+      }
+    }
 /**
  * Función que alertará si se quiere registrar mientrás se esta conectado.
  */

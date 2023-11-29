@@ -24,6 +24,16 @@
     return $retorno;
  }
  /**
+ * Encripta cualquier String.
+ *
+ * Esta función encripta cualquier String que llegue como parametro usando hash con una palabra escogida por nosotros.
+ *
+ * @param String palabra que queremos encriptar
+ * @return String palabra encriptada.
+ */
+
+
+ /**
  * Encripta cualquier Array.
  *
  * Esta función encripta cualquier Array mediante un bucle for que llama sucesivamente a la función encriptarPalabra.

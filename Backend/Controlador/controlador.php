@@ -81,7 +81,22 @@ if(isset($_POST)){
         
 
     }else if($direccion->llamada=="Comentarios"){
-        echo json_encode("Hola");
+        $_SESSION["datos"]['id']=saneamientoDatos($direccion->id);
+        $incorrecto=RegexBoolean($_SESSION["datos"]['id']);
+        if($incorrecto){
+            $respuesta=recuperarComentarios($_SESSION["datos"]['id']);
+            if(!empty($respuesta)){
+                unset($_SESSION["datos"]);
+                $session->datosComentarios=$respuesta;
+                echo json_encode($session);
+            }
+            else{
+                echo "vacio";
+            }
+        }
+        else{
+            echo "errores";
+        }
     }
 }
 else{

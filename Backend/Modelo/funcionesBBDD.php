@@ -6,6 +6,90 @@
  * @author Juan Carlos Rodríguez Miranda
  * @version 1.0.0
  */
+/**
+ * Esta función recuperará todos los productos de la base de datos.
+ * 
+ * @author Juan Carlos Rodríguez Miranda
+ * @version 1.0.0
+ */
+function recuperarComentarios($id)
+{
+
+    $sql = "SELECT * FROM comentario where ID_Producto = :id";
+    $array = [];
+    try {
+        $pdo=conectar();
+        $stmt = $pdo->prepare($sql);
+        $data = ['id' => 13];
+        if ($stmt->execute($data)) {
+            $res = $stmt->fetchAll();
+            if ($res != null) {
+                
+                for ($x = 0; $x < count($res); $x++) {
+                    $clase = new stdClass();
+                    $clase->mensaje = $res[$x][0];
+                    $clase->valoracion = $res[$x][1];
+                    $clase->nombre_comprador = nombre_comprador($res[$x][2]);
+                    $clase->ID_Producto = $res[$x][3];
+                    $array []= $clase;
+                }
+            } else {
+                echo "entro 4";
+            }
+        }
+        
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        echo "Error en la base de datos";
+    };
+
+    return $array;
+}
+function nombre_comprador($id){
+    $ret = "";
+    //Sentencia sql para conseguir los datos del usuario que deseamos usar.
+    $sql = "select nickname from usuario where id = :id";
+    try {
+        //Conectamos la base de datos
+        $res=false;
+        $pdo = conectar();
+        //Hacemos la sentencia preparada
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":id",$id,PDO::PARAM_INT);
+        if ($stmt->execute()) {
+            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+            //Si es correcta insertamos datos
+            if ($res != null) {
+                $ret = $res["nickname"];
+            }
+       
+            else{
+            $_SESSION["error"]["BBDD"] = "BBDD";
+            $_SESSION["errorDesc"]["BBDD"]="No se ha encontrado usuario correctamente";
+            }
+            
+        }else{
+            $_SESSION["error"]["BBDD"] = "BBDD";
+            $_SESSION["errorDesc"]["BBDD"]="Ha habido algún problema intenteló de nuevo";
+        }
+    
+       
+    }
+
+    //Else por si hay algún error
+    catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        
+        $_SESSION["error"]["BBDD"] = "BBDD";
+        $_SESSION["errorDesc"]["BBDD"]=$ex->getMessage();
+        $_SESSION["depuración"]["BBDD"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+    };
+
+    return $ret;
+    /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
+        que coinciden con los de la sesión iniciada*/
+}
+
 
 /**
  * Esta función recuperará todos los productos de la base de datos.

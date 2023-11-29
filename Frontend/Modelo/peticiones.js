@@ -74,7 +74,8 @@ export function peticionComentarios(idProducto){
             .then(response => response.text())
             .then(data => {
                 const datos=JSON.parse(data);
-                resolve("datos Comentarios");
+                console.log(datos);
+                resolve(datos);
                 
         });
     });
