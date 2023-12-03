@@ -250,6 +250,23 @@ export function imprimirComentarios(datos) {
         container.innerHTML += comentario;
       }
     }
+    export function cantidadDetalle() {
+  
+      let precio = parseFloat(document.getElementById("precio").textContent);
+      let cantidad = parseInt(document.getElementById("cantidad").value);
+    
+    
+      if (isNaN(cantidad)) {
+        document.getElementById("total").innerHTML = 0;
+      }
+      else if (cantidad < 0) {
+        document.getElementById("cantidad").value = 0;
+      }
+      else {
+        let total = cantidad * precio;
+        document.getElementById("total").innerHTML = total.toFixed(2);
+      }
+    }
 /**
  * Función que alertará si se quiere registrar mientrás se esta conectado.
  */
