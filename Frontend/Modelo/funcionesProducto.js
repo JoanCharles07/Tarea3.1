@@ -4,6 +4,12 @@
  * @author Juan Carlos Rodríguez Miranda.
  * @version 1.0.0
 */
+
+/**
+ * Esta funcion se encarga de crear el producto que insertaremos en nuestro carrito.
+ * @see agregarCarrito. donde agregaremos el producto a nuestra sessionStorage
+ * @returns objetoCarrito Objeto con los datos del producto
+ */
 export function creacionObjetoCarrito() {
   //variables necesarias para crear nuestro objeto carrito
   let objetoCarrito = new Object();
@@ -24,7 +30,7 @@ export function creacionObjetoCarrito() {
           precioTotal: (producto.precio * cantidadProducto).toFixed(2)
         };
         //Agregamos dentro de la sesión de carrito
-        
+        agregarObjetoCarrito(objetoCarrito);
 
       }
     };
@@ -32,7 +38,11 @@ export function creacionObjetoCarrito() {
   }
   return objetoCarrito;
 }
-function agregarObjetoCarrito(objetoCarrito) {
+/**
+ * En esta función insertaremos los datos dentro de la sessionStorage
+ * @param {Object} objetoCarrito con datos del producto
+ */
+export function agregarObjetoCarrito(objetoCarrito) {
   if (sessionStorage.getItem("carrito")) {
     let array = JSON.parse(sessionStorage.getItem("carrito"));
     if (array.find(objeto => objeto.id == objetoCarrito.id)) {
@@ -50,8 +60,14 @@ function agregarObjetoCarrito(objetoCarrito) {
     let array = [objetoCarrito];
     sessionStorage.setItem("carrito", JSON.stringify(array));
   }
-}
 
+}
+/**
+ * Esta función busca el id del producto y crea un array con los datos del producto en concreto.
+ * @param {Numbre} idProducto 
+ * @param {Array} productos 
+ * @returns  array con los datos del producto.
+ */
 export function datosProducto(idProducto,productos){
     
     let datosProductoSeleccionado={};
@@ -73,7 +89,11 @@ export function datosProducto(idProducto,productos){
     }
     return datosProductoSeleccionado;
 }
-
+/**
+ * Esta función devuelve un String según donde hagamos click.
+ * @param {String} id contiene una cadena con una de las opciones de estrellas.
+ * @returns String devuelve cadena con los datos necesario.
+ */
 export function filtradoEstrellas(id){
     let respuesta="";
     

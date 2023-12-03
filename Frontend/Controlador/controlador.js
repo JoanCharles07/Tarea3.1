@@ -170,10 +170,8 @@ async function interaccionesControlador() {
               cantidadDetalle();
             });
             document.getElementById("validar").addEventListener("click",function(){
-              console.log("entro");
               objetoCarrito().then(respuesta =>{
-                console.log(respuesta);
-                agregarObjetoCarrito(respuesta);
+                
                 mostrarCantidadCarrito();
               })
 
@@ -182,10 +180,7 @@ async function interaccionesControlador() {
 
           imprimirImagenesAzar();
           /*******************************************************************/
-          //enviar formulario
           
-
-          /********************************************************************* */
           recepcionDeComentarios().then(resultado => {
             imprimirComentarios(resultado)
             document.getElementById("filtroValoracion").addEventListener("click", function (e) {

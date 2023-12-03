@@ -142,7 +142,9 @@ function acciones(){
     }
 
 }
-
+/**
+ * Esta función nos muestra en el icono del carrito del header la cantidad de productos en nuestro carrito.
+ */
 function mostrarCantidadCarrito(){
     if(sessionStorage.getItem("carrito")){
         let cantidadCarro = document.getElementById("cantidadProductosCarro");

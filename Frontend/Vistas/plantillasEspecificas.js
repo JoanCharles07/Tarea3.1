@@ -5,6 +5,12 @@
  * @version 1.0.0
 */
 
+
+
+/**
+* Esta función imprime 4 imagenes al azar en los detalles de nuestro producto seleccionado.
+* @see paginaProducto añadimos la dirección a cada una de las imagenes.
+*/
 export function imprimirImagenesAzar() {
   const productos=JSON.parse(sessionStorage.getItem("productos"));
   let contador = 0;
@@ -24,6 +30,10 @@ export function imprimirImagenesAzar() {
   }
   paginaProducto("otrasImagenes");
 }
+/**
+ * Esta función imprimirá los detalles del producto escogido.
+ * @param {Object} producto contiene los datos de nuestro producto escogido
+ */
 export function imprimirDetalleProducto(producto){
        
       const texto=`
@@ -53,14 +63,12 @@ export function imprimirDetalleProducto(producto){
       //<img src="../../Recursos/Imagenes/${producto["valoracionTotal"]}estrellas.webp" id="valoracionTotal" alt="Valoracion">
       document.getElementById("container_producto").innerHTML=texto;
 
-      //dar funcionalidades visuales a detalle producto
-   
-  
 }
 /**
-* Esta función nos llevará a detalle producto del producto seleccionado.
+* Esta función nos llevará a detalle producto del producto al seleccionarlo.
 * 
-* @see imprimirProductos
+* @see imprimirImagenesAzar se usa paginaProducto en esta función
+* @see imprimirProductos se usa paginaProducto en esta función
 */
 function paginaProducto(clase) {
   const containerProductos = document.getElementsByClassName(clase);
@@ -75,9 +83,9 @@ function paginaProducto(clase) {
 }
 
 /**
-* Esta función nos llevará a detalle producto del producto seleccionado.
-* 
-* @see imprimirProductos
+* Esta función mostrará los ids que coincidan con los del parámetro resultado para la busqueda por lupa
+*@param {Array} resultado  
+* @see todosDisplay desactivará todo antes de comprobar cuales debemos de activar.
 */
 export function mostrarResultadoBusqueda(resultado) {
   todosDisplay(false);
@@ -85,7 +93,12 @@ export function mostrarResultadoBusqueda(resultado) {
       document.getElementById(id).style.display = "flex";
   }
 }
-
+/**
+ * Esta función mostrará los ids que coincidan con los del parámetro resultado para la busqueda por el filtro lateral.
+ * @param {Array} resultado  contendrá todos los ids que debemos activar.
+ * @param {Number} contador  nos ayudará a saber si se ha pulsado algunos de los checked.
+ * @see todosDisplay
+ */
 export function mostrarResultadoAside(resultado,contador) {
   if(contador==0){
       todosDisplay(true);
@@ -211,7 +224,10 @@ export function imprimirIgualdadPass(resultado) {
   }
 }
 
-/**Filtrado por estrellas */
+/**
+ * Esta función se encarga de mostrar los comentarios que indica nuestro parámetro filtro
+ * @param {String} filtro contendrá un String que nos ayudará a saber que comentarios debemos filtrar. 
+ * */
 export function imprimirFiltradoEstrellas(filtro) {
       let todos = document.getElementsByClassName("parteSuperiorComentario");
       if (filtro != "todas") {
@@ -231,6 +247,11 @@ export function imprimirFiltradoEstrellas(filtro) {
       }
 
   }
+
+/**
+ * Esta función imprimirá los comentarios del producto guardados en nuestra BBDD si los hubiera.
+ * @param {Object} datos contendrá los comentario obtenidos de la BBDD si los hubiera.
+ */
 export function imprimirComentarios(datos) {
     let container = document.getElementById("container_Comentarios");
     let fecha=new Date;
@@ -265,6 +286,9 @@ export function imprimirComentarios(datos) {
     
     document.getElementById("comentariosTotal").textContent=comentario;
   }
+  /**
+   * Esta función se encargaá de mostrarnos el precio de nuestro producto según alteremos la cantidad que queremos comprar.
+   */
   export function cantidadDetalle() {
   
     let precio = parseFloat(document.getElementById("precio").textContent);
@@ -283,26 +307,7 @@ export function imprimirComentarios(datos) {
     }
   }
 
- export function agregarObjetoCarrito(objetoCarrito) {
-    if (sessionStorage.getItem("carrito")) {
-      let array = JSON.parse(sessionStorage.getItem("carrito"));
-      if (array.find(objeto => objeto.id == objetoCarrito.id)) {
-        let index = array.findIndex(index => index.id == objetoCarrito.id);
-        array[index].cantidad = array[index].cantidad + objetoCarrito.cantidad;
-        array[index].precioTotal = (array[index].cantidad * array[index].precioInicial).toFixed(2);
-        sessionStorage.setItem("carrito", JSON.stringify(array));
-      } else {
-        array.push(objetoCarrito);
-        sessionStorage.setItem("carrito", JSON.stringify(array));
-      }
-  
-    }
-    else {
-      let array = [objetoCarrito];
-      sessionStorage.setItem("carrito", JSON.stringify(array));
-    }
 
-  }
 /**
 * Función que alertará si se quiere registrar mientrás se esta conectado.
 */
