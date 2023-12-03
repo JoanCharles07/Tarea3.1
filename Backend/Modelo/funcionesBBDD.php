@@ -144,13 +144,12 @@ function agregarCarrito(&$errores){
     return $respuesta;
 }
 /**
- * Esta función nos proporcionará los comentarios del producto .
+ * Esta función recuperará todos los productos de la base de datos.
  * 
- * @param <String> $id  Contiene el id del producto.
- * @param <Array> $errores En este array se introducirás todos los posibles errores.
- * @return <Array> $array devuelve un array con los comentarios de ese producto si los hubiera.
+ * @author Juan Carlos Rodríguez Miranda
+ * @version 1.0.0
  */
-function recuperarComentarios($id,&$errores)
+function recuperarComentarios($id)
 {
 
     $sql = "SELECT * FROM comentario where ID_Producto = :id";
@@ -158,44 +157,32 @@ function recuperarComentarios($id,&$errores)
     try {
         $pdo=conectar();
         $stmt = $pdo->prepare($sql);
-        $data = ['id' => $id];
+        $data = ['id' => 13];
         if ($stmt->execute($data)) {
             $res = $stmt->fetchAll();
-            $clase = new stdClass();
             if ($res != null) {
                 
                 for ($x = 0; $x < count($res); $x++) {
-                   
+                    $clase = new stdClass();
                     $clase->mensaje = $res[$x][0];
                     $clase->valoracion = $res[$x][1];
-                    $clase->nombre_comprador = nombre_comprador($res[$x][2],$errores);
+                    $clase->nombre_comprador = nombre_comprador($res[$x][2]);
                     $clase->ID_Producto = $res[$x][3];
                     $array []= $clase;
                 }
             } else {
-                $clase->comentario="No hay comentarios";
-                $array []= $clase;
+                echo "entro 4";
             }
-        }else{
-            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
         }
+        
     } catch (PDOException $ex) {
         /**En caso de haber excepción será atrapada por el catch*/
-        //Usarlo si es necesario.
-           // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
-            //($_SESSION["ErrorDepuracion"]);
+        echo "Error en la base de datos";
     };
 
     return $array;
 }
-/**
- * Esta función nos proporcionará el nombre del comprador mediante su id.
- * 
- * @param <String> $id  Contiene el id del usuario.
- * @param <Array> $errores En este array se introducirás todos los posibles errores.
- * @return <String> $ret con el nombre del usuario si lo hubiera.
- */
-function nombre_comprador($id,&$errores){
+function nombre_comprador($id){
     $ret = "";
     //Sentencia sql para conseguir los datos del usuario que deseamos usar.
     $sql = "select nickname from usuario where id = :id";
@@ -214,11 +201,13 @@ function nombre_comprador($id,&$errores){
             }
        
             else{
-                $errores->errorBBDD[] = "Usuario no encontrado";
+            $_SESSION["error"]["BBDD"] = "BBDD";
+            $_SESSION["errorDesc"]["BBDD"]="No se ha encontrado usuario correctamente";
             }
             
         }else{
-            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+            $_SESSION["error"]["BBDD"] = "BBDD";
+            $_SESSION["errorDesc"]["BBDD"]="Ha habido algún problema intenteló de nuevo";
         }
     
        
@@ -227,22 +216,25 @@ function nombre_comprador($id,&$errores){
     //Else por si hay algún error
     catch (PDOException $ex) {
         /**En caso de haber excepción será atrapada por el catch*/
-        //Usarlo si es necesario.
-           // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
-            //($_SESSION["ErrorDepuracion"]);
+        
+        $_SESSION["error"]["BBDD"] = "BBDD";
+        $_SESSION["errorDesc"]["BBDD"]=$ex->getMessage();
+        $_SESSION["depuración"]["BBDD"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
     };
 
     return $ret;
+    /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
+        que coinciden con los de la sesión iniciada*/
 }
 
 
 /**
  * Esta función recuperará todos los productos de la base de datos.
- *
- * @param <Array> $errores En este array se introducirás todos los posibles errores.
- * @return <Array> $array devuelve un array con los productos de nuestra BBDD.
+ * 
+ * @author Juan Carlos Rodríguez Miranda
+ * @version 1.0.0
  */
-function recuperarProductos(&$errores)
+function recuperarProductos()
 {
     $array = [];
     $sql = "select * from producto";
@@ -274,26 +266,22 @@ function recuperarProductos(&$errores)
 
                     $array[] = $clase;
                 }
-            }else{
-                $errores->errorBBDD[] = "No se ha encontrado ningún producto";
             }
-        }
-        else{
-            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
         }
     } catch (PDOException $ex) {
         /**En caso de haber excepción será atrapada por el catch*/
-        //Usarlo si es necesario.
-           // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
-            //($_SESSION["ErrorDepuracion"]);
+        $_SESSION["error"]["BBDD"] = "BBDD";
+        $_SESSION["errorDesc"]["BBDD"] = $ex->getMessage();
+        $_SESSION["depuración"]["BBDD"] = [$ex->getMessage(), $ex->getFile(), $ex->getTraceAsString()];
     }
 
     return $array;
 }
 /**
  * Esta función comprobará si ya existe este usuario en la base de datos.
- * @param  <Array> $errores En este array se introducirás todos los posibles errores.
- * @return <Boolean> $res devuelve un booleano para saber si hay o no duplicados
+ * 
+ * @author Juan Carlos Rodríguez Miranda
+ * @version 1.0.0
  */
 
 function datosDuplicados(&$errores)
@@ -348,10 +336,12 @@ function datosDuplicados(&$errores)
 
     return $res;
 }
-/** 
-* @param <Array> $errores En este array se introducirás todos los posibles errores.
-* @return <Boolean> $respuesta devuelve un booleano para confirmar si se ha podido realizar el registro.
-*/
+/**
+ * Esta función registrará un nuevo usuario en la base de datos.
+ * 
+ * @author Juan Carlos Rodríguez Miranda
+ * @version 1.0.0
+ */
 function registro(&$errores)
 {
     //crear un select y evitar hacer insert si hay duplicaciones
@@ -414,10 +404,12 @@ function registro(&$errores)
     }
     return $respuesta;
 }
-/** 
-* @param <Array> $errores En este array se introducirás todos los posibles errores.
-* @return <Boolean> $ret devuelve un booleano para confirmar si se ha podido encontrar el usuario con esa contraseña.
-*/
+/**
+ * Esta función confirmara que el usuario con la contraseña proporcionada existe en la BBDD.
+ * 
+ * @author Juan Carlos Rodríguez Miranda
+ * @version 1.0.0
+ */
 function usuario(&$errores)
 {   
     $ret = false;

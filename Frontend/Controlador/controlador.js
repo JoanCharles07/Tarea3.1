@@ -13,6 +13,8 @@ import { comprobarProductos } from "./controladorInicial.js";
 import { passIguales, recepcionDeDatosUsuario } from "./controladorUsuario.js";
 import { cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas, imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillasEspecificas.js";
 import { objetoCarrito, datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios } from "./controladorProductos.js";
+import { imprimirComentarios,imprimirFiltradoEstrellas, imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillasEspecificas.js";
+import { datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro } from "./controladorProductos.js";
 
 /**
  * Esta función nos aseguraremos con la promesa que se ejecute antes que cualquier otra cosa.
@@ -162,33 +164,26 @@ async function interaccionesControlador() {
         //Antes de continuar nos aseguramos que productoSeleccionado esta en nuestra sessionStorage.
         if (sessionStorage.getItem("productoSeleccionado")) {
           recepcionDeDatosProducto().then((resultado) => {
-
+            
             imprimirDetalleProducto(resultado);
             document.getElementById("cantidad").addEventListener("input", function () {
               cantidadDetalle();
             });
-            document.getElementById("validar").addEventListener("click",function(){
-
-              objetoCarrito().then(respuesta=>{
-                mostrarCantidadCarrito();
-                
-              })
-            })
 
           });
-          /*************************************************************** */
+
           imprimirImagenesAzar();
           /*******************************************************************/
-          /************************************ */
-        
-       
+          //enviar formulario
+
+
           /********************************************************************* */
           recepcionDeComentarios().then(resultado => {
             imprimirComentarios(resultado.datosComentarios)
             document.getElementById("filtroValoracion").addEventListener("click", function (e) {
               recepcionDeFiltro(e.target.id).then(filtro => {
-                if (filtro != "") {
-                  imprimirFiltradoEstrellas(filtro);
+                if(filtro != ""){
+                   imprimirFiltradoEstrellas(filtro);
                 }
               })
             })

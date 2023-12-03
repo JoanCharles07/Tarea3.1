@@ -20,8 +20,8 @@ if(isset($_POST)){
     $direccion=json_decode(file_get_contents('php://input'));
     
     if($direccion->llamada=="Productos"){
-        $respuesta=recuperarProductos($errores);
-        //$respuesta=encriptarTodasPalabras($respuesta);
+        $respuesta=recuperarProductos();
+        $respuesta=encriptarTodasPalabras($respuesta);
         echo json_encode($respuesta);
     }
     else if($direccion->llamada=="Registro"){
@@ -82,19 +82,16 @@ if(isset($_POST)){
 
     }else if($direccion->llamada=="Comentarios"){
         $_SESSION["datos"]['id']=saneamientoDatos($direccion->id);
-        
         $incorrecto=RegexBoolean($_SESSION["datos"]['id']);
         if($incorrecto){
-            $respuesta=recuperarComentarios($_SESSION["datos"]['id'],$errores);
+            $respuesta=recuperarComentarios($_SESSION["datos"]['id']);
             if(!empty($respuesta)){
                 unset($_SESSION["datos"]);
                 $session->datosComentarios=$respuesta;
                 echo json_encode($session);
             }
             else{
-                unset($_SESSION["datos"]);
-                $session=$errores;
-                echo json_encode($session);
+                echo "vacio";
             }
         }
         else{
@@ -166,5 +163,7 @@ if(isset($_POST)){
 else{
     echo json_encode("borraste Sesion");
 }
+
+
 
 ?>
