@@ -21,6 +21,7 @@ function existeComentario(&$errores){
                 $res=true;
             } 
             else{
+                $res=false;
                 $errores->errorBBDD[] = "Ya has comentado en este producto.";
             }
         }else{
@@ -84,8 +85,8 @@ function existeComentario(&$errores){
             /**En caso de haber excepción será atrapada por el catch*/
             
             //Usarlo si es necesario.
-           // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
-            //($_SESSION["ErrorDepuracion"]);
+            $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+            echo json_encode($_SESSION["ErrorDepuracion"]);
         };
     }
     return $respuesta;
@@ -157,7 +158,7 @@ function recuperarComentarios($id)
     try {
         $pdo=conectar();
         $stmt = $pdo->prepare($sql);
-        $data = ['id' => 13];
+        $data = ['id' => $id];
         if ($stmt->execute($data)) {
             $res = $stmt->fetchAll();
             if ($res != null) {
@@ -171,7 +172,7 @@ function recuperarComentarios($id)
                     $array []= $clase;
                 }
             } else {
-                echo "entro 4";
+                
             }
         }
         

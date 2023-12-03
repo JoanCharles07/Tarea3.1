@@ -8,13 +8,12 @@
 
 
 //Importaciones necesarias para el funcionamiento de controlador.js
-import { mostrarCantidadCarrito,imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado } from "../Vistas/plantillaGeneral.js";
+import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado,mostrarCantidadCarrito } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
 import { passIguales, recepcionDeDatosUsuario } from "./controladorUsuario.js";
-import { cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas, imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillasEspecificas.js";
-import { objetoCarrito, datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios } from "./controladorProductos.js";
-import { imprimirComentarios,imprimirFiltradoEstrellas, imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillasEspecificas.js";
-import { datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro } from "./controladorProductos.js";
+import {agregarObjetoCarrito,cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas, imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillasEspecificas.js";
+import {objetoCarrito,datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios } from "./controladorProductos.js";
+
 
 /**
  * Esta función nos aseguraremos con la promesa que se ejecute antes que cualquier otra cosa.
@@ -144,6 +143,7 @@ async function interaccionesControlador() {
             }
             else {
               const objetoComprobaciones = await recepcionDeDatosUsuario("Usuario");
+              console.log(objetoComprobaciones);
               if (objetoComprobaciones != null) {
                 imprimirTodosResultados(objetoComprobaciones);
               }
@@ -169,17 +169,25 @@ async function interaccionesControlador() {
             document.getElementById("cantidad").addEventListener("input", function () {
               cantidadDetalle();
             });
+            document.getElementById("validar").addEventListener("click",function(){
+              console.log("entro");
+              objetoCarrito().then(respuesta =>{
+                console.log(respuesta);
+                agregarObjetoCarrito(respuesta);
+                mostrarCantidadCarrito();
+              })
 
+          });
           });
 
           imprimirImagenesAzar();
           /*******************************************************************/
           //enviar formulario
-
+          
 
           /********************************************************************* */
           recepcionDeComentarios().then(resultado => {
-            imprimirComentarios(resultado.datosComentarios)
+            imprimirComentarios(resultado)
             document.getElementById("filtroValoracion").addEventListener("click", function (e) {
               recepcionDeFiltro(e.target.id).then(filtro => {
                 if(filtro != ""){

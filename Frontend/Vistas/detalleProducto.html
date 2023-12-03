@@ -61,23 +61,16 @@
         </div>
         <div id="zonaComentarios" class="flexComentarios">
             <h3>Comentarios y Valoraciones</h3>
-            <div id="container_Comentarios">
-                
-                
-
+            <div id="container_Comentarios" class="container_Comentarios">
             </div>
             <h3>Deja tu comentario</h3>
             <form action="" method="post" id="formEnvioComentario">
                 <span id="errorBBDD"></span>
                 <div id="containerCantidadEstrellas">
                     <label for="estrellasEscogidas">Escoja el número de estrellas</label>
-                    <input type="number" name="estrellasEscogidas" id="estrellasEscogidas"   required>
-                    <span id="errorEstrellas" title="Número de estrellas incorrecto"></span>
+                    <input type="number" name="estrellasEscogidas" id="estrellasEscogidas" min="1" max="5">
                 </div>
-                
-                <textarea name="comentarioTexto" id="comentarioTexto" cols="30" rows="5" form="formEnvioComentario" title="Comentario no válido" 
-                pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)" required></textarea>
-                <span id="errorTexto"></span>
+                <textarea  cols="30" rows="5" name="comentarioTexto" form="formEnvioComentario"></textarea>
                 <input type="submit" id="enviarComentario" class="botonesProducto" value="Comentar">
             </form>
             

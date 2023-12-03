@@ -33,36 +33,45 @@ export function getProductos(){
  * @param {direccion} String cadena de texto que indica si se ha producido desde el registro o desde el login.
  * @returns Objeto con datos del usuario o errores producidos en la BBDD
  */
-export function usuario(datosUsuario,direccion){
+export function usuario(datosUsuario, direccion) {
     return new Promise((resolve, reject) => {
-    //DATOS NECESARIOS PARA EL SERVIDOR
-        //Trasnformo el formdata a objeto para mejor manejo en PHP
-        let datosIntroducidos = new Object();
-       
-  //Con esta expresión regular podemos confirmar var
+      try {
+        // DATOS NECESARIOS PARA EL SERVIDOR
+        // Trasnformo el formdata a objeto para mejor manejo en PHP
+        let datosIntroducidos = {};
+        
         for (const dato of datosUsuario.entries()) {
-            datosIntroducidos[dato[0]] = dato[1];
-           
+          datosIntroducidos[dato[0]] = dato[1];
         }
-       
-    //enviar llamada y datos registro a php
-        let datos={llamada:direccion,datosIntroducidos};
+  
+        // enviar llamada y datos registro a php
+        let datos = { llamada: direccion, datosIntroducidos };
         fetch("../../Backend/Controlador/controlador.php", {
-            method: 'POST',
-            body:JSON.stringify(datos)
-            
+          method: 'POST',
+          body: JSON.stringify(datos)
         })
-            .then(response => {
-                console.log(response.status);
-                response.text()
-            })
-            .then(data => {
-                const datos=JSON.parse(data);
-                resolve(datos);
-                
-        });
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`Error en la solicitud: ${response.status}`);
+            }
+            return response.text();
+          })
+          .then(data => {
+            const datos = JSON.parse(data);
+            resolve(datos);
+          })
+          .catch(error => {
+            // Capturamos y manejamos el error
+            console.error("Error en la llamada fetch:", error);
+            reject(error);
+          });
+      } catch (error) {
+        // Capturamos y manejamos cualquier error sincrónico
+        console.error("Error en la función usuario:", error);
+        reject(error);
+      }
     });
-}
+  }
 
 
 export function verComentarios(idProducto){
@@ -90,7 +99,7 @@ export function agregarComentarios(datosComentario){
         //Trasnformo el formdata a objeto para mejor manejo en PHP
         let datosIntroducidos = new Object();
         //Con esta expresión regular podemos confirmar var
-
+        console.log(datosComentario);
         for (const dato of datosComentario.entries()) {
             datosIntroducidos[dato[0]] = dato[1];
            

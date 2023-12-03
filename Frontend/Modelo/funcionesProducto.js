@@ -24,7 +24,7 @@ export function creacionObjetoCarrito() {
           precioTotal: (producto.precio * cantidadProducto).toFixed(2)
         };
         //Agregamos dentro de la sesión de carrito
-        agregarObjetoCarrito(objetoCarrito);
+        
 
       }
     };

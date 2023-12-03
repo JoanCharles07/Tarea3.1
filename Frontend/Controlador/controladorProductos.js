@@ -37,10 +37,10 @@ export function objetoCarrito() {
        if(sessionStorage.getItem("usuario")){
         let usuario=JSON.parse(atob(sessionStorage.getItem("usuario")));
         agregarCarrito(respuesta,usuario[0]);
-        resolve();
+        resolve(respuesta);
        } 
        else{
-         resolve();
+         resolve(respuesta);
        }
       
     })

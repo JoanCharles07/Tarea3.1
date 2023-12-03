@@ -23,6 +23,15 @@
     $retorno=hash('sha512',$WORD.$palabra);
     return $retorno;
  }
+ /**
+ * Encripta cualquier String.
+ *
+ * Esta función encripta cualquier String que llegue como parametro usando hash con una palabra escogida por nosotros.
+ *
+ * @param String palabra que queremos encriptar
+ * @return String palabra encriptada.
+ */
+
 
  /**
  * Encripta cualquier Array.
@@ -32,7 +41,6 @@
  * @param Array array que queremos encriptar
  * @return Array array encriptado.
  */
-
  function encriptarTodasPalabras($array){
     for($i=0; $i<count($array) ; $i++){
         
@@ -74,6 +82,7 @@ function saneamientoArray($array){
    
 }
 
+
 /** Desde esta función se llama a las funciones de expresiones regulares y se comparan contraseñas en caso de no coincidir
  * la REGEX o no coincir las contraseñas añadirá el error al stdClass $errores.
  * @see RegexCodigoPostal, RegexDNI
@@ -112,56 +121,6 @@ function RegexBoolean($dato)
     return $resultado;
 }
 
-/** Expresión regular que impedira que se introduzcan valores de sql importantes y algunos caracteres especiales
- * usados en programación.
- * @param Any cadena de texto a comprobar.
- * @return boolean
-*/
-function RegexBooleanEstrellas($dato)
-{
-    $expresionRegular = "/^[1-5]$/";
-    $resultado = false;
-    if (!preg_match($expresionRegular, $dato)) {
-        $resultado = true;
-    }
-    
-    return $resultado;
-}
-
-function integerValidate($dato)
-{
-    $valido=filter_var($dato,FILTER_VALIDATE_INT);
-    $resultado = false;
-    if (!$valido) {
-        $resultado = true;
-    }
-    
-    return $resultado;
-}
-
-function floatValidate($dato)
-{
-    $valido=filter_var($dato,FILTER_VALIDATE_FLOAT);
-    $resultado = false;
-    if (!$valido) {
-        $resultado = true;
-    }
-    
-    return $resultado;
-}
-
-function fechaValidate($dato)
-{   $arrayFecha=explode("/",$dato);
-
-    $valido=checkdate($arrayFecha[1],$arrayFecha[0],$arrayFecha[2]);
-    $resultado = false;
-    if (!$valido) {
-        $resultado = true;
-    }
-    
-    return $resultado;
-}
-
 /** Desde esta función se llama a la funcion de expresion regular y se comparan contraseñas en caso de no coincidir
  * la REGEX añadiremos a errores ese dato.
  * @see RegexBoolean
@@ -169,26 +128,17 @@ function fechaValidate($dato)
 */
 function RegexRespuesta(&$errores)
 {    
+   
                
    foreach($_SESSION["datos"] as $name => $value){
-      
-     if(($name=="id" || $name=="cantidad" || $name=="cantidad_Producto")  && integerValidate($value)){
-        $errores->$name = true;
-        echo $name;
+      if ($name=="estrellasEscogidas") {
+         
      }
-     else if (($name=="precio" || $name=="total") && floatValidate($value)) {
-        
-        $errores->$name = true;
-        echo $name;
-       
-     }else if ($name=="estrellasEscogidas" && RegexBooleanEstrellas($value)) {
-        $errores->$name = true;
-        echo $name;
-
-     }else if(RegexBoolean($value)){
-        $errores->$name = true;
-     }else{
-        
+     else if($name="IDproducto"){
+      
+     }
+     else  if (RegexBoolean($value)) {
+         $errores->$name = true;
          
      }
    }

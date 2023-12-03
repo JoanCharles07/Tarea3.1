@@ -21,7 +21,7 @@ if(isset($_POST)){
     
     if($direccion->llamada=="Productos"){
         $respuesta=recuperarProductos();
-        $respuesta=encriptarTodasPalabras($respuesta);
+        //$respuesta=encriptarTodasPalabras($respuesta);
         echo json_encode($respuesta);
     }
     else if($direccion->llamada=="Registro"){
@@ -78,7 +78,6 @@ if(isset($_POST)){
             $session=$errores;
             echo json_encode($session);
         }
-        
 
     }else if($direccion->llamada=="Comentarios"){
         $_SESSION["datos"]['id']=saneamientoDatos($direccion->id);
@@ -91,7 +90,9 @@ if(isset($_POST)){
                 echo json_encode($session);
             }
             else{
-                echo "vacio";
+                unset($_SESSION["datos"]);
+                $session->comentario="Sin comentarios";
+                echo json_encode($session);
             }
         }
         else{
@@ -104,9 +105,7 @@ if(isset($_POST)){
         saneamientoArray($direccion->datosIntroducidos);
          //Comprobamos que no haya palabras no validas
          RegexRespuesta($errores);
-         echo "entro aqui";
         if(empty((array) $errores)){
-            
             $respuesta=agregarComentario($errores);
             unset($_SESSION["datos"]);
             if($respuesta){
@@ -114,13 +113,13 @@ if(isset($_POST)){
                 echo json_encode($session);
             }
             else{
+              
                 $session=$errores;
                 echo json_encode($session);
             }
         }
         else{
-            $errores->comentarioTexto="No es correcto";
-            $errores->estrellasEscogidas="No es correcto";
+            
             unset($_SESSION["datos"]);
             $session=$errores;
             echo json_encode($session);
@@ -128,7 +127,6 @@ if(isset($_POST)){
         }
     }
     else if($direccion->llamada=="agregarCarrito" && isset($_SESSION["datosUsuario"])){
-        echo json_encode("Entro aqui 2");
         saneamientoArray($direccion->datosIntroducidos);
          //Comprobamos que no haya palabras no validas
          RegexRespuesta($errores);

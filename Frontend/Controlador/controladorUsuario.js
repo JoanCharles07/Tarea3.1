@@ -28,7 +28,7 @@ export function recepcionDeDatosUsuario(direccion) {
                         if(datosServidor.datosUsuario){
                             //codificar datos antes de meterlos
                             sessionStorage.setItem("usuario",btoa(JSON.stringify(datosServidor.datosUsuario)));
-                            
+                            let prueba= sessionStorage.getItem("usuario");
                             resolve();
                         }else{
                             resolve(datosServidor);
