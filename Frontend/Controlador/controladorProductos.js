@@ -6,12 +6,14 @@
 */
 
 import { resultadoBusqueda, filtroLateral } from "../Modelo/funcionesBusqueda.js";
-import { datosProducto,filtradoEstrellas} from "../Modelo/funcionesProducto.js";
-import { getProductos,peticionComentarios } from "../Modelo/peticiones.js";
+import { datosProducto,filtradoEstrellas,creacionObjetoCarrito} from "../Modelo/funcionesProducto.js";
+import { getProductos,verComentarios,agregarComentarios,agregarCarrito } from "../Modelo/peticiones.js";
+import { comprobarRegex } from "../Modelo/comprobaciones.js";
 
 
 export function recepcionDeDatosProducto() {
     return new Promise(async(resolve, reject) => {
+        
         const idProducto=sessionStorage.getItem("productoSeleccionado");
         const productos=JSON.parse(sessionStorage.getItem("productos"));
         const resultado= datosProducto(idProducto,productos);
@@ -24,8 +26,40 @@ export function recepcionDeDatosProducto() {
 export function recepcionDeComentarios() {
     return new Promise(async(resolve, reject) => {
         const idProducto=sessionStorage.getItem("productoSeleccionado");
-        const resultado=await peticionComentarios(idProducto);
+        const resultado=await verComentarios(idProducto);
         resolve(resultado);
+    })
+}
+
+export function objetoCarrito() {
+    return new Promise(async(resolve, reject) => {
+       const respuesta=creacionObjetoCarrito();
+       if(sessionStorage.getItem("usuario")){
+        let usuario=JSON.parse(atob(sessionStorage.getItem("usuario")));
+        agregarCarrito(respuesta,usuario[0]);
+        resolve();
+       } 
+       else{
+         resolve();
+       }
+      
+    })
+}
+export function envioDeComentarios() {
+    return new Promise(async(resolve, reject) => {
+        let datosComentario = new FormData(document.getElementById("formEnvioComentario"));
+        let datos= comprobarRegex(datosComentario.get("comentarioTexto"));
+        
+        if(datos==false){
+            let datosServidor=agregarComentarios(datosComentario);
+            
+            resolve(datosServidor);
+        }
+        else{
+            let datosServidor={comentarioTexto:true}
+            resolve(datosServidor);
+        }
+        
     })
 }
 

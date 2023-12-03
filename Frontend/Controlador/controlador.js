@@ -8,11 +8,11 @@
 
 
 //Importaciones necesarias para el funcionamiento de controlador.js
-import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado } from "../Vistas/plantillaGeneral.js";
+import { mostrarCantidadCarrito,imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
 import { passIguales, recepcionDeDatosUsuario } from "./controladorUsuario.js";
 import { cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas, imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillasEspecificas.js";
-import { datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro } from "./controladorProductos.js";
+import { objetoCarrito, datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios } from "./controladorProductos.js";
 
 /**
  * Esta función nos aseguraremos con la promesa que se ejecute antes que cualquier otra cosa.
@@ -33,9 +33,12 @@ function requerimientosComunes() {
 
           mostrarUsuario();
           acciones();
-          // comprobarCarrito();
+          //comprobarCarrito
+          console.log("entro aqui");
+          
           redireccionesConectado();
         }
+        mostrarCantidadCarrito();
         resolve();
 
       })
@@ -164,14 +167,21 @@ async function interaccionesControlador() {
             document.getElementById("cantidad").addEventListener("input", function () {
               cantidadDetalle();
             });
+            document.getElementById("validar").addEventListener("click",function(){
+
+              objetoCarrito().then(respuesta=>{
+                mostrarCantidadCarrito();
+                
+              })
+            })
 
           });
           /*************************************************************** */
           imprimirImagenesAzar();
           /*******************************************************************/
-          //enviar formulario
-
-
+          /************************************ */
+        
+       
           /********************************************************************* */
           recepcionDeComentarios().then(resultado => {
             imprimirComentarios(resultado.datosComentarios)
@@ -188,9 +198,31 @@ async function interaccionesControlador() {
         else {
           location.href = "tienda.html";
         }
+
+        /******************************************************* */
+        document.getElementById("formEnvioComentario").addEventListener("submit", function (e) {
+          e.preventDefault();
+          if (sessionStorage.getItem("usuario")) {
+            envioDeComentarios().then(respuesta => {
+              if (respuesta.comentario) {
+                recepcionDeComentarios().then(respuesta => {
+                  imprimirComentarios(respuesta.datosComentarios);
+                })
+              } else {
+
+                imprimirTodosResultados(respuesta);
+              }
+            });
+          }
+          else {
+            console.log("Debes conectarte para comentar");
+          }
+        });
+       
+        
       }
 
 
-    })
+    });
 }
 interaccionesControlador();

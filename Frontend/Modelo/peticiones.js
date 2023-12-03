@@ -52,7 +52,10 @@ export function usuario(datosUsuario,direccion){
             body:JSON.stringify(datos)
             
         })
-            .then(response => response.text())
+            .then(response => {
+                console.log(response.status);
+                response.text()
+            })
             .then(data => {
                 const datos=JSON.parse(data);
                 resolve(datos);
@@ -62,7 +65,7 @@ export function usuario(datosUsuario,direccion){
 }
 
 
-export function peticionComentarios(idProducto){
+export function verComentarios(idProducto){
     return new Promise((resolve, reject) => {
     
         let datos={llamada:"Comentarios",id:idProducto};
@@ -79,4 +82,76 @@ export function peticionComentarios(idProducto){
                 
         });
     });
+}
+
+export function agregarComentarios(datosComentario){
+    return new Promise((resolve, reject) => {
+         //DATOS NECESARIOS PARA EL SERVIDOR
+        //Trasnformo el formdata a objeto para mejor manejo en PHP
+        let datosIntroducidos = new Object();
+        //Con esta expresión regular podemos confirmar var
+
+        for (const dato of datosComentario.entries()) {
+            datosIntroducidos[dato[0]] = dato[1];
+           
+        }
+        let producto=sessionStorage.getItem("productoSeleccionado");
+        datosIntroducidos["IDproducto"]=producto;
+
+        let datos={llamada:"agregarComentario",datosIntroducidos};
+        fetch("../../Backend/Controlador/controlador.php", {
+            method: 'POST',
+            body:JSON.stringify(datos)
+            
+        })
+            .then(response => response.text())
+            .then(data => {
+                const datos=JSON.parse(data);
+                console.log(datos);
+                resolve(datos);
+                
+        });
+    });
+}
+
+export function agregarCarrito(datosCarrito,IDusuario){
+    try{
+        return new Promise((resolve, reject) => {
+            //DATOS NECESARIOS PARA EL SERVIDOR
+           //Trasnformo el formdata a objeto para mejor manejo en PHP
+           let datosIntroducidos = new Object();
+           console.log("hola 2");
+           //Con esta expresión regular podemos confirmar var
+           for (const [key,value] of Object.entries(datosCarrito)) {
+               datosIntroducidos[key] = value;
+              
+           }
+           datosIntroducidos["IDusuario"]=IDusuario;
+           let datos={llamada:"agregarCarrito",datosIntroducidos};
+           
+           fetch("../../Backend/Controlador/controlador.php", {
+               method: 'POST',
+               body:JSON.stringify(datos)
+               
+           })
+               .then(response => {
+                console.log(response.status);
+                response.text()
+               })
+               .then(data => {
+                   const datos=JSON.parse(data);
+                   console.log(datos);
+                   console.log("hola 3");
+                   resolve(datos);
+                   
+                   
+           }).catch(e =>{
+                console.log(e.message);
+           });
+       });
+    }catch(e){
+        console.log(e);
+        console.log("hola");
+    }
+    
 }

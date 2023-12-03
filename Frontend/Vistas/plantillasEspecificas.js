@@ -233,22 +233,35 @@ export function imprimirFiltradoEstrellas(filtro) {
     }
 export function imprimirComentarios(datos) {
       let container = document.getElementById("container_Comentarios");
-      for (let dato of datos) {
+      let fecha=new Date;
+      if(!datos[0].comentario){
+        let comentario="";
+        for (let dato of datos) {
     
-        let comentario = `<div class="comentario"><div id="parteSuperiorComentario" class="parteSuperiorComentario">
-        <div class="zonanombre">
-        <img src="../../Recursos/Imagenes/usuarioAnonimo.webp" alt="imagen de usuario estandar" id="imagenUsuario">
-        <p id="nombreUsuario">${dato.nombre_comprador}</p>
-        </div>
-        <img src="../../Recursos/Imagenes/${dato.valoracion}estrellas.webp" alt="valoración" class="${dato.valoracion}_Estrellas">
-        </div>
-        <p>01/01/2020</p>
-        <p>${dato.mensaje}</p>
-       
-        </div>`;
-    
-        container.innerHTML += comentario;
+          comentario += `<div class="comentario"><div id="parteSuperiorComentario" class="parteSuperiorComentario">
+          <div class="zonanombre">
+          <img src="../../Recursos/Imagenes/usuarioAnonimo.webp" alt="imagen de usuario estandar" id="imagenUsuario">
+          <p id="nombreUsuario">${dato.nombre_comprador}</p>
+          </div>
+          <img src="../../Recursos/Imagenes/${dato.valoracion}estrellas.webp" alt="valoración" class="${dato.valoracion}_Estrellas">
+          </div>
+          <p>${fecha.toLocaleDateString('es-ES',{day:'2-digit', month:"2-digit",year:"numeric"})}</p>
+          <p>${dato.mensaje}</p>
+         
+          </div>`;
+      
+          container.innerHTML = comentario;
+        }
       }
+      else{
+        let comentario = `<div class="sinComentarios"> 
+        <p class="sinComentario">NO HAY COMENTARIOS TODAVIA</p>
+        <p class="sinComentario">¡SE EL PRIMERO EN HACERLO!</p>
+        </div>`;
+        console.log(datos[0].comentario);
+        container.innerHTML = comentario;
+      }
+      
     }
     export function cantidadDetalle() {
   

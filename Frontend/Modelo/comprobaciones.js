@@ -12,13 +12,11 @@
  *  
  * @returns Boolean con resultado de la expresión regular.
  */
-function comprobarRegex(valor) {
+export function comprobarRegex(valor) {
   let respuesta = false;
   //Con esta expresión regular podemos confirmar var
-
   let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,25}$)/);
   respuesta = !(regex.test(valor));
-
   return respuesta;
 }
 

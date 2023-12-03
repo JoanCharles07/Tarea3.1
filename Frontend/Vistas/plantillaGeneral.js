@@ -46,7 +46,7 @@ function imprimirCabezera() {
 
             let nav = `
             
-            <div id="boton"><a href="index.html">Tienda</a></div>
+            <div id="boton"><a href="tienda.html">Tienda</a></div>
             <div id="boton"><a href="sobreNosotros.html">Sobre nosotros</a></div>
             <div id="boton"><a href="noticias.html">Noticias</a></div>
             <div id="boton"><a href="">Contacto</a></div>
@@ -143,5 +143,17 @@ function acciones(){
 
 }
 
+function mostrarCantidadCarrito(){
+    let cantidadCarro = document.getElementById("cantidadProductosCarro");
+    if(sessionStorage.getItem("carrito")){
+        let arrayCarrito = JSON.parse(sessionStorage.getItem("carrito"));
+       
+        cantidadCarro.textContent = arrayCarrito.length;
+    }
+    else{
+        cantidadCarro.textContent=0;
+    }
+   
+}
 
-export{imprimirCabezera,mostrarUsuario,acciones,redireccionesConectado};
+export{mostrarCantidadCarrito,imprimirCabezera,mostrarUsuario,acciones,redireccionesConectado};

@@ -98,12 +98,73 @@ if(isset($_POST)){
             }
         }
         else{
-            echo "errores";
+            $session=$errores;
+            echo json_encode($session);
         }
+    }
+    else if($direccion->llamada=="agregarComentario" && isset($_SESSION["datosUsuario"])){
+        
+        saneamientoArray($direccion->datosIntroducidos);
+         //Comprobamos que no haya palabras no validas
+         RegexRespuesta($errores);
+         echo "entro aqui";
+        if(empty((array) $errores)){
+            
+            $respuesta=agregarComentario($errores);
+            unset($_SESSION["datos"]);
+            if($respuesta){
+                $session->comentario="exito";
+                echo json_encode($session);
+            }
+            else{
+                $session=$errores;
+                echo json_encode($session);
+            }
+        }
+        else{
+            $errores->comentarioTexto="No es correcto";
+            $errores->estrellasEscogidas="No es correcto";
+            unset($_SESSION["datos"]);
+            $session=$errores;
+            echo json_encode($session);
+           
+        }
+    }
+    else if($direccion->llamada=="agregarCarrito" && isset($_SESSION["datosUsuario"])){
+        echo json_encode("Entro aqui 2");
+        saneamientoArray($direccion->datosIntroducidos);
+         //Comprobamos que no haya palabras no validas
+         RegexRespuesta($errores);
+         
+         
+        if(empty((array) $errores)){
+            
+            $respuesta=agregarCarrito($errores);
+            unset($_SESSION["datos"]);
+            if($respuesta){
+                $session->comentario="exito";
+                echo json_encode($session);
+            }
+            else{
+                $session=$errores;
+                echo json_encode($session);
+            }
+        }
+        else{
+            $errores->comentarioTexto="No es correcto";
+            $errores->estrellasEscogidas="No es correcto";
+            unset($_SESSION["datos"]);
+            $session=$errores;
+            echo json_encode($session);
+           
+        }
+    }
+    else{
+        echo json_encode("No hay llamada");
     }
 }
 else{
-    echo "Hola a Todos";
+    echo json_encode("borraste Sesion");
 }
 
 ?>

@@ -6,6 +6,143 @@
  * @author Juan Carlos Rodríguez Miranda
  * @version 1.0.0
  */
+function existeComentario(&$errores){
+    $sql = "SELECT * FROM comentario where ID_Producto = :idPro and ID_Comprador = :idCom";
+    $producto= $_SESSION["datos"]["IDproducto"];
+    $comprador=$_SESSION["datosUsuario"]["id"] ;
+    $res=false;
+    try {
+        $pdo=conectar();
+        $stmt = $pdo->prepare($sql);
+        $data = ['idPro' => $producto , 'idCom' => $comprador];
+        if ($stmt->execute($data)) {
+            $res = $stmt->rowCount();
+            if ($res == 0) {
+                $res=true;
+            } 
+            else{
+                $errores->errorBBDD[] = "Ya has comentado en este producto.";
+            }
+        }else{
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        //Usarlo si es necesario.
+           // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+            //($_SESSION["ErrorDepuracion"]);
+    };
+
+    return $res;
+}
+    
+
+
+
+ function agregarComentario(&$errores){
+   
+    //Comprobar que no tiene ya comentario en este producto
+   
+    $NoDuplicado = existeComentario($errores);
+    $respuesta=false;
+    if ($NoDuplicado) {
+        $ret = false;
+        $sql = "INSERT INTO `comentario` (`Mensaje`, `valoracion`, `ID_comprador`,`ID_Producto`) 
+        VALUES (:comentario, :valoracion,:comprador,:producto);";
+        
+        try {
+            $pdo = conectar();
+            $stmt = $pdo->prepare($sql);
+            
+            $data = [
+                'comentario' =>  $_SESSION["datos"]["comentarioTexto"],
+                'valoracion' =>  $_SESSION["datos"]["estrellasEscogidas"],
+                'comprador' =>  $_SESSION["datosUsuario"]["id"],
+                'producto' =>   $_SESSION["datos"]["IDproducto"]
+            ];
+
+            if ($stmt->execute($data)) {
+                $ret = $stmt->rowCount();
+                if ($ret == 1) {
+                    
+
+                    $respuesta = true;
+                    //Añadimos datos que nos faltan para el usuario dentro del servidor.
+                } else {
+
+
+                    $errores->errorBBDD[] = "No se ha registrado correctamente";
+                }
+            } else {
+
+                $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+            }
+        }
+
+        //Else por si hay algún error
+        catch (PDOException $ex) {
+            /**En caso de haber excepción será atrapada por el catch*/
+            
+            //Usarlo si es necesario.
+           // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+            //($_SESSION["ErrorDepuracion"]);
+        };
+    }
+    return $respuesta;
+}
+
+function agregarCarrito(&$errores){
+   
+    //Comprobar que no existe, si existe se cambia directamente en la otra
+   
+    $NoDuplicado = true;
+    $respuesta=false;
+    if ($NoDuplicado) {
+        $ret = false;
+        $sql = "INSERT INTO `carrito` (`cantidad`, `ID_comprador`,`ID_Producto`) 
+        VALUES (:cantidad,:comprador,:producto);";
+        
+        try {
+            $pdo = conectar();
+            $stmt = $pdo->prepare($sql);
+          
+            
+            $data = [
+                'cantidad' =>  $_SESSION["datos"]["cantidad"],
+                'comprador' =>  $_SESSION["datosUsuario"]["id"],
+                'producto' =>   $_SESSION["datos"]["id"]
+            ];
+
+            if ($stmt->execute($data)) {
+                $ret = $stmt->rowCount();
+                
+                if ($ret == 1) {
+                    
+                    
+                    $respuesta = true;
+                    //Añadimos datos que nos faltan para el usuario dentro del servidor.
+                } else {
+                    
+
+                    $errores->errorBBDD[] = "No se ha registrado correctamente";
+                }
+            } else {
+                
+                $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+            }
+        }
+
+        //Else por si hay algún error
+        catch (PDOException $ex) {
+            /**En caso de haber excepción será atrapada por el catch*/
+            
+            //Usarlo si es necesario.
+            $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+            //($_SESSION["ErrorDepuracion"]);
+        };
+    }
+    return $respuesta;
+}
 /**
  * Esta función nos proporcionará los comentarios del producto .
  * 

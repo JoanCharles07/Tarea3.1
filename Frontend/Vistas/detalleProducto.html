@@ -62,45 +62,22 @@
         <div id="zonaComentarios" class="flexComentarios">
             <h3>Comentarios y Valoraciones</h3>
             <div id="container_Comentarios">
-                <div class="comentario">
-                    <div id="parteSuperiorComentario" class="parteSuperiorComentario">
-                        <div class="zonanombre">
-                            <img src="../../Recursos/Imagenes/usuarioAnonimo.webp" alt="imagen de usuario estandar" id="imagenUsuario">
-                             <p id="nombreUsuario">Juan Carlos Rodríguez Miranda</p>
-                        </div>
-                        <img src="../../Recursos/Imagenes/5estrellas.webp" alt="valoración" class="5_Estrellas">
-                    </div>
-                    <p>07/11/2023</p>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi modi, error similique quidem reiciendis accusantium enim non fuga,
-                         repellat minus corporis officiis dolore adipisci quae odit mollitia voluptatibus laboriosam nisi!
-                         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi modi, error similique quidem reiciendis accusantium enim non fuga,
-                         repellat minus corporis officiis dolore adipisci quae odit mollitia voluptatibus laboriosam nisi!</p>
-                </div>
-                <div class="comentario">
-                    <div id="parteSuperiorComentario" class="parteSuperiorComentario">
-                        <div class="zonanombre">
-                            <img src="../../Recursos/Imagenes/usuarioAnonimo.webp" alt="imagen de usuario estandar" id="imagenUsuario">
-                            <p id="nombreUsuario">Juan Carlos Rodríguez Miranda</p>
-                        </div>
-                        
-                        <img src="../../Recursos/Imagenes/4estrellas.webp" alt="valoración" class="4_Estrellas">
-                    </div>
-                    <p>07/11/2023</p>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi modi, error similique quidem reiciendis accusantium enim non fuga,
-                         repellat minus corporis officiis dolore adipisci quae odit mollitia voluptatibus laboriosam nisi!
-                         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi modi, error similique quidem reiciendis accusantium enim non fuga,
-                         repellat minus corporis officiis dolore adipisci quae odit mollitia voluptatibus laboriosam nisi!</p>
-                </div>
+                
                 
 
             </div>
             <h3>Deja tu comentario</h3>
             <form action="" method="post" id="formEnvioComentario">
+                <span id="errorBBDD"></span>
                 <div id="containerCantidadEstrellas">
                     <label for="estrellasEscogidas">Escoja el número de estrellas</label>
-                    <input type="number" name="estrellasEscogidas" id="estrellasEscogidas" min="1" max="5">
+                    <input type="number" name="estrellasEscogidas" id="estrellasEscogidas"   required>
+                    <span id="errorEstrellas" title="Número de estrellas incorrecto"></span>
                 </div>
-                <textarea name="" id="" cols="30" rows="5"></textarea>
+                
+                <textarea name="comentarioTexto" id="comentarioTexto" cols="30" rows="5" form="formEnvioComentario" title="Comentario no válido" 
+                pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)" required></textarea>
+                <span id="errorTexto"></span>
                 <input type="submit" id="enviarComentario" class="botonesProducto" value="Comentar">
             </form>
             

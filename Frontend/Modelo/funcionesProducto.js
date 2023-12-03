@@ -4,6 +4,53 @@
  * @author Juan Carlos Rodríguez Miranda.
  * @version 1.0.0
 */
+export function creacionObjetoCarrito() {
+  //variables necesarias para crear nuestro objeto carrito
+  let objetoCarrito = new Object();
+  let datoProducto = sessionStorage.getItem("productoSeleccionado") //PONER VALORES REGOGIDOS BBDD;
+  let productos = JSON.parse(sessionStorage.getItem("productos"));
+  let cantidadProducto = parseInt(document.getElementById("cantidad").value) //PONER VALORES REGOGIDOS BBDD;
+  //si no existen ni cantidad ni datos del producto y la cantidad es 0 o menor no se hará
+  if (datoProducto != null && (!isNaN(cantidadProducto) && cantidadProducto > 0)) {
+    //A
+    for (let producto of productos) {
+      if (producto.id == datoProducto) {
+        objetoCarrito = {
+          id: producto.id,
+          nombre: producto.nombre_producto,
+          imagen: producto.imagen,
+          precioInicial: producto.precio,
+          cantidad: cantidadProducto,
+          precioTotal: (producto.precio * cantidadProducto).toFixed(2)
+        };
+        //Agregamos dentro de la sesión de carrito
+        agregarObjetoCarrito(objetoCarrito);
+
+      }
+    };
+    
+  }
+  return objetoCarrito;
+}
+function agregarObjetoCarrito(objetoCarrito) {
+  if (sessionStorage.getItem("carrito")) {
+    let array = JSON.parse(sessionStorage.getItem("carrito"));
+    if (array.find(objeto => objeto.id == objetoCarrito.id)) {
+      let index = array.findIndex(index => index.id == objetoCarrito.id);
+      array[index].cantidad = array[index].cantidad + objetoCarrito.cantidad;
+      array[index].precioTotal = (array[index].cantidad * array[index].precioInicial).toFixed(2);
+      sessionStorage.setItem("carrito", JSON.stringify(array));
+    } else {
+      array.push(objetoCarrito);
+      sessionStorage.setItem("carrito", JSON.stringify(array));
+    }
+
+  }
+  else {
+    let array = [objetoCarrito];
+    sessionStorage.setItem("carrito", JSON.stringify(array));
+  }
+}
 
 export function datosProducto(idProducto,productos){
     
