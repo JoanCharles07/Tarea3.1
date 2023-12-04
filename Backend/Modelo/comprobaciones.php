@@ -4,7 +4,7 @@ function inicioComprobaciones($datosIntroducidos,&$errores){
     
     saneamientoArray($datosIntroducidos);
     //Comprobamos que no haya palabras no validas
- 
+    
     RegexRespuesta($errores);
 }
 
@@ -48,7 +48,7 @@ function saneamientoDatos($cadena){
  }
  
  function validateFloat($dato){
-    return filter_var($dato,FILTER_VALIDATE_INT);
+    return filter_var($dato,FILTER_VALIDATE_FLOAT);
  }
  
  function regexEstrellas($dato){
@@ -98,16 +98,22 @@ function saneamientoDatos($cadena){
      //comparamos con la expresión regular
      if (!preg_match($expresionRegular, $dato)) {
          $resultado = true;
+        
      }
+
      //tenemos en cuenta otros casos como cantidad o precio que darían true pero no deberían serlo
      if ($name=="estrellasEscogidas" && regexEstrellas($dato) ) {
        
        $resultado = false;
     }
-    else if(($name=="IDproducto"|| $name=="id") && validateInteger($dato)){
+    else if(($name=="IDproducto"|| $name=="id" || $name=="cantidad") && validateInteger($dato)){
       
        $resultado = false;
     }
+    else if(($name=="precioInicial"|| $name=="precioTotal") && validateFloat($dato)){
+      
+        $resultado = false;
+     }
     
      return $resultado;
  }
@@ -120,7 +126,7 @@ function saneamientoDatos($cadena){
  function RegexRespuesta(&$errores)
  {    
     
-    foreach($_SESSION["datos"] as $name => $value){
+   foreach($_SESSION["datos"] as $name => $value){
      //nos aseguramos que name sea asociatibo y que regexboolean sea verdadero.
       if (RegexBoolean($value,$name) && is_string($name)) {
           

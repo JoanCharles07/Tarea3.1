@@ -255,7 +255,7 @@ export function imprimirFiltradoEstrellas(filtro) {
 export function imprimirComentarios(datos) {
     let container = document.getElementById("container_Comentarios");
     let fecha=new Date;
-    if(!datos.comentario){
+    if(datos.datosComentarios){
       let comentario="";
       for (let dato of datos.datosComentarios) {
   

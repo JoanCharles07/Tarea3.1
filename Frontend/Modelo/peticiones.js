@@ -129,38 +129,39 @@ export function agregarCarrito(datosCarrito,IDusuario){
             //DATOS NECESARIOS PARA EL SERVIDOR
            //Trasnformo el formdata a objeto para mejor manejo en PHP
            let datosIntroducidos = new Object();
-           console.log("hola 2");
+           
            //Con esta expresión regular podemos confirmar var
            for (const [key,value] of Object.entries(datosCarrito)) {
-               datosIntroducidos[key] = value;
+              if(key=="id" || key=="cantidad"){
+                datosIntroducidos[key] = value;
+              }
+               
               
            }
            datosIntroducidos["IDusuario"]=IDusuario;
-           let datos={llamada:"agregarCarrito",datosIntroducidos};
+           console.log(datosIntroducidos);
+           let datos={llamada:"agregarCarritoBBDD",datosIntroducidos};
            
            fetch("../../Backend/Controlador/controlador.php", {
-               method: 'POST',
-               body:JSON.stringify(datos)
-               
-           })
-               .then(response => {
-                console.log(response.status);
-                response.text()
-               })
-               .then(data => {
-                   const datos=JSON.parse(data);
-                   console.log(datos);
-                   console.log("hola 3");
-                   resolve(datos);
-                   
-                   
-           }).catch(e =>{
-                console.log(e.message);
-           });
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+          },
+            body:JSON.stringify(datos)
+            
+        })
+            .then(response => response.text())
+            .then(data => {
+                const datos=JSON.parse(data);
+                //console.log(datos);
+                resolve();
+                
+        }).catch(error =>{
+          reject(error);
+        })
        });
     }catch(e){
         console.log(e);
-        console.log("hola");
     }
     
 }

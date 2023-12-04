@@ -62,7 +62,7 @@ if (isset($_POST)) {
 
         inicioComprobaciones($direccion->datosIntroducidos, $errores);
         if (empty((array) $errores)) {
-            $respuesta = recuperarComentarios($_SESSION["datos"]['id']);
+            $respuesta = recuperarComentarios($_SESSION["datos"]['id'],$errores);
             if (!empty($respuesta)) {
                 exitoComentarios($session,$respuesta);
             } else {
@@ -85,17 +85,19 @@ if (isset($_POST)) {
         } else {
             errores($errores);
         }
-    } else if ($direccion->llamada == "agregarCarrito" && isset($_SESSION["datosUsuario"])) {
+    } else if ($direccion->llamada == "agregarCarritoBBDD" && isset($_SESSION["datosUsuario"])) {
+        
         inicioComprobaciones($direccion->datosIntroducidos, $errores);
         if (empty((array) $errores)) {
-
+            
             $respuesta = agregarCarrito($errores);
 
             if ($respuesta) {
                 unset($_SESSION["datos"]);
-                $session->comentario = "exito";
+                $session->carrito = "exito";
                 echo json_encode($session);
             } else {
+                
                 errores($errores);
             }
         } else {

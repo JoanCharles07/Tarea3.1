@@ -95,7 +95,7 @@ function existeComentario(&$errores){
 function agregarCarrito(&$errores){
    
     //Comprobar que no existe, si existe se cambia directamente en la otra
-   
+ 
     $NoDuplicado = true;
     $respuesta=false;
     if ($NoDuplicado) {
@@ -139,7 +139,7 @@ function agregarCarrito(&$errores){
             
             //Usarlo si es necesario.
             $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
-            //($_SESSION["ErrorDepuracion"]);
+            var_dump($_SESSION["ErrorDepuracion"]);
         };
     }
     return $respuesta;
@@ -150,7 +150,7 @@ function agregarCarrito(&$errores){
  * @author Juan Carlos Rodríguez Miranda
  * @version 1.0.0
  */
-function recuperarComentarios($id)
+function recuperarComentarios($id,&$errores)
 {
 
     $sql = "SELECT * FROM comentario where ID_Producto = :id";
@@ -172,7 +172,7 @@ function recuperarComentarios($id)
                     $array []= $clase;
                 }
             } else {
-                
+                $errores->errorBBDD[] = "No hay comentarios";
             }
         }
         
