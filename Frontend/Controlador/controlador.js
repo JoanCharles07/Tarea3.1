@@ -11,7 +11,7 @@
 import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado,mostrarCantidadCarrito } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
 import { passIguales, recepcionDeDatosUsuario } from "./controladorUsuario.js";
-import {agregarObjetoCarrito,cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas, imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillasEspecificas.js";
+import {cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas, imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillasEspecificas.js";
 import {objetoCarrito,datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios } from "./controladorProductos.js";
 
 
@@ -35,7 +35,6 @@ function requerimientosComunes() {
           mostrarUsuario();
           acciones();
           //comprobarCarrito
-          console.log("entro aqui");
           
           redireccionesConectado();
         }
@@ -78,9 +77,8 @@ async function interaccionesControlador() {
 
         }
         document.getElementById("lupa").addEventListener("click", async function () {
-          let palabraBuscador = document.getElementById("buscador").value
-          console.log(palabraBuscador);
-          const resultado = await datosLupa(palabraBuscador);
+          
+          const resultado = await datosLupa();
           mostrarResultadoBusqueda(resultado);
         });
 

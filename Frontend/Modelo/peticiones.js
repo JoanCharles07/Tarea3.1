@@ -39,7 +39,6 @@ export function usuario(datosUsuario, direccion) {
         // DATOS NECESARIOS PARA EL SERVIDOR
         // Trasnformo el formdata a objeto para mejor manejo en PHP
         let datosIntroducidos = {};
-        
         for (const dato of datosUsuario.entries()) {
           datosIntroducidos[dato[0]] = dato[1];
         }
@@ -76,8 +75,9 @@ export function usuario(datosUsuario, direccion) {
 
 export function verComentarios(idProducto){
     return new Promise((resolve, reject) => {
-    
-        let datos={llamada:"Comentarios",id:idProducto};
+        let datosIntroducidos = new Object();
+        datosIntroducidos.id=idProducto;
+        let datos={llamada:"Comentarios",datosIntroducidos};
         fetch("../../Backend/Controlador/controlador.php", {
             method: 'POST',
             body:JSON.stringify(datos)

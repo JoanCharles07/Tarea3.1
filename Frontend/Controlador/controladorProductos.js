@@ -73,13 +73,13 @@ export function recepcionDeFiltro(id) {
 /**
  * Esta función recibe la palabra del buscador lupa y tras confirmar que existe en la sessionStorage de productos, llama
  * a la función resultadoBusqueda donde se realizará la parte lógica y devolverá array con la respuesta.
- * @param {String} palabraBuscador será el texto que buscaremos en el nombre de nuestros productos.
  * @see resultadoBusqueda
  * @see getProductos
  * @returns {Promise} con el array donde estarán los ids de los productos que coincidan con la palabra.
  */
-export function datosLupa(palabraBuscador) {
+export function datosLupa() {
     return new Promise(async (resolve, reject) => {
+        let palabraBuscador = document.getElementById("buscador").value;
         if(!sessionStorage.getItem("productos")){
             const Productos=await getProductos();
             sessionStorage.setItem("productos",JSON.stringify(Productos));
