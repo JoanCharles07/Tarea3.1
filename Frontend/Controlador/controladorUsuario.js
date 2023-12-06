@@ -9,7 +9,8 @@ import { usuario } from "../Modelo/peticiones.js";
 /**
  * Esta función recibe los datos del Usuario y devolverá un array con los resultados.
  * devolverá una promesa que entregará el array y así seguir con el código.
- * 
+ * @see comprobarDatosRegex comprobamos que los datos recibidos sean correctos.
+ * @see usuario se encarga de hacer la petición al servidor que se encargará de determinar si es login o registro.
  * @returns promesa con los datos JSON recibidos por comprobarDatosRegex.
  */
 export function recepcionDeDatosUsuario(direccion) {
@@ -28,7 +29,6 @@ export function recepcionDeDatosUsuario(direccion) {
                         if(datosServidor.datosUsuario){
                             //codificar datos antes de meterlos
                             sessionStorage.setItem("usuario",btoa(JSON.stringify(datosServidor.datosUsuario)));
-                            let prueba= sessionStorage.getItem("usuario");
                             resolve();
                         }else{
                             resolve(datosServidor);
@@ -52,7 +52,7 @@ export function recepcionDeDatosUsuario(direccion) {
 
 /**
  * Esta función llama a la función validarPass que devolverá el resultado.
- * 
+ * @see validarPass realización de la lógica para saber si son iguales.
  * @return Promise con el resultado de la función validarPass
  */
 export function passIguales() {
