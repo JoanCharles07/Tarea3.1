@@ -1,5 +1,9 @@
 <?php 
-
+/**
+ * Esta función llama a las funciones para comprobaciones generales que deben pasar todos lo que inserta el usuario.
+ * @param [<Object>] $datosIntroducidos datos que vamos a comprobar.
+ * @param [<Object>] $errores donde se guardaran los posibles errores.
+ */
 function inicioComprobaciones($datosIntroducidos,&$errores){
     
     saneamientoArray($datosIntroducidos);
@@ -42,15 +46,27 @@ function saneamientoDatos($cadena){
     }
     
  }
- 
+ /**
+  * Validamos que sea un entero.
+  * @param {*} $dato dato que queremos comparar.
+  * @return [Boolean] devuelve el resultado de la comprobación
+  */
  function validateInteger($dato){
     return filter_var($dato,FILTER_VALIDATE_INT);
  }
- 
+ /**
+  * Validamos que sea un float "decimal".
+  * @param {*} $dato dato que queremos comparar.
+  * @return [Boolean] devuelve el resultado de la comprobación
+  */
  function validateFloat($dato){
     return filter_var($dato,FILTER_VALIDATE_FLOAT);
  }
- 
+ /**
+  * Validamos que se cumpla la expresión seguridad.
+  * @param {*} $dato dato que queremos comparar.
+  * @return [Boolean] devuelve el resultado de la comprobación
+  */
  function regexEstrellas($dato){
  
      $expresionRegular = "/^[1-5]$/";

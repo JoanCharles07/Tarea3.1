@@ -190,9 +190,7 @@ export function recuperarCarrito(usuario){
           rol:usuario[1]
          };
          
-         //Con esta expresión regular podemos confirmar var
          
-         console.log(datosIntroducidos);
          let datos={llamada:"recuperarCarrito",datosIntroducidos};
          
          fetch("../../Backend/Controlador/controlador.php", {
@@ -206,7 +204,6 @@ export function recuperarCarrito(usuario){
           .then(response => response.text())
           .then(data => {
               const datos=JSON.parse(data);
-              console.log(datos);
               resolve(datos);
               
       }).catch(error =>{

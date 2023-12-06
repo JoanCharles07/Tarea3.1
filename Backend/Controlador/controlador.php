@@ -22,7 +22,7 @@ if (isset($_POST)) {
     $direccion = json_decode(file_get_contents('php://input'));
 
     if ($direccion->llamada == "Productos") {
-        $respuesta = recuperarProductos();
+        $respuesta = recuperarProductos($errores);
         //$respuesta=encriptarTodasPalabras($respuesta);
         echo json_encode($respuesta);
     } else if ($direccion->llamada == "Registro") {

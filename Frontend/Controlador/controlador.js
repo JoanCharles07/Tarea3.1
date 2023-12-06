@@ -174,8 +174,7 @@ async function interaccionesControlador() {
             //Comprobaremos que no haya errores si hay los mostraremos por pantalla y si todo es correcto redireccion a tienda.html
             else {
               const objetoComprobaciones = await recepcionDeDatosUsuario("Usuario");
-              console.log(objetoComprobaciones);
-              if (objetoComprobaciones != null) {
+              if (objetoComprobaciones != undefined) {
                 imprimirTodosResultados(objetoComprobaciones);
               }
               else {

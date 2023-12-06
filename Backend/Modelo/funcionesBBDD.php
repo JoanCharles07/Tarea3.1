@@ -6,6 +6,13 @@
  * @author Juan Carlos Rodríguez Miranda
  * @version 1.0.0
  */
+
+ /**
+ * Esta función confirma si existe el comentario.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [Boolean] con resultado de la operación
+ */
 function existeComentario(&$errores){
     $sql = "SELECT * FROM comentario where ID_Producto = :idPro and ID_Comprador = :idCom";
     $producto= $_SESSION["datos"]["IDproducto"];
@@ -36,7 +43,13 @@ function existeComentario(&$errores){
 
     return $res;
 }
-    
+
+/**
+ * Esta función confirma si exise en el carrito.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [Boolean] con resultado de la operación
+ */
 function existeEnCarrito(&$errores){
     $sql = "SELECT * FROM carrito where ID_Producto = :idPro and ID_comprador = :idCom";
     $producto= $_SESSION["datos"]["id"];
@@ -68,7 +81,13 @@ function existeEnCarrito(&$errores){
     return $res;
 }
     
-
+/**
+ * Esta función agrega producto al carrito.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @see existeComentario() confirma si existe en el carrito.
+ * @return [Boolean] con resultado de la operación
+ */
  function agregarComentario(&$errores){
    
     //Comprobar que no tiene ya comentario en este producto
@@ -121,6 +140,14 @@ function existeEnCarrito(&$errores){
     return $respuesta;
 }
 
+/**
+ * Esta función agrega producto al carrito.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @see existeCarrito() confirma si existe en el carrito.
+ * @see modificarCarrito Si existe en el carrito esta función añadirá la cantidad.
+ * @return [Boolean] con resultado de la operación
+ */
 function agregarCarrito(&$errores){
    
     //Comprobar que no existe, si existe se cambia directamente en la otra
@@ -175,6 +202,14 @@ function agregarCarrito(&$errores){
     }
     return $respuesta;
 }
+/**
+ * Esta función buscará si hay comentarios realizados en el productos.
+ * @param [<String>] $id id del producto.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @param [<Object>] $session se insertarán los productos del carrito.
+ * @see conectar() conexión a la base de datos.
+ * @return [Boolean] con resultado de la operación
+ */
 function recuperarCarrito(&$errores,&$session){
     $sql = "SELECT * FROM carrito where  ID_comprador = :idCom";
     $array=[];
@@ -215,6 +250,12 @@ function recuperarCarrito(&$errores,&$session){
 
     return $res;
 }
+/**
+ * Esta función modificará la tabla carrito de nuestra BBDD.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [Boolean] con resultado de la operación
+ */
 function modificarCarrito(&$errores){
    
     //Comprobar que no existe, si existe se cambia directamente en la otra
@@ -264,10 +305,11 @@ function modificarCarrito(&$errores){
     return $respuesta;
 }
 /**
- * Esta función recuperará todos los productos de la base de datos.
- * 
- * @author Juan Carlos Rodríguez Miranda
- * @version 1.0.0
+ * Esta función buscará si hay comentarios realizados en el productos.
+ * @param [<String>] $id id del producto.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [Array]  con todos los comentarios si los hubiera.
  */
 function recuperarComentarios($id,&$errores)
 {
@@ -286,7 +328,7 @@ function recuperarComentarios($id,&$errores)
                     $clase = new stdClass();
                     $clase->mensaje = $res[$x][0];
                     $clase->valoracion = $res[$x][1];
-                    $clase->nombre_comprador = nombre_comprador($res[$x][2]);
+                    $clase->nombre_comprador = nombre_comprador($res[$x][2],$errores);
                     $clase->ID_Producto = $res[$x][3];
                     $array []= $clase;
                 }
@@ -302,7 +344,14 @@ function recuperarComentarios($id,&$errores)
 
     return $array;
 }
-function nombre_comprador($id){
+/**
+ * Esta función buscará si hay algún comprador con el id que llega por parametro.
+ * @param [<String>] $id id del comproador.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [Boolean] 
+ */
+function nombre_comprador($id,&$errores){
     $ret = "";
     //Sentencia sql para conseguir los datos del usuario que deseamos usar.
     $sql = "select nickname from usuario where id = :id";
@@ -321,13 +370,11 @@ function nombre_comprador($id){
             }
        
             else{
-            $_SESSION["error"]["BBDD"] = "BBDD";
-            $_SESSION["errorDesc"]["BBDD"]="No se ha encontrado usuario correctamente";
+                $errores->errorBBDD[] = "No se ha encontrado nada";
             }
             
         }else{
-            $_SESSION["error"]["BBDD"] = "BBDD";
-            $_SESSION["errorDesc"]["BBDD"]="Ha habido algún problema intenteló de nuevo";
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
         }
     
        
@@ -349,12 +396,15 @@ function nombre_comprador($id){
 
 
 /**
- * Esta función recuperará todos los productos de la base de datos.
+ * Esta función buscará todos los productos dentro de nuestra base de datos.
  * 
- * @author Juan Carlos Rodríguez Miranda
- * @version 1.0.0
+ * 
+ * Esta función buscará si hay algún comprador con el id que llega por parametro.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [Boolean] que devuelve si se ha podido o no realizar la acción
  */
-function recuperarProductos()
+function recuperarProductos(&$errores)
 {
     $array = [];
     $sql = "select * from producto";
@@ -387,6 +437,12 @@ function recuperarProductos()
                     $array[] = $clase;
                 }
             }
+            else{
+                $errores->errorBBDD[] = "No hay productos";
+            }
+        }
+        else{
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
         }
     } catch (PDOException $ex) {
         /**En caso de haber excepción será atrapada por el catch*/
@@ -398,12 +454,14 @@ function recuperarProductos()
     return $array;
 }
 /**
- * Esta función comprobará si ya existe este usuario en la base de datos.
+ * Esta función confirmara si ya existe alguno de los parametros unicos en nuestra BBDD.
  * 
- * @author Juan Carlos Rodríguez Miranda
- * @version 1.0.0
+ *
+ * Esta función buscará si hay algún comprador con el id que llega por parametro.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [Boolean] que devuelve si se ha podido o no realizar la acción
  */
-
 function datosDuplicados(&$errores)
 {
     $res = false;
@@ -457,10 +515,13 @@ function datosDuplicados(&$errores)
     return $res;
 }
 /**
- * Esta función registrará un nuevo usuario en la base de datos.
+ * Esta función registrará un nuevo usuario a la BBDD
  * 
- * @author Juan Carlos Rodríguez Miranda
- * @version 1.0.0
+ * 
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see datosDuplicados comprobará si ya existe este usuario antes de poder registrarlo.
+ * @see conectar() conexión a la base de datos.
+ * @return [Boolean] que devuelve si se ha podido o no realizar la acción
  */
 function registro(&$errores)
 {
@@ -525,11 +586,15 @@ function registro(&$errores)
     return $respuesta;
 }
 /**
- * Esta función confirmara que el usuario con la contraseña proporcionada existe en la BBDD.
+ * Esta función confirmara que el usuario y la contraseña proporcionadas existen en la BBDD y coinciden entre ellas.
  * 
- * @author Juan Carlos Rodríguez Miranda
- * @version 1.0.0
+ * 
+ * Esta función buscará si hay algún comprador con el id que llega por parametro.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [Boolean] que devuelve si se ha podido o no realizar la acción
  */
+ 
 function usuario(&$errores)
 {   
     $ret = false;
