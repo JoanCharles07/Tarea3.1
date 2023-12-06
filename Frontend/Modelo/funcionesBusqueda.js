@@ -133,3 +133,43 @@ function filtroComparacion(tipo) {
     return arrayResultado
 
 }
+
+/**
+ * Esta función devuelve un String según donde hagamos click.
+ * @param {String} id contiene una cadena con una de las opciones de estrellas.
+ * @returns String devuelve cadena con los datos necesario.
+ */
+export function filtradoEstrellas(id){
+    let respuesta="";
+    
+        switch (id) {
+          case "5estrellas":
+            respuesta = "5_Estrellas";
+            break;
+          case "4estrellas":
+            respuesta = "4_Estrellas";
+  
+            break;
+          case "3estrellas":
+            respuesta = "3_Estrellas";
+  
+            break;
+          case "2estrellas":
+            respuesta = "2_Estrellas";
+  
+            break;
+          case "1estrellas":
+            respuesta = "1_Estrellas";
+  
+            break;
+           case "todas":
+            respuesta = "todas";
+            break;
+
+            default:
+              respuesta = "";
+              break;
+        }
+   
+    return respuesta;
+}

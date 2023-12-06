@@ -5,8 +5,8 @@
  * @version 1.0.0
 */
 
-import { resultadoBusqueda, filtroLateral } from "../Modelo/funcionesBusqueda.js";
-import { rellenarCarritoUsuario,datosProducto,filtradoEstrellas,creacionObjetoCarrito} from "../Modelo/funcionesProducto.js";
+import { resultadoBusqueda, filtroLateral,filtradoEstrellas } from "../Modelo/funcionesBusqueda.js";
+import { rellenarCarritoUsuario,datosProducto,creacionObjetoCarrito} from "../Modelo/funcionesProducto.js";
 import { getProductos,verComentarios,agregarComentarios,agregarCarrito, recuperarCarrito } from "../Modelo/peticiones.js";
 import { comprobarRegex,usuarioConectado } from "../Modelo/comprobaciones.js";
 

@@ -5,7 +5,12 @@
  * @version 1.0.0
 */
 
-
+/**
+ * Esta función hace llamadas a la función creacionObjetoCarrito que se encargará de crear los objetos que se insertarán dentro
+ * del carrito.
+ * @see creacionObjetoCarrito donde se crean los objetos del carrito.
+ * @param {Array} carrito con objetos con información del carrito
+ */
 export function rellenarCarritoUsuario(carrito){
    //variables necesarias para crear nuestro objeto carrito
    
@@ -99,43 +104,4 @@ export function datosProducto(idProducto,productos){
         }
     }
     return datosProductoSeleccionado;
-}
-/**
- * Esta función devuelve un String según donde hagamos click.
- * @param {String} id contiene una cadena con una de las opciones de estrellas.
- * @returns String devuelve cadena con los datos necesario.
- */
-export function filtradoEstrellas(id){
-    let respuesta="";
-    
-        switch (id) {
-          case "5estrellas":
-            respuesta = "5_Estrellas";
-            break;
-          case "4estrellas":
-            respuesta = "4_Estrellas";
-  
-            break;
-          case "3estrellas":
-            respuesta = "3_Estrellas";
-  
-            break;
-          case "2estrellas":
-            respuesta = "2_Estrellas";
-  
-            break;
-          case "1estrellas":
-            respuesta = "1_Estrellas";
-  
-            break;
-           case "todas":
-            respuesta = "todas";
-            break;
-
-            default:
-              respuesta = "";
-              break;
-        }
-   
-    return respuesta;
 }

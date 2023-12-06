@@ -72,7 +72,11 @@ export function usuario(datosUsuario, direccion) {
     });
   }
 
-
+/**
+ * Esta función llamará al servidor para conseguir los comentarios que forman parte de este producto.
+ * @param {String} idProducto contiene el id del producto
+ * @returns {Object} datos con todos los datos de los comentarios si los hubiera.
+ */
 export function verComentarios(idProducto){
     return new Promise((resolve, reject) => {
         let datosIntroducidos = new Object();
@@ -86,13 +90,16 @@ export function verComentarios(idProducto){
             .then(response => response.text())
             .then(data => {
                 const datos=JSON.parse(data);
-                console.log(datos);
                 resolve(datos);
                 
         });
     });
 }
-
+/**
+ * Esta función llamará al servidor para añadir el mensaje si es posible.
+ * @param {Object} datosComentario contiene todos los datos del comentario(Mensaje y valoración).
+ * @returns 
+ */
 export function agregarComentarios(datosComentario){
     return new Promise((resolve, reject) => {
          //DATOS NECESARIOS PARA EL SERVIDOR
@@ -121,6 +128,11 @@ export function agregarComentarios(datosComentario){
         });
     });
 }
+/**
+ * Esta función añadirá a la BBDD el objeto que se agrega al carrito.
+ * @param {Object} datosCarrito contendra los datos del producto en forma de objeto.
+ * 
+ */
 export function agregarCarrito(datosCarrito){
     try{
         return new Promise((resolve, reject) => {
@@ -163,6 +175,11 @@ export function agregarCarrito(datosCarrito){
     }
     
 }
+/**
+ * Esta fución llamará al servidor para recuperar todos los productos que tuviera añadidos el usuario a su carrito.
+ * @param {String} usuario cadena con el nickname del usuario. 
+ * @returns devuelve un objeto con los resultados
+ */
 export function recuperarCarrito(usuario){
   try{
       return new Promise((resolve, reject) => {
