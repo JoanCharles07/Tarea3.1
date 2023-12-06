@@ -121,11 +121,12 @@ export function agregarComentarios(datosComentario){
         });
     });
 }
-export function agregarCarrito(datosCarrito,IDusuario){
+export function agregarCarrito(datosCarrito){
     try{
         return new Promise((resolve, reject) => {
             //DATOS NECESARIOS PARA EL SERVIDOR
            //Trasnformo el formdata a objeto para mejor manejo en PHP
+           let usuario=JSON.parse(atob(sessionStorage.getItem("usuario")));
            let datosIntroducidos = new Object();
            
            //Con esta expresión regular podemos confirmar var
@@ -136,7 +137,7 @@ export function agregarCarrito(datosCarrito,IDusuario){
                
               
            }
-           datosIntroducidos["IDusuario"]=IDusuario;
+           datosIntroducidos["IDusuario"]=usuario[0];
            console.log(datosIntroducidos);
            let datos={llamada:"agregarCarritoBBDD",datosIntroducidos};
            

@@ -36,12 +36,6 @@ export function comprobarProductos() {
     });
 }
 
-export function comprobarCarrito(){
-    //Mirar en la BBDD si hay algo en el carrito en caso contrario crear carrito siempre que entre BBDD comprobar que usario y rol coinciden 
-    //con el de la sesion.
-
-}
-
 //enviar a opción de lupa
 
 

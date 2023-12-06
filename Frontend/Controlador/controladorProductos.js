@@ -10,7 +10,11 @@ import { rellenarCarritoUsuario,datosProducto,filtradoEstrellas,creacionObjetoCa
 import { getProductos,verComentarios,agregarComentarios,agregarCarrito, recuperarCarrito } from "../Modelo/peticiones.js";
 import { comprobarRegex,usuarioConectado } from "../Modelo/comprobaciones.js";
 
-
+/**
+ * Esta función llama a la funcion datosProductos que devolverá una promesa.
+ * @see datoProducto
+ * @returns Object con los resultados de los productos que tenemos en la base de datos.
+ */
 export function recepcionDeDatosProducto() {
     return new Promise(async(resolve, reject) => {
         
@@ -22,7 +26,11 @@ export function recepcionDeDatosProducto() {
 
 
 }
-
+/**
+ * Esta función  se encargará de llamar a la funcion verComentarios que nos devolverá los comentarios.
+ * @see verComentarios
+ * @returns Object con los comentarios realizados en este producto si los hubiera
+ */
 export function recepcionDeComentarios() {
     return new Promise(async(resolve, reject) => {
         const idProducto=sessionStorage.getItem("productoSeleccionado");
@@ -31,15 +39,19 @@ export function recepcionDeComentarios() {
     })
 }
 
+/**
+ * Esta función se encarga de seguir los pasos para agregar un objeto a la sesión y a la BBDD si fuera necesario.
+ * @see creacionObjetoCarrito
+ * @see agregarCarrito hace la petición a la BBDD
+ * @returns  Objecto con los datos del producto que vamos  a comprar.
+ */
 export function objetoCarrito() {
     return new Promise(async(resolve, reject) => {
         let producto = sessionStorage.getItem("productoSeleccionado")
-        let cantidadProducto = parseInt(document.getElementById("cantidad").value) //PONER VALORES REGOGIDOS BBDD;
+        let cantidadProducto = parseInt(document.getElementById("cantidad").value) 
        const respuesta=creacionObjetoCarrito(producto,cantidadProducto);
        if(sessionStorage.getItem("usuario")){
-        let usuario=JSON.parse(atob(sessionStorage.getItem("usuario")));
-        console.log(respuesta);
-        agregarCarrito(respuesta,usuario[0]);
+        agregarCarrito(respuesta);
         resolve(respuesta);
        } 
        else{
@@ -48,6 +60,12 @@ export function objetoCarrito() {
       
     })
 }
+/**
+ * Esta función se encarga de llamar a las funciones necesarias para recuperar los productos que el usuario había cogido en una sesión pasada.
+ * @see recuperarCarrito hace petición BBDD que nos dará los productos que tuviera en el carrito el usuario
+ * @see rellenarCarritoUsuario rellena la sessionStorage del carrito con los nuevos productos.
+ * @see usuarioConectado hace que el usuario aparezca como conectado y ya no entre más a esta función.
+ */
 export function comprobarCarrito(){
     return new Promise(async(resolve, reject) => {
         //carrito vacio
@@ -61,6 +79,11 @@ export function comprobarCarrito(){
         resolve();
     });
 }
+/**
+ * Esta función controla el envio de un nuevo mensaje en el producto para que se guarde dentro de la BBDD
+ * @see comprobarRegex comprobamos que el comentario de texto no incluye nada extraño
+ * @returns Object datosServidor con la respuesta del servidor.
+ */
 export function envioDeComentarios() {
     return new Promise(async(resolve, reject) => {
         let datosComentario = new FormData(document.getElementById("formEnvioComentario"));
@@ -78,7 +101,13 @@ export function envioDeComentarios() {
         
     })
 }
-
+/**
+ * Esta función se encarga de llamar a la función filtradoEstrellas que nos dará la cadena que usaremos para mostrar al usuario los resultados.
+ * 
+ * @param {String} id Cadena con la cadena que esta dentro del id de la etiqueta clicada.
+ * @see filtradoEstrellas con el id se encarga de saber donde hemos hecho click.
+ * @returns String resultado del filtradoEstrellas
+ */
 export function recepcionDeFiltro(id) {
     return new Promise(async(resolve, reject) => {
         
