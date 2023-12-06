@@ -6,9 +6,9 @@
 */
 
 import { resultadoBusqueda, filtroLateral } from "../Modelo/funcionesBusqueda.js";
-import { datosProducto,filtradoEstrellas,creacionObjetoCarrito} from "../Modelo/funcionesProducto.js";
-import { getProductos,verComentarios,agregarComentarios,agregarCarrito } from "../Modelo/peticiones.js";
-import { comprobarRegex } from "../Modelo/comprobaciones.js";
+import { rellenarCarritoUsuario,datosProducto,filtradoEstrellas,creacionObjetoCarrito} from "../Modelo/funcionesProducto.js";
+import { getProductos,verComentarios,agregarComentarios,agregarCarrito, recuperarCarrito } from "../Modelo/peticiones.js";
+import { comprobarRegex,usuarioConectado } from "../Modelo/comprobaciones.js";
 
 
 export function recepcionDeDatosProducto() {
@@ -33,9 +33,12 @@ export function recepcionDeComentarios() {
 
 export function objetoCarrito() {
     return new Promise(async(resolve, reject) => {
-       const respuesta=creacionObjetoCarrito();
+        let producto = sessionStorage.getItem("productoSeleccionado")
+        let cantidadProducto = parseInt(document.getElementById("cantidad").value) //PONER VALORES REGOGIDOS BBDD;
+       const respuesta=creacionObjetoCarrito(producto,cantidadProducto);
        if(sessionStorage.getItem("usuario")){
         let usuario=JSON.parse(atob(sessionStorage.getItem("usuario")));
+        console.log(respuesta);
         agregarCarrito(respuesta,usuario[0]);
         resolve(respuesta);
        } 
@@ -44,6 +47,19 @@ export function objetoCarrito() {
        }
       
     })
+}
+export function comprobarCarrito(){
+    return new Promise(async(resolve, reject) => {
+        //carrito vacio
+        let usuario=JSON.parse(atob(sessionStorage.getItem("usuario")));
+        let datosCarrito= await recuperarCarrito(usuario);
+        if(datosCarrito.carrito){
+            
+            rellenarCarritoUsuario(datosCarrito.carrito);
+        }
+        usuarioConectado();
+        resolve();
+    });
 }
 export function envioDeComentarios() {
     return new Promise(async(resolve, reject) => {
@@ -79,15 +95,26 @@ export function recepcionDeFiltro(id) {
  */
 export function datosLupa() {
     return new Promise(async (resolve, reject) => {
-        let palabraBuscador = document.getElementById("buscador").value;
+        //Uso try catch porque es asincrono
+        try {
+            let resultado ="";
+            blabla();
         if(!sessionStorage.getItem("productos")){
             const Productos=await getProductos();
             sessionStorage.setItem("productos",JSON.stringify(Productos));
+            resultado = await resultadoBusqueda();
             
-        }   
-            let resultado = await resultadoBusqueda(palabraBuscador);
+        }else{
+            resultado = await resultadoBusqueda();
+        }
+            
 
             resolve(resultado);
+        
+        } catch (error) {
+            //console.error(error);
+           
+        }
         
         
     });

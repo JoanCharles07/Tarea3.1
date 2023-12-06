@@ -116,13 +116,11 @@ export function agregarComentarios(datosComentario){
             .then(response => response.text())
             .then(data => {
                 const datos=JSON.parse(data);
-                console.log(datos);
                 resolve(datos);
                 
         });
     });
 }
-
 export function agregarCarrito(datosCarrito,IDusuario){
     try{
         return new Promise((resolve, reject) => {
@@ -153,7 +151,6 @@ export function agregarCarrito(datosCarrito,IDusuario){
             .then(response => response.text())
             .then(data => {
                 const datos=JSON.parse(data);
-                //console.log(datos);
                 resolve();
                 
         }).catch(error =>{
@@ -164,4 +161,42 @@ export function agregarCarrito(datosCarrito,IDusuario){
         console.log(e);
     }
     
+}
+export function recuperarCarrito(usuario){
+  try{
+      return new Promise((resolve, reject) => {
+          //DATOS NECESARIOS PARA EL SERVIDOR
+         //Trasnformo el formdata a objeto para mejor manejo en PHP
+         let datosIntroducidos = {
+          usuario:usuario[0],
+          rol:usuario[1]
+         };
+         
+         //Con esta expresión regular podemos confirmar var
+         
+         console.log(datosIntroducidos);
+         let datos={llamada:"recuperarCarrito",datosIntroducidos};
+         
+         fetch("../../Backend/Controlador/controlador.php", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+        },
+          body:JSON.stringify(datos)
+          
+      })
+          .then(response => response.text())
+          .then(data => {
+              const datos=JSON.parse(data);
+              console.log(datos);
+              resolve(datos);
+              
+      }).catch(error =>{
+        reject(error);
+      })
+     });
+  }catch(e){
+      console.log(e);
+  }
+  
 }

@@ -5,17 +5,28 @@
  * @version 1.0.0
 */
 
+
+export function rellenarCarritoUsuario(carrito){
+   //variables necesarias para crear nuestro objeto carrito
+   
+   for(let producto of carrito){
+    
+    creacionObjetoCarrito(producto.producto,producto.cantidad);
+   }
+   
+}
 /**
  * Esta funcion se encarga de crear el producto que insertaremos en nuestro carrito.
  * @see agregarCarrito. donde agregaremos el producto a nuestra sessionStorage
  * @returns objetoCarrito Objeto con los datos del producto
  */
-export function creacionObjetoCarrito() {
+
+export function creacionObjetoCarrito(product,cantidadTotal) {
   //variables necesarias para crear nuestro objeto carrito
   let objetoCarrito = new Object();
-  let datoProducto = sessionStorage.getItem("productoSeleccionado") //PONER VALORES REGOGIDOS BBDD;
+  let datoProducto = product //PONER VALORES REGOGIDOS BBDD;
   let productos = JSON.parse(sessionStorage.getItem("productos"));
-  let cantidadProducto = parseInt(document.getElementById("cantidad").value) //PONER VALORES REGOGIDOS BBDD;
+  let cantidadProducto = cantidadTotal //PONER VALORES REGOGIDOS BBDD;
   //si no existen ni cantidad ni datos del producto y la cantidad es 0 o menor no se hará
   if (datoProducto != null && (!isNaN(cantidadProducto) && cantidadProducto > 0)) {
     //A
@@ -47,7 +58,7 @@ export function agregarObjetoCarrito(objetoCarrito) {
     let array = JSON.parse(sessionStorage.getItem("carrito"));
     if (array.find(objeto => objeto.id == objetoCarrito.id)) {
       let index = array.findIndex(index => index.id == objetoCarrito.id);
-      array[index].cantidad = array[index].cantidad + objetoCarrito.cantidad;
+      array[index].cantidad = array[index].cantidad + parseInt(objetoCarrito.cantidad);
       array[index].precioTotal = (array[index].cantidad * array[index].precioInicial).toFixed(2);
       sessionStorage.setItem("carrito", JSON.stringify(array));
     } else {

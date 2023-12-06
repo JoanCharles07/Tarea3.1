@@ -20,7 +20,6 @@ export function comprobarProductos() {
         try{
             if(!sessionStorage.getItem("productos")){
                 //Llamamos a la base de datos y esperamos a que termine.
-                
                 const Productos=await getProductos();
                 sessionStorage.setItem("productos",JSON.stringify(Productos));
                 resolve();

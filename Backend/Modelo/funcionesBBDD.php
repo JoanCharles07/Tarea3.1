@@ -37,8 +37,37 @@ function existeComentario(&$errores){
     return $res;
 }
     
+function existeEnCarrito(&$errores){
+    $sql = "SELECT * FROM carrito where ID_Producto = :idPro and ID_comprador = :idCom";
+    $producto= $_SESSION["datos"]["id"];
+    $comprador=$_SESSION["datosUsuario"]["id"] ;
+    $res=false;
+    try {
+        $pdo=conectar();
+        $stmt = $pdo->prepare($sql);
+        $data = ['idPro' => $producto , 'idCom' => $comprador];
+        if ($stmt->execute($data)) {
+            $res = $stmt->rowCount();
+            if ($res == 0) {
+                $res=true;
+            } 
+            else{
+                $res=false;
+                $errores->errorBBDD[] = "Ya has comentado en este producto.";
+            }
+        }else{
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        //Usarlo si es necesario.
+           // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+            //($_SESSION["ErrorDepuracion"]);
+    };
 
-
+    return $res;
+}
+    
 
  function agregarComentario(&$errores){
    
@@ -95,8 +124,8 @@ function existeComentario(&$errores){
 function agregarCarrito(&$errores){
    
     //Comprobar que no existe, si existe se cambia directamente en la otra
- 
-    $NoDuplicado = true;
+    
+    $NoDuplicado = existeEnCarrito($errores);
     $respuesta=false;
     if ($NoDuplicado) {
         $ret = false;
@@ -141,7 +170,97 @@ function agregarCarrito(&$errores){
             $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
             var_dump($_SESSION["ErrorDepuracion"]);
         };
+    }else{
+        modificarCarrito($errores);
     }
+    return $respuesta;
+}
+function recuperarCarrito(&$errores,&$session){
+    $sql = "SELECT * FROM carrito where  ID_comprador = :idCom";
+    $array=[];
+    $comprador=$_SESSION["datosUsuario"]["id"] ;
+    $res=false;
+    try {
+        $pdo=conectar();
+        $stmt = $pdo->prepare($sql);
+        $data = ['idCom' => $comprador];
+        if ($stmt->execute($data)) {
+            $res = $stmt->fetchAll();
+            if ($res != null) {
+                
+                for ($x = 0; $x < count($res); $x++) {
+                    $clase = new stdClass();
+                    $clase->cantidad = $res[$x][0];
+                    $clase->comprador = $res[$x][1];
+                    $clase->producto = $res[$x][2];
+                    
+                    $array[] = $clase;
+                }
+                $session->carrito=$array;
+                $res=true;
+            } 
+            else{
+                $res=false;
+                $errores->errorBBDD[] = "No hay productos en el carrito";
+            }
+        }else{
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        //Usarlo si es necesario.
+           // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+            //($_SESSION["ErrorDepuracion"]);
+    };
+
+    return $res;
+}
+function modificarCarrito(&$errores){
+   
+    //Comprobar que no existe, si existe se cambia directamente en la otra
+    
+        $ret = false;
+        $sql = "Update `carrito` set cantidad = cantidad + :cantidadNueva where ID_comprador = :comprador and ID_Producto = :producto";
+        
+        try {
+            $pdo = conectar();
+            $stmt = $pdo->prepare($sql);
+          
+            
+            $data = [
+                'cantidadNueva' =>  $_SESSION["datos"]["cantidad"],
+                'comprador' =>  $_SESSION["datosUsuario"]["id"],
+                'producto' =>   $_SESSION["datos"]["id"]
+            ];
+
+            if ($stmt->execute($data)) {
+                $ret = $stmt->rowCount();
+                
+                if ($ret == 1) {
+                    
+                    
+                    $respuesta = true;
+                    //Añadimos datos que nos faltan para el usuario dentro del servidor.
+                } else {
+                    
+
+                    $errores->errorBBDD[] = "No se ha registrado correctamente";
+                }
+            } else {
+                
+                $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+            }
+        }
+
+        //Else por si hay algún error
+        catch (PDOException $ex) {
+            /**En caso de haber excepción será atrapada por el catch*/
+            
+            //Usarlo si es necesario.
+            $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+            var_dump($_SESSION["ErrorDepuracion"]);
+        };
+    
     return $respuesta;
 }
 /**

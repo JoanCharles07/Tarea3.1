@@ -62,3 +62,8 @@ export function validarPass() {
  
 }
 
+export function usuarioConectado() {
+
+  sessionStorage.setItem("conectado","En linea");
+}
+

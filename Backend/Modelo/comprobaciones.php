@@ -106,7 +106,7 @@ function saneamientoDatos($cadena){
        
        $resultado = false;
     }
-    else if(($name=="IDproducto"|| $name=="id" || $name=="cantidad") && validateInteger($dato)){
+    else if(($name=="IDproducto"|| $name=="id" || $name=="cantidad" || $name=="rol") && validateInteger($dato)){
       
        $resultado = false;
     }

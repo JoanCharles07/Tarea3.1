@@ -4,14 +4,26 @@
  * @see palabraPreparada
  * @returns {Array} resultado con los ids que contengan la palabra que se busca por el buscador.
  */
-export function resultadoBusqueda(palabraBuscador) {
+export function resultadoBusqueda() {
 
+    let palabraBuscador="";
+    //comprobamos de donde viene la busqueda
+    if(sessionStorage.getItem("busqueda")){
+        palabraBuscador = sessionStorage.getItem("busqueda");
+        sessionStorage.removeItem("busqueda");
+    }else{
+        
+        palabraBuscador = document.getElementById("buscador").value;
+    }
+    
     let resultado = []
     let datos = JSON.parse(sessionStorage.getItem("productos"));
     palabraBuscador = palabraPreparada(palabraBuscador);
-
+    console.log("Palabra " + palabraBuscador );
     for (let dato of datos) {
-        let palabraArray = palabraPreparada(dato.Nombre_Producto);
+        let palabraArray = palabraPreparada(dato.nombre_producto);
+        
+         console.log("Palabra Array" + palabraArray );
         if (palabraArray.includes(palabraBuscador)) {
             resultado.push(dato.id);
         }

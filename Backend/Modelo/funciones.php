@@ -91,3 +91,12 @@ function exitoAgregarComentario(&$session)
    $session->comentario = "exito";
    echo json_encode($session);
 }
+
+function coincideUsuario(&$errores){
+   if($_SESSION["datosUsuario"]["usuario"]!=$_SESSION["datos"]["usuario"]){
+      $errores->autoidentificación="No coinciden credenciales, vuelva a iniciar sesión";
+   }
+   else{
+
+   }
+}

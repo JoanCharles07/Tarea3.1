@@ -94,7 +94,6 @@ if (isset($_POST)) {
 
             if ($respuesta) {
                 unset($_SESSION["datos"]);
-                $session->carrito = "exito";
                 echo json_encode($session);
             } else {
                 
@@ -103,7 +102,24 @@ if (isset($_POST)) {
         } else {
             errores($errores);
         }
-    } else {
+    } else if ($direccion->llamada == "recuperarCarrito" && isset($_SESSION["datosUsuario"])) {
+        
+        inicioComprobaciones($direccion->datosIntroducidos, $errores);
+        coincideUsuario($errores);
+        
+        if (empty((array) $errores)) {
+            
+            $respuesta = recuperarCarrito($errores,$session);
+            if ($respuesta) {
+                unset($_SESSION["datos"]);
+                echo json_encode($session);
+            } else {
+                errores($errores);
+            }
+        } else {
+            errores($errores);
+        }
+    }  else {
         echo json_encode("No hay llamada");
     }
 } else {
