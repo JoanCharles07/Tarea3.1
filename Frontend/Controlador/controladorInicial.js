@@ -11,6 +11,7 @@ import{getProductos}from "../Modelo/peticiones.js";
  * Esta función comprobará si tenemos en el sessionStorage lo productos, si no los tenemos hará una llamada a la
  * base de datos para recuperarlos, esto será asincrono por lo que usaremos async await para esperar la respuesta
  * de la BBDD antes de continuar.
+ * @see getProductos Se enncarga de la petición al servidor de todos los productos.
  * 
  */
 export function comprobarProductos() {
@@ -36,7 +37,7 @@ export function comprobarProductos() {
     });
 }
 
-//enviar a opción de lupa
+
 
 
 

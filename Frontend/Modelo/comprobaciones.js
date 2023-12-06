@@ -61,7 +61,9 @@ export function validarPass() {
     
  
 }
-
+/**
+ * Agrega a la session que el usuario esta conectado.
+ */
 export function usuarioConectado() {
 
   sessionStorage.setItem("conectado","En linea");
