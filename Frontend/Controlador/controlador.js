@@ -329,6 +329,9 @@ async function interaccionesControlador() {
           })
         }
       }
+      else if(window.location.pathname.includes("sobrenosotros.html")){
+        
+      }
     });
 }
 interaccionesControlador();

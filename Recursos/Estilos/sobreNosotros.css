@@ -1,0 +1,26 @@
+main{
+    transform: translateY(150px);
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: center;
+    justify-items: center;
+    gap: 20px;
+}
+
+.imagenesNosotros{
+    width: 350px;
+    height: 350px;
+    border-radius: 100%;
+}
+.containerSection{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+}
+
+.textos{
+    width: 80%;
+    text-align: center;
+    font-size: 18px;
+}

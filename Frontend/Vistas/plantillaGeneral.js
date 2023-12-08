@@ -47,7 +47,7 @@ function imprimirCabezera() {
             let nav = `
             
             <div id="boton"><a href="index.html">Tienda</a></div>
-            <div id="boton"><a href="sobreNosotros.html">Sobre nosotros</a></div>
+            <div id="boton"><a href="sobrenosotros.html">Sobre nosotros</a></div>
             <div id="boton"><a href="noticias.html">Noticias</a></div>
             <div id="boton"><a href="">Contacto</a></div>
            
