@@ -105,3 +105,18 @@ export function datosProducto(idProducto,productos){
     }
     return datosProductoSeleccionado;
 }
+
+export function borrarProductoSesion(id){
+  let productos= JSON.parse(sessionStorage.getItem("carrito"));
+  
+  for(producto of productos){
+      if(producto.id==id){
+        let index=productos.indexOf(producto);
+        productos.splice(index, 1);
+        sessionStorage.setItem("carrito", JSON.stringify(productos));
+      }
+  }
+   
+  return true;
+
+}

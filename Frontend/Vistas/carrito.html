@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito</title>
+
+    <script src="./plantillaGeneral.js" type="module"></script>
+    <script src="../Controlador/controlador.js" type="module"></script>
+    <link rel="stylesheet" href="../../Recursos/Estilos/estilos.css">
+    <link rel="stylesheet" href="../../Recursos/Estilos/carrito.css">
+
+</head>
+
+<body>
+    <header id="header"></header>
+    <nav id="nav"> </nav>
+    <h1>TU CARRITO DE LA COMPRA</h1>
+    <main id="main">
+       
+        <section id="containerDatosUsuario">
+           
+            <div id="inicioSesion">
+                <button id="login" class="botonesProducto">Iniciar sesión</button>
+            </div>
+            
+            <div id="datosUsuario">
+                
+            </div>
+        </section>
+        <section id="datosCarrito">
+            <div id="vacio">
+            </div>
+            <div id="producto" class="producto">
+                <p>Fecha de entrega aproximada: 5 días</p>
+                <div id="containerProductos">
+
+                </div>
+                <div id="desgloseTotal">
+                    <p>Total IVA incluido: <span id="totalIva">21.01</span> € </p>
+                    <p>Gastos de envio: 3.99 €</p>
+                    <p>Total con gastos envío: <span id="totalPedido">25.00</span> € </p>
+                </div>
+                <button id="comprar" class="botonesProducto">Comprar Ya</button>
+                
+                    <ul id="containerProductos2">
+
+                    </ul>
+                
+            </div>
+        </section>
+    </main>
+
+</body>

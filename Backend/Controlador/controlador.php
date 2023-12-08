@@ -119,7 +119,25 @@ if (isset($_POST)) {
         } else {
             errores($errores);
         }
-    }  else {
+    }else if ($direccion->llamada == "recuperarUsuario" && isset($_SESSION["datosUsuario"])) {
+        
+        inicioComprobaciones($direccion->datosIntroducidos, $errores);
+        coincideUsuario($errores);
+        
+        
+        if (empty((array) $errores)) {
+            $respuesta = recuperarUsuario($errores,$session);
+            if ($respuesta) {
+                unset($_SESSION["datos"]);
+                echo json_encode($session);
+            } else {
+                errores($errores);
+            }
+        } else {
+            errores($errores);
+        }
+    }  
+    else {
         echo json_encode("No hay llamada");
     }
 } else {

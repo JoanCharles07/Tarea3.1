@@ -587,7 +587,7 @@ function registro(&$errores)
 }
 /**
  * Esta función confirmara que el usuario y la contraseña proporcionadas existen en la BBDD y coinciden entre ellas.
- * 
+ * Además añadirá a la sesion datosUsuario para controlar al usuario durante la sesion.
  * 
  * Esta función buscará si hay algún comprador con el id que llega por parametro.
  * @param [<Object>] $errores se insertarán los posible errores.
@@ -647,3 +647,67 @@ function usuario(&$errores)
     /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
         que coinciden con los de la sesión iniciada*/
 }
+
+/**
+ * Esta función obtendrá todos los datos del usuario
+ * 
+ * Esta función buscará si hay algún comprador con el id que llega por parametro.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [Boolean] que devuelve si se ha podido o no realizar la acción
+ */
+ 
+ function recuperarUsuario(&$errores,&$session)
+ {   
+     $ret = false;
+     $usuario= $_SESSION["datosUsuario"]["usuario"];
+     //Sentencia sql para conseguir los datos del usuario que deseamos usar.
+     $sql = "select * from usuario where nickname = :usuario";
+     try {
+         //Conectamos la base de datos
+         $ret = false;
+         $pdo = conectar();
+         
+         //Hacemos la sentencia preparada
+         $stmt = $pdo->prepare($sql);
+         $stmt->bindParam(":usuario",$usuario,PDO::PARAM_STR);
+         if ($stmt->execute()) {
+             $res = $stmt->fetch(PDO::FETCH_ASSOC);
+             //Si es correcta insertamos datos
+             if ($res != null) {
+                 $ret = true;
+                 $clase = new stdClass();
+                    $clase->nombre = $res["Nombre"];
+                    $clase->apellido = $res["Apellido"];
+                    $clase->nickname = $res["nickname"];
+                    $clase->email = $res["email"];
+                    $clase->direccion = $res["dirección"];
+                    $clase->ciudad = $res["ciudad"];
+                    $clase->provincia = $res["provincia"];
+                    $clase->cpostal = $res["Codigo_Postal"];
+                    $clase->dni = $res["DNI"];
+                    $session= $clase;
+             }
+             else{
+                 $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
+             }
+             
+         }else{
+             
+             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+         }
+ 
+        
+     }
+ 
+     //Else por si hay algún error
+     catch (PDOException $ex) {
+         /**En caso de haber excepción será atrapada por el catch*/
+         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+         //($_SESSION["ErrorDepuracion"]);
+     };
+ 
+     return $ret;
+     /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
+         que coinciden con los de la sesión iniciada*/
+ }

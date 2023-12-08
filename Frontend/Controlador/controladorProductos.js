@@ -6,7 +6,7 @@
 */
 
 import { resultadoBusqueda, filtroLateral,filtradoEstrellas } from "../Modelo/funcionesBusqueda.js";
-import { rellenarCarritoUsuario,datosProducto,creacionObjetoCarrito} from "../Modelo/funcionesProducto.js";
+import { rellenarCarritoUsuario,datosProducto,creacionObjetoCarrito,borrarProductoSesion} from "../Modelo/funcionesProducto.js";
 import { getProductos,verComentarios,agregarComentarios,agregarCarrito, recuperarCarrito } from "../Modelo/peticiones.js";
 import { comprobarRegex,usuarioConectado } from "../Modelo/comprobaciones.js";
 
@@ -60,6 +60,8 @@ export function objetoCarrito() {
       
     })
 }
+
+
 /**
  * Esta función se encarga de llamar a las funciones necesarias para recuperar los productos que el usuario había cogido en una sesión pasada.
  * @see recuperarCarrito hace petición BBDD que nos dará los productos que tuviera en el carrito el usuario
@@ -69,8 +71,8 @@ export function objetoCarrito() {
 export function comprobarCarrito(){
     return new Promise(async(resolve, reject) => {
         //carrito vacio
-        let usuario=JSON.parse(atob(sessionStorage.getItem("usuario")));
-        let datosCarrito= await recuperarCarrito(usuario);
+        
+        let datosCarrito= await recuperarCarrito();
         if(datosCarrito.carrito){
             
             rellenarCarritoUsuario(datosCarrito.carrito);
@@ -170,3 +172,14 @@ export function datosFiltroLateral() {
         })
 
     }
+
+export function datosBorrarProducto(index){
+    return new Promise( async(resolve, reject) => {
+
+        let respuesta=await borrarProductoSesion(index);
+        resolve(respuesta);
+
+    });
+
+    
+}

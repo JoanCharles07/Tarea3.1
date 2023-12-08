@@ -5,7 +5,7 @@
  * @version 1.0.0
 */
 
-import { usuario } from "../Modelo/peticiones.js";
+import { usuario,recuperarDatosUsuario } from "../Modelo/peticiones.js";
 /**
  * Esta función recibe los datos del Usuario y devolverá un array con los resultados.
  * devolverá una promesa que entregará el array y así seguir con el código.
@@ -73,3 +73,11 @@ export function passIguales() {
 
 
 };
+
+export function datosUsuario(){
+    return new Promise(async (resolve, reject) => {
+        const respuesta=await recuperarDatosUsuario();
+        resolve(respuesta);
+    });
+    
+}

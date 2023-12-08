@@ -1,0 +1,144 @@
+main{
+    transform: translateY(150px);
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.botonesProducto{
+    width: 30%;
+    height: 40px;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-weight: bold;
+    transition: all 0.50s ease;
+  }
+  .botonesProducto:hover{
+      background-color: var(--color-fondo-hover);
+      color: var(--color-texto-hover);
+      width: 40%;
+  }
+
+#containerDatosUsuario{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+}
+#inicioSesion{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    
+    
+}
+#datosUsuario{
+    display: flex;
+    border:1px solid black;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap:20px;
+    padding: 40px 10px;
+    background-color: whitesmoke;
+    opacity: 0.9;
+    width: 60%;
+}
+
+#datosUsuario div{
+    width: 90%;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    align-content: center;
+    gap: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+.botonesProducto{
+    width: 40%;
+    height: 40px;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-weight: bold;
+    transition: all 0.50s ease;
+  }
+  .botonesProducto:hover{
+      background-color: var(--color-fondo-hover);
+      color: var(--color-texto-hover);
+      width: 60%;
+  }
+
+.productos{
+    width: 120px;
+    height: 120px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+h1{
+    transform: translateY(120px);
+    text-align: center;
+}
+
+
+
+#datosCarrito{
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border:1px solid black;
+    background-color: whitesmoke;
+    opacity: 0.9;
+    
+}
+
+.producto{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap:15px;
+}
+#containerProductos{
+    display: flex;
+    flex-direction: column;
+    gap:15px;
+}
+#vacio{
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px
+}
+#vacio p{
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.datosProducto{
+    display: grid;
+    grid-template-columns: 3fr 1fr 0fr 2fr 2fr 1fr;
+    width: 80%;
+    gap: 20px;
+    
+    
+
+}
+#desgloseTotal{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: end;
+    width: 60%;
+}
+.inputCantidad{
+    width: 50px;
+    height: 30px;
+}
+

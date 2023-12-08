@@ -177,10 +177,10 @@ export function agregarCarrito(datosCarrito){
 }
 /**
  * Esta fución llamará al servidor para recuperar todos los productos que tuviera añadidos el usuario a su carrito.
- * @param {String} usuario cadena con el nickname del usuario. 
  * @returns devuelve un objeto con los resultados
  */
-export function recuperarCarrito(usuario){
+export function recuperarCarrito(){
+  let usuario=JSON.parse(atob(sessionStorage.getItem("usuario")));
   try{
       return new Promise((resolve, reject) => {
           //DATOS NECESARIOS PARA EL SERVIDOR
@@ -214,4 +214,43 @@ export function recuperarCarrito(usuario){
       console.log(e);
   }
   
+}
+/**
+ * Devuelve los datos del usaurio registrado.
+ * @returns datos del usuario si no hay errores.
+ */
+export function recuperarDatosUsuario(){
+  let usuario=JSON.parse(atob(sessionStorage.getItem("usuario")));
+  try{
+    return new Promise((resolve, reject) => {
+        //DATOS NECESARIOS PARA EL SERVIDOR
+       //Trasnformo el formdata a objeto para mejor manejo en PHP
+       let datosIntroducidos = {
+        usuario:usuario[0],
+        rol:usuario[1]
+       };
+       
+       
+       let datos={llamada:"recuperarUsuario",datosIntroducidos};
+       
+       fetch("../../Backend/Controlador/controlador.php", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+      },
+        body:JSON.stringify(datos)
+        
+    })
+        .then(response => response.text())
+        .then(data => {
+            const datos=JSON.parse(data);
+            resolve(datos);
+            
+    }).catch(error =>{
+      reject(error);
+    })
+   });
+}catch(e){
+    console.log(e);
+}
 }

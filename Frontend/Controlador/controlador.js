@@ -10,9 +10,13 @@
 //Importaciones necesarias para el funcionamiento de controlador.js
 import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado, mostrarCantidadCarrito } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
-import { passIguales, recepcionDeDatosUsuario } from "./controladorUsuario.js";
-import { cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas, imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin } from "../Vistas/plantillasEspecificas.js";
-import { comprobarCarrito, objetoCarrito, datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios } from "./controladorProductos.js";
+import { passIguales, recepcionDeDatosUsuario, datosUsuario } from "./controladorUsuario.js";
+import { funcionalidadModificarDatos, funcionalidadCompra, recorrerTotalProducto, funcionalidadTienda, imprimirCarrito, imprimirCarritoVacio, 
+  imprimirDatosUsuarioCarrito, funcionalidadInicioSesion, imprimirIniciarSesion, cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas, 
+  imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, 
+  mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin,borrarDelCarrito, cantidadDetalleClase } from "../Vistas/plantillasEspecificas.js";
+import { datosBorrarProducto, comprobarCarrito, objetoCarrito, datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios } from "./controladorProductos.js";
+
 
 
 
@@ -209,6 +213,8 @@ async function interaccionesControlador() {
               objetoCarrito().then(respuesta => {
 
                 mostrarCantidadCarrito();
+                //hay que comprobar si se ha hecho bien
+                location.href = "./carrito.html";
               })
 
             });
@@ -242,10 +248,10 @@ async function interaccionesControlador() {
                   recepcionDeComentarios().then(respuesta => {
                     imprimirComentarios(respuesta.datosComentarios);
                   })
-                } 
+                }
                 //En caso contrario mostraremos los errores.
                 else {
-                  
+
                   imprimirTodosResultados(respuesta);
                 }
               });
@@ -260,7 +266,69 @@ async function interaccionesControlador() {
         }
 
       }
+      /*********************************************************************************************************************************/
+      /************************  ZONA CARRITO ******************************************************************************************/
+      /******************************************************************************************************************************* */
+      else if (window.location.pathname.includes("carrito.html")) {
+        //Primero comprobamos si existe carrito.
+        if (sessionStorage.getItem("carrito")) {
+          imprimirCarrito();
+          recorrerTotalProducto();
 
+          document.getElementById("containerProductos").addEventListener("click", function (e) {
+           
+            if (e.target.classList.contains("cruz")) {
+              
+              let producto = e.target.parentNode;
+              datosBorrarProducto(producto.id).then(respuesta => {
+                if(respuesta){
+                    borrarDelCarrito(producto);
+                }
+              });
+            }
+            else if(e.target.classList.contains("inputCantidad") ){
+              
+                let producto = e.target.parentNode;
+                e.target.addEventListener("input",cantidadDetalleClase(producto));
+            
+            }
+          })
+          //Si se hace click en cantidad busco el padre y luego uso children para escoger precio y precioTotal.
+
+
+          
+
+          document.getElementById("comprar").addEventListener("click", function () {
+            funcionalidadCompra();
+          })
+        } else {
+
+          imprimirCarritoVacio();
+          document.getElementById("tienda").addEventListener("click", function () {
+            funcionalidadTienda();
+          })
+
+        }
+
+        //Por otro lado comprobar si esta usuario.
+        if (sessionStorage.getItem("usuario")) {
+          //Siempre llamo a la base de datos o no?
+          datosUsuario().then(respuesta => {
+            imprimirDatosUsuarioCarrito(respuesta);
+            //Boton modificar añadir direccion
+
+          })
+          document.getElementById("modificar").addEventListener("click", function () {
+            funcionalidadModificarDatos();
+          })
+        }
+        else {
+          imprimirIniciarSesion();
+          document.getElementById("login").addEventListener("click", function () {
+            funcionalidadInicioSesion();
+          })
+        }
+      }
     });
 }
 interaccionesControlador();
