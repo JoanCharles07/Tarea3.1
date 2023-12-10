@@ -117,28 +117,18 @@ function mostrarUsuario() {
  * en cuenta el rol.
  */
 function acciones(){
-    const rol=JSON.parse(atob(sessionStorage.getItem("usuario")));
-    const acciones = ["Perfil", "Carrito", "Pedidos", "Productos", "Lista Productos", "Lista Usuarios", "Lista Roles", "Lista Noticias", "Lista Permisos"];
-    const direcciones = ["Perfil.html", "Carrito.html", "Pedidos.html", "Productos.html", "ListaProductos.html",
-     "ListaUsuarios.html", "ListaRoles.html", "ListaNoticias.html", "ListaPermisos.html"];
+    const acciones=JSON.parse(atob(sessionStorage.getItem("acciones")));
     const listaOpciones = document.querySelector("#lista");
-    let accionesPermitidas=0
-    let contador=0;
-    let lista="";
-    if (rol[1] == 1) {
-        accionesPermitidas=2
-    }
-    else if (rol[1]==2 ) {
-        accionesPermitidas=4
-    } else if (rol[1]== 3) {
-        accionesPermitidas=acciones.length-1;
-    }
-    while(contador <= accionesPermitidas){
-        lista=`<li class="listaIconos">
-               <a href="${direcciones[contador]}">${acciones[contador]} </a>
-                </li>`
-        listaOpciones.innerHTML+=lista;
-        contador ++;
+    for (const accion of acciones) {
+        if(accion=="Carrito"){
+            lista=`<li class="listaIconos" id="${accion}" ><a href="./carrito.html">${accion}</a></li>`
+            listaOpciones.innerHTML+=lista;
+        }
+        else{
+            lista=`<li class="listaIconos" id="${accion}" >${accion}</li>`
+            listaOpciones.innerHTML+=lista;
+        }
+        
     }
 
 }
@@ -146,10 +136,14 @@ function acciones(){
  * Esta función nos muestra en el icono del carrito del header la cantidad de productos en nuestro carrito.
  */
 function mostrarCantidadCarrito(){
+    let cantidadCarro = document.getElementById("cantidadProductosCarro");
     if(sessionStorage.getItem("carrito")){
-        let cantidadCarro = document.getElementById("cantidadProductosCarro");
+        
         let arrayCarrito = JSON.parse(sessionStorage.getItem("carrito"));
         cantidadCarro.textContent = arrayCarrito.length;
+    }
+    else{
+        cantidadCarro.textContent = 0;
     }
   
 }

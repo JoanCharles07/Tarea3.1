@@ -90,7 +90,7 @@ export function envioDeComentarios() {
     return new Promise(async(resolve, reject) => {
         let datosComentario = new FormData(document.getElementById("formEnvioComentario"));
         let datos= comprobarRegex(datosComentario.get("comentarioTexto"));
-        
+        console.log(datos);
         if(datos==false){
             let datosServidor=agregarComentarios(datosComentario);
             

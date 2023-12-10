@@ -120,7 +120,7 @@ function filtroComparacion(tipo) {
         palabraTipo = palabraPreparada(tipo[i]);
 
         for (let dato of datos) {
-            palabraDatos = palabraPreparada(dato.Nombre_Producto);
+            palabraDatos = palabraPreparada(dato.nombre_producto);
 
             if (palabraDatos.includes(palabraTipo)) {
 

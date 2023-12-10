@@ -5,7 +5,7 @@
  * @version 1.0.0
 */
 
-import { usuario,recuperarDatosUsuario } from "../Modelo/peticiones.js";
+import { usuario,recuperarDatosUsuario, accesoListados } from "../Modelo/peticiones.js";
 /**
  * Esta función recibe los datos del Usuario y devolverá un array con los resultados.
  * devolverá una promesa que entregará el array y así seguir con el código.
@@ -26,9 +26,11 @@ export function recepcionDeDatosUsuario(direccion) {
                        //Nos aseguramos de tener los datos antes de continuar
                         let datosServidor= await usuario(datosRegistro,direccion);
                         //En caso de tener la propiedad datosUuario quiere decir que ha sido correcto
-                        if(datosServidor.datosUsuario){
+                        if(datosServidor.datosUsuario && datosServidor.acciones){
                             //codificar datos antes de meterlos
+                            
                             sessionStorage.setItem("usuario",btoa(JSON.stringify(datosServidor.datosUsuario)));
+                            sessionStorage.setItem("acciones",btoa(JSON.stringify(datosServidor.acciones)));
                             resolve();
                         }else{
                             resolve(datosServidor);
@@ -77,7 +79,19 @@ export function passIguales() {
 export function datosUsuario(){
     return new Promise(async (resolve, reject) => {
         const respuesta=await recuperarDatosUsuario();
+        
         resolve(respuesta);
     });
+    
+}
+
+
+export function comprobarAccion() {
+    return new Promise((resolve, reject) => {
+        
+          const respuesta=accesoListados();
+          resolve(respuesta);
+        })
+        
     
 }

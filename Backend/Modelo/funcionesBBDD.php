@@ -96,8 +96,8 @@ function existeEnCarrito(&$errores){
     $respuesta=false;
     if ($NoDuplicado) {
         $ret = false;
-        $sql = "INSERT INTO `comentario` (`Mensaje`, `valoracion`, `ID_comprador`,`ID_Producto`) 
-        VALUES (:comentario, :valoracion,:comprador,:producto);";
+        $sql = "INSERT INTO `comentario` (`Mensaje`, `valoracion`,`fecha`, `ID_comprador`,`ID_Producto`) 
+        VALUES (:comentario, :valoracion,DATE(now()),:comprador,:producto);";
         
         try {
             $pdo = conectar();
@@ -311,6 +311,46 @@ function modificarCarrito(&$errores){
  * @see conectar() conexión a la base de datos.
  * @return [Array]  con todos los comentarios si los hubiera.
  */
+function recuperarComentariosUsuario(&$errores)
+{
+
+    $sql = "SELECT * FROM comentario where ID_comprador = :id";
+    $array = [];
+    try {
+        $pdo=conectar();
+        $stmt = $pdo->prepare($sql);
+        $data = ['id' => $_SESSION["datosUsuario"]["id"]];
+        if ($stmt->execute($data)) {
+            $res = $stmt->fetchAll();
+            if ($res != null) {
+                
+                for ($x = 0; $x < count($res); $x++) {
+                    $clase = new stdClass();
+                    $clase->mensaje = $res[$x][0];
+                    $clase->valoracion = $res[$x][1];
+                   // $clase->nombre_comprador = $_SESSION["datosUsuario"]["usuario"];
+                    $clase->ID_Producto = $res[$x][3];
+                    $array []= $clase;
+                }
+            } else {
+                $errores->errorBBDD[] = "No hay comentarios";
+            }
+        }
+        
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        echo "Error en la base de datos";
+    };
+
+    return $array;
+}
+/**
+ * Esta función buscará si hay comentarios realizados en el productos.
+ * @param [<String>] $id id del producto.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [Array]  con todos los comentarios si los hubiera.
+ */
 function recuperarComentarios($id,&$errores)
 {
 
@@ -328,8 +368,9 @@ function recuperarComentarios($id,&$errores)
                     $clase = new stdClass();
                     $clase->mensaje = $res[$x][0];
                     $clase->valoracion = $res[$x][1];
-                    $clase->nombre_comprador = nombre_comprador($res[$x][2],$errores);
-                    $clase->ID_Producto = $res[$x][3];
+                    $clase->fecha = $res[$x][2];
+                    $clase->nombre_comprador = nombre_comprador($res[$x][3],$errores);
+                    $clase->ID_Producto = $res[$x][4];
                     $array []= $clase;
                 }
             } else {
@@ -354,7 +395,7 @@ function recuperarComentarios($id,&$errores)
 function nombre_comprador($id,&$errores){
     $ret = "";
     //Sentencia sql para conseguir los datos del usuario que deseamos usar.
-    $sql = "select nickname from usuario where id = :id";
+    $sql = "select nickname from usuario where id_Usuario = :id";
     try {
         //Conectamos la base de datos
         $res=false;
@@ -424,13 +465,14 @@ function recuperarProductos(&$errores)
                     $clase = new stdClass();
                     $clase->id = $ret[$x][0];
                     $clase->nombre_producto = $ret[$x][1];
-                    $clase->stock = $ret[$x][2];
-                    $clase->precio = $ret[$x][3];
+                    $clase->descripcion = $ret[$x][2];
+                    $clase->stock = $ret[$x][3];
+                    $clase->precio = $ret[$x][4];
                     /**Leemos la imagen para que pueda verse correctamente en la aplicación web*/
-                    $clase->imagen = base64_encode($ret[$x][4]);
-                    $clase->valoracion_total = $ret[$x][5];
-                    $clase->comentarios_totales = $ret[$x][6];
-                    $clase->descuento = $ret[$x][7];
+                    $clase->imagen = base64_encode($ret[$x][5]);
+                    $clase->valoracion_total = $ret[$x][6];
+                    $clase->comentarios_totales = $ret[$x][7];
+                    $clase->descuento = $ret[$x][8];
                     //He decidido no introducir el id del vendedor por privacidad.
                     /* $clase->Id_Vendedor = $ret[$x][8];*/
 
@@ -523,7 +565,7 @@ function datosDuplicados(&$errores)
  * @see conectar() conexión a la base de datos.
  * @return [Boolean] que devuelve si se ha podido o no realizar la acción
  */
-function registro(&$errores)
+function registro(&$errores,&$session)
 {
     //crear un select y evitar hacer insert si hay duplicaciones
     //donde no debe haberlas.
@@ -563,6 +605,8 @@ function registro(&$errores)
                     $_SESSION["datosUsuario"]["id"] = $pdo->lastInsertId();
                     $_SESSION["datosUsuario"]["usuario"]= $_SESSION["datos"]["usuario"];
                     $_SESSION["datosUsuario"]["rol"]= $_SESSION["datos"]["rol"];
+                     //conseguir acciones que puede realizar
+                     $session->acciones=accionesARealizar($errores,$_SESSION["datosUsuario"]["rol"]);
                 } else {
 
 
@@ -583,7 +627,53 @@ function registro(&$errores)
             //($_SESSION["ErrorDepuracion"]);
         };
     }
+   
     return $respuesta;
+}
+
+function accionesARealizar(&$errores,$rol){
+    $ret = false;
+    $arrayAcciones=[];    
+        $sql = "SELECT P.nombre FROM permiso P ,rol R, obtencion O where P.ID_Permiso=O.ID_Permiso and O.ID_Rol= :rol group by P.nombre
+        order by P.nombre;";
+
+        try {
+            $pdo = conectar();
+            $stmt = $pdo->prepare($sql);
+            
+            $data = [
+                'rol' =>  $rol
+            ];
+
+            if ($stmt->execute($data)) {
+                $ret = $stmt->fetchAll();
+                if ($ret !=false) {
+                    foreach ($ret as $key => $value) {
+                        array_push($arrayAcciones,$value[0]);
+                    }
+                    
+                } else {
+
+
+                    $errores->errorBBDD[] = "Error al leer permisos correctamente";
+                }
+            } else {
+
+                $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+            }
+        }
+
+        //Else por si hay algún error
+        catch (PDOException $ex) {
+            /**En caso de haber excepción será atrapada por el catch*/
+            
+            //Usarlo si es necesario.
+           // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+            //($_SESSION["ErrorDepuracion"]);
+        };
+    
+    return $arrayAcciones;
+
 }
 /**
  * Esta función confirmara que el usuario y la contraseña proporcionadas existen en la BBDD y coinciden entre ellas.
@@ -595,7 +685,7 @@ function registro(&$errores)
  * @return [Boolean] que devuelve si se ha podido o no realizar la acción
  */
  
-function usuario(&$errores)
+function usuario(&$errores,&$session)
 {   
     $ret = false;
     //Por comodidad y ya que no son muchas variables usaremos una para usuario y otra para la contraseña
@@ -615,13 +705,14 @@ function usuario(&$errores)
         if ($stmt->execute()) {
             $res = $stmt->fetch(PDO::FETCH_ASSOC);
             //Si es correcta insertamos datos
-            if ($res != null) {
+            if ($res != 0) {
                 $ret = true;
                 
                 //Insertamos o cambios los datos de la sesión si todo es correcto
-                    $_SESSION["datosUsuario"]["id"] = $res["ID"];
+                    $_SESSION["datosUsuario"]["id"] = $res["ID_Usuario"];
                     $_SESSION["datosUsuario"]["usuario"]= $res["nickname"];
                     $_SESSION["datosUsuario"]["rol"]= $res["Id_Rol"];
+                    $session->acciones=accionesARealizar($errores,$_SESSION["datosUsuario"]["rol"]);
                 
             }
             else{
@@ -647,7 +738,58 @@ function usuario(&$errores)
     /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
         que coinciden con los de la sesión iniciada*/
 }
+function existeAccion(&$errores)
+{   
+    $ret = false;
+    //Por comodidad y ya que no son muchas variables usaremos una para usuario y otra para la contraseña
+    $opcion= $_SESSION["datos"]["opcion"];
+    $accion=$_SESSION["datos"]["accion"];
+    $rol=$_SESSION["datosUsuario"]["rol"];
+    //Sentencia sql para conseguir los datos del usuario que deseamos usar.
+    $sql = "SELECT count(*) FROM permiso P ,rol R, obtencion O where P.ID_Permiso=O.ID_Permiso and O.ID_Rol=R.ID_Rol AND O.ID_Rol= :rol
+    and P.nombre= :opcion and P.accion= :accion";
+    try {
+        //Conectamos la base de datos
+        $ret = false;
+        $pdo = conectar();
+        
+        //Hacemos la sentencia preparada
+        $stmt = $pdo->prepare($sql);
+        $data = [
+            'opcion' =>  $opcion,
+            'accion' =>  $accion,
+            'rol' => $rol
+        ];
+        if ($stmt->execute($data)) {
+            $res = $stmt->rowCount();
+            //Si es correcta insertamos datos
+            if ($res != 0) {
+                $ret=true;
+            }
+            else{
+                $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
+            }
+            
+        }else{
+            
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
 
+       
+    }
+
+    //Else por si hay algún error
+    catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+        //($_SESSION["ErrorDepuracion"]);
+        var_dump($ex->getMessage());
+    };
+
+    return $ret;
+    /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
+        que coinciden con los de la sesión iniciada*/
+}
 /**
  * Esta función obtendrá todos los datos del usuario
  * 
@@ -711,3 +853,40 @@ function usuario(&$errores)
      /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
          que coinciden con los de la sesión iniciada*/
  }
+
+ function noticia(&$errores){
+    $sql = "SELECT * FROM noticia";
+    $array = [];
+    try {
+        $pdo=conectar();
+        $stmt = $pdo->prepare($sql);
+        if ($stmt->execute()) {
+            $res = $stmt->fetchAll();
+            
+            if ($res != null) {
+                for ($x = 0; $x < count($res); $x++) {
+                    $clase = new stdClass();
+                    $clase->titulo = $res[$x][1];
+                    $clase->subtitulo = $res[$x][2];
+                    $clase->imagen = base64_encode($res[$x][3]);
+                    $clase->fecha = $res[$x][4];
+                    $clase->cuerpo = $res[$x][5];
+                    $array []= $clase;
+                }
+            } else {
+                $errores->errorBBDD[] = "No se han encontrado noticias";
+            }
+        }else{
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+        
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        /**En caso de haber excepción será atrapada por el catch*/
+         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+         //($_SESSION["ErrorDepuracion"]);
+         $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+    };
+
+    return $array;
+}

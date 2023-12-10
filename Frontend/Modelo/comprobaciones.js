@@ -16,7 +16,24 @@ export function comprobarRegex(valor) {
   let respuesta = false;
   //Con esta expresión regular podemos confirmar var
 
-  let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,25}$)/);
+  let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,40}$)/);
+  respuesta = !(regex.test(valor));
+
+  return respuesta;
+}
+
+/**
+ * determina si el parametro valor cumple la expresión regular, si la cumple la respuesta será falsa si no 
+ * devolverá true.
+ * @param {*} valor es el parámetro que compararemos en la expresión regular 
+ *  
+ * @returns Boolean con resultado de la expresión regular.
+ */
+export function comprobarRegexComentarios(valor) {
+  let respuesta = false;
+  //Con esta expresión regular podemos confirmar var
+
+  let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,250}$)/);
   respuesta = !(regex.test(valor));
 
   return respuesta;

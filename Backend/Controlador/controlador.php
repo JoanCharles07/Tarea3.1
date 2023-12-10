@@ -7,6 +7,7 @@
  * @version 1.0.0
  */
 require_once '../Conf/conn.php';
+include_once './controladorListas.php';
 include_once '../Modelo/funciones.php';
 include_once '../Modelo/comprobaciones.php';
 include_once '../Modelo/funcionesBBDD.php';
@@ -34,7 +35,7 @@ if (isset($_POST)) {
         //Si hay errores nno es necesario seguir y evitamos que entre a las funciones de la BBDD
         if (empty((array) $errores)) {
             $_SESSION["datos"]["pass"] = encriptarPalabra($_SESSION["datos"]["pass"]);
-            $respuesta = registro($errores);
+            $respuesta = registro($errores,$session);
             //Segunda Ronda de errores dentro de BBDD
             if ($respuesta) {
                 exitoUsuario($session);
@@ -49,7 +50,7 @@ if (isset($_POST)) {
         inicioComprobaciones($direccion->datosIntroducidos, $errores);
         if (empty((array) $errores)) {
             $_SESSION["datos"]["pass"] = encriptarPalabra($_SESSION["datos"]["pass"]);
-            $respuesta = usuario($errores);
+            $respuesta = usuario($errores,$session);
             if ($respuesta) {
                 exitoUsuario($session);
             } else {
@@ -136,7 +137,31 @@ if (isset($_POST)) {
         } else {
             errores($errores);
         }
-    }  
+    }else if ($direccion->llamada == "noticias") {
+        
+            
+            $session = noticia($errores);
+
+            if (empty((array) $errores)) {
+                
+                echo json_encode($session);
+            }
+            else {
+                errores($errores);
+            }
+        
+    }else if ($direccion->llamada == "listas" && isset($_SESSION["datosUsuario"])) {
+        //llamar para comparar usuario y rol y ver si coinciden.Si no coinciden fuera directamente.
+        //asegurarnos que tanto la palabra como la accion no se han adulterado y entramos al controlador de listas.
+        //Transformar aqui al nombre del permiso para no tenerlo en el frontend.
+       //var_dump($direccion->datosIntroducidos);
+       //sanear
+       inicioComprobaciones($direccion->datosIntroducidos, $errores);
+       coincideUsuario($errores);
+       $session=controladorLista($direccion->datosIntroducidos,$errores);
+       echo json_encode($session);
+} 
+
     else {
         echo json_encode("No hay llamada");
     }

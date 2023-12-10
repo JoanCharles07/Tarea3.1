@@ -27,7 +27,7 @@ main{
     gap: 10px;
 }
 #inicioSesion{
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 60%;
@@ -35,7 +35,7 @@ main{
     
 }
 #datosUsuario{
-    display: flex;
+    display: none;
     border:1px solid black;
     flex-direction: column;
     justify-content: start;
@@ -97,7 +97,7 @@ h1{
 }
 
 .producto{
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -110,7 +110,7 @@ h1{
     gap:15px;
 }
 #vacio{
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;

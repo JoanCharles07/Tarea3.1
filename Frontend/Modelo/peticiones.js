@@ -22,6 +22,7 @@ export function getProductos(){
             .then(response => response.text())
             .then(data => {
                 const datos=JSON.parse(data);
+                console.log(datos);
                 return datos;
                 
         });
@@ -90,6 +91,7 @@ export function verComentarios(idProducto){
             .then(response => response.text())
             .then(data => {
                 const datos=JSON.parse(data);
+                console.log(datos);
                 resolve(datos);
                 
         });
@@ -232,6 +234,78 @@ export function recuperarDatosUsuario(){
        
        
        let datos={llamada:"recuperarUsuario",datosIntroducidos};
+       
+       fetch("../../Backend/Controlador/controlador.php", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+      },
+        body:JSON.stringify(datos)
+        
+    })
+        .then(response => response.text())
+        .then(data => {
+            const datos=JSON.parse(data);
+            console.log(datos);
+            resolve(datos);
+            
+    }).catch(error =>{
+      reject(error);
+    })
+   });
+}catch(e){
+    console.log(e);
+}
+}
+
+
+export function recuperarNoticias(){
+ 
+  try{
+    return new Promise((resolve, reject) => {
+        //DATOS NECESARIOS PARA EL SERVIDOR
+       //Trasnformo el formdata a objeto para mejor manejo en PHP
+       
+       
+       
+       let datos={llamada:"noticias"};
+       
+       fetch("../../Backend/Controlador/controlador.php", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+      },
+        body:JSON.stringify(datos)
+        
+    })
+        .then(response => response.text())
+        .then(data => {
+            const datos=JSON.parse(data);
+            console.log(datos);
+            resolve(datos);
+            
+    }).catch(error =>{
+      reject(error);
+    })
+   });
+}catch(e){
+    console.log(e);
+}
+}
+
+export function accesoListados(){
+  
+  try{
+    return new Promise((resolve, reject) => {
+        //DATOS NECESARIOS PARA EL SERVIDOR
+       const datosUrl=new URLSearchParams(window.location.search);
+       const usuario=sessionStorage.getItem("usuario");
+       const datosIntroducidos={
+        opcion:datosUrl.get('eleccion'),
+        accion:"leer",
+        usuario:usuario[0]
+       }
+       let datos={llamada:"listas",datosIntroducidos};
        
        fetch("../../Backend/Controlador/controlador.php", {
         method: 'POST',

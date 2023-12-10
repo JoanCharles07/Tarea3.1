@@ -10,12 +10,16 @@
 //Importaciones necesarias para el funcionamiento de controlador.js
 import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado, mostrarCantidadCarrito } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
-import { passIguales, recepcionDeDatosUsuario, datosUsuario } from "./controladorUsuario.js";
-import { funcionalidadModificarDatos, funcionalidadCompra, recorrerTotalProducto, funcionalidadTienda, imprimirCarrito, imprimirCarritoVacio, 
-  imprimirDatosUsuarioCarrito, funcionalidadInicioSesion, imprimirIniciarSesion, cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas, 
-  imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda, 
-  mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin,borrarDelCarrito, cantidadDetalleClase } from "../Vistas/plantillasEspecificas.js";
+import { passIguales, recepcionDeDatosUsuario, datosUsuario,comprobarAccion  } from "./controladorUsuario.js";
+import {
+  activarZonaUsuario, funcionalidadModificarDatos, funcionalidadCompra, recorrerTotalProducto, funcionalidadTienda, imprimirCarrito, imprimirCarritoVacio,
+  imprimirDatosUsuarioCarrito, funcionalidadInicioSesion, imprimirIniciarSesion, cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas,
+  imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda,
+  mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin, borrarDelCarrito, cantidadDetalleClase, imprimirNoticias
+} from "../Vistas/plantillasEspecificas.js";
 import { datosBorrarProducto, comprobarCarrito, objetoCarrito, datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios } from "./controladorProductos.js";
+import { noticia } from "./controladorListasNoticias.js";
+import { redireccionLista } from "../Vistas/plantillaListas.js";
 
 
 
@@ -38,8 +42,19 @@ function requerimientosComunes() {
         if (sessionStorage.getItem("usuario") && !sessionStorage.getItem("conectado")) {
           //Si no esta conectado quiere decir que es la primera vez y comprobaremos el carrito del usuario en la BBDD
           comprobarCarrito().then(respuesta => {
-            //Mostramos cantidad en el carrito
+            //Mensaje de bienvenida
+            mostrarUsuario();
+            //En las listas saldrán las distintas opciones según el rol que tengas.
+            acciones();
+            document.getElementById("lista").addEventListener("click", function (e) {
+            
+              redireccionLista(e.target.id);
+              
+            });
+            //Mostraremos cantidad en el carrito.
             mostrarCantidadCarrito();
+            //Cambiaremos los distintos elementos del DOM una vez que ya hay un usuario
+            redireccionesConectado();
 
           });
         }
@@ -50,10 +65,18 @@ function requerimientosComunes() {
           mostrarUsuario();
           //En las listas saldrán las distintas opciones según el rol que tengas.
           acciones();
+          document.getElementById("lista").addEventListener("click", function (e) {
+            
+            redireccionLista(e.target.id);
+            
+          });
+          
+          
           //Mostraremos cantidad en el carrito.
           mostrarCantidadCarrito();
           //Cambiaremos los distintos elementos del DOM una vez que ya hay un usuario
           redireccionesConectado();
+
         }
         //Si no esta el usuario solo mostraremos cantidad carrito del usuario anonimo.
         else {
@@ -186,6 +209,10 @@ async function interaccionesControlador() {
               }
             }
           });
+
+          document.getElementById("registro").addEventListener("click",function(){
+            location.href="./registro.html";
+          })
         } catch (error) {
           //Por aquí veremos el error para depurar
           //console.log(error);
@@ -242,16 +269,19 @@ async function interaccionesControlador() {
           document.getElementById("formEnvioComentario").addEventListener("submit", function (e) {
             e.preventDefault();
             if (sessionStorage.getItem("usuario")) {
+              
               envioDeComentarios().then(respuesta => {
                 //Si todo es correcto habrá respuesta.comentario
                 if (respuesta.comentario) {
+                  
                   recepcionDeComentarios().then(respuesta => {
-                    imprimirComentarios(respuesta.datosComentarios);
+                    
+                    imprimirComentarios(respuesta);
                   })
                 }
                 //En caso contrario mostraremos los errores.
                 else {
-
+                  
                   imprimirTodosResultados(respuesta);
                 }
               });
@@ -276,27 +306,28 @@ async function interaccionesControlador() {
           recorrerTotalProducto();
 
           document.getElementById("containerProductos").addEventListener("click", function (e) {
-           
+
             if (e.target.classList.contains("cruz")) {
-              
+
               let producto = e.target.parentNode;
               datosBorrarProducto(producto.id).then(respuesta => {
-                if(respuesta){
-                    borrarDelCarrito(producto);
+                if (respuesta) {
+                  borrarDelCarrito(producto);
+                  mostrarCantidadCarrito();
                 }
               });
             }
-            else if(e.target.classList.contains("inputCantidad") ){
-              
-                let producto = e.target.parentNode;
-                e.target.addEventListener("input",cantidadDetalleClase(producto));
-            
+            else if (e.target.classList.contains("inputCantidad")) {
+
+              let producto = e.target.parentNode;
+              e.target.addEventListener("input", cantidadDetalleClase(producto));
+
             }
           })
           //Si se hace click en cantidad busco el padre y luego uso children para escoger precio y precioTotal.
 
 
-          
+
 
           document.getElementById("comprar").addEventListener("click", function () {
             funcionalidadCompra();
@@ -304,23 +335,23 @@ async function interaccionesControlador() {
         } else {
 
           imprimirCarritoVacio();
-          document.getElementById("tienda").addEventListener("click", function () {
-            funcionalidadTienda();
-          })
+
 
         }
 
         //Por otro lado comprobar si esta usuario.
         if (sessionStorage.getItem("usuario")) {
           //Siempre llamo a la base de datos o no?
+
+          activarZonaUsuario();
           datosUsuario().then(respuesta => {
             imprimirDatosUsuarioCarrito(respuesta);
-            //Boton modificar añadir direccion
+            document.getElementById("modificar").addEventListener("click", function () {
+              funcionalidadModificarDatos();
+            })
 
           })
-          document.getElementById("modificar").addEventListener("click", function () {
-            funcionalidadModificarDatos();
-          })
+
         }
         else {
           imprimirIniciarSesion();
@@ -329,8 +360,26 @@ async function interaccionesControlador() {
           })
         }
       }
-      else if(window.location.pathname.includes("sobrenosotros.html")){
-        
+      /*********************************************************************************************************************************/
+      /************************  ZONA NOTICIAS ******************************************************************************************/
+      /******************************************************************************************************************************* */
+      else if (window.location.pathname.includes("noticias.html")) {
+        noticia().then(respuesta => {
+          imprimirNoticias(respuesta);
+
+        });
+      }
+      else if (window.location.pathname.includes("listas.html")) {
+        comprobarAccion().then(respuesta =>{
+          //llevar a la direccion si es correcto
+          //llevar a tienda y poner un alert
+          //cerrar sesión usuario.
+         /* alert("Hubo algún error vuelva a iniciar sesión");
+
+          location.href="./login.html";*/
+          console.log(respuesta);
+
+        });
       }
     });
 }
