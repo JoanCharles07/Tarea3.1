@@ -87,9 +87,9 @@ export function datosUsuario(){
 
 
 export function comprobarAccion() {
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         
-          const respuesta=accesoListados();
+          const respuesta=await accesoListados();
           resolve(respuesta);
         })
         

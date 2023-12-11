@@ -7,8 +7,8 @@
 
 import { resultadoBusqueda, filtroLateral,filtradoEstrellas } from "../Modelo/funcionesBusqueda.js";
 import { rellenarCarritoUsuario,datosProducto,creacionObjetoCarrito,borrarProductoSesion} from "../Modelo/funcionesProducto.js";
-import { getProductos,verComentarios,agregarComentarios,agregarCarrito, recuperarCarrito } from "../Modelo/peticiones.js";
-import { comprobarRegex,usuarioConectado } from "../Modelo/comprobaciones.js";
+import { borrarDelCarritoBBDD,getProductos,verComentarios,agregarComentarios,agregarCarrito, recuperarCarrito } from "../Modelo/peticiones.js";
+import { comprobarRegexComentarios,usuarioConectado } from "../Modelo/comprobaciones.js";
 
 /**
  * Esta función llama a la funcion datosProductos que devolverá una promesa.
@@ -51,8 +51,8 @@ export function objetoCarrito() {
         let cantidadProducto = parseInt(document.getElementById("cantidad").value) 
        const respuesta=creacionObjetoCarrito(producto,cantidadProducto);
        if(sessionStorage.getItem("usuario")){
-        agregarCarrito(respuesta);
-        resolve(respuesta);
+            await agregarCarrito(respuesta);
+            resolve(respuesta);
        } 
        else{
          resolve(respuesta);
@@ -89,7 +89,7 @@ export function comprobarCarrito(){
 export function envioDeComentarios() {
     return new Promise(async(resolve, reject) => {
         let datosComentario = new FormData(document.getElementById("formEnvioComentario"));
-        let datos= comprobarRegex(datosComentario.get("comentarioTexto"));
+        let datos= comprobarRegexComentarios(datosComentario.get("comentarioTexto"));
         console.log(datos);
         if(datos==false){
             let datosServidor=agregarComentarios(datosComentario);
@@ -129,7 +129,6 @@ export function datosLupa() {
         //Uso try catch porque es asincrono
         try {
             let resultado ="";
-            blabla();
         if(!sessionStorage.getItem("productos")){
             const Productos=await getProductos();
             sessionStorage.setItem("productos",JSON.stringify(Productos));
@@ -177,7 +176,13 @@ export function datosBorrarProducto(index){
     return new Promise( async(resolve, reject) => {
 
         let respuesta=await borrarProductoSesion(index);
-        resolve(respuesta);
+        if(sessionStorage.getItem("usuario")){
+            await borrarDelCarritoBBDD(index);
+            resolve(respuesta);
+       } 
+       else{
+         resolve(respuesta);
+       }
 
     });
 

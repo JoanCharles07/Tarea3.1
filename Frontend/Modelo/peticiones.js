@@ -148,13 +148,11 @@ export function agregarCarrito(datosCarrito){
               if(key=="id" || key=="cantidad"){
                 datosIntroducidos[key] = value;
               }
-               
               
            }
            datosIntroducidos["IDusuario"]=usuario[0];
-           console.log(datosIntroducidos);
            let datos={llamada:"agregarCarritoBBDD",datosIntroducidos};
-           
+           console.log(datosIntroducidos);
            fetch("../../Backend/Controlador/controlador.php", {
             method: 'POST',
             headers: {
@@ -166,9 +164,11 @@ export function agregarCarrito(datosCarrito){
             .then(response => response.text())
             .then(data => {
                 const datos=JSON.parse(data);
+                console.log(datos);
                 resolve();
                 
         }).catch(error =>{
+          console.log(error);
           reject(error);
         })
        });
@@ -176,6 +176,43 @@ export function agregarCarrito(datosCarrito){
         console.log(e);
     }
     
+}
+export function borrarDelCarritoBBDD(datosCarrito){
+  try{
+      return new Promise((resolve, reject) => {
+          //DATOS NECESARIOS PARA EL SERVIDOR
+         //Trasnformo el formdata a objeto para mejor manejo en PHP
+         let usuario=JSON.parse(atob(sessionStorage.getItem("usuario")));
+         let datosIntroducidos = new Object();
+         
+         //Con esta expresión regular podemos confirmar var
+         datosIntroducidos["id"]=datosCarrito;
+         datosIntroducidos["IDusuario"]=usuario[0];
+         let datos={llamada:"borrarCarritoBBDD",datosIntroducidos};
+         console.log(datosIntroducidos);
+         fetch("../../Backend/Controlador/controlador.php", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+        },
+          body:JSON.stringify(datos)
+          
+      })
+          .then(response => response.text())
+          .then(data => {
+              const datos=JSON.parse(data);
+              console.log(datos);
+              resolve();
+              
+      }).catch(error =>{
+        console.log(error);
+        reject(error);
+      })
+     });
+  }catch(e){
+      console.log(e);
+  }
+  
 }
 /**
  * Esta fución llamará al servidor para recuperar todos los productos que tuviera añadidos el usuario a su carrito.

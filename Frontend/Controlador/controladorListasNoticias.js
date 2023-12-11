@@ -7,6 +7,7 @@
 */
 
 import{recuperarNoticias}from "../Modelo/peticiones.js";
+import { imprimirListaComentarios ,imprimirListaPermisos,imprimirListaProductos,imprimirListaRoles,imprimirListaUsuarios} from "../Vistas/plantillaListas.js";
 /**
  * Esta función comprobará si tenemos en el sessionStorage lo productos, si no los tenemos hará una llamada a la
  * base de datos para recuperarlos, esto será asincrono por lo que usaremos async await para esperar la respuesta
@@ -31,19 +32,34 @@ export function noticia() {
     });
 }
 
-export function lista() {
-    return new Promise(async(resolve, reject) => {
+export function lista(datos) {
+   
         //Comprobamos que parametro entra y nos enviará a la vista correspondiente.
-        
+        console.log(datos);
         try{
-            const respuesta=recuperarNoticias();
-                resolve(respuesta);
-            
+            if(datos.comentarios){
+                imprimirListaComentarios(datos);
+            }
+            else if(datos.usuarios){
+                imprimirListaUsuarios(datos);
+            }
+            else if(datos.roles){
+                imprimirListaRoles(datos);
+            }
+            else if(datos.productos){
+                imprimirListaProductos(datos);
+            }
+            else if(datos.permisos){
+                imprimirListaPermisos(datos);
+            }
+            else{
+                console.log("o aqui");
+            }
+
         }catch(e){
             
-            reject(e);
         }
          
 
-    });
+  
 }

@@ -18,7 +18,7 @@ import {
   mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin, borrarDelCarrito, cantidadDetalleClase, imprimirNoticias
 } from "../Vistas/plantillasEspecificas.js";
 import { datosBorrarProducto, comprobarCarrito, objetoCarrito, datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios } from "./controladorProductos.js";
-import { noticia } from "./controladorListasNoticias.js";
+import { lista, noticia } from "./controladorListasNoticias.js";
 import { redireccionLista } from "../Vistas/plantillaListas.js";
 
 
@@ -377,7 +377,8 @@ async function interaccionesControlador() {
          /* alert("Hubo algún error vuelva a iniciar sesión");
 
           location.href="./login.html";*/
-          console.log(respuesta);
+          
+          lista(respuesta);
 
         });
       }

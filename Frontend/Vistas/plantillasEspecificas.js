@@ -328,11 +328,13 @@ export function recorrerTotalProducto() {
 }
 //No se guarda en la sesion y es meramente visual
 export function recorrerTotalProductoAlterado(producto) {
+  
+  console.log("entro 2");
   let totalPedido = document.getElementById("totalPedido");
   let totalIVA = document.getElementById("totalIva");
   let sumaTotal = 0;
-  for (producto of productos) {
-    sumaTotal = sumaTotal + parseFloat(producto.children[4].textContent);
+  for (let product of producto) {
+    sumaTotal = sumaTotal + parseFloat(product.children[4].textContent);
   }
   totalIVA.textContent = sumaTotal.toFixed(2);
   totalPedido.textContent = (sumaTotal + 3.99).toFixed(2);
@@ -340,7 +342,7 @@ export function recorrerTotalProductoAlterado(producto) {
 }
 
 export function cantidadDetalleClase(producto) {
-
+  console.log("entro");
   let precio = parseFloat(producto.children[2].textContent);
   let cantidad = parseInt(producto.children[1].value)
   let total = producto.children[4];

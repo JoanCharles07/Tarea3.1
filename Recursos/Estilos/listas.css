@@ -1,0 +1,20 @@
+main{
+    transform: translateY(150px);
+    display: grid;
+    justify-content: center;
+}
+
+td{
+    padding: 5px;
+}
+
+button{
+    padding: 5px;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+}
+
+button:hover{
+    background-color: var(--color-fondo-hover);
+    color: var(--color-texto-hover);
+}

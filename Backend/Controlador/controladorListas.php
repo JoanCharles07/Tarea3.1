@@ -1,11 +1,26 @@
 <?php 
 
-function controladorLista($datos,&$errores){
+function controladorLista($datos,&$errores,&$session){
     $respuesta=existeAccion($errores);
     if($respuesta){
 
         if($datos->opcion=="Comentarios"){
-            return recuperarComentariosUsuario($errores);
+            $session->comentarios=recuperarComentariosUsuario($errores);
+        }
+        else if($datos->opcion=="Lista comentarios"){
+            $session->comentarios=recuperarComentariosGlobal($errores);
+        }
+        else if($datos->opcion=="Lista usuarios"){
+            $session->usuarios=recuperarUsuariosGlobal($errores);
+        }
+        else if($datos->opcion=="Lista roles"){
+            $session->roles=recuperarRoles($errores);
+        }
+        else if($datos->opcion=="Lista productos"){
+            $session->productos=recuperarProductosAgricultor($errores);
+        }
+        else if($datos->opcion=="Lista permisos"){
+            $session->permisos=recuperarPermisos($errores);
         }
     }
     //DIVIDIMOS EN IF ENTRA EN ESA OPCION Y LE DAMOS LA INFORMACIÓN QUE QUIERE.

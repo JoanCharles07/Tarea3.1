@@ -130,6 +130,14 @@ function saneamientoDatos($cadena){
       
         $resultado = false;
      }
+     else if(($name=="mensaje")){
+        $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,250}$)/";
+        $resultado = false;
+        if (!preg_match($expresionRegular2, $dato)) {
+            $resultado = true;
+           
+        }
+     }
     
      return $resultado;
  }

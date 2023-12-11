@@ -40,6 +40,7 @@ export function resultadoBusqueda() {
 
 function palabraPreparada(texto) {
     let palabra = "";
+    console.log(texto);
     let mapa = { "á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u", "Á": "a", "É": "e", "Í": "i", "Ó": "o", "Ú": "U" };
     for (let i = 0; i < texto.length; i++) {
         palabra += mapa[texto[i]] || texto[i];
