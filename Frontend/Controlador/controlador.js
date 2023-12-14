@@ -10,7 +10,7 @@
 //Importaciones necesarias para el funcionamiento de controlador.js
 import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado, mostrarCantidadCarrito } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
-import { passIguales, recepcionDeDatosUsuario, datosUsuario,comprobarAccion  } from "./controladorUsuario.js";
+import { passIguales, recepcionDeDatosUsuario, datosUsuario,comprobarAccion, comprobarAccionModificacion  } from "./controladorUsuario.js";
 import {
   activarZonaUsuario, funcionalidadModificarDatos, funcionalidadCompra, recorrerTotalProducto, funcionalidadTienda, imprimirCarrito, imprimirCarritoVacio,
   imprimirDatosUsuarioCarrito, funcionalidadInicioSesion, imprimirIniciarSesion, cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas,
@@ -18,8 +18,9 @@ import {
   mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin, borrarDelCarrito, cantidadDetalleClase, imprimirNoticias
 } from "../Vistas/plantillasEspecificas.js";
 import { datosBorrarProducto, comprobarCarrito, objetoCarrito, datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios } from "./controladorProductos.js";
-import { lista, noticia } from "./controladorListasNoticias.js";
+import { lista, modificaciones, noticia } from "./controladorListasNoticias.js";
 import { redireccionLista } from "../Vistas/plantillaListas.js";
+import { accesoListadosModificado } from "../Modelo/peticiones.js";
 
 
 
@@ -370,18 +371,58 @@ async function interaccionesControlador() {
         });
       }
       else if (window.location.pathname.includes("listas.html")) {
-        comprobarAccion().then(respuesta =>{
-          //llevar a la direccion si es correcto
-          //llevar a tienda y poner un alert
-          //cerrar sesión usuario.
-         /* alert("Hubo algún error vuelva a iniciar sesión");
-
-          location.href="./login.html";*/
+        comprobarAccion().then(async respuesta =>{
           
-          lista(respuesta);
+          if(respuesta.errores){
+            alert("Hubo algún error vuelva a iniciar sesión");
+            sessionStorage.removeItem("usuario");
+            location.href="./login.html";
+          }else{
+            lista(respuesta);
+          }
+          
+          
+          
 
+        }).catch( respuesta =>{
+          console.log("Hubo un error");
+        })
+        document.getElementById("listado").addEventListener("click", function (e){
+          
+          let array=[];
+          let elementosFila=e.target.parentNode.parentNode.children;
+          for(let i=0;i<elementosFila.length -2; i++){
+            array.push(elementosFila[i].textContent);
+          }
+          const datosUrl = new URLSearchParams(window.location.search);
+          //Zona ha mejorar 
+          /**Hago esto para cuando se entre en el controladorlistasNoticias sepa a que funcion de la plantilla debe de ir. */
+          array.push(datosUrl.entries().next().value[1]);
+          //Uso localSotarege porque sesion a veces no funciona correctamente.
+          localStorage.setItem("modificar",JSON.stringify(array));
+          location.href="./modificar.html";
         });
       }
+      else if (window.location.pathname.includes("modificar.html")) {
+        const arrayDatos=JSON.parse(localStorage.getItem("modificar"));
+        
+        modificaciones(arrayDatos);
+        
+        document.getElementById("formulario").addEventListener("submit",function(e){
+          e.preventDefault();
+          comprobarAccionModificacion().then(respuesta => {
+            console.log(respuesta);
+            //enviamos a se ha realizado la modificacion, o no
+          });
+          
+          
+        })
+        //Remove da problemas
+        localStorage.removeItem("modificar");
+      }
+      
     });
+    
 }
 interaccionesControlador();
+

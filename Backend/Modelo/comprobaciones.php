@@ -10,6 +10,7 @@ function inicioComprobaciones($datosIntroducidos,&$errores){
     //Comprobamos que no haya palabras no validas
     
     RegexRespuesta($errores);
+
 }
 
  /**
@@ -68,7 +69,6 @@ function saneamientoDatos($cadena){
   * @return [Boolean] devuelve el resultado de la comprobación
   */
  function regexEstrellas($dato){
- 
      $expresionRegular = "/^[1-5]$/";
      $resultado = false;
      if (preg_match($expresionRegular, $dato)) {
@@ -116,28 +116,39 @@ function saneamientoDatos($cadena){
          $resultado = true;
         
      }
-
-     //tenemos en cuenta otros casos como cantidad o precio que darían true pero no deberían serlo
-     if ($name=="estrellasEscogidas" && regexEstrellas($dato) ) {
-       
-       $resultado = false;
-    }
-    else if(($name=="IDproducto"|| $name=="id" || $name=="cantidad" || $name=="rol") && validateInteger($dato)){
-      
-       $resultado = false;
-    }
-    else if(($name=="precioInicial"|| $name=="precioTotal") && validateFloat($dato)){
-      
-        $resultado = false;
-     }
-     else if(($name=="mensaje")){
-        $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,250}$)/";
+    switch ($name) {
+        case 'estrellasEscogidas':
+        case 'valoracion':
+            if(regexEstrellas($dato)){
+                $resultado = false;
+            }
+            break;
+        case 'IDproducto':
+        case 'id':
+        case 'rol':
+        case 'comprador':
+            if(validateInteger($dato)){
+                $resultado = false;   
+            }
+            break;
+        case 'precioInicial':
+        case 'precioTotal':
+            if(validateFloat($dato)){
+                $resultado = false;
+            }
+            break;
+        case 'mensaje':
+            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,250}$)/";
         $resultado = false;
         if (!preg_match($expresionRegular2, $dato)) {
             $resultado = true;
            
         }
-     }
+            break;
+        default:
+            # code...
+            break;
+    }
     
      return $resultado;
  }

@@ -179,11 +179,45 @@ try {
            //sanear
            inicioComprobaciones($direccion->datosIntroducidos, $errores);
            coincideUsuario($errores);
-           controladorLista($direccion->datosIntroducidos,$errores,$session);
-           unset($_SESSION["datos"]);
+           
+           /** Hago esto porque si yo cambio rol en BBDD hasta que no se reinicie la sesión no surtirían efecto los cambios
+            * y en las listas puede haber información delicada.*/
+            comprobarRol($errores);
+            if(empty((array) $errores)){
+                controladorLista($direccion->datosIntroducidos,$errores,$session);
+                unset($_SESSION["datos"]);
            //Controlar errores
-           echo json_encode($session);
+                echo json_encode($session);
+            }else{
+                errores($errores);
+            }
+           
     } 
+    else if ($direccion->llamada == "modificar" && isset($_SESSION["datosUsuario"])) {
+        //llamar para comparar usuario y rol y ver si coinciden.Si no coinciden fuera directamente.
+        //asegurarnos que tanto la palabra como la accion no se han adulterado y entramos al controlador de listas.
+        //Transformar aqui al nombre del permiso para no tenerlo en el frontend.
+       //var_dump($direccion->datosIntroducidos);
+       //sanear
+       inicioComprobaciones($direccion->datosIntroducidos, $errores);
+       
+       coincideUsuario($errores);
+       if(empty((array) $errores)){
+        comprobarRol($errores);
+        controladorModificaciones($direccion->datosIntroducidos,$errores,$session);
+        unset($_SESSION["datos"]); 
+        echo json_encode($session);
+       }
+       else{
+        errores($errores);
+       }
+       /** Hago esto porque si yo cambio rol en BBDD hasta que no se reinicie la sesión no surtirían efecto los cambios
+        * y en las listas puede haber información delicada.*/
+      
+       //Controlar errores
+      
+} 
+
     
         else {
             echo json_encode("No hay llamada");

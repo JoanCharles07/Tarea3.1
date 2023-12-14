@@ -18,3 +18,27 @@ button:hover{
     background-color: var(--color-fondo-hover);
     color: var(--color-texto-hover);
 }
+.imagen{
+    width: 40px;
+    height: 40px;
+}
+
+form{
+    padding: 10px;
+    gap:10px;
+}
+
+#vacio{
+    width: 300px;
+    height: 150px;
+    background-color: var(--color-fondo);
+    color:var(--color-texto);
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+#vacio p{
+    padding: 10px;
+}

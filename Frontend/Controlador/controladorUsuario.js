@@ -5,7 +5,7 @@
  * @version 1.0.0
 */
 
-import { usuario,recuperarDatosUsuario, accesoListados } from "../Modelo/peticiones.js";
+import { usuario,recuperarDatosUsuario, accesoListados, accesoListadosModificado } from "../Modelo/peticiones.js";
 /**
  * Esta función recibe los datos del Usuario y devolverá un array con los resultados.
  * devolverá una promesa que entregará el array y así seguir con el código.
@@ -86,12 +86,26 @@ export function datosUsuario(){
 }
 
 
-export function comprobarAccion() {
-    return new Promise(async(resolve, reject) => {
-        
-          const respuesta=await accesoListados();
-          resolve(respuesta);
-        })
+export async function comprobarAccion() {
+   
+        try {
+            const respuesta=await accesoListados();
+            return respuesta;
+        } catch (error) {
+            throw new Error(error);
+        }
         
     
+}
+
+export async function comprobarAccionModificacion() {
+   
+    try {
+        const respuesta=await  accesoListadosModificado();
+        return respuesta;
+    } catch (error) {
+        throw new Error(error);
+    }
+    
+
 }

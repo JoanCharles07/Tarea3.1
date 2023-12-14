@@ -7,7 +7,9 @@
 */
 
 import{recuperarNoticias}from "../Modelo/peticiones.js";
-import { imprimirListaComentarios ,imprimirListaPermisos,imprimirListaProductos,imprimirListaRoles,imprimirListaUsuarios} from "../Vistas/plantillaListas.js";
+import { imprimirListaNotcias,imprimirListaPedidos,imprimirListaComentariosPropio,imprimirListaComentariosGlobal ,imprimirListaPermisos,
+    imprimirListaProductos,imprimirListaRoles,imprimirListaUsuarios, imprimirEnvios,imprimirHistorial, imprimirListaPedidosUsuario} from "../Vistas/plantillaListas.js";
+import { modificacionComentariosGlobales } from "../Vistas/plantillaModificaciones.js";
 /**
  * Esta función comprobará si tenemos en el sessionStorage lo productos, si no los tenemos hará una llamada a la
  * base de datos para recuperarlos, esto será asincrono por lo que usaremos async await para esperar la respuesta
@@ -35,10 +37,14 @@ export function noticia() {
 export function lista(datos) {
    
         //Comprobamos que parametro entra y nos enviará a la vista correspondiente.
-        console.log(datos);
+        return new Promise(async(resolve, reject) => {
         try{
-            if(datos.comentarios){
-                imprimirListaComentarios(datos);
+           
+            if(datos.comentariosPropio){
+                imprimirListaComentariosPropio(datos);
+            }else if(datos.comentariosGlobal){
+                
+                imprimirListaComentariosGlobal(datos);
             }
             else if(datos.usuarios){
                 imprimirListaUsuarios(datos);
@@ -52,14 +58,39 @@ export function lista(datos) {
             else if(datos.permisos){
                 imprimirListaPermisos(datos);
             }
+            else if(datos.listaPedidos){
+                imprimirListaPedidos(datos);
+            }
+            else if(datos.noticias){
+                imprimirListaNotcias(datos);
+            }
+            else if(datos.productosPropios){
+                imprimirListaProductos(datos);
+            }
+            else if(datos.envios){
+                imprimirEnvios(datos);
+            }
+            else if(datos.historial){
+                imprimirHistorial(datos);
+            }
+            else if(datos.listaPedidosUsuario){
+                imprimirListaPedidosUsuario(datos);
+            }
             else{
+                /**Llevar a imprimir vacio */
                 console.log("o aqui");
             }
 
         }catch(e){
             
         }
-         
-
+         resolve();
+    });
   
+}
+
+export function modificaciones(datos){
+    if(datos[5]=="Lista comentarios"){
+        modificacionComentariosGlobales(datos);
+    }
 }

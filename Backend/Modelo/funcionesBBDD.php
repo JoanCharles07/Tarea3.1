@@ -381,6 +381,7 @@ function recuperarRoles(&$errores){
      /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
          que coinciden con los de la sesión iniciada*/
 }
+
 function recuperarUsuariosGlobal(&$errores){
    
     $array=[];
@@ -450,8 +451,7 @@ function recuperarComentariosGlobal(&$errores){
                     $clase = new stdClass();
                     $clase->mensaje = $res[$x][0];
                     $clase->valoracion = $res[$x][1];
-                   // $clase->nombre_comprador = $_SESSION["datosUsuario"]["usuario"];
-
+                    $clase->nombreComprador = $res[$x][3];
                     $clase->fecha = $res[$x][2];
                     $clase->ID_Producto = $res[$x][4];
                     $array []= $clase;
@@ -463,7 +463,7 @@ function recuperarComentariosGlobal(&$errores){
         
     } catch (PDOException $ex) {
         /**En caso de haber excepción será atrapada por el catch*/
-        echo "Error en la base de datos";
+        echo $ex->getMessage();
     };
 
     return $array;
@@ -472,7 +472,7 @@ function recuperarComentariosGlobal(&$errores){
 function recuperarComentariosUsuario(&$errores)
 {
 
-    $sql = "SELECT * FROM comentario where ID_comprador = :id";
+    $sql = "SELECT C.Mensaje, C.valoracion , C.fecha, P.Nombre_Producto, P.imagen FROM comentario C,producto P where C.ID_Producto=P.ID_Producto and C.ID_comprador = :id";
     $array = [];
     try {
         $pdo=conectar();
@@ -486,10 +486,9 @@ function recuperarComentariosUsuario(&$errores)
                     $clase = new stdClass();
                     $clase->mensaje = $res[$x][0];
                     $clase->valoracion = $res[$x][1];
-                   // $clase->nombre_comprador = $_SESSION["datosUsuario"]["usuario"];
-
                     $clase->fecha = $res[$x][2];
-                    $clase->ID_Producto = $res[$x][4];
+                    $clase->nombreProducto = $res[$x][3];
+                    $clase->imagen = $res[$x][4];
                     $array []= $clase;
                 }
             } else {
@@ -499,7 +498,7 @@ function recuperarComentariosUsuario(&$errores)
         
     } catch (PDOException $ex) {
         /**En caso de haber excepción será atrapada por el catch*/
-        echo "Error en la base de datos";
+        echo $ex->getMessage();
     };
 
     return $array;
@@ -514,7 +513,7 @@ function recuperarComentariosUsuario(&$errores)
 function recuperarComentarios($id,&$errores)
 {
 
-    $sql = "SELECT * FROM comentario where ID_Producto = :id";
+    $sql = "SELECT C.mensaje,c.valoracion,c.fecha, U.nickname,c.ID_Producto FROM comentario C  ,usuario U where ID_Producto = :id and C.ID_comprador=U.ID_Usuario" ;
     $array = [];
     try {
         $pdo=conectar();
@@ -529,7 +528,7 @@ function recuperarComentarios($id,&$errores)
                     $clase->mensaje = $res[$x][0];
                     $clase->valoracion = $res[$x][1];
                     $clase->fecha = $res[$x][2];
-                    $clase->nombre_comprador = nombre_comprador($res[$x][3],$errores);
+                    $clase->nombre_comprador = $res[$x][3];
                     $clase->ID_Producto = $res[$x][4];
                     $array []= $clase;
                 }
@@ -545,57 +544,6 @@ function recuperarComentarios($id,&$errores)
 
     return $array;
 }
-/**
- * Esta función buscará si hay algún comprador con el id que llega por parametro.
- * @param [<String>] $id id del comproador.
- * @param [<Object>] $errores se insertarán los posible errores.
- * @see conectar() conexión a la base de datos.
- * @return [Boolean] 
- */
-function nombre_comprador($id,&$errores){
-    $ret = "";
-    //Sentencia sql para conseguir los datos del usuario que deseamos usar.
-    $sql = "select nickname from usuario where id_Usuario = :id";
-    try {
-        //Conectamos la base de datos
-        $res=false;
-        $pdo = conectar();
-        //Hacemos la sentencia preparada
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(":id",$id,PDO::PARAM_INT);
-        if ($stmt->execute()) {
-            $res = $stmt->fetch(PDO::FETCH_ASSOC);
-            //Si es correcta insertamos datos
-            if ($res != null) {
-                $ret = $res["nickname"];
-            }
-       
-            else{
-                $errores->errorBBDD[] = "No se ha encontrado nada";
-            }
-            
-        }else{
-            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
-        }
-    
-       
-    }
-
-    //Else por si hay algún error
-    catch (PDOException $ex) {
-        /**En caso de haber excepción será atrapada por el catch*/
-        
-        $_SESSION["error"]["BBDD"] = "BBDD";
-        $_SESSION["errorDesc"]["BBDD"]=$ex->getMessage();
-        $_SESSION["depuración"]["BBDD"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
-    };
-
-    return $ret;
-    /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
-        que coinciden con los de la sesión iniciada*/
-}
-
-
 /**
  * Esta función buscará todos los productos dentro de nuestra base de datos.
  * 
@@ -664,7 +612,7 @@ function recuperarProductos(&$errores)
  * @see conectar() conexión a la base de datos.
  * @return [Boolean] que devuelve si se ha podido o no realizar la acción
  */
-function recuperarProductosAgricultor(&$errores)
+function recuperarProductosAgricultores(&$errores)
 {
     $array = [];
     $sql = "select * from producto";
@@ -714,10 +662,279 @@ function recuperarProductosAgricultor(&$errores)
 
     return $array;
 }
+function productosAgricultor(&$errores)
+{
+    $array = [];
+    $sql = "select * from producto where ID_vendedor= :id";
+    $ret = false;
+
+    try {
+
+        $pdo = conectar();
+        $stmt = $pdo->prepare($sql);
+        $data=["id" => $_SESSION["datosUsuario"]["id"]];
+        if ($stmt->execute($data)) {
+            $ret = $stmt->fetchAll();
+
+            if ($ret != false) {
+                /**Hacer for númerico con $ret */
+                
+                for ($x = 0; $x < count($ret); $x++) {
+                    $clase = new stdClass();
+                    $clase->id = $ret[$x][0];
+                    $clase->nombre_producto = $ret[$x][1];
+                    $clase->descripcion = $ret[$x][2];
+                    $clase->stock = $ret[$x][3];
+                    $clase->precio = $ret[$x][4];
+                    /**Leemos la imagen para que pueda verse correctamente en la aplicación web*/
+                    $clase->imagen = base64_encode($ret[$x][5]);
+                    $clase->valoracion_total = $ret[$x][6];
+                    $clase->comentarios_totales = $ret[$x][7];
+                    $clase->descuento = $ret[$x][8];
+                    //He decidido no introducir el id del vendedor por privacidad.
+                     $clase->Id_Vendedor = $ret[$x][9];
+
+                    $array[] = $clase;
+                }
+            }
+            else{
+                $errores->errorBBDD[] = "No hay productos";
+            }
+        }
+        else{
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        $_SESSION["error"]["BBDD"] = "BBDD";
+        $_SESSION["errorDesc"]["BBDD"] = $ex->getMessage();
+        $_SESSION["depuración"]["BBDD"] = [$ex->getMessage(), $ex->getFile(), $ex->getTraceAsString()];
+    }
+
+    return $array;
+}
+function recuperarPedidosUsuario(&$errores){
+    $array = [];
+    $sql = "SELECT * from pedido Where ID_comprador= :id";
+     $ret = false;
+
+    try {
+
+        $pdo = conectar();
+        $stmt = $pdo->prepare($sql);
+        $data=["id" => $_SESSION["datosUsuario"]["id"]];
+        if ($stmt->execute($data)) {
+            $ret = $stmt->fetchAll();
+
+            if ($ret != false) {
+                /**Hacer for númerico con $ret */
+                
+                for ($x = 0; $x < count($ret); $x++) {
+                    $clase = new stdClass();
+                    $clase->idPedido = $ret[$x][0];
+                    $clase->cantidadProductos = $ret[$x][1];
+                    $clase->estado = $ret[$x][2];
+                    $clase->fechaEnvio = $ret[$x][3];
+                    $clase->fechaLlegada = $ret[$x][4];
+                    $clase->total= $ret[$x][5];
+                    //Teniendo el id permiso puedo conseguir los roles
+                    $array[] = $clase;
+                }
+            }
+            else{
+                $errores->errorBBDD[] = "No hay Permisos";
+            }
+        }
+        else{
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        $_SESSION["error"]["BBDD"] = "BBDD";
+        $_SESSION["errorDesc"]["BBDD"] = $ex->getMessage();
+        $_SESSION["depuración"]["BBDD"] = [$ex->getMessage(), $ex->getFile(), $ex->getTraceAsString()];
+    }
+
+    return $array;
+}
+function historial(&$errores)
+{
+    $array = [];
+    $sql = "SELECT H.cantidad ,Pro.Nombre_Producto, H.ID_Pedido, Pro.precio , TRUNCATE(Pro.precio*H.cantidad,2) as Total, P.fecha_llegada   
+    FROM historial H ,Pedido P, Producto Pro where P.Numero_Pedido= H.ID_Pedido and
+    Pro.ID_Producto= H.ID_Producto and P.ID_comprador= :id";
+    $ret = false;
+
+    try {
+
+        $pdo = conectar();
+        $stmt = $pdo->prepare($sql);
+        $data=["id" => $_SESSION["datosUsuario"]["id"]];
+        if ($stmt->execute($data)) {
+            $ret = $stmt->fetchAll();
+
+            if ($ret != false) {
+                /**Hacer for númerico con $ret */
+                
+                for ($x = 0; $x < count($ret); $x++) {
+                    $clase = new stdClass();
+                    $clase->cantidad = $ret[$x][0];
+                    $clase->nombre = $ret[$x][1];
+                    $clase->pedido = $ret[$x][2];
+                    $clase->precio = $ret[$x][3];
+                    $clase->total = $ret[$x][4];
+                    $clase->fechaLlegada = $ret[$x][5];
+                    $array[] = $clase;
+                }
+            }
+            else{
+                $errores->errorBBDD[] = "No hay compras en el historial";
+            }
+        }
+        else{
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        $_SESSION["error"]["BBDD"] = "BBDD";
+        $_SESSION["errorDesc"]["BBDD"] = $ex->getMessage();
+        $_SESSION["depuración"]["BBDD"] = [$ex->getMessage(), $ex->getFile(), $ex->getTraceAsString()];
+    }
+
+    return $array;
+}
+function enviosAgricultor(&$errores) {
+    $array = [];
+    $sql = "SELECT * from pedido where ID_vendedor= :id";
+     $ret = false;
+
+    try {
+
+        $pdo = conectar();
+        $stmt = $pdo->prepare($sql);
+        $data=["id" => $_SESSION["datosUsuario"]["id"]];
+        if ($stmt->execute($data)) {
+            $ret = $stmt->fetchAll();
+
+            if ($ret != false) {
+                /**Hacer for númerico con $ret */
+                
+                for ($x = 0; $x < count($ret); $x++) {
+                    $clase = new stdClass();
+                    $clase->idPedido = $ret[$x][0];
+                    $clase->cantidadProductos = $ret[$x][1];
+                    $clase->estado = $ret[$x][2];
+                    $clase->fechaEnvio = $ret[$x][3];
+                    $clase->fechaLlegada = $ret[$x][4];
+                    $clase->total= $ret[$x][5];
+                    $clase->IDComprador = $ret[$x][6];
+                    $clase->IDVendedor= $ret[$x][7];
+                    //Teniendo el id permiso puedo conseguir los roles
+                    $array[] = $clase;
+                }
+            }
+            else{
+                $errores->errorBBDD[] = "No hay Permisos";
+            }
+        }
+        else{
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        $_SESSION["error"]["BBDD"] = "BBDD";
+        $_SESSION["errorDesc"]["BBDD"] = $ex->getMessage();
+        $_SESSION["depuración"]["BBDD"] = [$ex->getMessage(), $ex->getFile(), $ex->getTraceAsString()];
+    }
+
+    return $array;
+}
+function comprobarRol(&$errores){
+    $sql = "SELECT ID_rol FROM delatierra.usuario where nickname= :usuario";
+     $ret = false;
+
+    try {
+
+        $pdo = conectar();
+        $stmt = $pdo->prepare($sql);
+        $data = [
+            'usuario' =>  $_SESSION["datosUsuario"]["usuario"]
+        ];
+        if ($stmt->execute($data)) {
+            $ret = $stmt->fetch();
+
+            if ($ret != false) {
+                /**Hacer for númerico con $ret */
+                $_SESSION["datosUsuario"]["rol"]=$ret["ID_rol"];
+                
+            }
+            else{
+                $errores->errorBBDD[] = "No hay Permisos";
+            }
+        }
+        else{
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        $_SESSION["error"]["BBDD"] = "BBDD";
+        $_SESSION["errorDesc"]["BBDD"] = $ex->getMessage();
+        $_SESSION["depuración"]["BBDD"] = [$ex->getMessage(), $ex->getFile(), $ex->getTraceAsString()];
+    }
+
+  
+}
+
+function recuperarPedidos(&$errores)
+{
+    $array = [];
+    $sql = "SELECT * from pedido";
+     $ret = false;
+
+    try {
+
+        $pdo = conectar();
+        $stmt = $pdo->prepare($sql);
+        if ($stmt->execute()) {
+            $ret = $stmt->fetchAll();
+
+            if ($ret != false) {
+                /**Hacer for númerico con $ret */
+                
+                for ($x = 0; $x < count($ret); $x++) {
+                    $clase = new stdClass();
+                    $clase->idPedido = $ret[$x][0];
+                    $clase->cantidadProductos = $ret[$x][1];
+                    $clase->estado = $ret[$x][2];
+                    $clase->fechaEnvio = $ret[$x][3];
+                    $clase->fechaLlegada = $ret[$x][4];
+                    $clase->total= $ret[$x][5];
+                    $clase->IDComprador = $ret[$x][6];
+                    $clase->IDVendedor= $ret[$x][7];
+                    //Teniendo el id permiso puedo conseguir los roles
+                    $array[] = $clase;
+                }
+            }
+            else{
+                $errores->errorBBDD[] = "No hay Permisos";
+            }
+        }
+        else{
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        $_SESSION["error"]["BBDD"] = "BBDD";
+        $_SESSION["errorDesc"]["BBDD"] = $ex->getMessage();
+        $_SESSION["depuración"]["BBDD"] = [$ex->getMessage(), $ex->getFile(), $ex->getTraceAsString()];
+    }
+
+    return $array;
+}
 function recuperarPermisos(&$errores)
 {
     $array = [];
-    $sql = "select * from permiso";
+    $sql = "SELECT P.ID_Permiso,P.nombre,P.descripcion,P.codigo,P.accion , R.tipo FROM rol R,obtencion O,permiso P where O.ID_Rol=R.ID_Rol and P.ID_Permiso=O.ID_Permiso ORDER BY P.ID_Permiso";
     $ret = false;
 
     try {
@@ -737,6 +954,7 @@ function recuperarPermisos(&$errores)
                     $clase->nombre = $ret[$x][2];
                     $clase->codigo = $ret[$x][3];
                     $clase->accion = $ret[$x][4];
+                    $clase->roles= $ret[$x][5];
                     //Teniendo el id permiso puedo conseguir los roles
                     $array[] = $clase;
                 }
@@ -1000,16 +1218,13 @@ function usuario(&$errores,&$session)
     /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
         que coinciden con los de la sesión iniciada*/
 }
-function existeAccion(&$errores)
-{   
+
+function modificarComentariosGlobal(&$errores){
     $ret = false;
     //Por comodidad y ya que no son muchas variables usaremos una para usuario y otra para la contraseña
-    $opcion= $_SESSION["datos"]["opcion"];
-    $accion=$_SESSION["datos"]["accion"];
-    $rol=$_SESSION["datosUsuario"]["rol"];
+    
     //Sentencia sql para conseguir los datos del usuario que deseamos usar.
-    $sql = "SELECT count(*) FROM permiso P ,rol R, obtencion O where P.ID_Permiso=O.ID_Permiso and O.ID_Rol=R.ID_Rol AND O.ID_Rol= :rol
-    and P.nombre= :opcion and P.accion= :accion";
+    $sql = " UPDATE `comentario` SET `Mensaje` = :mensaje, `valoracion` = :valoracion, `fecha` = :fecha  WHERE (`ID_comprador` = :idComprador) and (`ID_Producto` = :idProducto)";
     try {
         //Conectamos la base de datos
         $ret = false;
@@ -1017,16 +1232,14 @@ function existeAccion(&$errores)
         
         //Hacemos la sentencia preparada
         $stmt = $pdo->prepare($sql);
-        $data = [
-            'opcion' =>  $opcion,
-            'accion' =>  $accion,
-            'rol' => $rol
-        ];
+        $data=["idComprador" => $_SESSION["datos"]["comprador"], "idProducto" => $_SESSION["datos"]["id"],  
+        "mensaje"=> $_SESSION["datos"]["mensaje"], "valoracion" =>$_SESSION["datos"]["valoracion"], "fecha"=> $_SESSION["datos"]["fecha"]];
         if ($stmt->execute($data)) {
             $res = $stmt->rowCount();
             //Si es correcta insertamos datos
             if ($res != 0) {
-                $ret=true;
+                $ret = true;
+                
             }
             else{
                 $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
@@ -1045,7 +1258,56 @@ function existeAccion(&$errores)
         /**En caso de haber excepción será atrapada por el catch*/
         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
         //($_SESSION["ErrorDepuracion"]);
-        var_dump($ex->getMessage());
+    };
+
+    return $ret;
+
+}
+function existeAccion(&$errores)
+{   
+    $ret = false;
+    //Por comodidad y ya que no son muchas variables usaremos una para usuario y otra para la contraseña
+    $opcion= $_SESSION["datos"]["opcion"];
+    $accion=$_SESSION["datos"]["accion"];
+    $rol=$_SESSION["datosUsuario"]["rol"];
+    //Sentencia sql para conseguir los datos del usuario que deseamos usar.
+    $sql = "SELECT count(*) FROM permiso P ,rol R, obtencion O where P.ID_Permiso=O.ID_Permiso and O.ID_Rol=R.ID_Rol AND O.ID_Rol= :rol
+    and P.nombre= :opcion and P.accion= :accion";
+    try {
+        $pdo = conectar();
+        
+        //Hacemos la sentencia preparada
+        $stmt = $pdo->prepare($sql);
+        $data = [
+            'opcion' =>  $opcion,
+            'accion' =>  $accion,
+            'rol' => $rol
+        ];
+        if ($stmt->execute($data)) {
+            $res = $stmt->fetch();
+            //Si es correcta insertamos datos
+            
+            if ($res[0] != 0) {
+                $ret=true;
+            }
+            else{
+               
+                $errores->errorBBDD[] = "No existe el permiso";
+            }
+            
+        }else{
+            
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+
+       
+    }
+
+    //Else por si hay algún error
+    catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+        //($_SESSION["ErrorDepuracion"]);
     };
 
     return $ret;
