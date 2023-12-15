@@ -10,7 +10,7 @@
 //Importaciones necesarias para el funcionamiento de controlador.js
 import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado, mostrarCantidadCarrito } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
-import { passIguales, recepcionDeDatosUsuario, datosUsuario,comprobarAccion, comprobarAccionModificacion  } from "./controladorUsuario.js";
+import { passIguales, recepcionDeDatosUsuario, datosUsuario,comprobarAccion, comprobarAccionModificacion, comprobarAccionEliminacion  } from "./controladorUsuario.js";
 import {
   activarZonaUsuario, funcionalidadModificarDatos, funcionalidadCompra, recorrerTotalProducto, funcionalidadTienda, imprimirCarrito, imprimirCarritoVacio,
   imprimirDatosUsuarioCarrito, funcionalidadInicioSesion, imprimirIniciarSesion, cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas,
@@ -370,6 +370,9 @@ async function interaccionesControlador() {
 
         });
       }
+      /*********************************************************************************************************************************/
+      /************************  ZONA LISTAS ******************************************************************************************/
+      /******************************************************************************************************************************* */
       else if (window.location.pathname.includes("listas.html")) {
         comprobarAccion().then(async respuesta =>{
           
@@ -378,6 +381,7 @@ async function interaccionesControlador() {
             sessionStorage.removeItem("usuario");
             location.href="./login.html";
           }else{
+
             lista(respuesta);
           }
           
@@ -388,30 +392,56 @@ async function interaccionesControlador() {
           console.log("Hubo un error");
         })
         document.getElementById("listado").addEventListener("click", function (e){
-          
+          //En una función
           let array=[];
           let elementosFila=e.target.parentNode.parentNode.children;
-          for(let i=0;i<elementosFila.length -2; i++){
-            array.push(elementosFila[i].textContent);
+          if(e.target.textContent=="Modificar" && e.target.tagName=="BUTTON"){
+            for(let i=0;i<elementosFila.length -2; i++){
+              array.push(elementosFila[i].textContent);
+            }
+            const datosUrl = new URLSearchParams(window.location.search);
+            //Zona ha mejorar 
+            /**Hago esto para cuando se entre en el controladorlistasNoticias sepa a que funcion de la plantilla debe de ir. */
+            array.push(datosUrl.entries().next().value[1]);
+            //Uso localSotarege porque sesion a veces no funciona correctamente.
+           
+            localStorage.setItem("modificar",JSON.stringify(array));
+            location.href="./modificar.html";
           }
-          const datosUrl = new URLSearchParams(window.location.search);
-          //Zona ha mejorar 
-          /**Hago esto para cuando se entre en el controladorlistasNoticias sepa a que funcion de la plantilla debe de ir. */
-          array.push(datosUrl.entries().next().value[1]);
-          //Uso localSotarege porque sesion a veces no funciona correctamente.
-          localStorage.setItem("modificar",JSON.stringify(array));
-          location.href="./modificar.html";
+          
+        });
+
+        document.getElementById("listado").addEventListener("click", function (e){
+          //En una función
+          let array=[];
+          let elementosFila=e.target.parentNode.parentNode.children;
+          if(e.target.textContent=="Eliminar" && e.target.tagName=="BUTTON"){
+            for(let i=0;i<elementosFila.length -2; i++){
+              array.push(elementosFila[i].textContent);
+            }
+            const datosUrl = new URLSearchParams(window.location.search);
+            //Zona ha mejorar 
+            /**Hago esto para cuando se entre en el controladorlistasNoticias sepa a que funcion de la plantilla debe de ir. */
+            array.push(datosUrl.entries().next().value[1]);
+            //Uso localSotarege porque sesion a veces no funciona correctamente.
+            localStorage.setItem("elminar",JSON.stringify(array));
+            //location.href="./eleminar.html";
+          }
+          
         });
       }
+      /*********************************************************************************************************************************/
+      /************************  ZONA MODIFICAR ******************************************************************************************/
+      /******************************************************************************************************************************* */
       else if (window.location.pathname.includes("modificar.html")) {
         const arrayDatos=JSON.parse(localStorage.getItem("modificar"));
-        
+        console.log(arrayDatos);
         modificaciones(arrayDatos);
         
         document.getElementById("formulario").addEventListener("submit",function(e){
           e.preventDefault();
           comprobarAccionModificacion().then(respuesta => {
-            console.log(respuesta);
+           
             //enviamos a se ha realizado la modificacion, o no
           });
           
@@ -420,8 +450,28 @@ async function interaccionesControlador() {
         //Remove da problemas
         localStorage.removeItem("modificar");
       }
-      
+      /*********************************************************************************************************************************/
+      /************************  ZONA ELIMINAR ******************************************************************************************/
+      /******************************************************************************************************************************* */
+      else if (window.location.pathname.includes("eliminar.html")) {
+        const arrayDatos=JSON.parse(localStorage.getItem("modificar"));
+        
+        modificaciones(arrayDatos);
+        
+        document.getElementById("formulario").addEventListener("submit",function(e){
+          e.preventDefault();
+          comprobarAccionEliminacion().then(respuesta => {
+           
+            //enviamos a se ha realizado la eliminación, o no
+          });
+          
+          
+        })
+        //Remove da problemas
+        localStorage.removeItem("modificar");
+      }
     });
+
     
 }
 interaccionesControlador();

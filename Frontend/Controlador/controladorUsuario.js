@@ -9,17 +9,19 @@ import { usuario,recuperarDatosUsuario, accesoListados, accesoListadosModificado
 /**
  * Esta función recibe los datos del Usuario y devolverá un array con los resultados.
  * devolverá una promesa que entregará el array y así seguir con el código.
- * @see comprobarDatosRegex comprobamos que los datos recibidos sean correctos.
+ * @see comprobarDatosFormDataRegex comprobamos que los datos recibidos sean correctos.
  * @see usuario se encarga de hacer la petición al servidor que se encargará de determinar si es login o registro.
- * @returns promesa con los datos JSON recibidos por comprobarDatosRegex.
+ * @returns promesa con los datos JSON recibidos por comprobarDatosFormDataRegex.
  */
 export function recepcionDeDatosUsuario(direccion) {
     return new Promise((resolve, reject) => {
            
             
             let datosRegistro = new FormData(document.getElementById("formulario"));
+            console.log(datosRegistro);
             import("../Modelo/comprobaciones.js").then(async(funciones) => {
-                let datos = funciones.comprobarDatosRegex(datosRegistro);
+               
+                let datos = funciones.comprobarDatosFormDataRegex(datosRegistro);
                 if(datos!=null){
                     let control= Object.values(datos).filter(elemento => elemento == true);
                     if(control.length==0){
@@ -89,6 +91,7 @@ export function datosUsuario(){
 export async function comprobarAccion() {
    
         try {
+            
             const respuesta=await accesoListados();
             return respuesta;
         } catch (error) {
@@ -102,6 +105,18 @@ export async function comprobarAccionModificacion() {
    
     try {
         const respuesta=await  accesoListadosModificado();
+        return respuesta;
+    } catch (error) {
+        throw new Error(error);
+    }
+    
+
+}
+
+export async function comprobarAccionEliminacion() {
+   
+    try {
+        const respuesta=await  accesoListadosEliminado();
         return respuesta;
     } catch (error) {
         throw new Error(error);

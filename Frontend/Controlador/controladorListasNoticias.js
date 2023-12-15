@@ -91,6 +91,7 @@ export function lista(datos) {
 
 export function modificaciones(datos){
     if(datos[datos.length-1]=="Lista comentarios"){
+        
         modificacionComentariosGlobales(datos);
     }
     else if(datos[datos.length-1]=="Comentarios"){

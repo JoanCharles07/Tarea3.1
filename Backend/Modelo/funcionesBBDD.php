@@ -460,10 +460,11 @@ function recuperarComentariosGlobal(&$errores){
                 $errores->errorBBDD[] = "No hay comentarios";
             }
         }
+        else{}
         
     } catch (PDOException $ex) {
         /**En caso de haber excepción será atrapada por el catch*/
-        echo $ex->getMessage();
+        //echo $ex->getMessage();
     };
 
     return $array;
@@ -1244,11 +1245,10 @@ function modificarComentariosGlobal(&$errores){
                 
             }
             else{
-                $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
+                $errores->errorBBDD[] = "No se pudo hacer modificaciones";
             }
             
         }else{
-            
             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
         }
 
@@ -1257,6 +1257,8 @@ function modificarComentariosGlobal(&$errores){
 
     //Else por si hay algún error
     catch (PDOException $ex) {
+        //echo $ex->getMessage();
+        $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
         /**En caso de haber excepción será atrapada por el catch*/
         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
         //($_SESSION["ErrorDepuracion"]);

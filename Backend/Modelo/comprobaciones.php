@@ -131,6 +131,10 @@ function saneamientoDatos($cadena){
                 $resultado = !validateFloat($dato);
            
             break;
+        case "fecha":
+            $comprobar=explode("-",$dato);
+            $resultado = !checkdate($comprobar[1],$comprobar[2],$comprobar[0]);
+            break;
         case 'mensaje':
             $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,250}$)/";
         $resultado = false;
