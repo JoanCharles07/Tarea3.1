@@ -70,9 +70,9 @@ function saneamientoDatos($cadena){
   */
  function regexEstrellas($dato){
      $expresionRegular = "/^[1-5]$/";
-     $resultado = false;
+     $resultado = true;
      if (preg_match($expresionRegular, $dato)) {
-         $resultado = true;
+         $resultado = false;
      }
      return $resultado;
  }
@@ -112,30 +112,24 @@ function saneamientoDatos($cadena){
      $expresionRegular = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,25}$)/";
      $resultado = false;
      //comparamos con la expresión regular
-     if (!preg_match($expresionRegular, $dato)) {
-         $resultado = true;
-        
-     }
     switch ($name) {
         case 'estrellasEscogidas':
         case 'valoracion':
-            if(regexEstrellas($dato)){
-                $resultado = false;
-            }
+                $resultado = regexEstrellas($dato);
+           
             break;
         case 'IDproducto':
         case 'id':
         case 'rol':
         case 'comprador':
-            if(validateInteger($dato)){
-                $resultado = false;   
-            }
+                $resultado = !validateInteger($dato);   
+            
             break;
         case 'precioInicial':
         case 'precioTotal':
-            if(validateFloat($dato)){
-                $resultado = false;
-            }
+          
+                $resultado = !validateFloat($dato);
+           
             break;
         case 'mensaje':
             $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,250}$)/";
@@ -146,7 +140,10 @@ function saneamientoDatos($cadena){
         }
             break;
         default:
-            # code...
+        if (!preg_match($expresionRegular, $dato)) {
+            $resultado = true;
+           
+        }
             break;
     }
     

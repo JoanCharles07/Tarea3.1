@@ -9,7 +9,7 @@
 import{recuperarNoticias}from "../Modelo/peticiones.js";
 import { imprimirListaNotcias,imprimirListaPedidos,imprimirListaComentariosPropio,imprimirListaComentariosGlobal ,imprimirListaPermisos,
     imprimirListaProductos,imprimirListaRoles,imprimirListaUsuarios, imprimirEnvios,imprimirHistorial, imprimirListaPedidosUsuario} from "../Vistas/plantillaListas.js";
-import { modificacionComentariosGlobales } from "../Vistas/plantillaModificaciones.js";
+import { modificacionComentariosGlobales, modificacionComentariosPropios } from "../Vistas/plantillaModificaciones.js";
 /**
  * Esta función comprobará si tenemos en el sessionStorage lo productos, si no los tenemos hará una llamada a la
  * base de datos para recuperarlos, esto será asincrono por lo que usaremos async await para esperar la respuesta
@@ -90,7 +90,10 @@ export function lista(datos) {
 }
 
 export function modificaciones(datos){
-    if(datos[5]=="Lista comentarios"){
+    if(datos[datos.length-1]=="Lista comentarios"){
         modificacionComentariosGlobales(datos);
+    }
+    else if(datos[datos.length-1]=="Comentarios"){
+        modificacionComentariosPropios(datos);
     }
 }

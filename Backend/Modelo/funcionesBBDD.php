@@ -472,7 +472,7 @@ function recuperarComentariosGlobal(&$errores){
 function recuperarComentariosUsuario(&$errores)
 {
 
-    $sql = "SELECT C.Mensaje, C.valoracion , C.fecha, P.Nombre_Producto, P.imagen FROM comentario C,producto P where C.ID_Producto=P.ID_Producto and C.ID_comprador = :id";
+    $sql = "SELECT C.Mensaje, C.valoracion , C.fecha, P.Nombre_Producto, P.imagen, C.ID_Producto FROM comentario C,producto P where C.ID_Producto=P.ID_Producto and C.ID_comprador = :id";
     $array = [];
     try {
         $pdo=conectar();
@@ -489,6 +489,7 @@ function recuperarComentariosUsuario(&$errores)
                     $clase->fecha = $res[$x][2];
                     $clase->nombreProducto = $res[$x][3];
                     $clase->imagen = $res[$x][4];
+                    $clase->IDProducto = $res[$x][5];
                     $array []= $clase;
                 }
             } else {
@@ -1082,7 +1083,7 @@ function registro(&$errores,&$session)
 
                     $respuesta = true;
                     //Añadimos datos que nos faltan para el usuario dentro del servidor.
-                    $_SESSION["datosUsuario"]["id"] = $pdo->lastInsertId();
+                    $_SESSION["datosUsuario"]["id"]= $pdo->lastInsertId();
                     $_SESSION["datosUsuario"]["usuario"]= $_SESSION["datos"]["usuario"];
                     $_SESSION["datosUsuario"]["rol"]= $_SESSION["datos"]["rol"];
                      //conseguir acciones que puede realizar
@@ -1105,6 +1106,7 @@ function registro(&$errores,&$session)
             //Usarlo si es necesario.
            // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
             //($_SESSION["ErrorDepuracion"]);
+            var_dump($ex->getMessage());
         };
     }
    
@@ -1258,6 +1260,51 @@ function modificarComentariosGlobal(&$errores){
         /**En caso de haber excepción será atrapada por el catch*/
         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
         //($_SESSION["ErrorDepuracion"]);
+    };
+
+    return $ret;
+
+}
+function modificarComentariosPropio(&$errores){
+    $ret = false;
+    //Por comodidad y ya que no son muchas variables usaremos una para usuario y otra para la contraseña
+    
+    //Sentencia sql para conseguir los datos del usuario que deseamos usar.
+    $sql = " UPDATE `comentario` SET `Mensaje` = :mensaje, `valoracion` = :valoracion, `fecha` = CURRENT_DATE  WHERE (`ID_comprador` = :idComprador) and (`ID_Producto` = :id)";
+    try {
+        //Conectamos la base de datos
+        $ret = false;
+        $pdo = conectar();
+        
+        //Hacemos la sentencia preparada
+        $stmt = $pdo->prepare($sql);
+        $data=["idComprador" =>  $_SESSION["datosUsuario"]["id"],  
+        "mensaje"=> $_SESSION["datos"]["mensaje"], "valoracion" =>$_SESSION["datos"]["valoracion"], "id" =>$_SESSION["datos"]["id"]];
+        if ($stmt->execute($data)) {
+            $res = $stmt->rowCount();
+            //Si es correcta insertamos datos
+            if ($res != 0) {
+                $ret = true;
+                
+            }
+            else{
+                $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
+            }
+            
+        }else{
+            
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+
+       
+    }
+
+    //Else por si hay algún error
+    catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+        //($_SESSION["ErrorDepuracion"]);
+        var_dump($ex->getMessage());
     };
 
     return $ret;

@@ -57,8 +57,8 @@ function controladorModificaciones($datos,&$errores,&$session){
     if($datos->opcion=="Lista comentarios" && $_SESSION["datosUsuario"]["rol"]==3){
             $session->comentarios=modificarComentariosGlobal($errores);
         }
-        else if($datos->opcion=="Lista usuarios" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->usuarios=recuperarUsuariosGlobal($errores);
+        else if($datos->opcion=="Comentarios" && $_SESSION["datosUsuario"]["rol"]==3){
+            $session->comentarios=modificarComentariosPropio($errores);
         }
         else if($datos->opcion=="Lista roles" && $_SESSION["datosUsuario"]["rol"]==3){
             $session->roles=recuperarRoles($errores);

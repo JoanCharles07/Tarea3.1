@@ -22,7 +22,6 @@ export function getProductos() {
     .then(response => response.text())
     .then(data => {
       const datos = JSON.parse(data);
-      console.log(datos);
       return datos;
 
     });
@@ -91,7 +90,6 @@ export function verComentarios(idProducto) {
       .then(response => response.text())
       .then(data => {
         const datos = JSON.parse(data);
-        console.log(datos);
         resolve(datos);
 
       });
@@ -108,7 +106,6 @@ export function agregarComentarios(datosComentario) {
     //Trasnformo el formdata a objeto para mejor manejo en PHP
     let datosIntroducidos = new Object();
     //Con esta expresión regular podemos confirmar var
-    console.log(datosComentario);
     for (const dato of datosComentario.entries()) {
       datosIntroducidos[dato[0]] = dato[1];
 
@@ -152,7 +149,6 @@ export function agregarCarrito(datosCarrito) {
       }
       datosIntroducidos["IDusuario"] = usuario[0];
       let datos = { llamada: "agregarCarritoBBDD", datosIntroducidos };
-      console.log(datosIntroducidos);
       fetch("../../Backend/Controlador/controlador.php", {
         method: 'POST',
         headers: {
@@ -164,16 +160,13 @@ export function agregarCarrito(datosCarrito) {
         .then(response => response.text())
         .then(data => {
           const datos = JSON.parse(data);
-          console.log(datos);
           resolve();
 
         }).catch(error => {
-          console.log(error);
           reject(error);
         })
     });
   } catch (e) {
-    console.log(e);
   }
 
 }
@@ -189,7 +182,6 @@ export function borrarDelCarritoBBDD(datosCarrito) {
       datosIntroducidos["id"] = datosCarrito;
       datosIntroducidos["IDusuario"] = usuario[0];
       let datos = { llamada: "borrarCarritoBBDD", datosIntroducidos };
-      console.log(datosIntroducidos);
       fetch("../../Backend/Controlador/controlador.php", {
         method: 'POST',
         headers: {
@@ -201,16 +193,13 @@ export function borrarDelCarritoBBDD(datosCarrito) {
         .then(response => response.text())
         .then(data => {
           const datos = JSON.parse(data);
-          console.log(datos);
           resolve();
 
         }).catch(error => {
-          console.log(error);
           reject(error);
         })
     });
   } catch (e) {
-    console.log(e);
   }
 
 }
@@ -250,7 +239,6 @@ export function recuperarCarrito() {
         })
     });
   } catch (e) {
-    console.log(e);
   }
 
 }
@@ -283,7 +271,6 @@ export function recuperarDatosUsuario() {
         .then(response => response.text())
         .then(data => {
           const datos = JSON.parse(data);
-          console.log(datos);
           resolve(datos);
 
         }).catch(error => {
@@ -291,7 +278,6 @@ export function recuperarDatosUsuario() {
         })
     });
   } catch (e) {
-    console.log(e);
   }
 }
 
@@ -318,7 +304,6 @@ export function recuperarNoticias() {
         .then(response => response.text())
         .then(data => {
           const datos = JSON.parse(data);
-          console.log(datos);
           resolve(datos);
 
         }).catch(error => {
@@ -326,7 +311,6 @@ export function recuperarNoticias() {
         })
     });
   } catch (e) {
-    console.log(e);
   }
 }
 
@@ -355,7 +339,6 @@ export function accesoListados() {
           .then(response => response.text())
           .then(data => {
             const datos = JSON.parse(data);
-            console.log(datos);
             resolve(datos);
 
           }).catch(error => {
@@ -384,7 +367,6 @@ export function accesoListadosModificado() {
 
       datosIntroducidos["usuario"] = usuario[0];
       datosIntroducidos["accion"] = "Modificar";
-      console.log(datosIntroducidos);
       let datos = { llamada: "modificar", datosIntroducidos };
 
       fetch("../../Backend/Controlador/controlador.php", {
@@ -398,7 +380,6 @@ export function accesoListadosModificado() {
         .then(response => response.text())
         .then(data => {
           const datos = JSON.parse(data);
-          console.log(datos);
           resolve(datos);
 
         }).catch(error => {
@@ -406,6 +387,5 @@ export function accesoListadosModificado() {
         })
     });
   } catch (e) {
-    console.log(e);
   }
 }

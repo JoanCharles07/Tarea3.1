@@ -12,6 +12,7 @@ export function redireccionLista(eleccion) {
     }
 }
 export function imprimirListaComentariosPropio(datos) {
+    console.log(datos);
     if (Object.values(datos.comentariosPropio).length == 0) {
         let main = document.getElementById("main");
         main.innerHTML = `<div id="vacio"><p>No ha realizado ningún comentario todavía</p></div>`;
@@ -24,6 +25,7 @@ export function imprimirListaComentariosPropio(datos) {
             <th>Fecha</th>
             <th>Producto</th>
             <th>Imagen</th>
+            <th>ID producto</th>
             <th>Modificar</th>
             <th>Eliminar</th>
         </tr>
@@ -35,6 +37,7 @@ export function imprimirListaComentariosPropio(datos) {
         <td>${key.fecha}</td>
         <td>${key.nombreProducto}</td>
         <td><img src="data:image/webp;base64,${key.imagen}" class="imagen" alt=""></td>
+        <td>${key.IDProducto}</td>
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
         </tr>`
