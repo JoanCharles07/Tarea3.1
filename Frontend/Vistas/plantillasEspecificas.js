@@ -195,16 +195,19 @@ export function imprimirTodosResultados(objetoComprobaciones) {
 */
 function imprimirResultado(id, resultado) {
   let input = document.getElementById(id);
-  let span = input.nextElementSibling;
-  let texto = input.title;
-  if (resultado) {
-    input.style.border = "3px solid red";
-    span.textContent = texto;
+  if (input != null) {
+    let span = input.nextElementSibling;
+    let texto = input.title;
+    if (resultado) {
+      input.style.border = "3px solid red";
+      span.textContent = texto;
+    }
+    else {
+      input.style.border = "none";
+      span.textContent = "";
+    }
   }
-  else {
-    input.style.border = "none";
-    span.textContent = "";
-  }
+
 }
 /**
 * Esta función dará estilos a nuestro input pass si no coinciden además de avisar al usuario del error.
@@ -256,12 +259,12 @@ export function imprimirFiltradoEstrellas(filtro) {
  */
 export function imprimirComentarios(datos) {
   let container = document.getElementById("container_Comentarios");
-  
+
   console.log(datos);
   if (datos.datosComentarios) {
     let comentario = "";
     for (let dato of datos.datosComentarios) {
-      let fecha=new Date(dato.fecha);
+      let fecha = new Date(dato.fecha);
       comentario += `<div class="comentario"><div id="parteSuperiorComentario" class="parteSuperiorComentario">
         <div class="zonanombre">
         <img src="../../Recursos/Imagenes/usuarioAnonimo.webp" alt="imagen de usuario estandar" id="imagenUsuario">
@@ -269,7 +272,7 @@ export function imprimirComentarios(datos) {
         </div>
         <img src="../../Recursos/Imagenes/${dato.valoracion}estrellas.webp" alt="valoración" class="${dato.valoracion}_Estrellas">
         </div>
-        <p>${fecha.getDate()}/${fecha.getMonth()+1}/${fecha.getFullYear()}</p>
+        <p>${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}</p>
         <p>${dato.mensaje}</p>
        
         </div>`;
@@ -328,7 +331,7 @@ export function recorrerTotalProducto() {
 }
 //No se guarda en la sesion y es meramente visual
 export function recorrerTotalProductoAlterado(producto) {
-  
+
   console.log("entro 2");
   let totalPedido = document.getElementById("totalPedido");
   let totalIVA = document.getElementById("totalIva");
@@ -419,13 +422,13 @@ export function imprimirDatosUsuarioCarrito(datos) {
   <button id="modificar" class="botonesProducto">Modificar datos</button>
   `;
   document.getElementById("datosUsuario").innerHTML = texto;
-  
+
 
 }
 
-export function activarZonaUsuario(){
+export function activarZonaUsuario() {
   document.getElementById("datosUsuario").style.display = "flex";
-          document.getElementById("inicioSesion").style.display = "none";
+  document.getElementById("inicioSesion").style.display = "none";
 }
 export function imprimirCarritoVacio() {
   let texto = `

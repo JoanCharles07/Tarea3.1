@@ -1439,6 +1439,7 @@ function existeAccion(&$errores)
             if ($res != null) {
                 for ($x = 0; $x < count($res); $x++) {
                     $clase = new stdClass();
+                    $clase->IDNoticia = $res[$x][0];
                     $clase->titulo = $res[$x][1];
                     $clase->subtitulo = $res[$x][2];
                     $clase->imagen = base64_encode($res[$x][3]);
@@ -1462,4 +1463,40 @@ function existeAccion(&$errores)
     };
 
     return $array;
+}
+
+function modificarNoticia(&$errores){
+    $sql = "UPDATE `delatierra`.`noticia` SET `Titulo`= :titulo, `Subtitulo`= :subtitulo,`imagen` = :imagen, `Fecha`= CURRENT_DATE, `Cuerpo`= :cuerpo, `Id_Administrador` = :idAdministrador WHERE (`Id_Noticia` = :idNoticia)";
+    $ret = false;
+    try {
+        
+        $pdo=conectar();
+        $stmt = $pdo->prepare($sql);
+        $data=["titulo" =>  $_SESSION["datos"]["titulo"],  
+        "subtitulo"=> $_SESSION["datos"]["subtitulo"], "imagen" =>$_SESSION["datos"]["imagen"], "idNoticia" =>$_SESSION["datos"]["id"],"cuerpo" =>$_SESSION["datos"]["cuerpo"],
+        "idAdministrador" => $_SESSION["datosUsuario"]["id"]];
+        if ($stmt->execute($data)) {
+            $res = $stmt->rowCount();
+            
+            if ($res != 0) {
+                $ret=true;
+            } else {
+                
+                $errores->errorBBDD[] = "No se han encontrado noticias";
+            }
+        }else{
+              
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+        
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        /**En caso de haber excepción será atrapada por el catch*/
+         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+         //($_SESSION["ErrorDepuracion"]);
+         echo $ex->getMessage();
+         $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+    };
+
+    return $ret;
 }

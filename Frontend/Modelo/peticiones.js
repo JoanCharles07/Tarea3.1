@@ -5,7 +5,7 @@
 * @version 1.0.0
 */
 
-import { comprobarDatosRegex } from "./comprobaciones.js";
+import { comprobacionREAD, comprobacionUPDATE, comprobarDatosRegex } from "./comprobaciones.js";
 
 /**
  * Esta función hará una petición a la base de datos para conseguir todos los productos de la tienda.
@@ -319,20 +319,9 @@ export function recuperarNoticias() {
 export function accesoListados() {
 
     return new Promise(async(resolve, reject) => {
-      if (sessionStorage.getItem("usuario")) {
-        //DATOS NECESARIOS PARA EL SERVIDOR
-        const datosUrl = new URLSearchParams(window.location.search);
-        const usuario = JSON.parse(atob(sessionStorage.getItem("usuario")));
-        const datosIntroducidos = {
-          opcion: datosUrl.get('eleccion'),
-          accion: "leer",
-          usuario: usuario[0]
-        }
-
-        let datosS=  comprobarDatosRegex(datosIntroducidos);
-        console.log(datosS);
+      const datosIntroducidos=comprobacionREAD();
+      if(typeof Object.values(datosIntroducidos)[0] != "boolean"){
         let datos = { llamada: "listas", datosIntroducidos };
-
         fetch("../../Backend/Controlador/controlador.php", {
           method: 'POST',
           headers: {
@@ -349,49 +338,46 @@ export function accesoListados() {
           }).catch(error => {
             reject(error);
           })
-      } else {
-          reject("Hubo error");
+      
+    
+      }
+      else{
+        resolve(datosIntroducidos)
       }
     });
+        
   
 }
 
-export function accesoListadosModificado() {
+export  function accesoListadosModificado() {
 
   try {
-    return new Promise((resolve, reject) => {
-      if (sessionStorage.getItem("usuario")) {
-
-      }
-      let datosModificados = new FormData(document.getElementById("formulario"));
-      const usuario = JSON.parse(atob(sessionStorage.getItem("usuario")));
-      let datosIntroducidos = {};
-      for (const dato of datosModificados.entries()) {
-        datosIntroducidos[dato[0]] = dato[1];
-      }
-
-      datosIntroducidos["usuario"] = usuario[0];
-      datosIntroducidos["accion"] = "Modificar";
-      let datosS=  comprobarDatosRegex(datosIntroducidos);
-        console.log(datosS);
-      let datos = { llamada: "modificar", datosIntroducidos };
-
-      fetch("../../Backend/Controlador/controlador.php", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(datos)
-
-      })
-        .then(response => response.text())
-        .then(data => {
-          const datos = JSON.parse(data);
-          resolve(datos);
-
-        }).catch(error => {
-          reject(error);
+    return new Promise(async(resolve, reject) => {
+      const datosIntroducidos= await comprobacionUPDATE();
+      if(typeof Object.values(datosIntroducidos)[0] != "boolean"){
+        let datos = { llamada: "modificar", datosIntroducidos };
+        console.log(datosIntroducidos);
+        fetch("../../Backend/Controlador/controlador.php", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(datos)
+  
         })
+          .then(response => response.text())
+          .then(data => {
+            const datos = JSON.parse(data);
+            resolve(datos);
+  
+          }).catch(error => {
+            reject(error);
+          })
+      }
+      else{
+        resolve(datosIntroducidos)
+      }
+      
     });
   } catch (e) {
   }

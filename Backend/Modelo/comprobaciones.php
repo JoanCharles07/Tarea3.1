@@ -109,7 +109,7 @@ function saneamientoDatos($cadena){
  */
  function RegexBoolean($dato,$name)
  {
-     $expresionRegular = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,25}$)/";
+     $expresionRegular = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$|()])(^.{4,25}$)/";
      $resultado = false;
      //comparamos con la expresión regular
     switch ($name) {
@@ -131,17 +131,41 @@ function saneamientoDatos($cadena){
                 $resultado = !validateFloat($dato);
            
             break;
+        case "imagen":
+            $imagen = base64_decode(explode(",", $_SESSION["datos"]["imagen"])[1]);
+            $formato = getimagesizefromstring($imagen)["mime"];
+            
+           
+            if(strlen($imagen)< (1024*1024)&&($formato="image/png" || $formato="image/jpg" || $formato="image/webp" || $formato="image/jpge")){
+                $_SESSION["datos"]["imagen"]=$imagen;
+            }
+            else{
+                $resultado=true;
+            }
+           
+            break;
         case "fecha":
             $comprobar=explode("-",$dato);
             $resultado = !checkdate($comprobar[1],$comprobar[2],$comprobar[0]);
             break;
+        
         case 'mensaje':
-            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*[*=$&|()])(^.{4,250}$)/";
+        case 'titulo':
+        case 'subtitulo':
+            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$|()])(^.{4,250}$)/";
         $resultado = false;
         if (!preg_match($expresionRegular2, $dato)) {
             $resultado = true;
            
         }
+            break;
+        case "cuerpo"://ponemos s al final para que nos deje añadir saltos de linea
+            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$|()])(^.{4,1000}$)/s";
+            $resultado = false;
+            if (!preg_match($expresionRegular2, $dato)) {
+                $resultado = true;
+               
+            }
             break;
         default:
         if (!preg_match($expresionRegular, $dato)) {

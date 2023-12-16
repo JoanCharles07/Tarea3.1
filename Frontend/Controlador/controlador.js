@@ -21,6 +21,7 @@ import { datosBorrarProducto, comprobarCarrito, objetoCarrito, datosLupa, datosF
 import { lista, modificaciones, noticia } from "./controladorListasNoticias.js";
 import { redireccionLista } from "../Vistas/plantillaListas.js";
 import { accesoListadosModificado } from "../Modelo/peticiones.js";
+import { modificacionCorrecta } from "../Vistas/plantillaModificaciones.js";
 
 
 
@@ -376,7 +377,7 @@ async function interaccionesControlador() {
       else if (window.location.pathname.includes("listas.html")) {
         comprobarAccion().then(async respuesta =>{
           
-          if(respuesta.errores){
+          if(respuesta.errores || typeof Object.values(respuesta)[0] == "boolean"){
             alert("Hubo algún error vuelva a iniciar sesión");
             sessionStorage.removeItem("usuario");
             location.href="./login.html";
@@ -389,7 +390,9 @@ async function interaccionesControlador() {
           
 
         }).catch( respuesta =>{
-          console.log("Hubo un error");
+          alert("Hubo algún error vuelva a iniciar sesión");
+          sessionStorage.removeItem("usuario");
+          location.href="./login.html";
         })
         document.getElementById("listado").addEventListener("click", function (e){
           //En una función
@@ -435,14 +438,27 @@ async function interaccionesControlador() {
       /******************************************************************************************************************************* */
       else if (window.location.pathname.includes("modificar.html")) {
         const arrayDatos=JSON.parse(localStorage.getItem("modificar"));
-        console.log(arrayDatos);
-        modificaciones(arrayDatos);
+        if(arrayDatos!=null){
+          modificaciones(arrayDatos);
+        }
+        else{
+          alert("Hubo algún error vuelva a iniciar sesión");
+          sessionStorage.removeItem("usuario");
+          location.href="./login.html";
+        }
+        
         
         document.getElementById("formulario").addEventListener("submit",function(e){
           e.preventDefault();
           comprobarAccionModificacion().then(respuesta => {
-           
-            //enviamos a se ha realizado la modificacion, o no
+            if(respuesta.errores || typeof Object.values(respuesta)[0] == "boolean"){
+              console.log(respuesta);
+                imprimirTodosResultados(respuesta);
+            }
+            else{
+                modificacionCorrecta();
+            }
+            
           });
           
           

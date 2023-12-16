@@ -53,15 +53,16 @@ function controladorLista($datos,&$errores,&$session){
 function controladorModificaciones($datos,&$errores,&$session){
     $respuesta=existeAccion($errores);
     if($respuesta){
-
+        
     if($datos->opcion=="Lista comentarios" && $_SESSION["datosUsuario"]["rol"]==3){
             $session->comentarios=modificarComentariosGlobal($errores);
         }
         else if($datos->opcion=="Comentarios" && $_SESSION["datosUsuario"]["rol"]==3){
             $session->comentarios=modificarComentariosPropio($errores);
         }
-        else if($datos->opcion=="Lista roles" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->roles=recuperarRoles($errores);
+        else if($datos->opcion=="Lista Noticias" && $_SESSION["datosUsuario"]["rol"]==3){
+           
+            $session->noticias=modificarNoticia($errores);
         }
         else if($datos->opcion=="Lista productos" && $_SESSION["datosUsuario"]["rol"]==3){
             $session->productos=recuperarProductosAgricultores($errores);
@@ -71,9 +72,6 @@ function controladorModificaciones($datos,&$errores,&$session){
         }
         else if($datos->opcion=="Lista pedidos" && $_SESSION["datosUsuario"]["rol"]==3){
             $session->listaPedidos=recuperarPedidos($errores);
-        }
-        else if($datos->opcion=="Lista Noticias" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->noticias=noticia($errores);
         }
         else if($datos->opcion=="Productos" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
             $session->productos=productosAgricultor($errores);

@@ -370,6 +370,7 @@ export function imprimirListaNotcias(datos) {
             <th>imagen</th>
             <th>fecha</th>
             <th>cuerpo </th>
+            <th>ID Noticia</th>
             <th>Modificar</th>
             <th>eliminar</th>
         </tr>
@@ -381,6 +382,7 @@ export function imprimirListaNotcias(datos) {
         <td><img src="data:image/webp;base64,${key.imagen}" class="imagen" alt=""></td>
         <td>${key.fecha}</td>
         <td>${key.cuerpo}</td>
+        <td>${key.IDNoticia}</td>
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
         </tr>`

@@ -19,10 +19,11 @@ $session = new stdClass;
 /**En primer lugar comprobaremos si existe POST de existir entraremos en nuestro controlador
  * que según la propiedad llamada entrará en un if u otro.
  */
+
 try {
     if (isset($_POST)) {
         $direccion = json_decode(file_get_contents('php://input'));
-
+        
         if ($direccion->llamada == "Productos") {
             $respuesta = recuperarProductos($errores);
             //$respuesta=encriptarTodasPalabras($respuesta);
@@ -189,18 +190,17 @@ try {
                 errores($errores);
             }
         } else if ($direccion->llamada == "modificar" && isset($_SESSION["datosUsuario"])) {
-            //llamar para comparar usuario y rol y ver si coinciden.Si no coinciden fuera directamente.
-            //asegurarnos que tanto la palabra como la accion no se han adulterado y entramos al controlador de listas.
-            //Transformar aqui al nombre del permiso para no tenerlo en el frontend.
-            //var_dump($direccion->datosIntroducidos);
-            //sanear
+            
+             
             inicioComprobaciones($direccion->datosIntroducidos, $errores);
-
+            
             coincideUsuario($errores);
             if (empty((array) $errores)) {
+                
                 comprobarRol($errores);
                 $resultado = controladorModificaciones($direccion->datosIntroducidos, $errores, $session);
                 if ($resultado == false) {
+                   
                     errores($errores);
                 } else {
                     echo json_encode($session);

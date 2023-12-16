@@ -30,7 +30,6 @@ export function recepcionDeDatosUsuario(direccion) {
                         //En caso de tener la propiedad datosUuario quiere decir que ha sido correcto
                         if(datosServidor.datosUsuario && datosServidor.acciones){
                             //codificar datos antes de meterlos
-                            
                             sessionStorage.setItem("usuario",btoa(JSON.stringify(datosServidor.datosUsuario)));
                             sessionStorage.setItem("acciones",btoa(JSON.stringify(datosServidor.acciones)));
                             resolve();
@@ -93,6 +92,7 @@ export async function comprobarAccion() {
         try {
             
             const respuesta=await accesoListados();
+            
             return respuesta;
         } catch (error) {
             throw new Error(error);
@@ -104,6 +104,7 @@ export async function comprobarAccion() {
 export async function comprobarAccionModificacion() {
    
     try {
+        
         const respuesta=await  accesoListadosModificado();
         return respuesta;
     } catch (error) {
