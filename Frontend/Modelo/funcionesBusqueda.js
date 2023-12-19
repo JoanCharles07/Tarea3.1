@@ -38,9 +38,8 @@ export function resultadoBusqueda() {
  * @returns {String} cadena modificada en minúscula y sin acentos.
  */
 
-function palabraPreparada(texto) {
+export function palabraPreparada(texto) {
     let palabra = "";
-    console.log(texto);
     let mapa = { "á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u", "Á": "a", "É": "e", "Í": "i", "Ó": "o", "Ú": "U" };
     for (let i = 0; i < texto.length; i++) {
         palabra += mapa[texto[i]] || texto[i];

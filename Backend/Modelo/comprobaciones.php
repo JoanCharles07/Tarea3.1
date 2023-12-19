@@ -22,8 +22,10 @@ function inicioComprobaciones($datosIntroducidos,&$errores){
  */
 function saneamientoDatos($cadena){
     $cadenaSaneado=filter_var($cadena,FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    //quitamos las tildes que lleguen por html estilo &accudate 
+    $cadenaSinHTML=html_entity_decode($cadenaSaneado, ENT_QUOTES | ENT_HTML5, "UTF-8");
     
-    return $cadenaSaneado;
+    return $cadenaSinHTML;
  }
  
   /**
@@ -121,23 +123,52 @@ function saneamientoDatos($cadena){
         case 'IDproducto':
         case 'id':
         case 'rol':
+        case 'IDrol':
         case 'comprador':
+        case 'pedido':
+        
                 $resultado = !validateInteger($dato);   
             
             break;
+        case "descuento":
+            if(validateInteger($dato) === false){
+                $resultado=true;
+            }
+            else if($dato<0 || $dato >100){
+                $resultado=true;
+            }
+            break;
+        case "stock":
+            
+            if(validateInteger($dato) === false){
+                
+                $resultado=true;
+            }
+            else if($dato<0){
+                $resultado=true;
+            }
+              break;
         case 'precioInicial':
         case 'precioTotal':
-          
-                $resultado = !validateFloat($dato);
-           
+        case 'precio':
+            if(validateFloat($dato)=== false){
+                $resultado=true;
+            }
+            else if($dato<0){
+                $resultado=true;
+            }
             break;
         case "imagen":
             $imagen = base64_decode(explode(",", $_SESSION["datos"]["imagen"])[1]);
-            $formato = getimagesizefromstring($imagen)["mime"];
             
-           
-            if(strlen($imagen)< (1024*1024)&&($formato="image/png" || $formato="image/jpg" || $formato="image/webp" || $formato="image/jpge")){
-                $_SESSION["datos"]["imagen"]=$imagen;
+            if(strlen($imagen)< (1024*1024) && strlen($imagen) > 0){
+                $formato = getimagesizefromstring($imagen)["mime"];
+                if(strlen($imagen)< (1024*1024)&&($formato=="image/png" || $formato=="image/jpg" || $formato=="image/webp" || $formato=="image/jpge")){
+                    $_SESSION["datos"]["imagen"]=$imagen;
+                }
+                else{
+                    $resultado=true;
+                }
             }
             else{
                 $resultado=true;
@@ -152,6 +183,7 @@ function saneamientoDatos($cadena){
         case 'mensaje':
         case 'titulo':
         case 'subtitulo':
+        case 'direccion':
             $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$|()])(^.{4,250}$)/";
         $resultado = false;
         if (!preg_match($expresionRegular2, $dato)) {
@@ -160,7 +192,7 @@ function saneamientoDatos($cadena){
         }
             break;
         case "cuerpo"://ponemos s al final para que nos deje añadir saltos de linea
-            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$|()])(^.{4,1000}$)/s";
+            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$|()])(^.{4,1000}$)/";
             $resultado = false;
             if (!preg_match($expresionRegular2, $dato)) {
                 $resultado = true;
@@ -188,7 +220,8 @@ function saneamientoDatos($cadena){
     
    foreach($_SESSION["datos"] as $name => $value){
      //nos aseguramos que name sea asociatibo y que regexboolean sea verdadero.
-      if (RegexBoolean($value,$name) && is_string($name)) {
+     $valor=transformarPalabra($value);
+      if (RegexBoolean($valor,$name) && is_string($name)) {
           
           $errores->$name = true;
           
@@ -197,6 +230,12 @@ function saneamientoDatos($cadena){
      
     }
    
+ }
+ //Dos arrays el primero con tildes el segundo como quiero que se quede y el tercero la cadena  luego lo paso a minuscula
+ function transformarPalabra($dato){
+    $cadena=str_replace(array("Á","á","É","é","Í","í","Ó","ó","Ú","ú"," "),array("a","a","e","e","i","i","o","o","u","u",""),$dato);
+    //devolvemos cadena en minusculas para el filtro no lo tenga en cuenta
+    return strtolower($cadena);
  }
  /** Expresión regular que impedira que se introduzca un DNI no válido.
   * @param Any cadena de texto a comprobar.

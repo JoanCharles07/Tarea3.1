@@ -199,13 +199,16 @@ try {
                 
                 comprobarRol($errores);
                 $resultado = controladorModificaciones($direccion->datosIntroducidos, $errores, $session);
+                
                 if ($resultado == false) {
                    
                     errores($errores);
                 } else {
+                    unset($_SESSION["datos"]);
                     echo json_encode($session);
                 }
             } else {
+                unset($_SESSION["datos"]);
                 errores($errores);
             }
             /** Hago esto porque si yo cambio rol en BBDD hasta que no se reinicie la sesión no surtirían efecto los cambios

@@ -451,7 +451,7 @@ async function interaccionesControlador() {
         document.getElementById("formulario").addEventListener("submit",function(e){
           e.preventDefault();
           comprobarAccionModificacion().then(respuesta => {
-            if(respuesta.errores || typeof Object.values(respuesta)[0] == "boolean"){
+            if(respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean"){
               console.log(respuesta);
                 imprimirTodosResultados(respuesta);
             }

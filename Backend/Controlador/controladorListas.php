@@ -17,7 +17,7 @@ function controladorLista($datos,&$errores,&$session){
             $session->roles=recuperarRoles($errores);
         }
         else if($datos->opcion=="Lista productos" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->productos=recuperarProductosAgricultores($errores);
+            $session->productosGlobal=recuperarProductosAgricultores($errores);
         }
         else if($datos->opcion=="Lista permisos" && $_SESSION["datosUsuario"]["rol"]==3){
             $session->permisos=recuperarPermisos($errores);
@@ -29,7 +29,7 @@ function controladorLista($datos,&$errores,&$session){
             $session->noticias=noticia($errores);
         }
         else if($datos->opcion=="Productos" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
-            $session->productos=productosAgricultor($errores);
+            $session->productosPropio=productosAgricultor($errores);
         }
         else if($datos->opcion=="Envios" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
             $session->envios=enviosAgricultor($errores);
@@ -57,33 +57,45 @@ function controladorModificaciones($datos,&$errores,&$session){
     if($datos->opcion=="Lista comentarios" && $_SESSION["datosUsuario"]["rol"]==3){
             $session->comentarios=modificarComentariosGlobal($errores);
         }
-        else if($datos->opcion=="Comentarios" && $_SESSION["datosUsuario"]["rol"]==3){
+        else if($datos->opcion=="Comentarios"){
             $session->comentarios=modificarComentariosPropio($errores);
         }
         else if($datos->opcion=="Lista Noticias" && $_SESSION["datosUsuario"]["rol"]==3){
            
             $session->noticias=modificarNoticia($errores);
         }
-        else if($datos->opcion=="Lista productos" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->productos=recuperarProductosAgricultores($errores);
+        else if($datos->opcion=="Lista pedidos" && $_SESSION["datosUsuario"]["rol"]==3){
+            if($_SESSION["datos"]["estado"]=="Tramitando"){
+                $session->pedido=modificarEstadoPedidoTramitandoAdmin($errores);
+            }else if($_SESSION["datos"]["estado"]=="Enviado"){
+                $session->pedido=modificarEstadoPedidoEnviandoAdmin($errores);
+            }else if($_SESSION["datos"]["estado"]=="Recibido"){
+                $session->pedido=modificarEstadoPedidoRecibido($errores);
+            }
         }
         else if($datos->opcion=="Lista permisos" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->permisos=recuperarPermisos($errores);
+            $session->permisos=modificarPermiso($errores);
         }
-        else if($datos->opcion=="Lista pedidos" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->listaPedidos=recuperarPedidos($errores);
+        else if($datos->opcion=="Lista usuarios" && $_SESSION["datosUsuario"]["rol"]==3){
+            $session->usuarios=modificarUsuariosGlobal($errores);
+        }
+        else if($datos->opcion=="Lista roles" && $_SESSION["datosUsuario"]["rol"]==3){
+            $session->usuarios=modificarRol($errores);
+        }
+        else if($datos->opcion=="Lista productos" && ($_SESSION["datosUsuario"]["rol"]==3 )){
+            $session->productosGlobal=modificarProductoGlobal($errores);
         }
         else if($datos->opcion=="Productos" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
-            $session->productos=productosAgricultor($errores);
+            $session->productosPropio= modificarProductosPropio($errores);
         }
         else if($datos->opcion=="Envios" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
-            $session->envios=enviosAgricultor($errores);
-        }
-        else if($datos->opcion=="Historial"){
-            $session->historial=historial($errores);
-        }
-        else if($datos->opcion=="Pedidos"){
-            $session->listaPedidosUsuario=recuperarPedidosUsuario($errores);
+            if($_SESSION["datos"]["estado"]=="Tramitando"){
+                $session->envios=modificarEstadoPedidoTramitando($errores);
+            }else if($_SESSION["datos"]["estado"]=="Enviado"){
+                $session->envios=modificarEstadoPedidoEnviando($errores);
+            }else if($_SESSION["datos"]["estado"]=="Recibido"){
+                $session->envios=modificarEstadoPedidoRecibido($errores);
+            }
         }
     }
     else{

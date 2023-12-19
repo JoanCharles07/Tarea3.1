@@ -8,8 +8,9 @@
 
 import{recuperarNoticias}from "../Modelo/peticiones.js";
 import { imprimirListaNotcias,imprimirListaPedidos,imprimirListaComentariosPropio,imprimirListaComentariosGlobal ,imprimirListaPermisos,
-    imprimirListaProductos,imprimirListaRoles,imprimirListaUsuarios, imprimirEnvios,imprimirHistorial, imprimirListaPedidosUsuario} from "../Vistas/plantillaListas.js";
-import { modificacionComentariosGlobales, modificacionComentariosPropios, modificacionNoticias } from "../Vistas/plantillaModificaciones.js";
+    imprimirListaRoles,imprimirListaUsuarios, imprimirEnvios,imprimirHistorial, imprimirListaPedidosUsuario, imprimirListaProductosGlobal, 
+    imprimirListaProductosPropio} from "../Vistas/plantillaListas.js";
+import { modificacionComentariosGlobales, modificacionComentariosPropios, modificacionNoticias, modificacionPedido, modificacionPermisos, modificacionProductos, modificacionRol, modificacionUsuarioGlobal } from "../Vistas/plantillaModificaciones.js";
 /**
  * Esta función comprobará si tenemos en el sessionStorage lo productos, si no los tenemos hará una llamada a la
  * base de datos para recuperarlos, esto será asincrono por lo que usaremos async await para esperar la respuesta
@@ -52,8 +53,11 @@ export function lista(datos) {
             else if(datos.roles){
                 imprimirListaRoles(datos);
             }
-            else if(datos.productos){
-                imprimirListaProductos(datos);
+            else if(datos.productosGlobal){
+                imprimirListaProductosGlobal(datos);
+            }
+            else if(datos.productosPropio){
+                imprimirListaProductosPropio(datos);
             }
             else if(datos.permisos){
                 imprimirListaPermisos(datos);
@@ -98,7 +102,30 @@ export function modificaciones(datos){
         modificacionComentariosPropios(datos);
     }
     else if(datos[datos.length-1]=="Lista Noticias"){
-        console.log(datos);
+        
         modificacionNoticias(datos);
+    }
+
+    else if(datos[datos.length-1]=="Lista pedidos" || datos[datos.length-1]=="Envios"){
+       
+        modificacionPedido(datos);
+    }
+    else if(datos[datos.length-1]=="Lista usuarios"){
+       
+        modificacionUsuarioGlobal(datos);
+    }
+    //Puedes Modificarlo, pero no tiene mucho sentido por la estructuración del código.
+    else if(datos[datos.length-1]=="Lista roles"){
+       
+        modificacionRol(datos);
+    }
+    else if(datos[datos.length-1]=="Lista permisos"){
+        modificacionPermisos(datos);
+    }
+    else if(datos[datos.length-1]=="Lista productos"){
+        modificacionProductos(datos);
+    }
+    else if(datos[datos.length-1]=="Productos"){
+        modificacionProductos(datos);
     }
 }

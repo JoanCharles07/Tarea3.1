@@ -101,6 +101,8 @@ export function imprimirListaUsuarios(datos) {
             <th>Código Postal</th>
             <th>email</th>
             <th>DNI</th>
+            <th>Rol</th>
+            <th>Usuario</th>
             <th>Modificar</th>
             <th>Eliminar</th>
         </tr>
@@ -116,6 +118,8 @@ export function imprimirListaUsuarios(datos) {
         <td>${key.cpostal}</td>
         <td>${key.email}</td>
         <td>${key.dni}</td>
+        <td>${key.rol}</td>
+        <td>${key.usuario}</td>
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
         </tr>`
@@ -157,8 +161,8 @@ export function imprimirListaRoles(datos) {
 
 }
 
-export function imprimirListaProductos(datos) {
-    if (Object.values(datos.productos).length == 0) {
+export function imprimirListaProductosGlobal(datos) {
+    if (Object.values(datos.productosGlobal).length == 0) {
         let main = document.getElementById("main");
         main.innerHTML = `<div id="vacio"><p>No hay  ningún producto todavía</p></div>`;
     }
@@ -181,7 +185,7 @@ export function imprimirListaProductos(datos) {
             <th>eliminar</th>
         </tr>
     </thead><tbody>`;
-        for (const key of datos.productos) {
+        for (const key of datos.productosGlobal) {
             tabla += `<tr>
         <td>${key.id}</td>
         <td>${key.nombre_producto}</td>
@@ -193,6 +197,50 @@ export function imprimirListaProductos(datos) {
         <td>${key.stock}</td>
         <td>${key.descuento}</td>
         <td>${key.Id_Vendedor}</td>
+        <td><button>Modificar</button></td>
+        <td><button>Eliminar</button></td>
+        </tr>`
+        }
+        tabla += `</tbody>`;
+        lista.innerHTML = tabla;
+        boton.innerHTML = `<button>Añadir Producto</button>`
+
+    }
+}
+export function imprimirListaProductosPropio(datos) {
+    if (Object.values(datos.productosPropio).length == 0) {
+        let main = document.getElementById("main");
+        main.innerHTML = `<div id="vacio"><p>No hay  ningún producto todavía</p></div>`;
+    }
+    else {
+        const lista = document.getElementById("listado");
+        const boton = document.getElementById("botonAgregar");
+        let tabla = `<thead>
+        <tr>
+            <th style="display:none">ID</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Comentarios</th>
+            <th>Valoraciones</th>
+            <th>imagenes</th>
+            <th>precio</th>
+            <th>Stock</th>
+            <th>descuento</th>
+            <th>Modificar</th>
+            <th>eliminar</th>
+        </tr>
+    </thead><tbody>`;
+        for (const key of datos.productosPropio) {
+            tabla += `<tr>
+        <td style="display:none">${key.id}</td>    
+        <td>${key.nombre_producto}</td>
+        <td>${key.descripcion}</td>
+        <td>${key.comentarios_totales}</td>
+        <td>${key.valoracion_total}</td>
+        <td><img src="data:image/webp;base64,${key.imagen}" class="imagen" alt=""></td>
+        <td>${key.precio}</td>
+        <td>${key.stock}</td>
+        <td>${key.descuento}</td>
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
         </tr>`
@@ -220,6 +268,7 @@ export function imprimirListaPermisos(datos) {
             <th>Código</th>
             <th>Acción</th>
             <th>Permitido a</th>
+            <th style="display:none">ID ROL </th>
             <th>Modificar</th>
             <th>eliminar</th>
         </tr>
@@ -232,6 +281,7 @@ export function imprimirListaPermisos(datos) {
         <td>${key.codigo}</td>
         <td>${key.accion}</td>
         <td>${key.roles}</td>
+        <td style="display:none">${key.idRol}</td>
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
         </tr>`

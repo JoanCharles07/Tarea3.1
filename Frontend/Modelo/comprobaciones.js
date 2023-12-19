@@ -1,3 +1,5 @@
+import { palabraPreparada } from "./funcionesBusqueda.js" ;
+
 /**
  * @file Este script se encargará de las funciones de comprobaciones.
  * @description Este script realizará distintas funciones donde se comprobará que lo datos son correctos unos con otros.
@@ -22,9 +24,16 @@ export function comprobarRegex(nombre, valor) {
      
       break;
     case "id":
+    case "IDrol":
     case "comprador":
+    case "vendedor":
+    case "pedido":
     case "stock":
+    case "precio":
+    case "descuento":
       respuesta = !validarNumero(valor);
+      //Para evitar numeros nega
+      
       break;
     case "valoracion":
       respuesta = comprobarRegexEstrellas(valor);
@@ -40,6 +49,7 @@ export function comprobarRegex(nombre, valor) {
         }
         
         break;
+        
     default:
       let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$&|()])(^.{4,40}$)/);
       respuesta = !(regex.test(valor));
@@ -69,7 +79,6 @@ export function comprobarRegexComentarios(valor) {
 export function comprobarRegexNoticia(valor) {
   let respuesta = false;
   //Con esta expresión regular podemos confirmar var
- console.log(valor);
   let regex = new RegExp(/^(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)[A-Za-z0-9\s\S]{4,2500}$/);
   respuesta = !(regex.test(valor));
 
@@ -98,7 +107,6 @@ export function comprobarDatosFormDataRegex(datos) {
     objeto[dato[0]] = comprobarRegex(dato[0], dato[1]);
 
   }
-  console.log(objeto);
 
   return objeto;
 }
@@ -115,10 +123,9 @@ export function comprobarDatosRegex(datos) {
   //Con esta expresión regular podemos confirmar var
 
   for (const dato of Object.entries(datos)) {
-    objeto[dato[0]] = comprobarRegex(dato[0], dato[1]);
+    objeto[dato[0]] = comprobarRegex(dato[0], palabraPreparada(dato[1]));
 
   }
-  console.log(objeto);
 
   return objeto;
 }
@@ -153,10 +160,15 @@ export function usuarioConectado() {
   sessionStorage.setItem("conectado", "En linea");
 }
 
-
+//Comprobamos que sea un numero y que no sea negativo
 export function validarNumero(dato) {
-
-  return !isNaN(dato)
+  let respuesta=false;
+  if(!isNaN(dato)){
+    respuesta =true;
+  }else if(valor < 0){
+    respuesta =true;
+  }
+  return respuesta;
 }
 
 export function comprobacionREAD() {
@@ -194,6 +206,7 @@ export async function comprobacionUPDATE() {
         datosIntroducidos[dato[0]] = dato[1];
       }else{
         // Esperar a que se complete la carga de la imagen
+        
         datosIntroducidos[dato[0]] = await procesarImagen(dato);
         
       }
@@ -212,10 +225,11 @@ export async function comprobacionUPDATE() {
 
   }
 }
+//tamaño(tanto por arriba como que no sea 0 o menor) y paso de imagen a string
 async function procesarImagen(dato) {
   return new Promise((resolve) => {
-      console.log(dato[1]);
-      if(dato[1].size < (1024*1024)){
+      
+      if(dato[1].size < (1024*1024) && dato[1].size!= 0){
         let nuevaImagen = new FileReader();
       
         nuevaImagen.readAsDataURL(dato[1]);

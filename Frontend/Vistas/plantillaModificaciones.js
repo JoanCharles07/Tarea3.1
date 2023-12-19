@@ -46,20 +46,21 @@ export function modificacionPedido(arrayDatos) {
     let Form = document.getElementById("formulario");
     let texto = `
         <span id="errorBBDD"></span>
+        <label for="estado">Estado del Pedido</label>
         <select name="estado">
-            <option value="value1" selected>Tramitando</option>
-            <option value="value2" >Enviado</option>
-            <option value="value3">Recibido</option>
+            <option value="Tramitando" selected>Tramitando</option>
+            <option value="Enviado" >Enviado</option>
+            <option value="Recibido">Recibido</option>
         </select>
         <input type="text" id="opcion"  name="opcion" value="${arrayDatos[arrayDatos.length - 1]}"/>
-        <input type="text" id="idComprador"  name="idComprador" value="${arrayDatos[arrayDatos.length - 2]}"/>
-        <input type="text" id="idVendedor"  name="idVendedor" value="${arrayDatos[arrayDatos.length - 3]}"/>
-        <input type="text" id="idPedido"  name="idVendedor" value="${arrayDatos[1]}"/>
+        <input type="text" id="pedido"  name="pedido" value="${arrayDatos[0]}"/>
         <input type="submit" class="botonSubmit" name="submit" value="Modificar"/>`;
     Form.innerHTML = texto;
-    document.getElementById("id").style.display = "none";
+    document.getElementById("pedido").style.display = "none";
     document.getElementById("opcion").style.display = "none";
 }
+
+
 
 export function modificacionNoticias(arrayDatos) {
     let Form = document.getElementById("formulario");
@@ -92,8 +93,133 @@ export function modificacionCorrecta() {
     let main = document.getElementById("main");
     main.innerHTML = `<div id="vacio"><p>Se ha realizado la modificación</p></div>`;
     const intervalID = setInterval(function () {
-
+        //Borramos productos para que se actualizen los datos si productos fuera alterado, por no complicar mas el codigo
+        sessionStorage.removeItem("productos");
         location.href="./tienda.html";
     }, 1500);
 
+}
+
+export function modificacionUsuarioGlobal(arrayDatos) {
+    let Form = document.getElementById("formulario");
+    let texto = `
+        <span id="errorBBDD"></span>
+        <label for="Nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" value="${arrayDatos[0]}"/>
+        <span id="errorNombre"></span>
+
+        <label for="apellidos">Apellidos</label>
+        <input type="text" id="apellidos" name="apellidos" value="${arrayDatos[1]}"/>
+        <span id="errorApellidos"></span>
+        
+        <label for="nickname">Usuario</label>
+        <input type="text" id="nickname" name="nickname" value="${arrayDatos[2]}"/>
+        <span id="errorUsuario"></span>
+        <label for="direccion">Dirección</label>
+        <input type="text" id="direccion" name="direccion" value="${arrayDatos[3]}"/>
+        <span id="errordireccion"></span>
+
+        <label for="ciudad">Ciudad</label>
+        <input type="text" id="Ciudad" name="ciudad" value="${arrayDatos[4]}" />
+        <span id="errorCiudad"></span>
+        
+        <label for="provincia">Provincia</label>
+        <input type="text" id="provincia" name="provincia" value="${arrayDatos[5]}" />
+        <span id="errorProvincia"></span>
+
+        <label for="cpostal">Código Postal</label>
+        <input type="text" id="cpostal" name="cpostal" value="${arrayDatos[6]}" />
+        <span id="errorCpostal"></span>
+
+        <label for="email">Correo Electrónico</label>
+        <input type="text" id="email" name="email" value="${arrayDatos[7]}" />
+        <span id="erroremail"></span>
+
+        <label for="dni">Código DNI</label>
+        <input type="text" id="dni" name="dni" value="${arrayDatos[8]}" />
+        <span id="errorDNI"></span>
+
+        <label for="rol">ROL</label>
+        <input type="text" id="IDrol" name="IDrol" value="${arrayDatos[9]}" />
+        <span id="errorRol"></span>
+
+
+
+        <input type="text" id="opcion"  name="opcion" value="${arrayDatos[arrayDatos.length - 1]}"/>
+        <input type="text" id="id"  name="id" value="${arrayDatos[arrayDatos.length - 2]}"/>
+        <input type="submit" class="botonSubmit" name="submit" value="Modificar"/>`;
+    Form.innerHTML = texto;
+    document.getElementById("id").style.display = "none";
+    document.getElementById("opcion").style.display = "none";
+}
+
+export function modificacionRol(arrayDatos) {
+    let Form = document.getElementById("formulario");
+    let texto = `
+        <span id="errorBBDD"></span>
+        <label for="nombreRol">Nombre del rol</label>
+        <input type="text" id="nombreRol"  name="nombreRol" value="${arrayDatos[1]}"/>
+        <input type="text" id="opcion"  name="opcion" value="${arrayDatos[arrayDatos.length - 1]}"/>
+        <input type="text" id="IDrol"  name="IDrol" value="${arrayDatos[0]}"/>
+        <input type="submit" class="botonSubmit" name="submit" value="Modificar"/>`;
+    Form.innerHTML = texto;
+    document.getElementById("IDrol").style.display = "none";
+    document.getElementById("opcion").style.display = "none";
+}
+
+export function modificacionPermisos(arrayDatos) {
+    let Form = document.getElementById("formulario");
+    let texto = `
+        <span id="errorBBDD"></span>
+        <label for="nombre">Nombre permiso</label>
+        <input type="text" id="nombre"  name="nombrePermiso" value="${arrayDatos[1]}"/>
+        <label for="descripcion">Descripción</label>
+        <input type="text" id="descripcion"  name="descripcion" value="${arrayDatos[2]}"/>
+        <label for="codigo">Código</label>
+        <input type="text" id="codigo"  name="codigo" value="${arrayDatos[3]}"/>
+        <label for="accion">Acción</label>
+        <select name="cambiarAccion">
+            <option value="leer" selected>Leer</option>
+            <option value="Modificar" >Modificar</option>
+            <option value="crear">Crear</option>
+            <option value="borrar">Borrar</option>
+        </select>
+        <label for="rol">Roles Permitidos</label>
+        <select name="Tipo">
+            <option value="Usuario" selected>Usuario</option>
+            <option value="Agricultor" >Agricultor</option>
+            <option value="Administrador">Administrador</option>
+        </select>
+        <input type="text" id="opcion"  name="opcion" value="${arrayDatos[arrayDatos.length - 1]}"/>
+        <input type="text" id="IDrol"  name="IDrol" value="${arrayDatos[arrayDatos.length - 2]}"/>
+        <input type="text" id="id"  name="id" value="${arrayDatos[0]}"/>
+        <input type="submit" class="botonSubmit" name="submit" value="Modificar"/>`;
+    Form.innerHTML = texto;
+    document.getElementById("id").style.display = "none";
+    document.getElementById("IDrol").style.display = "none";
+    document.getElementById("opcion").style.display = "none";
+}
+
+export function modificacionProductos(arrayDatos) {
+    let Form = document.getElementById("formulario");
+    let texto = `
+        <span id="errorBBDD"></span>
+        <label for="nombre">Nombre Producto</label>
+        <input type="text" id="nombre"  name="nombre" value="${arrayDatos[1]}"/>
+        <label for="descripcion">Descripción Producto</label>
+        <input type="text" id="descripcion"  name="descripcion" value="${arrayDatos[2]}"/>
+        <label for="imagen">Imagen</label>
+        <input type="file" id="imagen" name="imagen" accept=".png, .jpg, .webp" "/>
+        <label for="precio">Precio</label>
+        <input type="number" step=".01" id="precio"  name="precio" value="${arrayDatos[6]}"/>
+        <label for="stock">Stock</label>
+        <input type="number" min="0"  id="stock"  name="stock" value="${arrayDatos[7]}"/>
+        <label for="descuento">Descuento</label>
+        <input type="number" min="0" max="100"  id="descuento"  name="descuento" value="${arrayDatos[8]}"/>
+        <input type="text" id="opcion"  name="opcion" value="${arrayDatos[arrayDatos.length - 1]}"/>
+        <input type="text" id="id"  name="id" value="${arrayDatos[0]}"/>
+        <input type="submit" class="botonSubmit" name="submit" value="Modificar"/>`;
+    Form.innerHTML = texto;
+    document.getElementById("id").style.display = "none";
+    document.getElementById("opcion").style.display = "none";
 }
