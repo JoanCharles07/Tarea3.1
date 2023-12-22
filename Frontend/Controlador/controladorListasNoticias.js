@@ -10,7 +10,8 @@ import{recuperarNoticias}from "../Modelo/peticiones.js";
 import { imprimirListaNotcias,imprimirListaPedidos,imprimirListaComentariosPropio,imprimirListaComentariosGlobal ,imprimirListaPermisos,
     imprimirListaRoles,imprimirListaUsuarios, imprimirEnvios,imprimirHistorial, imprimirListaPedidosUsuario, imprimirListaProductosGlobal, 
     imprimirListaProductosPropio} from "../Vistas/plantillaListas.js";
-import { modificacionComentariosGlobales, modificacionComentariosPropios, modificacionNoticias, modificacionPedido, modificacionPermisos, modificacionProductos, modificacionRol, modificacionUsuarioGlobal } from "../Vistas/plantillaModificaciones.js";
+import { modificacionComentariosGlobales, modificacionComentariosPropios, modificacionNoticias, modificacionPedido, modificacionPermisos, modificacionProductos, modificacionRol, modificacionUsuarioGlobal, modificacionUsuarioPropio } from "../Vistas/plantillaModificaciones.js";
+import { confirmarEliminacion,confirmarEliminacionComentarios, confirmarEliminacionPermisos, confirmarEliminacionUsuario } from "../Vistas/plantillaBorrar.js";
 /**
  * Esta función comprobará si tenemos en el sessionStorage lo productos, si no los tenemos hará una llamada a la
  * base de datos para recuperarlos, esto será asincrono por lo que usaremos async await para esperar la respuesta
@@ -42,6 +43,7 @@ export function lista(datos) {
         try{
            
             if(datos.comentariosPropio){
+                
                 imprimirListaComentariosPropio(datos);
             }else if(datos.comentariosGlobal){
                 
@@ -127,5 +129,26 @@ export function modificaciones(datos){
     }
     else if(datos[datos.length-1]=="Productos"){
         modificacionProductos(datos);
+    }
+    else if(datos[datos.length-1]=="Perfil"){
+        modificacionUsuarioPropio(datos);
+    }
+}
+
+export function eliminacion(datos){
+    if(datos[datos.length-1]=="Lista comentarios"){
+        
+        confirmarEliminacionComentarios(datos);
+    }
+    else if(datos[datos.length-1]=="Lista permisos"){
+        
+        confirmarEliminacionPermisos(datos);
+    }
+    else if(datos[datos.length-1]=="Perfil"){
+        
+        confirmarEliminacionUsuario(datos);
+    }
+    else{
+        confirmarEliminacion(datos);
     }
 }

@@ -4,19 +4,6 @@ main{
     grid-template-columns: 1fr 1fr;
 }
 
-.botonesProducto{
-    width: 30%;
-    height: 40px;
-    background-color: var(--color-fondo);
-    color: var(--color-texto);
-    font-weight: bold;
-    transition: all 0.50s ease;
-  }
-  .botonesProducto:hover{
-      background-color: var(--color-fondo-hover);
-      color: var(--color-texto-hover);
-      width: 40%;
-  }
 
 #containerDatosUsuario{
     width: 100%;

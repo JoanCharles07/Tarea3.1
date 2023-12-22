@@ -167,7 +167,6 @@ export function imprimirProductos() {
 * @see imprimirResultado.
 */
 export function imprimirTodosResultados(objetoComprobaciones) {
-
   for (let clave in objetoComprobaciones) {
 
     if (clave == "errorBBDD") {
@@ -227,6 +226,17 @@ export function imprimirIgualdadPass(resultado) {
     document.getElementById("pass2").style.border = "3px solid rgb(234,98,98)";
     document.getElementById("errorP2").innerHTML = "No coinciden contraseñas";
   }
+}
+
+export function exitoCambioPass(datosServidor) {
+  let main = document.getElementById("main");
+  main.style.gridTemplateColumns="1fr";
+  main.innerHTML = `<div id="vacio"><p>Se ha realizado el cambio de contraseña correctamente</p></div>`;
+  const intervalID = setInterval(function () {
+    
+      location.href="./tienda.html";
+  }, 1500);
+
 }
 
 /**
@@ -402,7 +412,7 @@ export function funcionalidadTienda() {
 }
 export function funcionalidadModificarDatos() {
 
-  location.href = "./lista.html";
+  location.href = "./listas.html";
 }
 export function funcionalidadCompra() {
 
@@ -411,8 +421,9 @@ export function funcionalidadCompra() {
 export function imprimirDatosUsuarioCarrito(datos) {
   let texto = `
   <h2>Datos de Envio</h2>
-  <div><span>Nombre:</span><span id="nombre" class="textoDatos"> ${datos.nombre}</span></div>
+  <div><span>Nombre:</span><span id="nombre" class="textoDatos">${datos.nombre}</span></div>
   <div><span >Apellidos: </span><span id="Apellidos" class="textoDatos">${datos.apellido}</span></div>
+  <div><span >Usuario: </span><span id="ciudad" class="textoDatos">${datos.nickname}</span></div>
   <div><span >Dirección: </span><span id="direccion" class="textoDatos">${datos.direccion}</span></div>
   <div><span >Provincia: </span><span id="provincia" class="textoDatos">${datos.provincia}</span></div>
   <div><span >Ciudad: </span><span id="ciudad" class="textoDatos">${datos.ciudad}</span></div>
@@ -422,7 +433,29 @@ export function imprimirDatosUsuarioCarrito(datos) {
   <button id="modificar" class="botonesProducto">Modificar datos</button>
   `;
   document.getElementById("datosUsuario").innerHTML = texto;
+  
 
+
+}
+
+export function imprimirDatosUsuarioPerfil(datos) {
+  let texto = `
+  <h2>Datos de Usuario</h2>
+  <div><span>Nombre:</span><span id="nombre" class="textoDatos">${datos.nombre}</span></div>
+  <div><span >Apellidos: </span><span id="Apellidos" class="textoDatos">${datos.apellido}</span></div>
+  <div><span >Usuario: </span><span id="ciudad" class="textoDatos">${datos.nickname}</span></div>
+  <div><span >Dirección: </span><span id="direccion" class="textoDatos">${datos.direccion}</span></div>
+  <div><span >Provincia: </span><span id="provincia" class="textoDatos">${datos.provincia}</span></div>
+  <div><span >Ciudad: </span><span id="ciudad" class="textoDatos">${datos.ciudad}</span></div>
+  <div><span>Código Postal: </span><span id="cpostal" class="textoDatos">${datos.cpostal}</span></div>
+  <div><span>Email: </span><span id="email" class="textoDatos">${datos.email}</span></div>
+  <div><span>DNI: </span><span id="dni" class="textoDatos">${datos.dni}</span></div>
+  <button id="modificar" class="botonesProducto">Modificar datos</button>
+  <button id="sesion" class="botonesProducto">Cerrar Sesión</button>
+  <button id="eliminar" class="botonesProducto">Darse de baja</button>
+  `;
+  document.getElementById("datosUsuario").innerHTML = texto;
+  
 
 }
 

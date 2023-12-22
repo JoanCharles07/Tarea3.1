@@ -59,6 +59,7 @@ export function usuario(datosUsuario, direccion) {
         })
         .then(data => {
           const datos = JSON.parse(data);
+          console.log(datos);
           resolve(datos);
         })
         .catch(error => {
@@ -178,6 +179,7 @@ export function borrarDelCarritoBBDD(datosCarrito) {
       //DATOS NECESARIOS PARA EL SERVIDOR
       //Trasnformo el formdata a objeto para mejor manejo en PHP
       let usuario = JSON.parse(atob(sessionStorage.getItem("usuario")));
+      
       let datosIntroducidos = new Object();
 
       //Con esta expresión regular podemos confirmar var
@@ -250,6 +252,7 @@ export function recuperarCarrito() {
  */
 export function recuperarDatosUsuario() {
   let usuario = JSON.parse(atob(sessionStorage.getItem("usuario")));
+ 
   try {
     return new Promise((resolve, reject) => {
       //DATOS NECESARIOS PARA EL SERVIDOR
@@ -273,6 +276,7 @@ export function recuperarDatosUsuario() {
         .then(response => response.text())
         .then(data => {
           const datos = JSON.parse(data);
+          console.log(datos);
           resolve(datos);
 
         }).catch(error => {
@@ -284,6 +288,49 @@ export function recuperarDatosUsuario() {
 }
 
 
+/**
+ * Devuelve los datos del usaurio registrado.
+ * @returns datos del usuario si no hay errores.
+ */
+export function cambiarPassBBDD() {
+  
+  
+  try {
+    return new Promise((resolve, reject) => {
+      //DATOS NECESARIOS PARA EL SERVIDOR
+      //Trasnformo el formdata a objeto para mejor manejo en PHP
+      let usuario = JSON.parse(atob(sessionStorage.getItem("usuario")));
+      let datosPass = new FormData(document.getElementById("cambiarPass"));
+      let datosIntroducidos={};
+      console.log(comprobarDatosRegex(datosPass));
+      for (const dato of datosPass.entries()) {
+        datosIntroducidos[dato[0]] = dato[1];
+      }
+      datosIntroducidos["usuario"]=usuario[0];
+      console.log(datosIntroducidos);
+      let datos = { llamada: "cambiarPass",  datosIntroducidos };
+
+      fetch("../../Backend/Controlador/controlador.php", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+
+      })
+        .then(response => response.text())
+        .then(data => {
+          const datos = JSON.parse(data);
+          console.log(datos);
+          resolve(datos);
+
+        }).catch(error => {
+          reject(error);
+        })
+    });
+  } catch (e) {
+  }
+}
 export function recuperarNoticias() {
 
   try {
@@ -294,6 +341,37 @@ export function recuperarNoticias() {
 
 
       let datos = { llamada: "noticias" };
+
+      fetch("../../Backend/Controlador/controlador.php", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+
+      })
+        .then(response => response.text())
+        .then(data => {
+          const datos = JSON.parse(data);
+          resolve(datos);
+
+        }).catch(error => {
+          reject(error);
+        })
+    });
+  } catch (e) {
+  }
+}
+export function cerrarSesionBBDD() {
+
+  try {
+    return new Promise((resolve, reject) => {
+      //DATOS NECESARIOS PARA EL SERVIDOR
+      //Trasnformo el formdata a objeto para mejor manejo en PHP
+
+
+
+      let datos = { llamada: "cerrarSesion" };
 
       fetch("../../Backend/Controlador/controlador.php", {
         method: 'POST',
@@ -333,6 +411,7 @@ export function accesoListados() {
           .then(response => response.text())
           .then(data => {
             const datos = JSON.parse(data);
+            console.log(datos);
             resolve(datos);
 
           }).catch(error => {
@@ -368,6 +447,7 @@ export  function accesoListadosModificado() {
           .then(response => response.text())
           .then(data => {
             const datos = JSON.parse(data);
+            console.log(datos);
             resolve(datos);
   
           }).catch(error => {
@@ -398,7 +478,7 @@ export function accesoListadosEliminado() {
       }
 
       datosIntroducidos["usuario"] = usuario[0];
-      datosIntroducidos["accion"] = "Eliminar";
+      datosIntroducidos["accion"] = "borrar";
       console.log(datosIntroducidos);
       let datos = { llamada: "eliminar", datosIntroducidos };
 

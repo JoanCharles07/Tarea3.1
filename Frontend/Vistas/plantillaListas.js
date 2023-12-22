@@ -20,24 +20,25 @@ export function imprimirListaComentariosPropio(datos) {
         const lista = document.getElementById("listado");
         let tabla = `<thead>
         <tr>
+            <th style="display:none">ID producto</th>
             <th>Mensaje</th>
             <th>Valoración</th>
             <th>Fecha</th>
             <th>Producto</th>
             <th>Imagen</th>
-            <th style="display:none">ID producto</th>
             <th>Modificar</th>
             <th>Eliminar</th>
         </tr>
     </thead><tbody>`;
         for (const key of datos.comentariosPropio) {
             tabla += `<tr>
+        <td style="display:none">${key.IDProducto}</td>
         <td>${key.mensaje}</td>
         <td>${key.valoracion}</td>
         <td>${key.fecha}</td>
         <td>${key.nombreProducto}</td>
         <td><img src="data:image/webp;base64,${key.imagen}" class="imagen" alt=""></td>
-        <td style="display:none">${key.IDProducto}</td>
+        
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
         </tr>`
@@ -84,14 +85,17 @@ export function imprimirListaComentariosGlobal(datos) {
 }
 
 export function imprimirListaUsuarios(datos) {
+    
+    const boton = document.getElementById("botonAgregar");
     if (Object.values(datos.usuarios).length == 0) {
         let main = document.getElementById("main");
-        main.innerHTML = `<div id="vacio"><p>No hay  ningún Usuario todavía</p></div>`;
+        main.innerHTML = `<div id="vacio"><p>No hay  ningún Usuario todavía</p><button>Añadir Usuario</button></div>`;
     }
     else {
         const lista = document.getElementById("listado");
         let tabla = `<thead>
         <tr>
+            <th>Usuario</th>
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Usuario</th>
@@ -102,13 +106,13 @@ export function imprimirListaUsuarios(datos) {
             <th>email</th>
             <th>DNI</th>
             <th>Rol</th>
-            <th>Usuario</th>
             <th>Modificar</th>
             <th>Eliminar</th>
         </tr>
     </thead><tbody>`;
         for (const key of datos.usuarios) {
             tabla += `<tr>
+        <td>${key.usuario}</td>
         <td>${key.nombre}</td>
         <td>${key.apellido}</td>
         <td>${key.nickname}</td>
@@ -119,25 +123,27 @@ export function imprimirListaUsuarios(datos) {
         <td>${key.email}</td>
         <td>${key.dni}</td>
         <td>${key.rol}</td>
-        <td>${key.usuario}</td>
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
         </tr>`
         }
         tabla += `</tbody>`
         lista.innerHTML = tabla;
+        boton.innerHTML = `<button>Añadir Usuario</button>`
     }
 
 }
 
 export function imprimirListaRoles(datos) {
+    
+    
     if (Object.values(datos.roles).length == 0) {
         let main = document.getElementById("main");
-        main.innerHTML = `<div id="vacio"><p>No hay  ningún rol todavía</p></div>`;
+        main.innerHTML = `<div id="vacio"><p>No hay  ningún rol todavía</p><button>Añadir Rol</button></div>`;
     }
     else {
-        const lista = document.getElementById("listado");
         const boton = document.getElementById("botonAgregar");
+        const lista = document.getElementById("listado");
         let tabla = `<thead>
         <tr>
             <th>ID</th>
@@ -162,13 +168,16 @@ export function imprimirListaRoles(datos) {
 }
 
 export function imprimirListaProductosGlobal(datos) {
+    
+    const boton = document.getElementById("botonAgregar");
     if (Object.values(datos.productosGlobal).length == 0) {
         let main = document.getElementById("main");
-        main.innerHTML = `<div id="vacio"><p>No hay  ningún producto todavía</p></div>`;
+        main.innerHTML = `<div id="vacio"><p>No hay  ningún producto todavía</p>
+        <button>Añadir Producto</button></div>`;
+     
     }
     else {
         const lista = document.getElementById("listado");
-        const boton = document.getElementById("botonAgregar");
         let tabla = `<thead>
         <tr>
             <th>ID</th>
@@ -208,9 +217,12 @@ export function imprimirListaProductosGlobal(datos) {
     }
 }
 export function imprimirListaProductosPropio(datos) {
+    
+   
     if (Object.values(datos.productosPropio).length == 0) {
         let main = document.getElementById("main");
-        main.innerHTML = `<div id="vacio"><p>No hay  ningún producto todavía</p></div>`;
+        main.innerHTML = `<div id="vacio"><p>No hay  ningún producto todavía</p>
+        <button>Añadir Producto</button></div>`;
     }
     else {
         const lista = document.getElementById("listado");
@@ -253,13 +265,15 @@ export function imprimirListaProductosPropio(datos) {
 }
 
 export function imprimirListaPermisos(datos) {
+    const boton = document.getElementById("botonAgregar");
     if (Object.values(datos.permisos).length == 0) {
         let main = document.getElementById("main");
-        main.innerHTML = `<div id="vacio"><p>No hay  ningún permiso todavía</p></div>`;
+        main.innerHTML = `<div id="vacio"><p>No hay  ningún permiso todavía</p> <button>Añadir Permiso</button></div>`;
+        
+      
     }
     else {
     const lista = document.getElementById("listado");
-    const boton = document.getElementById("botonAgregar");
     let tabla = `<thead>
         <tr>
             <th>ID</th>
@@ -288,7 +302,7 @@ export function imprimirListaPermisos(datos) {
     }
     tabla += `</tbody>`;
     lista.innerHTML = tabla;
-    boton.innerHTML = `<button>Añadir Producto</button>`
+    boton.innerHTML = `<button>Añadir Permiso</button>`
     }
 }
 
@@ -406,40 +420,42 @@ export function imprimirEnvios(datos) {
 }
 
 export function imprimirListaNotcias(datos) {
+    
+    const boton = document.getElementById("botonAgregar");
     if (Object.values(datos.noticias).length == 0) {
         let main = document.getElementById("main");
-        main.innerHTML = `<div id="vacio"><p>No hay  ninguna noticia todavía</p></div>`;
+        main.innerHTML = `<div id="vacio"><p>No hay  ninguna noticia todavía</p><button>Añadir Noticia</button></div>`;
+        
     }
     else {
     const lista = document.getElementById("listado");
-    const boton = document.getElementById("botonAgregar");
     let tabla = `<thead>
         <tr>
+            <th>ID Noticia</th>
             <th>Título</th>
             <th>Subtítulo</th>
             <th>imagen</th>
             <th>fecha</th>
             <th>cuerpo </th>
-            <th>ID Noticia</th>
             <th>Modificar</th>
             <th>eliminar</th>
         </tr>
     </thead><tbody>`;
     for (const key of datos.noticias) {
         tabla += `<tr>
+        <td>${key.IDNoticia}</td>
         <td>${key.titulo}</td>
         <td>${key.subtitulo}</td>
         <td><img src="data:image/webp;base64,${key.imagen}" class="imagen" alt=""></td>
         <td>${key.fecha}</td>
         <td>${key.cuerpo}</td>
-        <td>${key.IDNoticia}</td>
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
         </tr>`
     }
     tabla += `</tbody>`;
     lista.innerHTML = tabla;
-    boton.innerHTML = `<button>Añadir Producto</button>`
+    boton.innerHTML = `<button>Añadir Noticia</button>`
 }
 }
 

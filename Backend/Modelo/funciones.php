@@ -49,9 +49,9 @@ function encriptarTodasPalabras($array)
  * se realizará mediante registro.*/
 function IDrol()
 {
-   if ($_SESSION["datos"]["rol"] == "usuario") {
+   if ($_SESSION["datos"]["nombreRol"] == "usuario") {
       $_SESSION["datos"]["rol"] = 1;
-   } elseif ($_SESSION["datos"]["rol"] == "agricultor") {
+   } elseif ($_SESSION["datos"]["nombreRol"] == "agricultor") {
       $_SESSION["datos"]["rol"] = 2;
    }
 }
@@ -71,7 +71,7 @@ function errores($errores)
  * @param [<Object>] $session se insertarán datos que devolveremos al usuario.
  */
 function exitoUsuario(&$session)
-{
+{  
    unset($_SESSION["datos"]);
    $session->datosUsuario = [$_SESSION["datosUsuario"]["usuario"], $_SESSION["datosUsuario"]["rol"]];
    echo json_encode($session);
@@ -104,6 +104,15 @@ function exitoAgregarComentario(&$session)
  */
 function coincideUsuario(&$errores){
    if($_SESSION["datosUsuario"]["usuario"]!=$_SESSION["datos"]["usuario"]){
-      $errores->errores="No coinciden credenciales, vuelva a iniciar sesión";
+       $errores->errorBBDD[]="No coinciden credenciales, vuelva a iniciar sesión";
+   }
+}
+function coincidePass(&$errores){
+   $passAntigua=encriptarPalabra($_SESSION["datos"]["antiguaPass"]);
+   if($_SESSION["datosUsuario"]["pass"]!=$passAntigua){
+      $errores->errorBBDD[]="No coinciden credenciales, vuelva a iniciar sesión";
+   }
+   else{
+      $_SESSION["datos"]["pass"]=encriptarPalabra($_SESSION["datos"]["pass"]);
    }
 }

@@ -263,6 +263,6 @@ function saneamientoDatos($cadena){
      }
      return $resultado;
  }
- 
+
 
 ?>

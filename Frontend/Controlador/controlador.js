@@ -10,18 +10,19 @@
 //Importaciones necesarias para el funcionamiento de controlador.js
 import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado, mostrarCantidadCarrito } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
-import { passIguales, recepcionDeDatosUsuario, datosUsuario,comprobarAccion, comprobarAccionModificacion, comprobarAccionEliminacion  } from "./controladorUsuario.js";
+import { passIguales, recepcionDeDatosUsuario, datosUsuario,comprobarAccion, comprobarAccionModificacion, comprobarAccionEliminacion, cambiarPass, cerrarSesion  } from "./controladorUsuario.js";
 import {
   activarZonaUsuario, funcionalidadModificarDatos, funcionalidadCompra, recorrerTotalProducto, funcionalidadTienda, imprimirCarrito, imprimirCarritoVacio,
   imprimirDatosUsuarioCarrito, funcionalidadInicioSesion, imprimirIniciarSesion, cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas,
   imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda,
-  mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin, borrarDelCarrito, cantidadDetalleClase, imprimirNoticias
+  mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin, borrarDelCarrito, cantidadDetalleClase, imprimirNoticias, imprimirDatosUsuarioPerfil, exitoCambioPass
 } from "../Vistas/plantillasEspecificas.js";
 import { datosBorrarProducto, comprobarCarrito, objetoCarrito, datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios } from "./controladorProductos.js";
-import { lista, modificaciones, noticia } from "./controladorListasNoticias.js";
+import { eliminacion, lista, modificaciones, noticia } from "./controladorListasNoticias.js";
 import { redireccionLista } from "../Vistas/plantillaListas.js";
 import { accesoListadosModificado } from "../Modelo/peticiones.js";
 import { modificacionCorrecta } from "../Vistas/plantillaModificaciones.js";
+import { eliminacionCorrecta } from "../Vistas/plantillaBorrar.js";
 
 
 
@@ -348,9 +349,20 @@ async function interaccionesControlador() {
           activarZonaUsuario();
           datosUsuario().then(respuesta => {
             imprimirDatosUsuarioCarrito(respuesta);
-            document.getElementById("modificar").addEventListener("click", function () {
-              funcionalidadModificarDatos();
-            })
+          
+              document.getElementById("modificar").addEventListener("click", function (e) {
+                const arrayDatos=[]
+                const datos =e.target.parentNode.children;
+                for(let dato of datos){
+                 if(dato.tagName=="DIV"){
+                   arrayDatos.push(dato.children[1].textContent);
+                 }
+                  
+                }
+                arrayDatos.push("Perfil");
+                localStorage.setItem("modificar",JSON.stringify(arrayDatos));
+               location.href="./modificar.html";
+             })
 
           })
 
@@ -385,15 +397,13 @@ async function interaccionesControlador() {
 
             lista(respuesta);
           }
-          
-          
-          
 
         }).catch( respuesta =>{
           alert("Hubo algún error vuelva a iniciar sesión");
           sessionStorage.removeItem("usuario");
           location.href="./login.html";
         })
+
         document.getElementById("listado").addEventListener("click", function (e){
           //En una función
           let array=[];
@@ -419,16 +429,26 @@ async function interaccionesControlador() {
           let array=[];
           let elementosFila=e.target.parentNode.parentNode.children;
           if(e.target.textContent=="Eliminar" && e.target.tagName=="BUTTON"){
-            for(let i=0;i<elementosFila.length -2; i++){
-              array.push(elementosFila[i].textContent);
-            }
             const datosUrl = new URLSearchParams(window.location.search);
+            let direccion=datosUrl.entries().next().value[1];
+            //Es el único que necesita más de un ID
+            if(direccion =="Lista comentarios"){
+              array.push(elementosFila[3].textContent);
+              array.push(elementosFila[4].textContent);
+            }else if(direccion=="Lista permisos"){
+              array.push(elementosFila[0].textContent);
+              array.push(elementosFila[5].textContent);
+            }
+            else{
+              array.push(elementosFila[0].textContent);
+            }
+           
             //Zona ha mejorar 
             /**Hago esto para cuando se entre en el controladorlistasNoticias sepa a que funcion de la plantilla debe de ir. */
-            array.push(datosUrl.entries().next().value[1]);
+            array.push(direccion);
             //Uso localSotarege porque sesion a veces no funciona correctamente.
-            localStorage.setItem("elminar",JSON.stringify(array));
-            //location.href="./eleminar.html";
+            localStorage.setItem("eliminar",JSON.stringify(array));
+            location.href="./borrar.html";
           }
           
         });
@@ -444,6 +464,7 @@ async function interaccionesControlador() {
         else{
           alert("Hubo algún error vuelva a iniciar sesión");
           sessionStorage.removeItem("usuario");
+          localStorage.removeItem("modificar");
           location.href="./login.html";
         }
         
@@ -452,11 +473,12 @@ async function interaccionesControlador() {
           e.preventDefault();
           comprobarAccionModificacion().then(respuesta => {
             if(respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean"){
-              console.log(respuesta);
+            
                 imprimirTodosResultados(respuesta);
             }
             else{
-                modificacionCorrecta();
+                
+                modificacionCorrecta(respuesta);
             }
             
           });
@@ -469,26 +491,119 @@ async function interaccionesControlador() {
       /*********************************************************************************************************************************/
       /************************  ZONA ELIMINAR ******************************************************************************************/
       /******************************************************************************************************************************* */
-      else if (window.location.pathname.includes("eliminar.html")) {
-        const arrayDatos=JSON.parse(localStorage.getItem("modificar"));
-        
-        modificaciones(arrayDatos);
-        
+      else if (window.location.pathname.includes("borrar.html")) {
+        const arrayDatos=JSON.parse(localStorage.getItem("eliminar"));
+        if(arrayDatos!=null){
+          eliminacion(arrayDatos);
+        }
+        else{
+          alert("Hubo algún error vuelva a iniciar sesión");
+          sessionStorage.removeItem("usuario");
+          localStorage.removeItem("eliminar");
+          location.href="./login.html";
+        }
+
         document.getElementById("formulario").addEventListener("submit",function(e){
           e.preventDefault();
           comprobarAccionEliminacion().then(respuesta => {
-           
-            //enviamos a se ha realizado la eliminación, o no
+            console.log(respuesta);
+            if(respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean"){
+              alert("Hubo algún error vuelva a iniciar sesión");
+              sessionStorage.removeItem("usuario");
+              localStorage.removeItem("eliminar");
+              //location.href="./login.html";
+                
+            }
+            else{
+                eliminacionCorrecta(respuesta);
+            }
           });
           
           
         })
         //Remove da problemas
-        localStorage.removeItem("modificar");
+        localStorage.removeItem("eliminar");
+      }
+    /*********************************************************************************************************************************/
+      /************************  ZONA AÑADIR ******************************************************************************************/
+      /******************************************************************************************************************************* */
+      else if (window.location.pathname.includes("agregar.html")) {
+        
+          //tengo que sabe que voy a agregar y poner el formulrio correspondiente
+          //haremos click en submit y nos iremos a la peticion, tras comprobar todo 
+          //iremos a php donde comprobaremos de nuevo todo y agregaremos lo que sea
+          //USUARIO,PRODUCTO,PERMISO,ROL,NOTICIA
+          
+        }
+        //Remove da problemas
+      
+    
+    /*********************************************************************************************************************************/
+      /************************  ZONA PERFIL ******************************************************************************************/
+      /******************************************************************************************************************************* */
+      else if (window.location.pathname.includes("perfil.html")) {
+        if (sessionStorage.getItem("usuario")) {
+          //Siempre llamo a la base de datos o no?
+
+          
+          datosUsuario().then(respuesta => {
+            imprimirDatosUsuarioPerfil(respuesta);
+            document.getElementById("modificar").addEventListener("click", function (e) {
+               const arrayDatos=[]
+               const datos =e.target.parentNode.children;
+               for(let dato of datos){
+                if(dato.tagName=="DIV"){
+                  arrayDatos.push(dato.children[1].textContent);
+                }
+                 
+               }
+               arrayDatos.push("Perfil");
+               localStorage.setItem("modificar",JSON.stringify(arrayDatos));
+               console.log(arrayDatos);
+               location.href="./modificar.html";
+            });
+            document.getElementById("sesion").addEventListener("click", function (e) {
+              cerrarSesion().then(respuesta => {
+                console.log(respuesta);
+                if(!respuesta){
+
+                }else{
+                  sessionStorage.removeItem("usuario");
+                location.href="./tienda.html";
+                }
+              });
+           });
+            document.getElementById("eliminar").addEventListener("click", function (e) {
+              const arrayDatos=["Perfil"]
+              arrayDatos.push("Perfil");
+              localStorage.setItem("eliminar",JSON.stringify(arrayDatos));
+              location.href="./borrar.html";
+           });
+
+          });
+          document.getElementById("pass").addEventListener("blur", async function () {
+            let pass = await passIguales();
+            imprimirIgualdadPass(pass);
+          });
+
+          document.getElementById("pass2").addEventListener("blur", async function () {
+            let pass = await passIguales();
+            imprimirIgualdadPass(pass);
+          });
+
+          document.getElementById("cambiarPass").addEventListener("submit",async function (e) {
+            e.preventDefault();
+            let resultado=await cambiarPass();
+            if(resultado.exito){
+                exitoCambioPass();
+            }else{
+              imprimirTodosResultados(resultado);
+            }
+         })
+
+        }
       }
     });
-
-    
 }
 interaccionesControlador();
 

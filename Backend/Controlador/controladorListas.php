@@ -1,11 +1,13 @@
 <?php 
 
 function controladorLista($datos,&$errores,&$session){
+    
     $respuesta=existeAccion($errores);
     if($respuesta){
         
         if($datos->opcion=="Comentarios"){
             $session->comentariosPropio=recuperarComentariosUsuario($errores);
+            
         }
         else if($datos->opcion=="Lista comentarios" && $_SESSION["datosUsuario"]["rol"]==3){
             $session->comentariosGlobal=recuperarComentariosGlobal($errores);
@@ -96,6 +98,57 @@ function controladorModificaciones($datos,&$errores,&$session){
             }else if($_SESSION["datos"]["estado"]=="Recibido"){
                 $session->envios=modificarEstadoPedidoRecibido($errores);
             }
+        }
+        else if($datos->opcion=="Perfil"){
+            $session->usuario=modificarUsuariosPropio($errores);
+            
+        }
+    }
+    else{
+        $session->errores="No existe esa acción";
+    }
+    //DIVIDIMOS EN IF ENTRA EN ESA OPCION Y LE DAMOS LA INFORMACIÓN QUE QUIERE.
+    //Llega la accion que será CRUD y a lo que queremos pedir permiso por ejemplo accion ver, permiso Lista Productos.
+    //Dentro de la base de datos primero comprobamos que id tiene el permiso buscando la palabra
+}
+function controladorEliminacion($datos,&$errores,&$session){
+    $respuesta=existeAccion($errores);
+    if($respuesta){
+        
+        if($datos->opcion=="Lista comentarios" && $_SESSION["datosUsuario"]["rol"]==3){
+            $session->comentarios=eliminarComentariosGlobal($errores);
+        }
+        else if($datos->opcion=="Comentarios"){
+            $session->comentarios=eliminarComentariosPropio($errores);
+           
+        }
+        else if($datos->opcion=="Lista Noticias" && $_SESSION["datosUsuario"]["rol"]==3){
+           
+            $session->noticias=eliminarNoticia($errores);
+        }
+        else if($datos->opcion=="Lista pedidos" && $_SESSION["datosUsuario"]["rol"]==3){
+            $session->pedido=eliminarPedido($errores);
+        }
+        else if($datos->opcion=="Lista permisos" && $_SESSION["datosUsuario"]["rol"]==3){
+            $session->permisos=eliminarPermiso($errores);
+        }
+        else if($datos->opcion=="Lista usuarios" && $_SESSION["datosUsuario"]["rol"]==3){
+            $session->usuarios=eliminarUsuariosGlobal($errores);
+        }
+        else if($datos->opcion=="Lista roles" && $_SESSION["datosUsuario"]["rol"]==3){
+            $session->usuarios=eliminarRol($errores);
+        }
+        else if($datos->opcion=="Lista productos" && ($_SESSION["datosUsuario"]["rol"]==3 )){
+            $session->productosGlobal=eliminarProductoGlobal($errores);
+        }
+        else if($datos->opcion=="Productos" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
+            
+            $session->productosPropio= eliminarProductoPropio($errores);
+        }
+        else if($datos->opcion=="Envios" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
+            $session->productosPropio= eliminarEnvio($errores);
+        }else if($datos->opcion=="Perfil"){
+            eliminarUsuarioPropio($errores,$session);
         }
     }
     else{

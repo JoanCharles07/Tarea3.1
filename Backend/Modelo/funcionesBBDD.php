@@ -484,20 +484,22 @@ function recuperarComentariosUsuario(&$errores)
         if ($stmt->execute($data)) {
             $res = $stmt->fetchAll();
             if ($res != null) {
-                
                 for ($x = 0; $x < count($res); $x++) {
                     $clase = new stdClass();
                     $clase->mensaje = $res[$x][0];
                     $clase->valoracion = $res[$x][1];
                     $clase->fecha = $res[$x][2];
                     $clase->nombreProducto = $res[$x][3];
-                    $clase->imagen = $res[$x][4];
+                    $clase->imagen = base64_encode($res[$x][4]);
                     $clase->IDProducto = $res[$x][5];
                     $array []= $clase;
                 }
             } else {
                 $errores->errorBBDD[] = "No hay comentarios";
             }
+        }
+        else{
+            $errores->errorBBDD[] = "Hubo algún problema, intenteló más tarde";
         }
         
     } catch (PDOException $ex) {
@@ -1089,6 +1091,7 @@ function registro(&$errores,&$session)
                     $_SESSION["datosUsuario"]["id"]= $pdo->lastInsertId();
                     $_SESSION["datosUsuario"]["usuario"]= $_SESSION["datos"]["usuario"];
                     $_SESSION["datosUsuario"]["rol"]= $_SESSION["datos"]["rol"];
+                    $_SESSION["datosUsuario"]["pass"]= $_SESSION["datos"]["pass"];
                      //conseguir acciones que puede realizar
                      $session->acciones=accionesARealizar($errores,$_SESSION["datosUsuario"]["rol"]);
                 } else {
@@ -1172,6 +1175,7 @@ function accionesARealizar(&$errores,$rol){
  
 function usuario(&$errores,&$session)
 {   
+    
     $ret = false;
     //Por comodidad y ya que no son muchas variables usaremos una para usuario y otra para la contraseña
     $usuario= $_SESSION["datos"]["usuario"];
@@ -1197,6 +1201,7 @@ function usuario(&$errores,&$session)
                     $_SESSION["datosUsuario"]["id"] = $res["ID_Usuario"];
                     $_SESSION["datosUsuario"]["usuario"]= $res["nickname"];
                     $_SESSION["datosUsuario"]["rol"]= $res["Id_Rol"];
+                    $_SESSION["datosUsuario"]["pass"]= $_SESSION["datos"]["pass"];
                     $session->acciones=accionesARealizar($errores,$_SESSION["datosUsuario"]["rol"]);
                 
             }
@@ -1376,6 +1381,7 @@ function existeAccion(&$errores)
  
  function recuperarUsuario(&$errores,&$session)
  {   
+     
      $ret = false;
      $usuario= $_SESSION["datosUsuario"]["usuario"];
      //Sentencia sql para conseguir los datos del usuario que deseamos usar.
@@ -1404,6 +1410,54 @@ function existeAccion(&$errores)
                     $clase->cpostal = $res["Codigo_Postal"];
                     $clase->dni = $res["DNI"];
                     $session= $clase;
+             }
+             else{
+                 $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
+             }
+             
+         }else{
+             
+             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+         }
+ 
+        
+     }
+ 
+     //Else por si hay algún error
+     catch (PDOException $ex) {
+         /**En caso de haber excepción será atrapada por el catch*/
+         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+         //($_SESSION["ErrorDepuracion"]);
+     };
+ 
+     return $ret;
+     /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
+         que coinciden con los de la sesión iniciada*/
+ }
+
+ function cambiarPass(&$errores,&$session)
+ {   
+     
+     $ret = false;
+     $pass= $_SESSION["datos"]["pass"];
+     $usuario= $_SESSION["datosUsuario"]["usuario"];
+     //Sentencia sql para conseguir los datos del usuario que deseamos usar.
+     $sql = "UPDATE  usuario set `pass` = :pass  where `nickname` = :usuario";
+     try {
+         //Conectamos la base de datos
+         $ret = false;
+         $pdo = conectar();
+         
+         //Hacemos la sentencia preparada
+         $stmt = $pdo->prepare($sql);
+         $data=["pass"=> $pass, "usuario" => $usuario];
+         if ($stmt->execute($data)) {
+             $res = $stmt->rowCount();
+             //Si es correcta insertamos datos
+             if ($res != 0) {
+                 $ret = true;
+                 $_SESSION["datosUsuario"]["pass"]=$pass;
+                 $session->exito="Conseguido";
              }
              else{
                  $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
@@ -1723,9 +1777,51 @@ function modificarUsuariosGlobal(&$errores){
             
             if ($res != 0) {
                 $ret=true;
+
             } else {
                 
                 $errores->errorBBDD[] = "No se han podido modificar usuario";
+            }
+        }else{
+              
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+        
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        /**En caso de haber excepción será atrapada por el catch*/
+         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+         //($_SESSION["ErrorDepuracion"]);
+         echo $ex->getMessage();
+         $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+    };
+
+    return $ret;
+}
+function modificarUsuariosPropio(&$errores){
+    $sql = "UPDATE `usuario` SET `Nombre`= :nombre, `Apellido`= :apellidos,`nickname` = :usuario, `email`= :email, `dirección`= :direccion
+    , `ciudad` = :ciudad, `provincia` = :provincia,`Codigo_Postal` = :cpostal  WHERE (`ID_Usuario` = :id)";
+    $ret = false;
+    //Usar para los acentos añadir a saneamiento
+    
+       
+    try {
+        
+        $pdo=conectar();
+        $stmt = $pdo->prepare($sql);
+        $data=["nombre" =>  $_SESSION["datos"]["nombre"],  "apellidos"=> $_SESSION["datos"]["apellidos"], 
+        "usuario" =>$_SESSION["datos"]["nickname"], "email" =>$_SESSION["datos"]["email"],"direccion" =>$_SESSION["datos"]["direccion"],
+        "ciudad" => $_SESSION["datos"]["ciudad"],"provincia" =>$_SESSION["datos"]["provincia"]
+        ,"cpostal" =>$_SESSION["datos"]["cpostal"],"id" => $_SESSION["datosUsuario"]["id"]];
+        if ($stmt->execute($data)) {
+            $res = $stmt->rowCount();
+            
+            if ($res != 0) {
+                $ret="Exito";
+                $_SESSION["datosUsuario"]["usuario"]=$_SESSION["datos"]["nickname"];
+
+            } else {
+                $errores->errorBBDD[] = "No se han podido modificar datos";
             }
         }else{
               
@@ -2080,4 +2176,398 @@ function modificarProductosPropio(&$errores){
      return $ret;
 }
 
+function eliminarComentariosGlobal(&$errores){
+    $ret = false;
+     $sql ="DELETE FROM comentario where `ID_comprador`= :comprador AND `ID_Producto` = :producto";
+     
+     try {
+         
+         $pdo=conectar();
+         $stmt = $pdo->prepare($sql);
+         $data=["comprador" =>  $_SESSION["datos"]["comprador"],"producto" =>  $_SESSION["datos"]["id"]];
+         
+         if ($stmt->execute($data)) {
+            
+             $res=$stmt->rowCount();
+             if ($res != 0) {
+                 $ret=true;
+             } else {
+                 
+                 $errores->errorBBDD[] =  "No se han podido borrar Producto.";
+             }
+         }else{
+               
+             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+         }
+         
+     } catch (PDOException $ex) {
+         /**En caso de haber excepción será atrapada por el catch*/
+         /**En caso de haber excepción será atrapada por el catch*/
+          // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+          //($_SESSION["ErrorDepuracion"]);
+          echo $ex->getMessage();
+          $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+     };
+ 
+     return $ret;
+}
 
+function eliminarPermiso(&$errores){
+    $ret = false;
+     $sql ="DELETE FROM obtencion where ID_Permiso= :permiso  and ID_Rol = :rol";
+     
+     try {
+         
+         $pdo=conectar();
+         $stmt = $pdo->prepare($sql);
+         $data=["permiso" =>  $_SESSION["datos"]["id"] , "rol" => recuperarIDRol($errores)];
+         
+         if ($stmt->execute($data)) {
+            
+             $res=$stmt->rowCount();
+             if ($res != 0) {
+                 $ret=true;
+             } else {
+                 
+                 $errores->errorBBDD[] =  "No se han podido borrar Producto.";
+             }
+         }else{
+               
+             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+         }
+         
+     } catch (PDOException $ex) {
+         /**En caso de haber excepción será atrapada por el catch*/
+         /**En caso de haber excepción será atrapada por el catch*/
+          // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+          //($_SESSION["ErrorDepuracion"]);
+          echo $ex->getMessage();
+          $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+     };
+ 
+     return $ret;
+}
+function eliminarComentariosPropio(&$errores){
+    $ret = false;
+     $sql ="DELETE FROM comentario where `ID_comprador`= :comprador AND `ID_Producto` = :producto";
+     
+     try {
+         $pdo=conectar();
+         $stmt = $pdo->prepare($sql);
+         $data=["comprador" =>  $_SESSION["datosUsuario"]["id"],"producto" =>  $_SESSION["datos"]["id"]];
+         
+         if ($stmt->execute($data)) {
+            
+             $res=$stmt->rowCount();
+             if ($res != 0) {
+                 $ret=true;
+             } else {
+                 
+                 $errores->errorBBDD[] =  "No se han podido borrar Producto.";
+             }
+         }else{
+               
+             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+         }
+         
+     } catch (PDOException $ex) {
+         /**En caso de haber excepción será atrapada por el catch*/
+         /**En caso de haber excepción será atrapada por el catch*/
+          // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+          //($_SESSION["ErrorDepuracion"]);
+          echo $ex->getMessage();
+          $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+     };
+ 
+     return $ret;
+}
+
+function eliminarPedido(&$errores){
+    $ret = false;
+     $sql ="DELETE FROM pedido where Numero_Pedido= :pedido";
+     
+     try {
+         
+         $pdo=conectar();
+         $stmt = $pdo->prepare($sql);
+         $data=["pedido" =>  $_SESSION["datos"]["id"]];
+         
+         if ($stmt->execute($data)) {
+            
+             $res=$stmt->rowCount();
+             if ($res != 0) {
+                 $ret=true;
+             } else {
+                 
+                 $errores->errorBBDD[] =  "No se han podido borrar Pedido.";
+             }
+         }else{
+               
+             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+         }
+         
+     } catch (PDOException $ex) {
+         /**En caso de haber excepción será atrapada por el catch*/
+         /**En caso de haber excepción será atrapada por el catch*/
+          // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+          //($_SESSION["ErrorDepuracion"]);
+          echo $ex->getMessage();
+          $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+     };
+ 
+     return $ret;
+}
+
+function eliminarNoticia(&$errores){
+    $ret = false;
+     $sql ="DELETE FROM Noticia where Id_Noticia= :noticia";
+     
+     try {
+         
+         $pdo=conectar();
+         $stmt = $pdo->prepare($sql);
+         $data=["noticia" =>  $_SESSION["datos"]["id"]];
+         
+         if ($stmt->execute($data)) {
+            
+             $res=$stmt->rowCount();
+             if ($res != 0) {
+                 $ret=true;
+             } else {
+                 
+                 $errores->errorBBDD[] =  "No se han podido borrar Pedido.";
+             }
+         }else{
+               
+             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+         }
+         
+     } catch (PDOException $ex) {
+         /**En caso de haber excepción será atrapada por el catch*/
+         /**En caso de haber excepción será atrapada por el catch*/
+          // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+          //($_SESSION["ErrorDepuracion"]);
+          echo $ex->getMessage();
+          $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+     };
+ 
+     return $ret;
+}
+
+function eliminarUsuariosGlobal(&$errores){
+    $ret = false;
+     $sql ="DELETE FROM usuario where ID_Usuario= :usuario";
+     
+     try {
+         
+         $pdo=conectar();
+         $stmt = $pdo->prepare($sql);
+         $data=["usuario" =>  $_SESSION["datos"]["id"]];
+         
+         if ($stmt->execute($data)) {
+            
+             $res=$stmt->rowCount();
+             if ($res != 0) {
+                 $ret=true;
+             } else {
+                 
+                 $errores->errorBBDD[] =  "No se han podido borrar Pedido.";
+             }
+         }else{
+               
+             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+         }
+         
+     } catch (PDOException $ex) {
+         /**En caso de haber excepción será atrapada por el catch*/
+         /**En caso de haber excepción será atrapada por el catch*/
+          // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+          //($_SESSION["ErrorDepuracion"]);
+          echo $ex->getMessage();
+          $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+     };
+ 
+     return $ret;
+}
+
+function eliminarUsuarioPropio(&$errores,&$session){
+    $ret = false;
+     $sql ="DELETE FROM usuario where ID_Usuario= :usuario";
+     
+     try {
+         
+         $pdo=conectar();
+         $stmt = $pdo->prepare($sql);
+         $data=["usuario" =>  $_SESSION["datosUsuario"]["id"]];
+         
+         if ($stmt->execute($data)) {
+            
+             $res=$stmt->rowCount();
+             if ($res != 0) {
+                 $ret=true;
+                 $session->borradoUsuario="exito";
+                 session_destroy();
+             } else {
+                 
+                 $errores->errorBBDD[] =  "No se han podido borrar Pedido.";
+             }
+         }else{
+               
+             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+         }
+         
+     } catch (PDOException $ex) {
+         /**En caso de haber excepción será atrapada por el catch*/
+         /**En caso de haber excepción será atrapada por el catch*/
+          // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+          //($_SESSION["ErrorDepuracion"]);
+          echo $ex->getMessage();
+          $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+     };
+ 
+     return $ret;
+}
+
+function eliminarRol(&$errores){
+    $ret = false;
+     $sql ="DELETE FROM rol where ID_Rol= :rol";
+     
+     try {
+         
+         $pdo=conectar();
+         $stmt = $pdo->prepare($sql);
+         $data=["rol" =>  $_SESSION["datos"]["id"]];
+         
+         if ($stmt->execute($data)) {
+            
+             $res=$stmt->rowCount();
+             if ($res != 0) {
+                 $ret=true;
+             } else {
+                 
+                 $errores->errorBBDD[] =  "No se han podido borrar Pedido.";
+             }
+         }else{
+               
+             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+         }
+         
+     } catch (PDOException $ex) {
+         /**En caso de haber excepción será atrapada por el catch*/
+         /**En caso de haber excepción será atrapada por el catch*/
+          // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+          //($_SESSION["ErrorDepuracion"]);
+          echo $ex->getMessage();
+          $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+     };
+ 
+     return $ret;
+}
+
+function eliminarProductoGlobal(&$errores){
+    $ret = false;
+     $sql ="DELETE FROM producto where ID_Producto= :producto";
+     
+     try {
+         
+         $pdo=conectar();
+         $stmt = $pdo->prepare($sql);
+         $data=["producto" =>  $_SESSION["datos"]["id"]];
+         
+         if ($stmt->execute($data)) {
+            
+             $res=$stmt->rowCount();
+             if ($res != 0) {
+                 $ret=true;
+             } else {
+                 
+                 $errores->errorBBDD[] =  "No se han podido borrar Producto.";
+             }
+         }else{
+               
+             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+         }
+         
+     } catch (PDOException $ex) {
+         /**En caso de haber excepción será atrapada por el catch*/
+         /**En caso de haber excepción será atrapada por el catch*/
+          // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+          //($_SESSION["ErrorDepuracion"]);
+          echo $ex->getMessage();
+          $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+     };
+ 
+     return $ret;
+}
+
+function eliminarProductoPropio(&$errores){
+    $ret = false;
+     $sql ="DELETE FROM producto where ID_Producto= :producto  and ID_vendedor =:vendedor";
+     
+     try {
+         
+         $pdo=conectar();
+         $stmt = $pdo->prepare($sql);
+         $data=["producto" =>  $_SESSION["datos"]["id"] , "vendedor" => $_SESSION["datosUsuario"]["id"]];
+         
+         if ($stmt->execute($data)) {
+            
+             $res=$stmt->rowCount();
+             if ($res != 0) {
+                 $ret=true;
+             } else {
+                 
+                 $errores->errorBBDD[] =  "No se han podido borrar Producto.";
+             }
+         }else{
+               
+             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+         }
+         
+     } catch (PDOException $ex) {
+         /**En caso de haber excepción será atrapada por el catch*/
+         /**En caso de haber excepción será atrapada por el catch*/
+          // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+          //($_SESSION["ErrorDepuracion"]);
+          echo $ex->getMessage();
+          $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+     };
+ 
+     return $ret;
+}
+
+function eliminarEnvio(&$errores){
+    $ret = false;
+     $sql ="DELETE FROM pedido where Numero_Pedido= :pedido  and ID_vendedor =:vendedor";
+     
+     try {
+         
+         $pdo=conectar();
+         $stmt = $pdo->prepare($sql);
+         $data=["pedido" =>  $_SESSION["datos"]["id"] , "vendedor" => $_SESSION["datosUsuario"]["id"]];
+         
+         if ($stmt->execute($data)) {
+            
+             $res=$stmt->rowCount();
+             if ($res != 0) {
+                 $ret=true;
+             } else {
+                 
+                 $errores->errorBBDD[] =  "No se han podido borrar Producto.";
+             }
+         }else{
+               
+             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+         }
+         
+     } catch (PDOException $ex) {
+         /**En caso de haber excepción será atrapada por el catch*/
+         /**En caso de haber excepción será atrapada por el catch*/
+          // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+          //($_SESSION["ErrorDepuracion"]);
+          echo $ex->getMessage();
+          $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+     };
+ 
+     return $ret;
+}

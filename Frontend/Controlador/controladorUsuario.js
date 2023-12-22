@@ -5,7 +5,7 @@
  * @version 1.0.0
 */
 
-import { usuario,recuperarDatosUsuario, accesoListados, accesoListadosModificado } from "../Modelo/peticiones.js";
+import { usuario,recuperarDatosUsuario, accesoListados, accesoListadosModificado, accesoListadosEliminado, cambiarPassBBDD, cerrarSesionBBDD } from "../Modelo/peticiones.js";
 /**
  * Esta función recibe los datos del Usuario y devolverá un array con los resultados.
  * devolverá una promesa que entregará el array y así seguir con el código.
@@ -76,6 +76,28 @@ export function passIguales() {
 
 
 };
+
+export function cambiarPass(){
+    return new Promise(async(resolve, reject) => {
+
+            let resultado=await cambiarPassBBDD();
+
+            resolve(resultado);
+            
+       
+    });
+}
+
+export function cerrarSesion(){
+    return new Promise(async(resolve, reject) => {
+
+            let resultado=await cerrarSesionBBDD();
+
+            resolve(resultado);
+            
+       
+    });
+}
 
 export function datosUsuario(){
     return new Promise(async (resolve, reject) => {

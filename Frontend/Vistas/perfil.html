@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito</title>
+
+    <script src="./plantillaGeneral.js" type="module"></script>
+    <script src="../Controlador/controlador.js" type="module"></script>
+    <link rel="stylesheet" href="../../Recursos/Estilos/estilos.css">
+    <link rel="stylesheet" href="../../Recursos/Estilos/perfil.css">
+
+</head>
+
+<body>
+    <header id="header"></header>
+    <nav id="nav"> </nav>
+    <h1>MI PERFIL</h1>
+    <main id="main">
+        <section id="datosUsuario">
+            
+        </section>
+        <section id="cambioPass">
+            <h2>Cambiar Contraseña</h2>
+
+            <form id="cambiarPass" action="">
+                <span id="errorBBDD"></span>
+                <label for="antiguaPass">Antigua Contraseña
+                    <input type="password" name="antiguaPass" id="antiguaPass">
+                </label>
+                <label for="nuevaPass">Nuevo Contraseña
+                    <input type="password" name="pass" id="pass">
+                    <span id="errorP2"></span>
+                </label>
+                <label for="confirmarNuevaPass">Confirmar Contraseña
+                    <input type="password" name="pass2" id="pass2">
+                </label>
+                <input type="submit" class="botonesProducto" value="Cambiar Contraseña">
+            </form>
+        </section>
+        
+    </main>
+
+</body>

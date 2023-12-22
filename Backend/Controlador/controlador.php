@@ -198,7 +198,66 @@ try {
             if (empty((array) $errores)) {
                 
                 comprobarRol($errores);
-                $resultado = controladorModificaciones($direccion->datosIntroducidos, $errores, $session);
+                controladorModificaciones($direccion->datosIntroducidos, $errores, $session);
+                
+                if (!empty((array) $errores)) {
+                    errores($errores);
+                } else if($session->usuario){
+                    exitoUsuario($session);
+                    
+                }else{
+                    echo "aqui 3";
+                    unset($_SESSION["datos"]);
+                    echo json_encode($session);
+                }
+            } else {
+                unset($_SESSION["datos"]);
+                errores($errores);
+            }
+            /** Hago esto porque si yo cambio rol en BBDD hasta que no se reinicie la sesión no surtirían efecto los cambios
+             * y en las listas puede haber información delicada.*/
+
+            //Controlar errores
+
+        } 
+        else if ($direccion->llamada == "eliminar" && isset($_SESSION["datosUsuario"])) {
+            
+             
+            inicioComprobaciones($direccion->datosIntroducidos, $errores);
+            
+            coincideUsuario($errores);
+            if (empty((array) $errores)) {
+                
+                comprobarRol($errores);
+                controladorEliminacion($direccion->datosIntroducidos, $errores, $session);
+                
+                if (!empty((array) $errores)) {
+                   
+                    errores($errores);
+                } else {
+                    unset($_SESSION["datos"]);
+                    echo json_encode($session);
+                }
+            } else {
+                unset($_SESSION["datos"]);
+                errores($errores);
+            }
+            /** Hago esto porque si yo cambio rol en BBDD hasta que no se reinicie la sesión no surtirían efecto los cambios
+             * y en las listas puede haber información delicada.*/
+
+            //Controlar errores
+
+        }else if ($direccion->llamada == "cambiarPass" && isset($_SESSION["datosUsuario"])) {
+            
+             
+            inicioComprobaciones($direccion->datosIntroducidos, $errores);
+            coincideUsuario($errores);
+            coincidePass($errores);
+
+            if (empty((array) $errores)) {
+                //comprobar la pass y encriptar la nueva
+
+                $resultado = cambiarPass($errores, $session);
                 
                 if ($resultado == false) {
                    
@@ -216,7 +275,11 @@ try {
 
             //Controlar errores
 
-        } else {
+        }else if ($direccion->llamada == "cambiarPass" && isset($_SESSION["datosUsuario"])) {
+            
+            session_destroy();
+            echo json_encode(true);
+        }else {
             echo json_encode("No hay llamada");
         }
     } else {

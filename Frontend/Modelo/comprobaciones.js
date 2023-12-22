@@ -17,6 +17,7 @@ import { palabraPreparada } from "./funcionesBusqueda.js" ;
 export function comprobarRegex(nombre, valor) {
   let respuesta = false;
   //Con esta expresión regular podemos confirmar var
+  console.log("Hola " + valor);
   switch (nombre) {
     case "mensaje":
     
@@ -70,7 +71,7 @@ export function comprobarRegexComentarios(valor) {
   let respuesta = false;
   //Con esta expresión regular podemos confirmar var
 
-  let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$&|()])(^.{4,250}$)/);
+  let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$&|()])(^.{4,500}$)/);
   respuesta = !(regex.test(valor));
 
   return respuesta;
@@ -219,6 +220,7 @@ export async function comprobacionUPDATE() {
     const control = Object.values(datos).filter(elemento => elemento == true);
     if (control.length == 0) {
       return datosIntroducidos;
+    
     } else {
       return datos;
     }

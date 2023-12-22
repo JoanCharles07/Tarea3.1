@@ -33,7 +33,7 @@ export function modificacionComentariosPropios(arrayDatos) {
         <span id="errorValoracion"></span>
         <input type="text" id="valoracion" name="valoracion" value="${arrayDatos[1]}" />
         <input type="text" id="opcion"  name="opcion" value="${arrayDatos[arrayDatos.length - 1]}"/>
-        <input type="text" id="id"  name="id" value="${arrayDatos[arrayDatos.length - 2]}"/>
+        <input type="text" id="id"  name="id" value="${arrayDatos[0]}"/>
         <input type="submit" class="botonSubmit" name="submit" value="Modificar"/>`;
     Form.innerHTML = texto;
     document.getElementById("id").style.display = "none";
@@ -89,18 +89,21 @@ export function modificacionNoticias(arrayDatos) {
     document.getElementById("opcion").style.display = "none";
 }
 
-export function modificacionCorrecta() {
+export function modificacionCorrecta(datosServidor) {
     let main = document.getElementById("main");
     main.innerHTML = `<div id="vacio"><p>Se ha realizado la modificación</p></div>`;
     const intervalID = setInterval(function () {
         //Borramos productos para que se actualizen los datos si productos fuera alterado, por no complicar mas el codigo
+        if(datosServidor.datosUsuario){
+            sessionStorage.setItem("usuario",btoa(JSON.stringify(datosServidor.datosUsuario)));
+        }
         sessionStorage.removeItem("productos");
         location.href="./tienda.html";
     }, 1500);
 
 }
 
-export function modificacionUsuarioGlobal(arrayDatos) {
+export function modificacionUsuarioPropio(arrayDatos) {
     let Form = document.getElementById("formulario");
     let texto = `
         <span id="errorBBDD"></span>
@@ -139,8 +142,53 @@ export function modificacionUsuarioGlobal(arrayDatos) {
         <input type="text" id="dni" name="dni" value="${arrayDatos[8]}" />
         <span id="errorDNI"></span>
 
+        <input type="text" id="opcion"  name="opcion" value="${arrayDatos[arrayDatos.length - 1]}"/>
+        <input type="submit" class="botonSubmit" name="submit" value="Modificar"/>`;
+    Form.innerHTML = texto;
+   
+    document.getElementById("opcion").style.display = "none";
+}
+export function modificacionUsuarioGlobal(arrayDatos) {
+    let Form = document.getElementById("formulario");
+    let texto = `
+        <span id="errorBBDD"></span>
+        <label for="Nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" value="${arrayDatos[1]}"/>
+        <span id="errorNombre"></span>
+
+        <label for="apellidos">Apellidos</label>
+        <input type="text" id="apellidos" name="apellidos" value="${arrayDatos[2]}"/>
+        <span id="errorApellidos"></span>
+        
+        <label for="nickname">Usuario</label>
+        <input type="text" id="nickname" name="nickname" value="${arrayDatos[3]}"/>
+        <span id="errorUsuario"></span>
+        <label for="direccion">Dirección</label>
+        <input type="text" id="direccion" name="direccion" value="${arrayDatos[4]}"/>
+        <span id="errordireccion"></span>
+
+        <label for="ciudad">Ciudad</label>
+        <input type="text" id="Ciudad" name="ciudad" value="${arrayDatos[5]}" />
+        <span id="errorCiudad"></span>
+        
+        <label for="provincia">Provincia</label>
+        <input type="text" id="provincia" name="provincia" value="${arrayDatos[6]}" />
+        <span id="errorProvincia"></span>
+
+        <label for="cpostal">Código Postal</label>
+        <input type="text" id="cpostal" name="cpostal" value="${arrayDatos[7]}" />
+        <span id="errorCpostal"></span>
+
+        <label for="email">Correo Electrónico</label>
+        <input type="text" id="email" name="email" value="${arrayDatos[8]}" />
+        <span id="erroremail"></span>
+
+        <label for="dni">Código DNI</label>
+        <input type="text" id="dni" name="dni" value="${arrayDatos[9]}" />
+        <span id="errorDNI"></span>
+
         <label for="rol">ROL</label>
-        <input type="text" id="IDrol" name="IDrol" value="${arrayDatos[9]}" />
+        <input type="text" id="IDrol" name="IDrol" value="${arrayDatos[10]}" />
         <span id="errorRol"></span>
 
 
