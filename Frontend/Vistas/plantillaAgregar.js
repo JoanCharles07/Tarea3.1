@@ -1,19 +1,19 @@
-export function agregarRol(){
-    let formulario=document.getElementById("formulario");
-    let texto=`
+export function agregarRol() {
+    let formulario = document.getElementById("formulario");
+    let texto = `
     <span id="errorBBDD"></span>
     <label for="nombreRol">Inserte nuevo  Rol</label> 
     <input type="text" id="nombreRol" name="nombreRol">
     <span id="errorRol"></span>
     <input type="text" id="opcion" name="opcion" value="Lista roles">
     <input type="submit" class="botonSubmit" value="Añadir Rol">`;
-    formulario.innerHTML=texto;
+    formulario.innerHTML = texto;
     document.getElementById("opcion").style.display = "none";
 }
 
-export function agregarUsuario(){
-    let formulario=document.getElementById("formulario");
-    let texto=`<form id="formulario" action="" method="post" enctype="application/x-www-form-urlencoded">
+export function agregarUsuario() {
+    let formulario = document.getElementById("formulario");
+    let texto = `<form id="formulario" action="" method="post" enctype="application/x-www-form-urlencoded">
     <span id="errorBBDD"></span>
     <label for="usuarioNuevo">Usuario</label>
     <input type="text" name="usuarioNuevo" id="usuarioNuevo" required minlength="4" maxlength="25" 
@@ -70,12 +70,12 @@ export function agregarUsuario(){
     <input type="text" id="opcion" name="opcion" value="Lista usuarios">
     <input class="botonSubmit" type="submit" value="Crear Usuario">
 </form>`;
-formulario.innerHTML=texto;
-document.getElementById("opcion").style.display = "none";
+    formulario.innerHTML = texto;
+    document.getElementById("opcion").style.display = "none";
 }
-export function agregarPermiso(){
-    let formulario=document.getElementById("formulario");
-    let texto=`<form id="formulario" action="">
+export function agregarPermiso() {
+    let formulario = document.getElementById("formulario");
+    let texto = `<form id="formulario" action="">
     <span id="errorBBDD"></span>
 
     <label for="nombre">Nombre Permiso</label> 
@@ -106,12 +106,12 @@ export function agregarPermiso(){
     <input type="text" id="opcion" name="opcion" value="Lista permisos">
     <input type="submit" class="botonSubmit" value="Añadir Permiso">
 </form>`;
-formulario.innerHTML=texto;
+    formulario.innerHTML = texto;
 
-document.getElementById("opcion").style.display = "none";
+    document.getElementById("opcion").style.display = "none";
 }
-export function agregarNoticia(){
-    let formulario=document.getElementById("formulario");
+export function agregarNoticia() {
+    let formulario = document.getElementById("formulario");
     let texto = `
         <span id="errorBBDD"></span>
         <label for="titulo">Título</label>
@@ -131,14 +131,14 @@ export function agregarNoticia(){
         <span id="errorCuerpo"></span>
         <input type="text" id="opcion" name="opcion" value="Lista noticias">
         <input type="submit" class="botonSubmit" value="Añadir Noticia">`;
-        formulario.innerHTML=texto;
-        
+    formulario.innerHTML = texto;
+
     document.getElementById("opcion").style.display = "none";
 }
 
-export function agregarProductoPropio(){
-    let formulario=document.getElementById("formulario");
-    let texto=`<span id="errorBBDD"></span>
+export function agregarProductoPropio() {
+    let formulario = document.getElementById("formulario");
+    let texto = `<span id="errorBBDD"></span>
     <label for="nombre">Nombre Producto</label>
     <input type="text" id="nombre"  name="nombre"/>
     <label for="descripcion">Descripción Producto</label>
@@ -153,15 +153,15 @@ export function agregarProductoPropio(){
     <input type="number" min="0" max="100"  id="descuento"  name="descuento" "/>
     <input type="text" id="opcion" name="opcion" value="Productos">
     <input type="submit" class="botonSubmit" value="Añadir Producto">`;
-    formulario.innerHTML=texto;
-    
-    document.getElementById("opcion").style.display = "none";
-    
-}
-export function agregarProductoGlobal(){
+    formulario.innerHTML = texto;
 
-    let formulario=document.getElementById("formulario");
-    let texto=`<span id="errorBBDD"></span>
+    document.getElementById("opcion").style.display = "none";
+
+}
+export function agregarProductoGlobal() {
+
+    let formulario = document.getElementById("formulario");
+    let texto = `<span id="errorBBDD"></span>
     <label for="nombre">Nombre Producto</label>
     <input type="text" id="nombre"  name="nombre" />
     <label for="descripcion">Descripción Producto</label>
@@ -178,7 +178,30 @@ export function agregarProductoGlobal(){
     <input type="number" min="1" id="id"  name="id" required/>
     <input type="text" id="opcion" name="opcion" value="Lista productos">
     <input type="submit" class="botonSubmit" value="Añadir Producto">`;
-    formulario.innerHTML=texto;
+    formulario.innerHTML = texto;
     document.getElementById("opcion").style.display = "none";
-    
+
 }
+
+export function enviarRespuesta(datos) {
+    let mensaje=`${datos[1]}`;
+    let parrafo=document.createElement("p");
+    parrafo.id="mensajeUsuario";
+    parrafo.innerHTML=mensaje;
+    let main = document.getElementById("main");
+    main.insertBefore(parrafo, main.firstChild);
+    let formulario = document.getElementById("formulario");
+    let texto = `<span id="errorBBDD"></span>
+    <label for="mensaje">Mensaje<br>
+    <textarea name="mensaje" id="mensaje" cols="30" rows="10" form="formulario"></textarea>
+    </label>
+    <input type="text" min="1" id="id"  name="id" value="${datos[0]}" required/>
+    <input type="text" id="opcion" name="opcion" value="${datos[2]}">
+    <input type="submit" class="botonSubmit" value="Responder Mensaje">`;
+    formulario.innerHTML = texto;
+    document.getElementById("id").style.display = "none";
+    document.getElementById("opcion").style.display = "none";
+
+
+}
+

@@ -473,6 +473,8 @@ async function interaccionesControlador() {
             let direccion=datosUrl.entries().next().value[1];
             //Es el único que necesita más de un ID
             array.push(elementosFila[0].textContent);
+            //mensaje
+            array.push(elementosFila[2].textContent);
             array.push(direccion);
             //Uso localSotarege porque sesion a veces no funciona correctamente.
             localStorage.setItem("agregar",JSON.stringify(array));

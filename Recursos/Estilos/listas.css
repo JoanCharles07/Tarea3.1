@@ -52,3 +52,14 @@ form{
     display: flex;
     width: 15%;
 }
+
+#mensajeUsuario{
+    display: flex;
+    text-align: center;
+    border: 1px solid black;
+    border-radius:50% ;
+    color: var(--color-texto);
+    background-color: var(--color-fondo);
+    padding: 15px;
+    width: 18%;
+}

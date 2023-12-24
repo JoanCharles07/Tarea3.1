@@ -3003,3 +3003,39 @@ function leerMensajesPrivados($errores){
 
     return  $array;
 }
+function contestadoMensaje($errores){
+    $ret = false;
+    $sql ="UPDATE `mensajesprivados` SET `estado` = 'Contestado' WHERE `ID_Mensaje` = :id";
+  
+    
+    try {
+        
+        $pdo=conectar();
+        $stmt = $pdo->prepare($sql);
+        $data=["id" =>  $_SESSION["datos"]["id"]];
+        
+        if ($stmt->execute($data)) {
+           
+            $res=$stmt->rowCount();
+            if ($res != 0) {
+                $ret=true;
+            } else {
+                
+                $errores->errorBBDD[] =  "No se han podido modificar Producto o son los mismos";
+            }
+        }else{
+              
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+        
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        /**En caso de haber excepción será atrapada por el catch*/
+         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+         //($_SESSION["ErrorDepuracion"]);
+         echo $ex->getMessage();
+         $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+    };
+
+    return $ret;
+}

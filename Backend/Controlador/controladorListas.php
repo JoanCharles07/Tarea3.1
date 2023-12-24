@@ -187,6 +187,9 @@ function controladorAgregar($datos,&$errores,&$session){
         else if($datos->opcion=="Productos" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
             
            agregarProductoPropio($errores);
+        }else if($datos->opcion=="Mensajes" && $_SESSION["datosUsuario"]["id"]==1){
+            //Cambiar a mensaje a contestar y enviar email.
+            contestadoMensaje($errores);
         }
     }
     else{

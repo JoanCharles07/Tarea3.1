@@ -13,7 +13,7 @@ import { imprimirListaNotcias,imprimirListaPedidos,imprimirListaComentariosPropi
     imprimirMensajes} from "../Vistas/plantillaListas.js";
 import { modificacionComentariosGlobales, modificacionComentariosPropios, modificacionNoticias, modificacionPedido, modificacionPermisos, modificacionProductos, modificacionRol, modificacionUsuarioGlobal, modificacionUsuarioPropio } from "../Vistas/plantillaModificaciones.js";
 import { confirmarEliminacion,confirmarEliminacionComentarios, confirmarEliminacionPermisos, confirmarEliminacionUsuario } from "../Vistas/plantillaBorrar.js";
-import { agregarNoticia, agregarPermiso, agregarProductoGlobal, agregarProductoPropio, agregarRol, agregarUsuario } from "../Vistas/plantillaAgregar.js";
+import { agregarNoticia, agregarPermiso, agregarProductoGlobal, agregarProductoPropio, agregarRol, agregarUsuario, enviarRespuesta } from "../Vistas/plantillaAgregar.js";
 /**
  * Esta función comprobará si tenemos en el sessionStorage lo productos, si no los tenemos hará una llamada a la
  * base de datos para recuperarlos, esto será asincrono por lo que usaremos async await para esperar la respuesta
@@ -160,25 +160,25 @@ export function eliminacion(datos){
 
 export function agregar(datos){
    if(datos=="Lista Noticias"){
-        agregarNoticia(datos);
+        agregarNoticia();
     }
     else if(datos=="Lista usuarios"){
        
-        agregarUsuario(datos);
+        agregarUsuario();
     }
     //Puedes Modificarlo, pero no tiene mucho sentido por la estructuración del código.
     else if(datos=="Lista roles"){
        
-        agregarRol(datos);
+        agregarRol();
     }
     else if(datos=="Lista permisos"){
-        agregarPermiso(datos);
+        agregarPermiso();
     }
     else if(datos=="Lista productos"){
-        agregarProductoGlobal(datos);
+        agregarProductoGlobal();
     }
     else if(datos=="Productos"){
-        agregarProductoPropio(datos);
+        agregarProductoPropio();
     }else if(datos[datos.length-1]=="Mensajes"){
         enviarRespuesta(datos);
     }
