@@ -49,7 +49,7 @@ function imprimirCabezera() {
             <div id="boton"><a href="index.html">Tienda</a></div>
             <div id="boton"><a href="sobrenosotros.html">Sobre nosotros</a></div>
             <div id="boton"><a href="noticias.html">Noticias</a></div>
-            <div id="boton"><a href="">Contacto</a></div>
+            <div id="boton"><a href="contacto.html">Contacto</a></div>
            
             `;
             document.getElementById("header").innerHTML=header;

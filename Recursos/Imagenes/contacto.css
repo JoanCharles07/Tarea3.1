@@ -1,0 +1,10 @@
+main{
+    transform: translateY(150px);
+    display: flex;
+    justify-content: center;
+    align-items: 
+}
+
+main form{
+    width: 20%;
+}

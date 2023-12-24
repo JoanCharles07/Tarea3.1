@@ -1,0 +1,15 @@
+main{
+    transform: translateY(150px);
+    display: flex;
+    justify-content: center;
+}
+
+main form{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 20%;
+}

@@ -5,7 +5,7 @@
  * @version 1.0.0
 */
 
-import { usuario,recuperarDatosUsuario, accesoListados, accesoListadosModificado, accesoListadosEliminado, cambiarPassBBDD, cerrarSesionBBDD } from "../Modelo/peticiones.js";
+import { usuario,recuperarDatosUsuario, accesoListados, accesoListadosModificado, accesoListadosEliminado, cambiarPassBBDD, cerrarSesionBBDD, accesoAgregar, enviarMensajeAdmin } from "../Modelo/peticiones.js";
 /**
  * Esta función recibe los datos del Usuario y devolverá un array con los resultados.
  * devolverá una promesa que entregará el array y así seguir con el código.
@@ -123,6 +123,33 @@ export async function comprobarAccion() {
     
 }
 
+export async function comprobarAgregar() {
+   
+    try {
+        
+        const respuesta=await accesoAgregar();
+        
+        return respuesta;
+    } catch (error) {
+        throw new Error(error);
+    }
+    
+
+}
+
+export async function comprobarMensaje() {
+   
+    try {
+        
+        const respuesta=await enviarMensajeAdmin();
+        
+        return respuesta;
+    } catch (error) {
+        throw new Error(error);
+    }
+    
+
+}
 export async function comprobarAccionModificacion() {
    
     try {

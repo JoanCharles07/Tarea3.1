@@ -113,6 +113,7 @@ function saneamientoDatos($cadena){
  {
      $expresionRegular = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$|()])(^.{4,25}$)/";
      $resultado = false;
+     $dato= str_replace("\n", '', $dato);
      //comparamos con la expresión regular
     switch ($name) {
         case 'estrellasEscogidas':
@@ -163,7 +164,7 @@ function saneamientoDatos($cadena){
             
             if(strlen($imagen)< (1024*1024) && strlen($imagen) > 0){
                 $formato = getimagesizefromstring($imagen)["mime"];
-                if(strlen($imagen)< (1024*1024)&&($formato=="image/png" || $formato=="image/jpg" || $formato=="image/webp" || $formato=="image/jpge")){
+                if(strlen($imagen)< (1024*1024)&&($formato=="image/png" || $formato=="image/jpg" || $formato=="image/webp" || $formato=="image/jpeg")){
                     $_SESSION["datos"]["imagen"]=$imagen;
                 }
                 else{
@@ -192,7 +193,7 @@ function saneamientoDatos($cadena){
         }
             break;
         case "cuerpo"://ponemos s al final para que nos deje añadir saltos de linea
-            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$|()])(^.{4,1000}$)/";
+            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$|()])(^.{4,1000}$)/s";
             $resultado = false;
             if (!preg_match($expresionRegular2, $dato)) {
                 $resultado = true;

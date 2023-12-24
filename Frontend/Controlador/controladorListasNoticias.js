@@ -9,9 +9,11 @@
 import{recuperarNoticias}from "../Modelo/peticiones.js";
 import { imprimirListaNotcias,imprimirListaPedidos,imprimirListaComentariosPropio,imprimirListaComentariosGlobal ,imprimirListaPermisos,
     imprimirListaRoles,imprimirListaUsuarios, imprimirEnvios,imprimirHistorial, imprimirListaPedidosUsuario, imprimirListaProductosGlobal, 
-    imprimirListaProductosPropio} from "../Vistas/plantillaListas.js";
+    imprimirListaProductosPropio,
+    imprimirMensajes} from "../Vistas/plantillaListas.js";
 import { modificacionComentariosGlobales, modificacionComentariosPropios, modificacionNoticias, modificacionPedido, modificacionPermisos, modificacionProductos, modificacionRol, modificacionUsuarioGlobal, modificacionUsuarioPropio } from "../Vistas/plantillaModificaciones.js";
 import { confirmarEliminacion,confirmarEliminacionComentarios, confirmarEliminacionPermisos, confirmarEliminacionUsuario } from "../Vistas/plantillaBorrar.js";
+import { agregarNoticia, agregarPermiso, agregarProductoGlobal, agregarProductoPropio, agregarRol, agregarUsuario } from "../Vistas/plantillaAgregar.js";
 /**
  * Esta función comprobará si tenemos en el sessionStorage lo productos, si no los tenemos hará una llamada a la
  * base de datos para recuperarlos, esto será asincrono por lo que usaremos async await para esperar la respuesta
@@ -82,6 +84,9 @@ export function lista(datos) {
             else if(datos.listaPedidosUsuario){
                 imprimirListaPedidosUsuario(datos);
             }
+            else if(datos.listaMensajes){
+                imprimirMensajes(datos);
+            }
             else{
                 /**Llevar a imprimir vacio */
                 console.log("o aqui");
@@ -150,5 +155,31 @@ export function eliminacion(datos){
     }
     else{
         confirmarEliminacion(datos);
+    }
+}
+
+export function agregar(datos){
+   if(datos=="Lista Noticias"){
+        agregarNoticia(datos);
+    }
+    else if(datos=="Lista usuarios"){
+       
+        agregarUsuario(datos);
+    }
+    //Puedes Modificarlo, pero no tiene mucho sentido por la estructuración del código.
+    else if(datos=="Lista roles"){
+       
+        agregarRol(datos);
+    }
+    else if(datos=="Lista permisos"){
+        agregarPermiso(datos);
+    }
+    else if(datos=="Lista productos"){
+        agregarProductoGlobal(datos);
+    }
+    else if(datos=="Productos"){
+        agregarProductoPropio(datos);
+    }else if(datos[datos.length-1]=="Mensajes"){
+        enviarRespuesta(datos);
     }
 }

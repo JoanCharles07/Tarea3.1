@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./plantillaGeneral.js" type="module"></script>
+    <script src="../Controlador/controlador.js" type="module"></script>
+    <link rel="stylesheet" href="../../Recursos/Estilos/estilos.css">
+    <link rel="stylesheet" href="../../Recursos/Estilos/FormEstandar.css">
+    <link rel="stylesheet" href="../../Recursos/Estilos/contacto.css">
+    <title>Contacto</title>
+</head>
+
+<body>
+    <header id="header"></header>
+    <nav id="nav"> </nav>
+    <main id="main">
+        <form id="formulario" action="">
+            <h2>Formulario de contacto</h2>
+            <label for="asunto">Asunto
+                <input type="text" name="asunto">
+            </label>
+            <label for="email">Email
+                <input name="email" type="email">
+            </label>
+            <label for="mensaje">Mensaje<br>
+                <textarea name="mensaje" id="mensaje" cols="30" rows="10" form="formulario"></textarea>
+            </label>
+            <input type="text" id="opcion" name="opcion" value="Mensajes">
+            <input type="submit" class="botonSubmit" value="Enviar mensaje">
+        </form>
+    </main>
+   
+</body>
+
+</html>

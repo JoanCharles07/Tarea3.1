@@ -5,7 +5,7 @@
 * @version 1.0.0
 */
 
-import { comprobacionREAD, comprobacionUPDATE, comprobarDatosRegex } from "./comprobaciones.js";
+import { comprobacionMensaje, comprobacionREAD, comprobacionUPDATE, comprobarDatosRegex } from "./comprobaciones.js";
 
 /**
  * Esta función hará una petición a la base de datos para conseguir todos los productos de la tienda.
@@ -427,7 +427,44 @@ export function accesoListados() {
         
   
 }
+export  function accesoAgregar() {
 
+  try {
+    return new Promise(async(resolve, reject) => {
+      //tambien sirver para agregar comprobacionUpdate
+      const datosIntroducidos= await comprobacionUPDATE();
+      
+      console.log(datosIntroducidos);
+      if(typeof Object.values(datosIntroducidos)[0] != "boolean"){
+        datosIntroducidos["accion"] = "crear";
+        let datos = { llamada: "agregar", datosIntroducidos };
+        console.log(datosIntroducidos);
+        fetch("../../Backend/Controlador/controlador.php", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(datos)
+  
+        })
+          .then(response => response.text())
+          .then(data => {
+            const datos = JSON.parse(data);
+            console.log(datos);
+            resolve(datos);
+  
+          }).catch(error => {
+            reject(error);
+          })
+      }
+      else{
+        resolve(datosIntroducidos)
+      }
+      
+    });
+  } catch (e) {
+  }
+}
 export  function accesoListadosModificado() {
 
   try {
@@ -498,6 +535,42 @@ export function accesoListadosEliminado() {
         }).catch(error => {
           reject(error);
         })
+    });
+  } catch (e) {
+  }
+}
+
+export  function enviarMensajeAdmin() {
+
+  try {
+    return new Promise(async(resolve, reject) => {
+      const datosIntroducidos= await comprobacionMensaje();
+      console.log(datosIntroducidos);
+      if(typeof Object.values(datosIntroducidos)[0] != "boolean"){
+        let datos = { llamada: "enviarMensaje", datosIntroducidos };
+        console.log(datosIntroducidos);
+        fetch("../../Backend/Controlador/controlador.php", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(datos)
+  
+        })
+          .then(response => response.text())
+          .then(data => {
+            const datos = JSON.parse(data);
+            console.log(datos);
+            resolve(datos);
+  
+          }).catch(error => {
+            reject(error);
+          })
+      }
+      else{
+        resolve(datosIntroducidos)
+      }
+      
     });
   } catch (e) {
   }

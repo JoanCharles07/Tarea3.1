@@ -10,7 +10,7 @@
 //Importaciones necesarias para el funcionamiento de controlador.js
 import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado, mostrarCantidadCarrito } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
-import { passIguales, recepcionDeDatosUsuario, datosUsuario,comprobarAccion, comprobarAccionModificacion, comprobarAccionEliminacion, cambiarPass, cerrarSesion  } from "./controladorUsuario.js";
+import { passIguales, recepcionDeDatosUsuario, datosUsuario,comprobarAccion, comprobarAccionModificacion, comprobarAccionEliminacion, cambiarPass, cerrarSesion, comprobarAgregar, comprobarMensaje  } from "./controladorUsuario.js";
 import {
   activarZonaUsuario, funcionalidadModificarDatos, funcionalidadCompra, recorrerTotalProducto, funcionalidadTienda, imprimirCarrito, imprimirCarritoVacio,
   imprimirDatosUsuarioCarrito, funcionalidadInicioSesion, imprimirIniciarSesion, cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas,
@@ -18,7 +18,7 @@ import {
   mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin, borrarDelCarrito, cantidadDetalleClase, imprimirNoticias, imprimirDatosUsuarioPerfil, exitoCambioPass
 } from "../Vistas/plantillasEspecificas.js";
 import { datosBorrarProducto, comprobarCarrito, objetoCarrito, datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios } from "./controladorProductos.js";
-import { eliminacion, lista, modificaciones, noticia } from "./controladorListasNoticias.js";
+import { agregar, eliminacion, lista, modificaciones, noticia } from "./controladorListasNoticias.js";
 import { redireccionLista } from "../Vistas/plantillaListas.js";
 import { accesoListadosModificado } from "../Modelo/peticiones.js";
 import { modificacionCorrecta } from "../Vistas/plantillaModificaciones.js";
@@ -388,14 +388,26 @@ async function interaccionesControlador() {
       /******************************************************************************************************************************* */
       else if (window.location.pathname.includes("listas.html")) {
         comprobarAccion().then(async respuesta =>{
-          
+          console.log(respuesta);
           if(respuesta.errores || typeof Object.values(respuesta)[0] == "boolean"){
             alert("Hubo algún error vuelva a iniciar sesión");
             sessionStorage.removeItem("usuario");
             location.href="./login.html";
           }else{
 
-            lista(respuesta);
+            await lista(respuesta).then(respuesta =>{
+              //Si existe agregar
+              if(document.getElementById("agregar")){
+                document.getElementById("agregar").addEventListener("click", function (e){
+                  const datosUrl = new URLSearchParams(window.location.search);
+                  let direccion=datosUrl.entries().next().value[1];
+                  //Uso localSotarege porque sesion a veces no funciona correctamente.
+                  localStorage.setItem("agregar",direccion);
+                  location.href="./agregar.html";
+                });
+              }
+              
+            });
           }
 
         }).catch( respuesta =>{
@@ -450,24 +462,40 @@ async function interaccionesControlador() {
             localStorage.setItem("eliminar",JSON.stringify(array));
             location.href="./borrar.html";
           }
-          
+        });
+        document.getElementById("listado").addEventListener("click", function (e){
+          //En una función
+          let array=[];
+          let elementosFila=e.target.parentNode.parentNode.children;
+          if(e.target.textContent=="Contestar" && e.target.tagName=="BUTTON"){
+            
+            const datosUrl = new URLSearchParams(window.location.search);
+            let direccion=datosUrl.entries().next().value[1];
+            //Es el único que necesita más de un ID
+            array.push(elementosFila[0].textContent);
+            array.push(direccion);
+            //Uso localSotarege porque sesion a veces no funciona correctamente.
+            localStorage.setItem("agregar",JSON.stringify(array));
+            location.href="./agregar.html";
+          }
         });
       }
       /*********************************************************************************************************************************/
       /************************  ZONA MODIFICAR ******************************************************************************************/
       /******************************************************************************************************************************* */
-      else if (window.location.pathname.includes("modificar.html")) {
-        const arrayDatos=JSON.parse(localStorage.getItem("modificar"));
-        if(arrayDatos!=null){
-          modificaciones(arrayDatos);
-        }
-        else{
-          alert("Hubo algún error vuelva a iniciar sesión");
-          sessionStorage.removeItem("usuario");
-          localStorage.removeItem("modificar");
-          location.href="./login.html";
-        }
         
+        else if (window.location.pathname.includes("modificar.html")) {
+          const arrayDatos=JSON.parse(localStorage.getItem("modificar"));
+          if(arrayDatos!=null){
+            modificaciones(arrayDatos);
+          }
+          else{
+            alert("Hubo algún error vuelva a iniciar sesión");
+            sessionStorage.removeItem("usuario");
+            localStorage.removeItem("modificar");
+            location.href="./login.html";
+          }
+          
         
         document.getElementById("formulario").addEventListener("submit",function(e){
           e.preventDefault();
@@ -491,6 +519,7 @@ async function interaccionesControlador() {
       /*********************************************************************************************************************************/
       /************************  ZONA ELIMINAR ******************************************************************************************/
       /******************************************************************************************************************************* */
+      
       else if (window.location.pathname.includes("borrar.html")) {
         const arrayDatos=JSON.parse(localStorage.getItem("eliminar"));
         if(arrayDatos!=null){
@@ -511,7 +540,7 @@ async function interaccionesControlador() {
               alert("Hubo algún error vuelva a iniciar sesión");
               sessionStorage.removeItem("usuario");
               localStorage.removeItem("eliminar");
-              //location.href="./login.html";
+              location.href="./login.html";
                 
             }
             else{
@@ -534,10 +563,39 @@ async function interaccionesControlador() {
           //iremos a php donde comprobaremos de nuevo todo y agregaremos lo que sea
           //USUARIO,PRODUCTO,PERMISO,ROL,NOTICIA
           
+          let datos= JSON.parse(localStorage.getItem("agregar"));
+          
+          agregar(datos);
+          document.getElementById("formulario").addEventListener("submit", function (e){
+            e.preventDefault();
+            comprobarAgregar().then(respuesta => {
+              console.log(respuesta);
+              if(respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean"){
+                //Hacer el imprimir resultados para mostrar errores en el formulario
+                imprimirTodosResultados(respuesta);
+                  
+              }
+              else{
+                  eliminacionCorrecta(respuesta);
+              }
+            });
+          })
+          localStorage.removeItem("agregar");
         }
         //Remove da problemas
       
-    
+    /*********************************************************************************************************************************/
+      /************************  ZONA CONTACTO ******************************************************************************************/
+      /******************************************************************************************************************************* */
+      else if(window.location.pathname.includes("contacto.html")){
+          document.getElementById("formulario").addEventListener("submit",function (e) { 
+              e.preventDefault(); 
+              comprobarMensaje();
+              
+           })
+
+           document.getElementById("opcion").style.display = "none";
+      }
     /*********************************************************************************************************************************/
       /************************  ZONA PERFIL ******************************************************************************************/
       /******************************************************************************************************************************* */

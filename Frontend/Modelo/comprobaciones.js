@@ -6,7 +6,10 @@ import { palabraPreparada } from "./funcionesBusqueda.js" ;
  * @author Juan Carlos Rodríguez Miranda.
  * @version 1.0.0
 */
-
+function sinSaltos(valor){
+  var cadenaSinSaltos = valor.replace(/\n/g, '');
+  return cadenaSinSaltos;
+}
 /**
  * determina si el parametro valor cumple la expresión regular, si la cumple la respuesta será falsa si no 
  * devolverá true.
@@ -17,7 +20,7 @@ import { palabraPreparada } from "./funcionesBusqueda.js" ;
 export function comprobarRegex(nombre, valor) {
   let respuesta = false;
   //Con esta expresión regular podemos confirmar var
-  console.log("Hola " + valor);
+  valor=sinSaltos(valor);
   switch (nombre) {
     case "mensaje":
     
@@ -226,6 +229,63 @@ export async function comprobacionUPDATE() {
     }
 
   }
+  
+}
+export async function comprobacionMensaje() {
+  if (sessionStorage.getItem("usuario")) {
+    //DATOS NECESARIOS PARA EL SERVIDOR
+    const datosMensaje = new FormData(document.getElementById("formulario"));
+    const usuario = JSON.parse(atob(sessionStorage.getItem("usuario")));
+    let datosIntroducidos = {};
+    for (const dato of datosMensaje.entries()) {
+      
+      if(dato[0]!="imagen"){
+        datosIntroducidos[dato[0]] = dato[1];
+      }else{
+        // Esperar a que se complete la carga de la imagen
+        
+        datosIntroducidos[dato[0]] = await procesarImagen(dato);
+        
+      }
+    }
+    datosIntroducidos["usuario"] = usuario[0];
+    let datos = comprobarDatosRegex(datosIntroducidos);
+    
+    const control = Object.values(datos).filter(elemento => elemento == true);
+    if (control.length == 0) {
+      return datosIntroducidos;
+    
+    } else {
+      return datos;
+    }
+
+  }
+  else{
+    //DATOS NECESARIOS PARA EL SERVIDOR
+    const datosMensaje = new FormData(document.getElementById("formulario"));
+    let datosIntroducidos = {};
+    for (const dato of datosMensaje.entries()) {
+      
+      if(dato[0]!="imagen"){
+        datosIntroducidos[dato[0]] = dato[1];
+      }else{
+        // Esperar a que se complete la carga de la imagen
+        
+        datosIntroducidos[dato[0]] = await procesarImagen(dato);
+        
+      }
+    }
+    let datos = comprobarDatosRegex(datosIntroducidos);
+    
+    const control = Object.values(datos).filter(elemento => elemento == true);
+    if (control.length == 0) {
+      return datosIntroducidos;
+    
+    } else {
+      return datos;
+    }
+  }
+  
 }
 //tamaño(tanto por arriba como que no sea 0 o menor) y paso de imagen a string
 async function procesarImagen(dato) {

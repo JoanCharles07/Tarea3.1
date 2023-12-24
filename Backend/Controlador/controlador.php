@@ -219,6 +219,34 @@ try {
 
             //Controlar errores
 
+        } else if ($direccion->llamada == "agregar" && isset($_SESSION["datosUsuario"])) {
+            
+             
+            inicioComprobaciones($direccion->datosIntroducidos, $errores);
+            coincideUsuario($errores);
+            if (empty((array) $errores)) {
+                
+                comprobarRol($errores);
+                controladorAgregar($direccion->datosIntroducidos, $errores, $session);
+                if (!empty((array) $errores)) {
+                    errores($errores);
+                } else if(isset($session->usuario)){
+                    
+                    exitoUsuario($session);
+                    
+                }else{
+                    unset($_SESSION["datos"]);
+                    echo json_encode($session);
+                }
+            } else {
+                unset($_SESSION["datos"]);
+                errores($errores);
+            }
+            /** Hago esto porque si yo cambio rol en BBDD hasta que no se reinicie la sesión no surtirían efecto los cambios
+             * y en las listas puede haber información delicada.*/
+
+            //Controlar errores
+
         } 
         else if ($direccion->llamada == "eliminar" && isset($_SESSION["datosUsuario"])) {
             
@@ -275,10 +303,35 @@ try {
 
             //Controlar errores
 
-        }else if ($direccion->llamada == "cambiarPass" && isset($_SESSION["datosUsuario"])) {
+        }else if ($direccion->llamada == "cerrarSesion" && isset($_SESSION["datosUsuario"])) {
             
             session_destroy();
             echo json_encode(true);
+        }else if ($direccion->llamada == "enviarMensaje" ) {
+            
+            inicioComprobaciones($direccion->datosIntroducidos,$errores);
+            if (empty((array) $errores)) {
+                
+                if(isset($direccion->datosIntroducidos->usuario)){
+                    enviarMensajeAdminUsuario($errores);
+                }else{
+                    
+                    enviarMensajeAdminAnonimo($errores);
+                }
+
+                
+                if (!empty((array) $errores)) {
+                   
+                    errores($errores);
+                } else {
+                    unset($_SESSION["datos"]);
+                    echo json_encode($session);
+                }
+            } else {
+                unset($_SESSION["datos"]);
+                errores($errores);
+            }
+
         }else {
             echo json_encode("No hay llamada");
         }

@@ -41,6 +41,9 @@ function controladorLista($datos,&$errores,&$session){
         }
         else if($datos->opcion=="Pedidos"){
             $session->listaPedidosUsuario=recuperarPedidosUsuario($errores);
+        }//Solo el administrador que es el 1 puede verlos
+        else if($datos->opcion=="Mensajes" && $_SESSION["datosUsuario"]["id"]==1){
+            $session->listaMensajes=leerMensajesPrivados($errores);
         }
     }
     else{
@@ -116,39 +119,74 @@ function controladorEliminacion($datos,&$errores,&$session){
     if($respuesta){
         
         if($datos->opcion=="Lista comentarios" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->comentarios=eliminarComentariosGlobal($errores);
+            eliminarComentariosGlobal($errores);
         }
         else if($datos->opcion=="Comentarios"){
-            $session->comentarios=eliminarComentariosPropio($errores);
+           eliminarComentariosPropio($errores);
            
         }
         else if($datos->opcion=="Lista Noticias" && $_SESSION["datosUsuario"]["rol"]==3){
            
-            $session->noticias=eliminarNoticia($errores);
+            eliminarNoticia($errores);
         }
         else if($datos->opcion=="Lista pedidos" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->pedido=eliminarPedido($errores);
+           eliminarPedido($errores);
         }
         else if($datos->opcion=="Lista permisos" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->permisos=eliminarPermiso($errores);
+            eliminarPermiso($errores);
         }
         else if($datos->opcion=="Lista usuarios" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->usuarios=eliminarUsuariosGlobal($errores);
+            eliminarUsuariosGlobal($errores);
         }
         else if($datos->opcion=="Lista roles" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->usuarios=eliminarRol($errores);
+            eliminarRol($errores);
         }
         else if($datos->opcion=="Lista productos" && ($_SESSION["datosUsuario"]["rol"]==3 )){
-            $session->productosGlobal=eliminarProductoGlobal($errores);
+            eliminarProductoGlobal($errores);
         }
         else if($datos->opcion=="Productos" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
             
-            $session->productosPropio= eliminarProductoPropio($errores);
+            eliminarProductoPropio($errores);
         }
         else if($datos->opcion=="Envios" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
-            $session->productosPropio= eliminarEnvio($errores);
+           eliminarEnvio($errores);
         }else if($datos->opcion=="Perfil"){
             eliminarUsuarioPropio($errores,$session);
+        }
+    }
+    else{
+        $session->errores="No existe esa acción";
+    }
+    //DIVIDIMOS EN IF ENTRA EN ESA OPCION Y LE DAMOS LA INFORMACIÓN QUE QUIERE.
+    //Llega la accion que será CRUD y a lo que queremos pedir permiso por ejemplo accion ver, permiso Lista Productos.
+    //Dentro de la base de datos primero comprobamos que id tiene el permiso buscando la palabra
+}
+
+function controladorAgregar($datos,&$errores,&$session){
+    $respuesta=existeAccion($errores);
+    
+    if($respuesta){
+        
+        
+        if($datos->opcion=="Lista noticias" && $_SESSION["datosUsuario"]["rol"]==3){
+           
+            agregarNoticia($errores);
+        }
+        else if($datos->opcion=="Lista permisos" && $_SESSION["datosUsuario"]["rol"]==3){
+            agregarPermiso($errores);
+        }
+        else if($datos->opcion=="Lista usuarios" && $_SESSION["datosUsuario"]["rol"]==3){
+            agregarUsuariosGlobal($errores);
+        }
+        else if($datos->opcion=="Lista roles" && $_SESSION["datosUsuario"]["rol"]==3){
+            agregarRol($errores);
+        }
+        else if($datos->opcion=="Lista productos" && ($_SESSION["datosUsuario"]["rol"]==3 )){
+            agregarProductoGlobal($errores);
+        }
+        else if($datos->opcion=="Productos" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
+            
+           agregarProductoPropio($errores);
         }
     }
     else{

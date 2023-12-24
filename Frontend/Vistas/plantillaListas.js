@@ -12,7 +12,7 @@ export function redireccionLista(eleccion) {
     }
 }
 export function imprimirListaComentariosPropio(datos) {
-    console.log(datos);
+  
     if (Object.values(datos.comentariosPropio).length == 0) {
         let main = document.getElementById("main");
         main.innerHTML = `<div id="vacio"><p>No ha realizado ningún comentario todavía</p></div>`;
@@ -89,7 +89,7 @@ export function imprimirListaUsuarios(datos) {
     const boton = document.getElementById("botonAgregar");
     if (Object.values(datos.usuarios).length == 0) {
         let main = document.getElementById("main");
-        main.innerHTML = `<div id="vacio"><p>No hay  ningún Usuario todavía</p><button>Añadir Usuario</button></div>`;
+        main.innerHTML = `<div id="vacio"><p>No hay  ningún Usuario todavía</p><button id="agregar">Añadir Usuario</button></div>`;
     }
     else {
         const lista = document.getElementById("listado");
@@ -129,7 +129,7 @@ export function imprimirListaUsuarios(datos) {
         }
         tabla += `</tbody>`
         lista.innerHTML = tabla;
-        boton.innerHTML = `<button>Añadir Usuario</button>`
+        boton.innerHTML = `<button id="agregar">Añadir Usuario</button>`
     }
 
 }
@@ -139,7 +139,7 @@ export function imprimirListaRoles(datos) {
     
     if (Object.values(datos.roles).length == 0) {
         let main = document.getElementById("main");
-        main.innerHTML = `<div id="vacio"><p>No hay  ningún rol todavía</p><button>Añadir Rol</button></div>`;
+        main.innerHTML = `<div id="vacio"><p>No hay  ningún rol todavía</p><button id="agregar">Añadir Rol</button></div>`;
     }
     else {
         const boton = document.getElementById("botonAgregar");
@@ -162,7 +162,7 @@ export function imprimirListaRoles(datos) {
         }
         tabla += `</tbody>`;
         lista.innerHTML = tabla;
-        boton.innerHTML = `<button>Añadir Rol</button>`
+        boton.innerHTML = `<button id="agregar">Añadir Rol</button>`
     }
 
 }
@@ -173,7 +173,7 @@ export function imprimirListaProductosGlobal(datos) {
     if (Object.values(datos.productosGlobal).length == 0) {
         let main = document.getElementById("main");
         main.innerHTML = `<div id="vacio"><p>No hay  ningún producto todavía</p>
-        <button>Añadir Producto</button></div>`;
+        <button id="agregar">Añadir Producto</button></div>`;
      
     }
     else {
@@ -212,7 +212,7 @@ export function imprimirListaProductosGlobal(datos) {
         }
         tabla += `</tbody>`;
         lista.innerHTML = tabla;
-        boton.innerHTML = `<button>Añadir Producto</button>`
+        boton.innerHTML = `<button id="agregar">Añadir Producto</button>`
 
     }
 }
@@ -222,7 +222,7 @@ export function imprimirListaProductosPropio(datos) {
     if (Object.values(datos.productosPropio).length == 0) {
         let main = document.getElementById("main");
         main.innerHTML = `<div id="vacio"><p>No hay  ningún producto todavía</p>
-        <button>Añadir Producto</button></div>`;
+        <button id="agregar">Añadir Producto</button></div>`;
     }
     else {
         const lista = document.getElementById("listado");
@@ -259,7 +259,7 @@ export function imprimirListaProductosPropio(datos) {
         }
         tabla += `</tbody>`;
         lista.innerHTML = tabla;
-        boton.innerHTML = `<button>Añadir Producto</button>`
+        boton.innerHTML = `<button id="agregar">Añadir Producto</button>`
 
     }
 }
@@ -268,7 +268,7 @@ export function imprimirListaPermisos(datos) {
     const boton = document.getElementById("botonAgregar");
     if (Object.values(datos.permisos).length == 0) {
         let main = document.getElementById("main");
-        main.innerHTML = `<div id="vacio"><p>No hay  ningún permiso todavía</p> <button>Añadir Permiso</button></div>`;
+        main.innerHTML = `<div id="vacio"><p>No hay  ningún permiso todavía</p> <button id="agregar">Añadir Permiso</button></div>`;
         
       
     }
@@ -302,7 +302,7 @@ export function imprimirListaPermisos(datos) {
     }
     tabla += `</tbody>`;
     lista.innerHTML = tabla;
-    boton.innerHTML = `<button>Añadir Permiso</button>`
+    boton.innerHTML = `<button id="agregar">Añadir Permiso</button>`
     }
 }
 
@@ -424,7 +424,7 @@ export function imprimirListaNotcias(datos) {
     const boton = document.getElementById("botonAgregar");
     if (Object.values(datos.noticias).length == 0) {
         let main = document.getElementById("main");
-        main.innerHTML = `<div id="vacio"><p>No hay  ninguna noticia todavía</p><button>Añadir Noticia</button></div>`;
+        main.innerHTML = `<div id="vacio"><p>No hay  ninguna noticia todavía</p><button id="agregar">Añadir Noticia</button></div>`;
         
     }
     else {
@@ -455,7 +455,7 @@ export function imprimirListaNotcias(datos) {
     }
     tabla += `</tbody>`;
     lista.innerHTML = tabla;
-    boton.innerHTML = `<button>Añadir Noticia</button>`
+    boton.innerHTML = `<button id="agregar">Añadir Noticia</button>`
 }
 }
 
@@ -485,6 +485,50 @@ export function imprimirHistorial(datos) {
         <td>${key.cantidad}</td>
         <td>${key.total}</td>
         <td>${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}</td>
+        </tr>`
+    }
+    tabla += `</tbody>`;
+    lista.innerHTML = tabla;
+}
+}
+
+export function imprimirMensajes(datos){
+    if (Object.values(datos.listaMensajes).length == 0) {
+        let main = document.getElementById("main");
+        main.innerHTML = `<div id="vacio"><p>No hay  ningún Mensaje que pueda leer</p></div>`;
+    }
+    else {
+    const lista = document.getElementById("listado");
+    let tabla = `<thead>
+        <tr>
+            <th>ID</th>
+            <th>Asunto</th>
+            <th>Mensaje</th>
+            <th>Fecha</th>
+            <th>Correo Electrónico</th>
+            <th>Usuario</th>
+            <th>Estado</th>
+            <th>Contestar</th>
+        </tr>
+    </thead><tbody>`;
+    for (const key of datos.listaMensajes) {
+        let fecha = new Date(key.fechaEnvio);
+        let usuario="";
+        if(key.usuario==0){
+            usuario="Desconocido";
+        }
+        else{
+            usuario=key.usuario;
+        }
+        tabla += `<tr>
+        <td>${key.id}</td>
+        <td>${key.asunto}</td>
+        <td>${key.mensaje}</td>
+        <td>${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}</td>
+        <td>${key.email}</td>
+        <td>${usuario}</td>
+        <td>${key.estado}</td>
+        <td><button>Contestar</button></td>
         </tr>`
     }
     tabla += `</tbody>`;
