@@ -48,9 +48,8 @@ export function modificacionPedido(arrayDatos) {
         <span id="errorBBDD"></span>
         <label for="estado">Estado del Pedido</label>
         <select name="estado">
-            <option value="Tramitando" selected>Tramitando</option>
-            <option value="Enviado" >Enviado</option>
-            <option value="Recibido">Recibido</option>
+            <option value="Realizado" >Realizado</option>
+            <option value="Entregado" >Entregado</option>
         </select>
         <input type="text" id="opcion"  name="opcion" value="${arrayDatos[arrayDatos.length - 1]}"/>
         <input type="text" id="pedido"  name="pedido" value="${arrayDatos[0]}"/>
@@ -59,6 +58,27 @@ export function modificacionPedido(arrayDatos) {
     document.getElementById("pedido").style.display = "none";
     document.getElementById("opcion").style.display = "none";
 }
+
+export function modificacionEnvio(arrayDatos) {
+    let Form = document.getElementById("formulario");
+    let texto = `
+        <span id="errorBBDD"></span>
+        <label for="estado">Estado del Pedido</label>
+        <select name="estado">
+            <option value="Tramitando" >Tramitando</option>
+            <option value="Enviado" >Enviado</option>
+            <option value="Finalizado" >Finalizado</option>
+        </select>
+        <input type="text" id="opcion"  name="opcion" value="${arrayDatos[arrayDatos.length - 1]}"/>
+        <input type="text" id="producto"  name="producto" value="${arrayDatos[arrayDatos.length - 2]}"/>
+        <input type="text" id="pedido"  name="pedido" value="${arrayDatos[arrayDatos.length - 3]}"/>
+        <input type="submit" class="botonSubmit" name="submit" value="Modificar"/>`;
+    Form.innerHTML = texto;
+    document.getElementById("pedido").style.display = "none";
+    document.getElementById("producto").style.display = "none";
+    document.getElementById("opcion").style.display = "none";
+}
+
 
 
 

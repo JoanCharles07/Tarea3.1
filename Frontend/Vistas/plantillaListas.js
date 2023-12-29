@@ -1,3 +1,5 @@
+import { comprobarFecha } from "../Modelo/comprobaciones.js";
+
 export function redireccionLista(eleccion) {
     if (eleccion == "Carrito") {
         location.href = "./carrito.html";
@@ -316,13 +318,10 @@ export function imprimirListaPedidos(datos) {
     let tabla = `<thead>
         <tr>
             <th>Número pedido</th>
-            <th>Cantidad Productos</th>
-            <th>Estado</th>
-            <th>Fecha envio</th>
-            <th>Fecha entrega</th>
+            <th>Fecha Realizado</th>
             <th>Total</th>
             <th>Id Comprador</th>
-            <th>Id Vendedor</th>
+            <th>Estado</th>
             <th>Modificar</th>
             <th>eliminar</th>
         </tr>
@@ -331,13 +330,10 @@ export function imprimirListaPedidos(datos) {
         console.log("entro");
         tabla += `<tr>
         <td>${key.idPedido}</td>
-        <td>${key.cantidadProductos}</td>
-        <td>${key.estado}</td>
-        <td>${key.fechaEnvio}</td>
-        <td>${key.fechaLlegada}</td>
+        <td>${key.fechaRealizado}</td>
         <td>${key.total}</td>
         <td>${key.IDComprador}</td>
-        <td>${key.IDVendedor}</td>
+        <td>${key.estado}</td>
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
         </tr>`
@@ -357,21 +353,17 @@ export function imprimirListaPedidosUsuario(datos) {
     let tabla = `<thead>
         <tr>
             <th>Número pedido</th>
-            <th>Cantidad Productos</th>
-            <th>Estado</th>
-            <th>Fecha envio</th>
-            <th>Fecha entrega</th>
+            <th>Fecha Realización</th>
             <th>Total</th>
+            <th>Estado</th>
         </tr>
     </thead><tbody>`;
     for (const key of datos.listaPedidosUsuario) {
         tabla += `<tr>
         <td>${key.idPedido}</td>
-        <td>${key.cantidadProductos}</td>
-        <td>${key.estado}</td>
-        <td>${key.fechaEnvio}</td>
-        <td>${key.fechaLlegada}</td>
+        <td>${key.fechaRealizado}</td>
         <td>${key.total}</td>
+        <td>${key.estado}</td>
         </tr>`
     }
     tabla += `</tbody>`;
@@ -387,29 +379,73 @@ export function imprimirEnvios(datos) {
     const lista = document.getElementById("listado");
     let tabla = `<thead>
         <tr>
-            <th>Número pedido</th>
-            <th>Cantidad Productos</th>
+            
+            <th>Nombre producto</th>
+            <th>Cantidad</th>
             <th>Estado</th>
-            <th>Fecha envio</th>
+            <th>Fecha Envio</th>
             <th>Fecha entrega</th>
-            <th>Total</th>
-            <th>Id Comprador</th>
-            <th>Id Vendedor</th>
+            <th>Nombre Comprador</th>
+            <th>Direccion Comprador</th>
+            <th style="display:none">Id Pedido</th>
+            <th style="display:none">Id Producto</th>
             <th>Modificar</th>
             <th>eliminar</th>
         </tr>
     </thead><tbody>`;
     for (const key of datos.envios) {
-        console.log("entro");
         tabla += `<tr>
-        <td>${key.idPedido}</td>
-        <td>${key.cantidadProductos}</td>
+        <td>${key.nombreProducto}</td>
+        <td>${key.cantidad}</td>
         <td>${key.estado}</td>
-        <td>${key.fechaEnvio}</td>
-        <td>${key.fechaLlegada}</td>
-        <td>${key.total}</td>
-        <td>${key.IDComprador}</td>
-        <td>${key.IDVendedor}</td>
+        <td>${comprobarFecha(key.fechaEnvio)}</td>
+        <td>${comprobarFecha(key.fechaLlegada)}</td>
+        <td>${key.nombreComprador}</td>
+        <td>${key.direccionComprador}</td>
+        <td style="display:none">${key.IDPedido}</td>
+        <td style="display:none">${key.IDProducto}</td>
+        <td><button>Modificar</button></td>
+        <td><button>Eliminar</button></td>
+        </tr>`
+    }
+    tabla += `</tbody>`;
+    lista.innerHTML = tabla;
+}
+}
+export function imprimirEnviosGlobal(datos) {
+    if (Object.values(datos.enviosGlobal).length == 0) {
+        let main = document.getElementById("main");
+        main.innerHTML = `<div id="vacio"><p>No hay  ningún envío todavía</p></div>`;
+    }
+    else {
+    const lista = document.getElementById("listado");
+    let tabla = `<thead>
+        <tr>
+            
+            <th>Nombre producto</th>
+            <th>Cantidad</th>
+            <th>Estado</th>
+            <th>Fecha Envio</th>
+            <th>Fecha entrega</th>
+            <th>Nombre Comprador</th>
+            <th>Direccion Comprador</th>
+            <th >Id Pedido</th>
+            <th >Id Producto</th>
+            <th>Modificar</th>
+            <th>eliminar</th>
+        </tr>
+    </thead><tbody>`;
+    for (const key of datos.enviosGlobal) {
+        tabla += `<tr>
+        <td>${key.nombreProducto}</td>
+        <td>${key.cantidad}</td>
+        <td>${key.estado}</td>
+        <td>${comprobarFecha(key.fechaEnvio)}</td>
+        <td>${comprobarFecha(key.fechaLlegada)}</td>
+        <td>${key.nombreComprador}</td>
+        <td>${key.direccionComprador}</td>
+        <td >${key.IDPedido}</td>
+        <td >${key.IDProducto}</td>
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
         </tr>`
@@ -473,18 +509,21 @@ export function imprimirHistorial(datos) {
             <th>Precio unidad</th>
             <th>Cantidad</th>
             <th>Total</th>
-            <th>Recibido</th>
+            <th>Envio</th>
+            <th>Recepción</th>
         </tr>
     </thead><tbody>`;
     for (const key of datos.historial) {
-        let fecha = new Date(key.fechaLlegada);
+        console.log(typeof key.fechaLlegada);
+        console.log(comprobarFecha(key.fechaLlegada));
         tabla += `<tr>
         <td>${key.pedido}</td>
         <td>${key.nombre}</td>
         <td>${key.precio}</td>
         <td>${key.cantidad}</td>
         <td>${key.total}</td>
-        <td>${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}</td>
+        <td>${comprobarFecha(key.fechaEnvio)}</td>
+        <td>${comprobarFecha(key.fechaLlegada)}</td>
         </tr>`
     }
     tabla += `</tbody>`;

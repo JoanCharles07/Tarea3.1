@@ -11,6 +11,7 @@ include_once './controladorListas.php';
 include_once '../Modelo/funciones.php';
 include_once '../Modelo/comprobaciones.php';
 include_once '../Modelo/funcionesBBDD.php';
+include_once '../Modelo/funcionesBBDDagregar.php';
 header('Content-Type: application/json');
 session_start();
 
@@ -103,7 +104,6 @@ try {
                     errores($errores);
                 }
             } else {
-                echo "aqui";
                 errores($errores);
             }
         } else if ($direccion->llamada == "borrarCarritoBBDD" && isset($_SESSION["datosUsuario"])) {
@@ -158,7 +158,52 @@ try {
             } else {
                 errores($errores);
             }
-        } else if ($direccion->llamada == "noticias") {
+        } else if ($direccion->llamada == "finalizarCompra" && isset($_SESSION["datosUsuario"])) {
+            // comprobar el direccion objeto
+            
+            comprobacionCompra($direccion->objeto);
+            $correcto=true;
+            $direccion->objeto;
+            $respuesta = recuperarProductos($errores);
+            for($i=0;$i<count($respuesta);$i++){
+                for($j=0;$j<count( $direccion->objeto);++$j){
+                    if($respuesta[$i]->id == $direccion->objeto[$j][0]){
+                       
+                        if($respuesta[$i]->stock < $direccion->objeto[$j][2] || ($respuesta[$i]->precio * $direccion->objeto[$j][2] != $direccion->objeto[$j][3])){
+                            $errores->error="Algo no cuadra";
+                            $correcto=false;
+                            break;
+                            //podemos meter los dos arrays o uno con los datos que necesito del pedido.
+                        } 
+                    }
+                }
+                if(!$correcto){
+                    break;
+                }
+                
+            }
+            if (empty((array) $errores) && $correcto) {
+                //introducimos en base de datos primero el pedido y luego cada uno de los productos
+                agregarPedido($errores,$direccion->objeto);
+                //si no hay errores introducimos en el historial los productos
+                for($j=0;$j<count( $direccion->objeto);++$j){
+                    agregarEnvio($errores,$direccion->objeto[$j]);
+                }
+
+                //borrar datos Carrito
+                borrarCarritoCompleto($errores);
+                if (empty((array) $errores)) {
+                    unset($_SESSION["datos"]);
+                    echo json_encode("exito");
+                }
+                else{
+                    errores($errores);    
+                }
+              
+            } else {
+                errores($errores);
+            }
+        }else if ($direccion->llamada == "noticias") {
 
 
             $session = noticia($errores);
@@ -202,11 +247,10 @@ try {
                 
                 if (!empty((array) $errores)) {
                     errores($errores);
-                } else if($session->usuario){
+                }else if(isset($session->usuario)){
                     exitoUsuario($session);
                     
                 }else{
-                    echo "aqui 3";
                     unset($_SESSION["datos"]);
                     echo json_encode($session);
                 }
@@ -307,7 +351,22 @@ try {
             
             session_destroy();
             echo json_encode(true);
-        }else if ($direccion->llamada == "enviarMensaje" ) {
+        }else if ($direccion->llamada == "comprobarStock") {
+            inicioComprobaciones($direccion->datosIntroducidos, $errores);
+            if (empty((array) $errores)) {
+                $session->resultado=comprobarStock($errores);
+                if($session->resultado==true){
+                    
+                    unset($_SESSION["datos"]);
+                    echo json_encode($session);
+                }else{
+                    errores($errores);
+                }
+            } else {
+                errores($errores);
+            }
+        }
+        else if ($direccion->llamada == "enviarMensaje" ) {
             
             inicioComprobaciones($direccion->datosIntroducidos,$errores);
             if (empty((array) $errores)) {

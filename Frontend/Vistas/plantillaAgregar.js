@@ -204,4 +204,15 @@ export function enviarRespuesta(datos) {
 
 
 }
+export function agregarCorrecto() {
+    let main = document.getElementById("main");
+    main.innerHTML = `<div id="vacio"><p>Se ha realizado la acción</p></div>`;
+    
+    const intervalID = setInterval(function () {
+        //Borramos productos para que se actualizen los datos si productos fuera alterado, por no complicar mas el codigo
+        sessionStorage.removeItem("productos");
+        location.href="./tienda.html";
+    }, 1500);
+
+}
 

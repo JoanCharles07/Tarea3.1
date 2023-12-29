@@ -15,14 +15,16 @@ import {
   activarZonaUsuario, funcionalidadModificarDatos, funcionalidadCompra, recorrerTotalProducto, funcionalidadTienda, imprimirCarrito, imprimirCarritoVacio,
   imprimirDatosUsuarioCarrito, funcionalidadInicioSesion, imprimirIniciarSesion, cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas,
   imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda,
-  mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin, borrarDelCarrito, cantidadDetalleClase, imprimirNoticias, imprimirDatosUsuarioPerfil, exitoCambioPass
+  mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin, borrarDelCarrito, cantidadDetalleClase, imprimirNoticias, imprimirDatosUsuarioPerfil, exitoCambioPass, confirmarCompra
 } from "../Vistas/plantillasEspecificas.js";
-import { datosBorrarProducto, comprobarCarrito, objetoCarrito, datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios } from "./controladorProductos.js";
+import { datosBorrarProducto, comprobarCarrito, objetoCarrito, datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios, finalizarCompra } from "./controladorProductos.js";
 import { agregar, eliminacion, lista, modificaciones, noticia } from "./controladorListasNoticias.js";
 import { redireccionLista } from "../Vistas/plantillaListas.js";
 import { accesoListadosModificado } from "../Modelo/peticiones.js";
 import { modificacionCorrecta } from "../Vistas/plantillaModificaciones.js";
 import { eliminacionCorrecta } from "../Vistas/plantillaBorrar.js";
+import { agregarCorrecto } from "../Vistas/plantillaAgregar.js";
+import { comprobarStockJSCarrito } from "../Modelo/funcionesProducto.js";
 
 
 
@@ -232,6 +234,7 @@ async function interaccionesControlador() {
           //Conseguimos los datos del productoSelccionado
           recepcionDeDatosProducto().then((resultado) => {
             //Lo imprimimos
+            console.log(resultado);
             imprimirDetalleProducto(resultado);
             //Cambiamos datos del total si se utiliza el input de cantidad
             document.getElementById("cantidad").addEventListener("input", function () {
@@ -241,10 +244,15 @@ async function interaccionesControlador() {
             //nuestro carrito
             document.getElementById("validar").addEventListener("click", function () {
               objetoCarrito().then(respuesta => {
-
-                mostrarCantidadCarrito();
-                //hay que comprobar si se ha hecho bien
-                location.href = "./carrito.html";
+                if(respuesta.errorBBDD){
+                  document.getElementById("error").textContent=respuesta.errorBBDD;
+                }else{
+                  mostrarCantidadCarrito();
+                  location.href = "./carrito.html";
+                }
+                
+              }).catch(respuesta =>{
+                  document.getElementById("error").textContent=respuesta;
               })
 
             });
@@ -324,6 +332,17 @@ async function interaccionesControlador() {
 
               let producto = e.target.parentNode;
               e.target.addEventListener("input", cantidadDetalleClase(producto));
+              //FUNCION PARA CAMBIAR VALOR DEL CARRITO Y ASI CONTROLAR SI SE PUEDE O NO
+              let carrito=JSON.parse(sessionStorage.getItem("carrito"));
+              let index=carrito.findIndex(id => id.id == producto.id);
+              let nuevoCarrito=carrito.map(elemento => {
+                if(carrito[index]==elemento){
+                  elemento.cantidad = producto.children[1].value;
+                  elemento.precioTotal = producto.children[1].value * elemento.precioInicial;
+                };
+                return elemento;
+              });
+              sessionStorage.setItem("carrito",JSON.stringify(nuevoCarrito));
 
             }
           })
@@ -333,7 +352,30 @@ async function interaccionesControlador() {
 
 
           document.getElementById("comprar").addEventListener("click", function () {
-            funcionalidadCompra();
+
+            //primero hacemos comprobacione de si hay stock
+           const sinStock=comprobarStockJSCarrito();
+           if(sinStock.length==0){
+              //location.href="./tienda.html";
+              //hacemos comprobaciones en php
+              finalizarCompra().then(respuesta =>  {
+                  if(respuesta=="exito"){
+                    sessionStorage.removeItem("productos");
+                    sessionStorage.removeItem("carrito");
+                    sessionStorage.removeItem("productoSeleccionado");
+                    confirmarCompra();
+                  }
+                  else{
+                    //manejar errores
+                  }
+              });
+           }else{
+              let errorStock=document.createElement("span");
+              errorStock.textContent="Stock Insuficiente"
+              document.getElementById(sinStock[0]).style.border="1px solid red";
+              document.getElementById(sinStock[0]).appendChild(errorStock);
+           }
+              
           })
         } else {
 
@@ -361,7 +403,7 @@ async function interaccionesControlador() {
                 }
                 arrayDatos.push("Perfil");
                 localStorage.setItem("modificar",JSON.stringify(arrayDatos));
-               location.href="./modificar.html";
+                location.href="./modificar.html";
              })
 
           })
@@ -451,6 +493,10 @@ async function interaccionesControlador() {
               array.push(elementosFila[0].textContent);
               array.push(elementosFila[5].textContent);
             }
+            else if(direccion=="Lista Envios"){
+              array.push(elementosFila[7].textContent);
+              array.push(elementosFila[8].textContent);
+            }
             else{
               array.push(elementosFila[0].textContent);
             }
@@ -518,42 +564,44 @@ async function interaccionesControlador() {
         //Remove da problemas
         localStorage.removeItem("modificar");
       }
+
       /*********************************************************************************************************************************/
       /************************  ZONA ELIMINAR ******************************************************************************************/
       /******************************************************************************************************************************* */
       
       else if (window.location.pathname.includes("borrar.html")) {
         const arrayDatos=JSON.parse(localStorage.getItem("eliminar"));
-        if(arrayDatos!=null){
-          eliminacion(arrayDatos);
-        }
-        else{
-          alert("Hubo algún error vuelva a iniciar sesión");
-          sessionStorage.removeItem("usuario");
-          localStorage.removeItem("eliminar");
-          location.href="./login.html";
-        }
 
-        document.getElementById("formulario").addEventListener("submit",function(e){
-          e.preventDefault();
-          comprobarAccionEliminacion().then(respuesta => {
-            console.log(respuesta);
-            if(respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean"){
-              alert("Hubo algún error vuelva a iniciar sesión");
-              sessionStorage.removeItem("usuario");
-              localStorage.removeItem("eliminar");
-              location.href="./login.html";
-                
-            }
-            else{
-                eliminacionCorrecta(respuesta);
-            }
-          });
-          
-          
-        })
-        //Remove da problemas
-        localStorage.removeItem("eliminar");
+          if(arrayDatos!=null){
+            eliminacion(arrayDatos);
+          }
+          else{
+            alert("Hubo algún error vuelva a iniciar sesión");
+            sessionStorage.removeItem("usuario");
+            localStorage.removeItem("eliminar");
+            location.href="./login.html";
+          }
+
+          document.getElementById("formulario").addEventListener("submit",function(e){
+            e.preventDefault();
+            comprobarAccionEliminacion().then(respuesta => {
+              console.log(respuesta);
+              if(respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean"){
+                alert("Hubo algún error vuelva a iniciar sesión");
+                sessionStorage.removeItem("usuario");
+                localStorage.removeItem("eliminar");
+                location.href="./login.html";
+                  
+              }
+              else{
+                  eliminacionCorrecta(respuesta);
+              }
+            });
+            
+            
+          })
+          //Remove da problemas
+          localStorage.removeItem("eliminar");
       }
     /*********************************************************************************************************************************/
       /************************  ZONA AÑADIR ******************************************************************************************/
@@ -565,7 +613,7 @@ async function interaccionesControlador() {
           //iremos a php donde comprobaremos de nuevo todo y agregaremos lo que sea
           //USUARIO,PRODUCTO,PERMISO,ROL,NOTICIA
           
-          let datos= JSON.parse(localStorage.getItem("agregar"));
+          let datos= localStorage.getItem("agregar");
           
           agregar(datos);
           document.getElementById("formulario").addEventListener("submit", function (e){
@@ -578,7 +626,7 @@ async function interaccionesControlador() {
                   
               }
               else{
-                  eliminacionCorrecta(respuesta);
+                  agregarCorrecto(respuesta);
               }
             });
           })
@@ -629,6 +677,7 @@ async function interaccionesControlador() {
 
                 }else{
                   sessionStorage.removeItem("usuario");
+                  sessionStorage.removeItem("conectado");
                 location.href="./tienda.html";
                 }
               });

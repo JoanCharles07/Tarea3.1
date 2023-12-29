@@ -120,3 +120,30 @@ export function borrarProductoSesion(id){
   return true;
 
 }
+
+export function comprobarStockJS(IDproducto,cantidad){
+  let productos= JSON.parse(sessionStorage.getItem("productos"));
+  let resultado=false;
+  for(let producto of productos){
+    
+      if(producto.id==IDproducto && producto.stock >= cantidad){          
+        resultado=true;
+        break;
+      }
+  }
+   
+  return resultado;
+
+}
+
+export function comprobarStockJSCarrito(){
+  let productos= JSON.parse(sessionStorage.getItem("productos"));
+  let carrito=JSON.parse(sessionStorage.getItem("carrito"));
+  //conseguimos las coincidencias filtramos y luego con some hacemos las comparaciones de lo que necesitamos.Se puede añadir precio
+  const coincidencias=  productos.filter( IDproducto => 
+    carrito.some( IDcarrito => (IDcarrito.id === IDproducto.id && parseInt(IDcarrito.cantidad) > parseInt(IDproducto.stock))));
+  //añadimos a array con map
+  const idCoincidencia = coincidencias.map(elemento => elemento.id);
+
+  return idCoincidencia;
+}

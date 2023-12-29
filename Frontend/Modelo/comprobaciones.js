@@ -32,6 +32,7 @@ export function comprobarRegex(nombre, valor) {
     case "comprador":
     case "vendedor":
     case "pedido":
+    case "producto":
     case "stock":
     case "precio":
     case "descuento":
@@ -55,7 +56,7 @@ export function comprobarRegex(nombre, valor) {
         break;
         
     default:
-      let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$&|()])(^.{4,40}$)/);
+      let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)(?!.*[*=$&|()])(^.{4,40}$)/);
       respuesta = !(regex.test(valor));
   }
 
@@ -74,7 +75,7 @@ export function comprobarRegexComentarios(valor) {
   let respuesta = false;
   //Con esta expresión regular podemos confirmar var
 
-  let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$&|()])(^.{4,500}$)/);
+  let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)(?!.*[*=$&|()])(^.{4,500}$)/);
   respuesta = !(regex.test(valor));
 
   return respuesta;
@@ -83,7 +84,7 @@ export function comprobarRegexComentarios(valor) {
 export function comprobarRegexNoticia(valor) {
   let respuesta = false;
   //Con esta expresión regular podemos confirmar var
-  let regex = new RegExp(/^(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)[A-Za-z0-9\s\S]{4,2500}$/);
+  let regex = new RegExp(/^(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)[A-Za-z0-9\s\S]{4,2500}$/);
   respuesta = !(regex.test(valor));
 
   return respuesta;
@@ -303,4 +304,16 @@ async function procesarImagen(dato) {
      
       
   });
+}
+
+export function comprobarFecha(datoFecha){
+  let cadenaFecha="";
+        if(datoFecha != undefined || datoFecha != null){
+            let fecha = new Date(datoFecha);
+            cadenaFecha=`${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
+           
+        }else{
+            cadenaFecha="Pendiente";
+        }
+  return cadenaFecha;
 }

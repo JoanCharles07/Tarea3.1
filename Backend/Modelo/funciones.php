@@ -116,3 +116,12 @@ function coincidePass(&$errores){
       $_SESSION["datos"]["pass"]=encriptarPalabra($_SESSION["datos"]["pass"]);
    }
 }
+function calcularTotalPedido($productos){
+   $total=0.00;
+
+   for($j=0;$j<count($productos);++$j){
+      $total=$total +(floatval($productos[$j][1])*floatval($productos[$j][2]));
+  }
+   $total=$total + 3.99;
+   return $total;
+}

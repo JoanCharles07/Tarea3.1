@@ -10,9 +10,10 @@ import{recuperarNoticias}from "../Modelo/peticiones.js";
 import { imprimirListaNotcias,imprimirListaPedidos,imprimirListaComentariosPropio,imprimirListaComentariosGlobal ,imprimirListaPermisos,
     imprimirListaRoles,imprimirListaUsuarios, imprimirEnvios,imprimirHistorial, imprimirListaPedidosUsuario, imprimirListaProductosGlobal, 
     imprimirListaProductosPropio,
-    imprimirMensajes} from "../Vistas/plantillaListas.js";
-import { modificacionComentariosGlobales, modificacionComentariosPropios, modificacionNoticias, modificacionPedido, modificacionPermisos, modificacionProductos, modificacionRol, modificacionUsuarioGlobal, modificacionUsuarioPropio } from "../Vistas/plantillaModificaciones.js";
-import { confirmarEliminacion,confirmarEliminacionComentarios, confirmarEliminacionPermisos, confirmarEliminacionUsuario } from "../Vistas/plantillaBorrar.js";
+    imprimirMensajes,
+    imprimirEnviosGlobal} from "../Vistas/plantillaListas.js";
+import { modificacionComentariosGlobales, modificacionComentariosPropios, modificacionEnvio, modificacionNoticias, modificacionPedido, modificacionPermisos, modificacionProductos, modificacionRol, modificacionUsuarioGlobal, modificacionUsuarioPropio } from "../Vistas/plantillaModificaciones.js";
+import { confirmarEliminacion,confirmarEliminacionComentarios, confirmarEliminacionEnvio, confirmarEliminacionPermisos, confirmarEliminacionUsuario } from "../Vistas/plantillaBorrar.js";
 import { agregarNoticia, agregarPermiso, agregarProductoGlobal, agregarProductoPropio, agregarRol, agregarUsuario, enviarRespuesta } from "../Vistas/plantillaAgregar.js";
 /**
  * Esta función comprobará si tenemos en el sessionStorage lo productos, si no los tenemos hará una llamada a la
@@ -78,6 +79,9 @@ export function lista(datos) {
             else if(datos.envios){
                 imprimirEnvios(datos);
             }
+            else if(datos.enviosGlobal){
+                imprimirEnviosGlobal(datos);
+            }
             else if(datos.historial){
                 imprimirHistorial(datos);
             }
@@ -113,9 +117,13 @@ export function modificaciones(datos){
         modificacionNoticias(datos);
     }
 
-    else if(datos[datos.length-1]=="Lista pedidos" || datos[datos.length-1]=="Envios"){
+    else if(datos[datos.length-1]=="Lista pedidos" ){
        
         modificacionPedido(datos);
+    }
+    else if( datos[datos.length-1]=="Envios" || datos[datos.length-1]=="Lista Envios"){
+       
+        modificacionEnvio(datos);
     }
     else if(datos[datos.length-1]=="Lista usuarios"){
        
@@ -153,13 +161,25 @@ export function eliminacion(datos){
         
         confirmarEliminacionUsuario(datos);
     }
+    else if(datos[datos.length-1]=="Envios"){
+        alert("Para realizar esta acción comuniquese  con el administrador mediante el apartado contacto");
+        location.href="./contacto.html";
+        
+    }
+    else if(datos[datos.length-1]=="Lista Envios"){
+        confirmarEliminacionEnvio(datos);
+        
+    }
     else{
         confirmarEliminacion(datos);
     }
 }
 
 export function agregar(datos){
+    
+    console.log("entro 2");
    if(datos=="Lista Noticias"){
+        console.log("entro");
         agregarNoticia();
     }
     else if(datos=="Lista usuarios"){

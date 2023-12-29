@@ -37,7 +37,7 @@ export function imprimirImagenesAzar() {
  * @param {Object} producto contiene los datos de nuestro producto escogido
  */
 export function imprimirDetalleProducto(producto) {
-
+  
   const texto = `
       <div id="imagen" class="imagenProducto">
       <img src="data:image/webp;base64,${producto["imagen"]}" class ="producto">
@@ -45,14 +45,16 @@ export function imprimirDetalleProducto(producto) {
       <div id="detalles">
               <h2 id="nombreProducto">${producto["nombre"]}</h2>
               <div id="containerPrecio" class="flex">
+                  <div id="imagenStock"></div>
                   <div id="stock"></div>
-                  <p>Precio: <span id="precio">${producto["precio"]}</span> €/kilo</p>
               </div>
+              <div class="flex"><p>Precio: <span id="precio">${producto["precio"]}</span> €/kilo</p></div>
               <div id="containerCantidad" class="flex">
                   <label name="cantidad">Cantidad: </label>
                   <input type="number" name="cantidad" id="cantidad" class="inputCantidad">
                   <p>Total: <span id="total"></span> €</p>
-              </div>
+              </div >
+              <div id="error" class="flex"></div>
               <input type="button" name="validar" id="validar" value="Comprar" class="botonesProducto">
               
           <div id="numeroComentarios" class="flex">
@@ -64,7 +66,15 @@ export function imprimirDetalleProducto(producto) {
       `;
   //<img src="../../Recursos/Imagenes/${producto["valoracionTotal"]}estrellas.webp" id="valoracionTotal" alt="Valoracion">
   document.getElementById("container_producto").innerHTML = texto;
-
+  const stock=document.getElementById("stock");
+  const imagenStock=document.getElementById("imagenStock");
+  if(producto.stock==0){
+    imagenStock.className="stockRojo";
+    stock.textContent="Sin Stock";
+  }else{
+    imagenStock.className="stockVerde";
+    stock.textContent="En Stock";
+  }
 }
 /**
 * Esta función nos llevará a detalle producto del producto al seleccionarlo.
@@ -357,7 +367,7 @@ export function recorrerTotalProductoAlterado(producto) {
 export function cantidadDetalleClase(producto) {
   console.log("entro");
   let precio = parseFloat(producto.children[2].textContent);
-  let cantidad = parseInt(producto.children[1].value)
+  let cantidad = parseInt(producto.children[1].value);
   let total = producto.children[4];
   if (isNaN(cantidad)) {
     total.innerHTML = 0;
@@ -536,5 +546,17 @@ export function imprimirNoticias(noticias) {
   }
   ;
 
+
+}
+
+export function confirmarCompra(){
+  let main = document.getElementById("main");
+  main.innerHTML = `<div id="vacio"><p>Se ha realizado el pedido en breve le llegará</p></div>`;
+  const intervalID = setInterval(function () {
+      //Borramos productos para que se actualizen los datos si productos fuera alterado, por no complicar mas el codigo
+     
+      
+      location.href="./listas.html?eleccion=Historial";
+  }, 1500);
 
 }

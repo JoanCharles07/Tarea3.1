@@ -8,7 +8,6 @@ function inicioComprobaciones($datosIntroducidos,&$errores){
     
     saneamientoArray($datosIntroducidos);
     //Comprobamos que no haya palabras no validas
-    
     RegexRespuesta($errores);
 
 }
@@ -37,6 +36,7 @@ function saneamientoDatos($cadena){
   */
  function saneamientoArray($array){
     foreach($array as $name => $value){
+        
        if($name == "email"){
           $_SESSION["datos"][$name]=filter_var($value,FILTER_SANITIZE_EMAIL);
           $_SESSION["datos"][$name]=filter_var($_SESSION["datos"][$name],FILTER_VALIDATE_EMAIL);
@@ -111,7 +111,7 @@ function saneamientoDatos($cadena){
  */
  function RegexBoolean($dato,$name)
  {
-     $expresionRegular = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$|()])(^.{4,25}$)/";
+     $expresionRegular = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)(?!.*[*=$|()])(^.{4,25}$)/";
      $resultado = false;
      $dato= str_replace("\n", '', $dato);
      //comparamos con la expresión regular
@@ -127,6 +127,7 @@ function saneamientoDatos($cadena){
         case 'IDrol':
         case 'comprador':
         case 'pedido':
+        case 'producto':
         
                 $resultado = !validateInteger($dato);   
             
@@ -140,6 +141,8 @@ function saneamientoDatos($cadena){
             }
             break;
         case "stock":
+        case "cantidad":
+        case "producto":
             
             if(validateInteger($dato) === false){
                 
@@ -185,7 +188,7 @@ function saneamientoDatos($cadena){
         case 'titulo':
         case 'subtitulo':
         case 'direccion':
-            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$|()])(^.{4,250}$)/";
+            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)(?!.*[*=$|()])(^.{4,250}$)/";
         $resultado = false;
         if (!preg_match($expresionRegular2, $dato)) {
             $resultado = true;
@@ -193,7 +196,7 @@ function saneamientoDatos($cadena){
         }
             break;
         case "cuerpo"://ponemos s al final para que nos deje añadir saltos de linea
-            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*[*=$|()])(^.{4,1000}$)/s";
+            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)(?!.*[*=$|()])(^.{4,1000}$)/s";
             $resultado = false;
             if (!preg_match($expresionRegular2, $dato)) {
                 $resultado = true;
@@ -265,5 +268,9 @@ function saneamientoDatos($cadena){
      return $resultado;
  }
 
-
+function comprobacionCompra($productos){
+    foreach ($productos as $key => $value) {
+        
+    }
+}
 ?>

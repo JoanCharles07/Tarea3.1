@@ -39,7 +39,21 @@ export function confirmarEliminacionComentarios(arrayDatos){
     document.getElementById("comprador").style.display = "none";
     document.getElementById("opcion").style.display = "none";
 }
+export function confirmarEliminacionEnvio(arrayDatos){
 
+    let Form = document.getElementById("formulario");
+    let texto = `
+        <span id="errorBBDD"></span>
+        <label>¿Seguro que quiere eliminar el producto?</label>
+        <input type="text" id="opcion"  name="opcion" value="${arrayDatos[arrayDatos.length - 1]}"/>
+        <input type="text" id="producto"  name="producto" value="${arrayDatos[arrayDatos.length - 2]}"/>
+        <input type="text" id="pedido"  name="pedido" value="${arrayDatos[arrayDatos.length - 3]}"/>
+        <input type="submit" class="botonSubmit" name="submit" value="Eliminar"/>`;
+    Form.innerHTML = texto;
+    document.getElementById("pedido").style.display = "none";
+    document.getElementById("producto").style.display = "none";
+    document.getElementById("opcion").style.display = "none";
+}
 export function confirmarEliminacionPermisos(arrayDatos){
 
     let Form = document.getElementById("formulario");

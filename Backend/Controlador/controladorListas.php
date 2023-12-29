@@ -1,4 +1,6 @@
 <?php 
+include_once '../Modelo/funcionesBBDDmodificar.php';
+include_once '../Modelo/funcionesBBDDeliminar.php';
 
 function controladorLista($datos,&$errores,&$session){
     
@@ -45,6 +47,9 @@ function controladorLista($datos,&$errores,&$session){
         else if($datos->opcion=="Mensajes" && $_SESSION["datosUsuario"]["id"]==1){
             $session->listaMensajes=leerMensajesPrivados($errores);
         }
+        else if($datos->opcion=="Lista Envios" && $_SESSION["datosUsuario"]["id"]==1){
+            $session->enviosGlobal=enviosGlobal($errores);
+        }
     }
     else{
         unset($_SESSION["datosUsuario"]);
@@ -60,50 +65,57 @@ function controladorModificaciones($datos,&$errores,&$session){
     if($respuesta){
         
     if($datos->opcion=="Lista comentarios" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->comentarios=modificarComentariosGlobal($errores);
+            modificarComentariosGlobal($errores);
         }
         else if($datos->opcion=="Comentarios"){
-            $session->comentarios=modificarComentariosPropio($errores);
+           modificarComentariosPropio($errores);
         }
         else if($datos->opcion=="Lista Noticias" && $_SESSION["datosUsuario"]["rol"]==3){
            
-            $session->noticias=modificarNoticia($errores);
+           modificarNoticia($errores);
         }
         else if($datos->opcion=="Lista pedidos" && $_SESSION["datosUsuario"]["rol"]==3){
-            if($_SESSION["datos"]["estado"]=="Tramitando"){
-                $session->pedido=modificarEstadoPedidoTramitandoAdmin($errores);
-            }else if($_SESSION["datos"]["estado"]=="Enviado"){
-                $session->pedido=modificarEstadoPedidoEnviandoAdmin($errores);
-            }else if($_SESSION["datos"]["estado"]=="Recibido"){
-                $session->pedido=modificarEstadoPedidoRecibido($errores);
+            if($_SESSION["datos"]["estado"]=="Realizado"){
+                modificarEstadoPedidoRealizadoAdmin($errores);
+            }else if($_SESSION["datos"]["estado"]=="Entregado"){
+               modificarEstadoPedidoEntregadoAdmin($errores);
             }
         }
         else if($datos->opcion=="Lista permisos" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->permisos=modificarPermiso($errores);
+            modificarPermiso($errores);
         }
         else if($datos->opcion=="Lista usuarios" && $_SESSION["datosUsuario"]["rol"]==3){
-            $session->usuarios=modificarUsuariosGlobal($errores);
+           modificarUsuariosGlobal($errores);
         }
         else if($datos->opcion=="Lista roles" && $_SESSION["datosUsuario"]["rol"]==3){
             $session->usuarios=modificarRol($errores);
         }
         else if($datos->opcion=="Lista productos" && ($_SESSION["datosUsuario"]["rol"]==3 )){
-            $session->productosGlobal=modificarProductoGlobal($errores);
+           modificarProductoGlobal($errores);
         }
         else if($datos->opcion=="Productos" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
-            $session->productosPropio= modificarProductosPropio($errores);
+            modificarProductosPropio($errores);
         }
         else if($datos->opcion=="Envios" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
             if($_SESSION["datos"]["estado"]=="Tramitando"){
-                $session->envios=modificarEstadoPedidoTramitando($errores);
+                modificarEstadoPedidoTramitando($errores);
             }else if($_SESSION["datos"]["estado"]=="Enviado"){
-                $session->envios=modificarEstadoPedidoEnviando($errores);
-            }else if($_SESSION["datos"]["estado"]=="Recibido"){
-                $session->envios=modificarEstadoPedidoRecibido($errores);
-            }
+                modificarEstadoPedidoEnviado($errores);
+            }else if($_SESSION["datos"]["estado"]=="Finalizado"){
+                modificarEstadoPedidoFinalizado($errores);
+             }
+        }
+        else if($datos->opcion=="Lista Envios" && ($_SESSION["datosUsuario"]["rol"]==3)){
+            if($_SESSION["datos"]["estado"]=="Tramitando"){
+                modificarEstadoPedidoTramitandoAdmin($errores);
+            }else if($_SESSION["datos"]["estado"]=="Enviado"){
+                modificarEstadoPedidoEnviadoAdmin($errores);
+            }else if($_SESSION["datos"]["estado"]=="Finalizado"){
+                modificarEstadoPedidoFinalizadoAdmin($errores);
+             }
         }
         else if($datos->opcion=="Perfil"){
-            $session->usuario=modificarUsuariosPropio($errores);
+            modificarUsuariosPropio($errores);
             
         }
     }
@@ -123,7 +135,6 @@ function controladorEliminacion($datos,&$errores,&$session){
         }
         else if($datos->opcion=="Comentarios"){
            eliminarComentariosPropio($errores);
-           
         }
         else if($datos->opcion=="Lista Noticias" && $_SESSION["datosUsuario"]["rol"]==3){
            
@@ -148,9 +159,11 @@ function controladorEliminacion($datos,&$errores,&$session){
             
             eliminarProductoPropio($errores);
         }
-        else if($datos->opcion=="Envios" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
+        else if(($datos->opcion=="Envios" || $datos->opcion=="Envios")&& ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
            eliminarEnvio($errores);
-        }else if($datos->opcion=="Perfil"){
+        }else if($datos->opcion=="Lista Envios"&& $_SESSION["datosUsuario"]["rol"]==3 ){
+            eliminarEnvio($errores);
+        } else if($datos->opcion=="Perfil"){
             eliminarUsuarioPropio($errores,$session);
         }
     }

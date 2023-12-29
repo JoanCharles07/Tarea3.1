@@ -6,8 +6,8 @@
 */
 
 import { resultadoBusqueda, filtroLateral,filtradoEstrellas } from "../Modelo/funcionesBusqueda.js";
-import { rellenarCarritoUsuario,datosProducto,creacionObjetoCarrito,borrarProductoSesion} from "../Modelo/funcionesProducto.js";
-import { borrarDelCarritoBBDD,getProductos,verComentarios,agregarComentarios,agregarCarrito, recuperarCarrito } from "../Modelo/peticiones.js";
+import { rellenarCarritoUsuario,datosProducto,creacionObjetoCarrito,borrarProductoSesion, comprobarStockJS} from "../Modelo/funcionesProducto.js";
+import { borrarDelCarritoBBDD,getProductos,verComentarios,agregarComentarios,agregarCarrito, recuperarCarrito, comprobarStock, finalizarCompraBBDD } from "../Modelo/peticiones.js";
 import { comprobarRegexComentarios,usuarioConectado } from "../Modelo/comprobaciones.js";
 
 /**
@@ -47,16 +47,31 @@ export function recepcionDeComentarios() {
  */
 export function objetoCarrito() {
     return new Promise(async(resolve, reject) => {
-        let producto = sessionStorage.getItem("productoSeleccionado")
-        let cantidadProducto = parseInt(document.getElementById("cantidad").value) 
-       const respuesta=creacionObjetoCarrito(producto,cantidadProducto);
-       if(sessionStorage.getItem("usuario")){
-            await agregarCarrito(respuesta);
-            resolve(respuesta);
-       } 
-       else{
-         resolve(respuesta);
-       }
+        //comprobar primero si hay stock, actualizamos productos tras esto.
+
+        let producto = sessionStorage.getItem("productoSeleccionado");
+        let cantidadProducto = parseInt(document.getElementById("cantidad").value);
+       
+        if(comprobarStockJS(producto,cantidadProducto)){
+            let resultado = await comprobarStock();
+            if(resultado.resultado){
+                const respuesta=creacionObjetoCarrito(producto,cantidadProducto);
+                if(sessionStorage.getItem("usuario")){
+                await agregarCarrito(respuesta);
+                resolve(respuesta);
+           } 
+           else{
+             resolve(respuesta);
+           }
+            }else{
+                resolve(resultado);
+            }
+        }else{
+            
+            reject("No hay suficiente stock");
+        }
+       
+       
       
     })
 }
@@ -71,8 +86,9 @@ export function objetoCarrito() {
 export function comprobarCarrito(){
     return new Promise(async(resolve, reject) => {
         //carrito vacio
-        
+        console.log("entro aqui")
         let datosCarrito= await recuperarCarrito();
+        console.log(datosCarrito)
         if(datosCarrito.carrito){
             
             rellenarCarritoUsuario(datosCarrito.carrito);
@@ -185,6 +201,48 @@ export function datosBorrarProducto(index){
        }
 
     });
-
     
+}
+
+
+export function comprobarCompra() {
+    return new Promise(async(resolve, reject) => {
+        //comprobar primero si hay stock, actualizamos productos tras esto.
+        let producto=sessionStorage.getItem("productoSeleccionado");
+        let cantidadProducto=document.getElementById("cantidad").value;
+        console.log(cantidadProducto + " " + producto);
+        //comprobar en el carrito
+        if(comprobarStockJS(producto,cantidadProducto)){
+            let resultado = await comprobarStock();
+            
+            if(resultado.resultado){
+                //Segun la respuesta debemos actualizar productos y borrar carrito si todo ha ido bien.
+                const respuesta=creacionObjetoCarrito(producto,cantidadProducto);
+                if(sessionStorage.getItem("usuario")){
+                await agregarCarrito(respuesta);
+                resolve(respuesta);
+           } 
+           else{
+             resolve(respuesta);
+           }
+            }else{
+                resolve(resultado);
+            }
+        }else{
+            
+            reject("No hay suficiente stock");
+        }
+       
+       
+      
+    })
+}
+
+export function finalizarCompra(){
+    return new Promise(async(resolve, reject) => {
+        
+        let respuesta=await finalizarCompraBBDD();
+        console.log(respuesta);
+        resolve(respuesta)
+    });
 }

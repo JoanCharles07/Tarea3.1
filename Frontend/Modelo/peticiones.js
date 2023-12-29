@@ -575,3 +575,74 @@ export  function enviarMensajeAdmin() {
   } catch (e) {
   }
 }
+
+export  function comprobarStock() {
+  
+  try {
+    return new Promise(async(resolve, reject) => {
+        let producto = sessionStorage.getItem("productoSeleccionado");
+        let cantidadProducto = parseInt(document.getElementById("cantidad").value);
+        let datosIntroducidos={
+          producto:producto,
+          cantidad:cantidadProducto
+        } 
+        let datos = { llamada: "comprobarStock", datosIntroducidos };
+        
+        fetch("../../Backend/Controlador/controlador.php", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(datos)
+  
+        })
+          .then(response => response.text())
+          .then(data => {
+            const datos = JSON.parse(data);
+            console.log(datos);
+            resolve(datos);
+  
+          }).catch(error => {
+            reject(error);
+          })
+      
+      
+    });
+  } catch (e) {
+  }
+}
+
+export  function finalizarCompraBBDD() {
+  
+  try {
+    return new Promise(async(resolve, reject) => {
+        let carrito = JSON.parse(sessionStorage.getItem("carrito"));
+        const usuario = JSON.parse(atob(sessionStorage.getItem("usuario")));
+        let carritoDatos=carrito.map(elemento => [elemento.id , elemento.precioInicial ,elemento.cantidad, elemento.precioTotal ]);
+        console.log(carritoDatos);
+        carrito["usuario"]=usuario[0];
+        let datos = { llamada: "finalizarCompra", objeto:carritoDatos };
+        
+        fetch("../../Backend/Controlador/controlador.php", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(datos)
+  
+        })
+          .then(response => response.text())
+          .then(data => {
+            const datos = JSON.parse(data);
+            console.log(datos);
+            resolve(datos);
+  
+          }).catch(error => {
+            reject(error);
+          })
+      
+      
+    });
+  } catch (e) {
+  }
+}
