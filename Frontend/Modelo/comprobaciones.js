@@ -74,7 +74,8 @@ export function comprobarRegex(nombre, valor) {
 export function comprobarRegexComentarios(valor) {
   let respuesta = false;
   //Con esta expresión regular podemos confirmar var
-
+  valor=sinSaltos(valor);
+  valor=palabraPreparada(valor);
   let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)(?!.*[*=$&|()])(^.{4,500}$)/);
   respuesta = !(regex.test(valor));
 
@@ -84,7 +85,8 @@ export function comprobarRegexComentarios(valor) {
 export function comprobarRegexNoticia(valor) {
   let respuesta = false;
   //Con esta expresión regular podemos confirmar var
-  let regex = new RegExp(/^(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)[A-Za-z0-9\s\S]{4,2500}$/);
+  
+  let regex = new RegExp(/^(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)[A-Za-z0-9]{4,2500}$/);
   respuesta = !(regex.test(valor));
 
   return respuesta;

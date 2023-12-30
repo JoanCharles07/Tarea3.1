@@ -6,7 +6,7 @@
  * @author Juan Carlos Rodríguez Miranda
  * @version 1.0.0
  */
-require_once '../Conf/conn.php';
+include '../Conf/conn.php';
 include_once './controladorListas.php';
 include_once '../Modelo/funciones.php';
 include_once '../Modelo/comprobaciones.php';
@@ -20,11 +20,9 @@ $session = new stdClass;
 /**En primer lugar comprobaremos si existe POST de existir entraremos en nuestro controlador
  * que según la propiedad llamada entrará en un if u otro.
  */
-
 try {
     if (isset($_POST)) {
         $direccion = json_decode(file_get_contents('php://input'));
-        
         if ($direccion->llamada == "Productos") {
             $respuesta = recuperarProductos($errores);
             //$respuesta=encriptarTodasPalabras($respuesta);

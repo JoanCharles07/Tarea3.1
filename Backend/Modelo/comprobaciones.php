@@ -34,6 +34,7 @@ function saneamientoDatos($cadena){
   * @see saneamiendoDatos.
   * @param Array  sin sanear.
   */
+
  function saneamientoArray($array){
     foreach($array as $name => $value){
         
@@ -119,7 +120,6 @@ function saneamientoDatos($cadena){
         case 'estrellasEscogidas':
         case 'valoracion':
                 $resultado = regexEstrellas($dato);
-           
             break;
         case 'IDproducto':
         case 'id':
@@ -128,9 +128,7 @@ function saneamientoDatos($cadena){
         case 'comprador':
         case 'pedido':
         case 'producto':
-        
                 $resultado = !validateInteger($dato);   
-            
             break;
         case "descuento":
             if(validateInteger($dato) === false){
@@ -188,6 +186,7 @@ function saneamientoDatos($cadena){
         case 'titulo':
         case 'subtitulo':
         case 'direccion':
+        case 'comentarioTexto':
             $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)(?!.*[*=$|()])(^.{4,250}$)/";
         $resultado = false;
         if (!preg_match($expresionRegular2, $dato)) {
