@@ -1,7 +1,6 @@
 /*Damos estilos especifico de nuestro formulario para el login*/
 #mainForm{
     align-items: center;
-    border: 1px solid black;
     display: flex;
     justify-content: center;
     padding: 50px;

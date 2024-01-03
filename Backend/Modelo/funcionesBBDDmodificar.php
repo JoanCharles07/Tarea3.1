@@ -1,6 +1,13 @@
 <?php
 
-
+/**
+ * Esta función modifica el estado del envío del producto a Tramitando.
+ * Tiene en cuenta que ambos campos de fecha(envio y recibido)sean null.
+ * 
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificarEstadoPedidoTramitando(&$errores){
     $sql = "UPDATE `Historial` SET `estado` = 'Tramitando', WHERE (`ID_Pedido` = :pedido) and ID_Producto = :producto and fecha_envio IS NULL and fecha_Entregado IS NULL" ;
     $ret = false;
@@ -33,7 +40,12 @@ function modificarEstadoPedidoTramitando(&$errores){
     };
 
     return $ret;
-}
+}/**
+ * Esta función modifica el estado del envío del producto a Enviado y la fecha de envio.Además tiene en cuenta que recibido sea null.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificarEstadoPedidoEnviado(&$errores){
     $sql = "UPDATE `Historial` SET `estado` = 'Enviado', `fecha_Envio` = CURRENT_DATE  WHERE (`ID_Pedido` = :pedido) and ID_Producto = :producto and fecha_Entregado IS NULL" ;
    
@@ -68,6 +80,13 @@ function modificarEstadoPedidoEnviado(&$errores){
 
     return $ret;
 }
+/**
+ * Esta función modifica el estado del envío del producto a Finalizado y modifica la fecha de entregado a la fecha actual.
+ * Tiene en cuenta  fecha de envio no sea null.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificarEstadoPedidoFinalizado(&$errores){
     $sql = "UPDATE `Historial` SET `estado` = 'Finalizado', `fecha_entregado` = CURRENT_DATE  WHERE (`ID_Pedido` = :pedido) and ID_Producto = :producto and  fecha_envio IS NOT NULL" ;
     $ret = false;
@@ -101,7 +120,13 @@ function modificarEstadoPedidoFinalizado(&$errores){
 
     return $ret;
 }
-
+/**
+ * Esta función modifica el estado del envío del producto a Tramitando por parte del Admin.Puede cambiar el pedido a tramitando aunque este en cualquier otro estado
+ * Esta función se usará en caso de que haya habido algún error al marcarlo como  enviado o finalizado.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificarEstadoPedidoTramitandoAdmin(&$errores){
     $sql = "UPDATE `Historial` SET `estado` = 'Tramitando' , fecha_Envio = null ,fecha_Entregado = null  WHERE (`ID_Pedido` = :pedido) and ID_Producto = :producto" ;
     $ret = false;
@@ -135,6 +160,13 @@ function modificarEstadoPedidoTramitandoAdmin(&$errores){
 
     return $ret;
 }
+/**
+ * Esta función modifica el estado del envío del producto a Enviado por parte del Admin.Puede cambiar el pedido a tramitando aunque este en cualquier otro estado
+ * Esta función se usará en caso de que haya habido algún error al marcarlo como  tramitado o finalizado.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificarEstadoPedidoEnviadoAdmin(&$errores){
     $sql = "UPDATE `Historial` SET `estado` = 'Enviado', fecha_Envio = CURRENT_DATE ,fecha_Entregado = null   WHERE (`ID_Pedido` = :pedido) and ID_Producto = :producto " ;
    
@@ -169,6 +201,13 @@ function modificarEstadoPedidoEnviadoAdmin(&$errores){
 
     return $ret;
 }
+/**
+ * Esta función modifica el estado del envío del producto a Finalizado por parte del Admin.Puede cambiar el pedido a tramitando aunque este en cualquier otro estado
+ * Esta función se usará en caso de que haya habido algún error al marcarlo como  tramitado o finalizado.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificarEstadoPedidoFinalizadoAdmin(&$errores){
     $sql = "UPDATE `Historial` SET `estado` = 'Finalizado', `fecha_envio` = CURRENT_DATE,`fecha_entregado` = CURRENT_DATE  WHERE (`ID_Pedido` = :pedido) and ID_Producto = :producto " ;
     $ret = false;
@@ -203,7 +242,12 @@ function modificarEstadoPedidoFinalizadoAdmin(&$errores){
     return $ret;
 }
 
-
+/**
+ * Esta función modifica el estado del pedido a Entregado.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificarEstadoPedidoEntregadoAdmin(&$errores){
     $sql = "UPDATE `pedido` SET `estado` = 'Entregado'  WHERE (`ID_Pedido` = :pedido) ";
     $ret = false;
@@ -237,6 +281,12 @@ function modificarEstadoPedidoEntregadoAdmin(&$errores){
 
     return $ret;
 }
+/**
+ * Esta función modifica el estado del pedido a Realizado.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificarEstadoPedidoRealizadoAdmin(&$errores){
     $sql = "UPDATE `pedido` SET `estado` =  'Realizado' WHERE (`ID_Pedido` = :pedido)";
     $ret = false;
@@ -270,7 +320,12 @@ function modificarEstadoPedidoRealizadoAdmin(&$errores){
 
     return $ret;
 }
-
+/**
+ * Esta función modifica la noticia.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificarNoticia(&$errores){
     $sql = "UPDATE `delatierra`.`noticia` SET `Titulo`= :titulo, `Subtitulo`= :subtitulo,`imagen` = :imagen, `Fecha`= CURRENT_DATE, `Cuerpo`= :cuerpo, `Id_Administrador` = :idAdministrador WHERE (`Id_Noticia` = :idNoticia)";
     $ret = false;
@@ -306,6 +361,12 @@ function modificarNoticia(&$errores){
 
     return $ret;
 }
+/**
+ * Esta función devuelve la contraseña actual del usuario.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function passActual(&$errores, $id){
     $sql = "SELECT pass FROM `usuario`  WHERE (`ID_Usuario` = :id)";
     $ret = "";
@@ -339,6 +400,12 @@ function passActual(&$errores, $id){
 
     return $ret;
 }
+/**
+ * Esta función modifica datos del usuario por parte del administrador.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificarUsuariosGlobal(&$errores){
     $sql = "UPDATE `usuario` SET `Nombre`= :nombre, `Apellido`= :apellidos,`nickname` = :usuario, `email`= :email, `dirección`= :direccion
     , `ciudad` = :ciudad, `provincia` = :provincia,`Codigo_Postal` = :cpostal,  `Id_Rol` = :rol  WHERE (`ID_Usuario` = :id)";
@@ -380,6 +447,13 @@ function modificarUsuariosGlobal(&$errores){
 
     return $ret;
 }
+/**
+ * Esta función modifica datos del usuario modificados por el propio usuario.Además modífica la sesión para que
+ * ya tenga los nuevos datos actualizados de nickname si fuera necesario
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificarUsuariosPropio(&$errores){
     $sql = "UPDATE `usuario` SET `Nombre`= :nombre, `Apellido`= :apellidos,`nickname` = :usuario, `email`= :email, `dirección`= :direccion
     , `ciudad` = :ciudad, `provincia` = :provincia,`Codigo_Postal` = :cpostal  WHERE (`ID_Usuario` = :id)";
@@ -422,7 +496,12 @@ function modificarUsuariosPropio(&$errores){
     return $ret;
 }
 
-/**Recoge los que ya existen */
+/**
+ * Esta recupera todos los tipos de Rol de la BBDD
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function todosTiposRol(&$errores){
     $existentes=[];
     $sql = "select Tipo from rol";
@@ -457,12 +536,16 @@ function todosTiposRol(&$errores){
     };
     return $existentes;
 }
+/**
+ * Esta función agrega un nuevo tipo a nuesto enum de Tipos.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @param [<Array>] contiene los tipos de rol(Usuario,Agricultor,...).
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function agregamosENUMTipos(&$errores,$existentes){
     $sql = "ALTER table rol MODIFY Tipo ENUM('".implode("','",$existentes)."',:nuevo)";
     $ret = false;
-    
-    //Usar para los acentos añadir a saneamiento
-    
        
     try {
         
@@ -494,6 +577,15 @@ function agregamosENUMTipos(&$errores,$existentes){
 
     return $ret;
 }
+/**
+ * Esta función modificar unrol ya existente.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @param [<Array>] contiene los tipos de rol(Usuario,Agricultor,...).
+ * @see conectar() conexión a la base de datos.
+ * @see todosTiposRol() tipos de rol que ya existen en nuestra BBDD.
+ * @see agregamosENUMTipos() Agrega el Tipo de enum a tipos para poder modificar el actual.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificarRol(&$errores){
     $existentes=todosTiposRol($errores);
     agregamosENUMTipos($errores,$existentes);
@@ -530,6 +622,12 @@ function modificarRol(&$errores){
 
     return $ret;
 }
+/**
+ * Esta función comprueba si ese permiso lo puede realizar ese tipo de rol
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function existeObtencion(&$errores){
     try {
         $sql ="SELECT R.ID_Rol FROM obtencion O  ,rol R where  O.ID_Rol = R.ID_Rol and  R.Tipo = :tipo and ID_permiso = :id ";
@@ -562,6 +660,12 @@ function existeObtencion(&$errores){
 
     return $ret;
 }
+/**
+ * Esta función modifica el rol que puede realizar un determinado permiso.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificaRolPermiso(&$errores){
     try {
         $sql ="UPDATE  obtencion SET ID_Rol = :idRol  where  ID_permiso = :id ";
@@ -594,6 +698,15 @@ function modificaRolPermiso(&$errores){
 
     return $ret;
 }
+/**
+ * Esta función modifica un permiso en concreto.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @see existeObtencion() comproba os primero que no exista ese nuevo permiso.
+ * @see recuperarIDRol() comprueba que el rol sea nuevo y si lo cambia en modificarRolPermiso.
+ * @see modificarRolPermiso() Modifica el rol que puede realizar  un permiso.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificarPermiso(&$errores){
     
     
@@ -640,7 +753,12 @@ function modificarPermiso(&$errores){
 
     return $ret;
 }
-
+/**
+ * Esta función recupera el ID del rol mediante el tipo .
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function recuperarIDRol(&$errores){
     
      $ret = false;
@@ -679,7 +797,13 @@ function recuperarIDRol(&$errores){
  }
 
 
-function modificarProductoGlobal(&$errores){
+/**
+ * Esta función modifica un producto por parte del administrador
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
+ function modificarProductoGlobal(&$errores){
     $ret = false;
      $sql ="UPDATE `producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion,`imagen`= :imagen, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :id)";
    
@@ -715,6 +839,12 @@ function modificarProductoGlobal(&$errores){
  
      return $ret;
 }
+/**
+ * Esta función modifica un producto por parte del agricultor
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function modificarProductosPropio(&$errores){
     $ret = false;
      $sql ="UPDATE `producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion,`imagen`= :imagen, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :producto) and `ID_vendedor` = :vendedor";

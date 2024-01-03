@@ -19,6 +19,7 @@ body {
     background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("../Imagenes/fondoFruta3.webp");
     background-repeat: repeat;
     background-size: 100vw 100vh;
+   
 }
 a{
     text-decoration: none;
@@ -215,12 +216,8 @@ tr:nth-child(even) {
 /********************************************************************************************/
 /**************** main********************************************************************/
 /********************************************************************************************/
-
-
-#footer {
-    background-color: var(--color-fondo);
-    border: 1px solid black;
-    height: 60px;
+main{
+    min-height: 300px;
 }
 
 #contenedor {
@@ -262,5 +259,50 @@ table {
     align-items: center;
 }
 
+footer{
+    background-color: var(--color-fondo);
+    color:var(--color-texto);
+    transform: translateY(180px);
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap:10px;
+    bottom: 0;
+    
+}
 
+footer ul{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    
+}
+footer ul:hover li:hover a{
+    color:var(--color-texto-hover);
+}
 
+footer ul li{
+    padding: 10px;
+}
+footer ul li:hover{
+    transition: 100ms;
+    cursor: pointer;
+    background-color: var(--color-fondo-hover);
+}
+
+#aviso{
+    width: 300px;
+    height: 150px;
+    background-color: var(--color-fondo);
+    color:var(--color-texto);
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+#aviso{
+    padding: 10px;
+}

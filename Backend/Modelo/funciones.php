@@ -106,7 +106,10 @@ function coincideUsuario(&$errores){
    if($_SESSION["datosUsuario"]["usuario"]!=$_SESSION["datos"]["usuario"]){
        $errores->errorBBDD[]="No coinciden credenciales, vuelva a iniciar sesión";
    }
-}
+}/**
+ * Esta función comprueba si coinciden la contraseña del usuario que llegan desde el frontend y los que tenemos dentro de nuestra session en el backend.
+ * @param [<Object>] $errores añadirá el error si no coinciden.
+ */
 function coincidePass(&$errores){
    $passAntigua=encriptarPalabra($_SESSION["datos"]["antiguaPass"]);
    if($_SESSION["datosUsuario"]["pass"]!=$passAntigua){
@@ -116,6 +119,11 @@ function coincidePass(&$errores){
       $_SESSION["datos"]["pass"]=encriptarPalabra($_SESSION["datos"]["pass"]);
    }
 }
+
+/**
+ * Esta función devuelve el total del pedido realizado por el usuario
+ * @param [<Array>] $productos.
+ */
 function calcularTotalPedido($productos){
    $total=0.00;
 

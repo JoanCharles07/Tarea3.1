@@ -15,7 +15,7 @@ function imprimirCabezera() {
 
     return new Promise((resolve, reject) => {
         try {
-            
+
             let header = `
             <div class="divheader" id="containerLogo"><img id="logo"   src="../../Recursos/Imagenes/logo.webp" alt="Logo de la tierra"></div>
             <div class="divheader" id="containerBuscador"><input type="text" name="texto" id="buscador"><img id="lupa"
@@ -52,9 +52,30 @@ function imprimirCabezera() {
             <div id="boton"><a href="contacto.html">Contacto</a></div>
            
             `;
-            document.getElementById("header").innerHTML=header;
-            document.getElementById("nav").innerHTML=nav;
-
+            let footer = `
+            <ul>
+            <h2>Conócenos</h2>
+            <li><a href="./tienda.html">Tienda</a></li>
+            <li><a href="./sobrenosotros.html">Sobre Nosotros</a></li>
+            <li><a href="./noticias.html">Noticias</a></li>
+            <li><a href="./contacto.html">Contacto</a></li>
+        </ul>
+        <ul>
+            <h2>Información Relevante</h2>
+            <li><a href="./proyectoEducativo.html">Aviso Legal</a></li>
+            <li><a href="./proyectoEducativo.html">Atribuciones</a></li>
+            <li><a href="./proyectoEducativo.html">Licencia</a></li>
+        </ul>
+        <ul>
+            <h2>Como funcionamos</h2>
+            <li><a href="./contacto.html">Atención al cliente</a></li>
+            <li><a href="./proyectoEducativo.html">Políticas de Envío</a></li>
+            <li><a href="./proyectoEducativo.html">Métodos de pago</a></li>
+        </ul>
+            `;
+            document.getElementById("header").innerHTML = header;
+            document.getElementById("nav").innerHTML = nav;
+            document.getElementById("footer").innerHTML = footer;
             //Una vez imprimido dirección de imagenes.
             redireccionesBasicas();
             resolve();
@@ -68,24 +89,24 @@ function imprimirCabezera() {
 /**
  * Esta función dara direccionalidad a nuestras imagenes del header según la vista donde este, no afecta estar conectado.
  */
-function redireccionesBasicas(){
-    document.getElementById("logo").addEventListener("click",function(){
-        location.href="tienda.html";
+function redireccionesBasicas() {
+    document.getElementById("logo").addEventListener("click", function () {
+        location.href = "tienda.html";
     });
-    document.getElementById("spanBienvenida").addEventListener("click",function(){
-        location.href="login.html";
+    document.getElementById("spanBienvenida").addEventListener("click", function () {
+        location.href = "login.html";
     });
-    document.getElementById("carrito").addEventListener("click",function(){
-        location.href="carrito.html";
+    document.getElementById("carrito").addEventListener("click", function () {
+        location.href = "carrito.html";
     });
-    document.getElementById("inicio").addEventListener("click",function(){
-        location.href="login.html";
+    document.getElementById("inicio").addEventListener("click", function () {
+        location.href = "login.html";
     });
-    document.getElementById("lupa").addEventListener("click",function(){
-        if(!window.location.pathname.includes("tienda.html")){
+    document.getElementById("lupa").addEventListener("click", function () {
+        if (!window.location.pathname.includes("tienda.html")) {
             const palabraBuscador = document.getElementById("buscador").value;
-            sessionStorage.setItem("busqueda",palabraBuscador);
-            location.href="tienda.html";
+            sessionStorage.setItem("busqueda", palabraBuscador);
+            location.href = "tienda.html";
         }
     });
 }
@@ -93,22 +114,22 @@ function redireccionesBasicas(){
 /**
  * Esta función dará direccionalidad a nuestras imagenes del header pero solo en caso de que estemos conectados
  */
-function redireccionesConectado(){
-    
-    document.getElementById("spanBienvenida").addEventListener("click",function(){
-        location.href="perfil.html";
+function redireccionesConectado() {
+
+    document.getElementById("spanBienvenida").addEventListener("click", function () {
+        location.href = "perfil.html";
     });
-    document.getElementById("inicio").addEventListener("click",function(){
-        location.href="perfil.html";
+    document.getElementById("inicio").addEventListener("click", function () {
+        location.href = "perfil.html";
     });
-    
+
 }
 /**
  * Esta funcón saludará al usuario con un Hola y su nombre de usuario
  */
 function mostrarUsuario() {
-    const nombreUsuario=JSON.parse(atob(sessionStorage.getItem("usuario")));
-    document.getElementById("spanBienvenida").textContent=`Hola ${nombreUsuario[0] }`;
+    const nombreUsuario = JSON.parse(atob(sessionStorage.getItem("usuario")));
+    document.getElementById("spanBienvenida").textContent = `Hola ${nombreUsuario[0]}`;
 }
 
 /**
@@ -116,36 +137,38 @@ function mostrarUsuario() {
  * Usando los dos arrays acciones y direcciones insertará en nuestra vista la correspondiente acción con su href teniendo
  * en cuenta el rol.
  */
-function acciones(){
-    const acciones=JSON.parse(atob(sessionStorage.getItem("acciones")));
+function acciones() {
+    const acciones = JSON.parse(atob(sessionStorage.getItem("acciones")));
     const listaOpciones = document.querySelector("#lista");
     for (const accion of acciones) {
-        if(accion=="Carrito"){
-            lista=`<li class="listaIconos" id="${accion}" ><a href="./carrito.html">${accion}</a></li>`
-            listaOpciones.innerHTML+=lista;
+        if (accion == "Carrito") {
+            lista = `<li class="listaIconos" id="${accion}" ><a href="./carrito.html">${accion}</a></li>`
+            listaOpciones.innerHTML += lista;
         }
-        else{
-            lista=`<li class="listaIconos" id="${accion}" >${accion}</li>`
-            listaOpciones.innerHTML+=lista;
+        else {
+            lista = `<li class="listaIconos" id="${accion}" >${accion}</li>`
+            listaOpciones.innerHTML += lista;
         }
-        
+
     }
 
 }
 /**
  * Esta función nos muestra en el icono del carrito del header la cantidad de productos en nuestro carrito.
  */
-function mostrarCantidadCarrito(){
+function mostrarCantidadCarrito() {
     let cantidadCarro = document.getElementById("cantidadProductosCarro");
-    if(sessionStorage.getItem("carrito")){
-        
+    if (sessionStorage.getItem("carrito")) {
+
         let arrayCarrito = JSON.parse(sessionStorage.getItem("carrito"));
         cantidadCarro.textContent = arrayCarrito.length;
     }
-    else{
+    else {
         cantidadCarro.textContent = 0;
     }
-  
+
 }
 
-export{mostrarCantidadCarrito,imprimirCabezera,mostrarUsuario,acciones,redireccionesConectado};
+ 
+
+export { mostrarCantidadCarrito, imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado };

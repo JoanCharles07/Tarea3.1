@@ -81,7 +81,13 @@ export function comprobarRegexComentarios(valor) {
 
   return respuesta;
 }
-
+/**
+ * determina si el parametro valor cumple la expresión regular, si la cumple la respuesta será falsa si no 
+ * devolverá true.Comprueba que no contenga la noticia ninguna palabra clave o caracter que pudiera producir algun error.
+ * @param {*} valor es el parámetro que compararemos en la expresión regular 
+ *  
+ * @returns Boolean con resultado de la expresión regular.
+ */
 export function comprobarRegexNoticia(valor) {
   let respuesta = false;
   //Con esta expresión regular podemos confirmar var
@@ -91,7 +97,13 @@ export function comprobarRegexNoticia(valor) {
 
   return respuesta;
 }
-
+/**
+ * determina si el parametro valor cumple la expresión regular, si la cumple la respuesta será falsa si no 
+ * devolverá true.En este caso que sea un numero entre 1 y 5.
+ * @param {*} valor es el parámetro que compararemos en la expresión regular 
+ *  
+ * @returns Boolean con resultado de la expresión regular.
+ */
 export function comprobarRegexEstrellas(valor) {
   let respuesta = false;
   //Con esta expresión regular podemos confirmar var
@@ -177,7 +189,9 @@ export function validarNumero(dato) {
   }
   return respuesta;
 }
-
+/**
+ * Comprobamos que los datos que se van a enviar al servidor son correctos
+ */
 export function comprobacionREAD() {
   if (sessionStorage.getItem("usuario")) {
     //DATOS NECESARIOS PARA EL SERVIDOR
@@ -307,7 +321,12 @@ async function procesarImagen(dato) {
       
   });
 }
-
+/**
+ * Esta función se encarga de comprobar que la fecha es correcta y si lo es pues transforma la fecha
+ * @param {DATE}  datosFecha es una fecha en un formato de fecha mysql
+ *  
+ * @returns cadenaFecha con la fecha formateada o Pendiente.
+ */
 export function comprobarFecha(datoFecha){
   let cadenaFecha="";
         if(datoFecha != undefined || datoFecha != null){

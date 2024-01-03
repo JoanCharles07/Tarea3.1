@@ -1,3 +1,7 @@
+/**
+ * Esta función imprimirá un formulario para eliminar algún dato.
+ * @param arrayDatos contendra los datos necesarios para borrar
+ */
 export function confirmarEliminacion(arrayDatos){
 
     let Form = document.getElementById("formulario");
@@ -11,7 +15,10 @@ export function confirmarEliminacion(arrayDatos){
     document.getElementById("id").style.display = "none";
     document.getElementById("opcion").style.display = "none";
 }
-
+/**
+ * Esta función imprimirá un formulario para elminar un usuario por parte del administrador
+ * @param arrayDatos contendra los datos necesarios para borrar
+ */
 export function confirmarEliminacionUsuario(arrayDatos){
 
     let Form = document.getElementById("formulario");
@@ -23,13 +30,16 @@ export function confirmarEliminacionUsuario(arrayDatos){
     Form.innerHTML = texto;
     document.getElementById("opcion").style.display = "none";
 }
-
+/**
+ * Esta función imprimirá un formulario para elminar un comentario.
+ * @param arrayDatos contendra los datos necesarios para borrar
+ */
 export function confirmarEliminacionComentarios(arrayDatos){
 
     let Form = document.getElementById("formulario");
     let texto = `
         <span id="errorBBDD"></span>
-        <label>¿Seguro que quiere eliminar el producto?</label>
+        <label>¿Seguro que quiere eliminar el comentario?</label>
         <input type="text" id="id"  name="id" value="${arrayDatos[0]}"/>
         <input type="text" id="comprador"  name="comprador" value="${arrayDatos[1]}"/>
         <input type="text" id="opcion"  name="opcion" value="${arrayDatos[arrayDatos.length - 1]}"/>
@@ -39,6 +49,10 @@ export function confirmarEliminacionComentarios(arrayDatos){
     document.getElementById("comprador").style.display = "none";
     document.getElementById("opcion").style.display = "none";
 }
+/**
+ * Esta función imprimirá un formulario para elminar un envío.
+ * @param arrayDatos contendra los datos necesarios para borrar
+ */
 export function confirmarEliminacionEnvio(arrayDatos){
 
     let Form = document.getElementById("formulario");
@@ -54,12 +68,16 @@ export function confirmarEliminacionEnvio(arrayDatos){
     document.getElementById("producto").style.display = "none";
     document.getElementById("opcion").style.display = "none";
 }
+/**
+ * Esta función imprimirá un formulario para elminar un permiso por parte del usuario
+ * @param arrayDatos contendra los datos necesarios para borrar
+ */
 export function confirmarEliminacionPermisos(arrayDatos){
 
     let Form = document.getElementById("formulario");
     let texto = `
         <span id="errorBBDD"></span>
-        <label>¿Seguro que quiere eliminar el producto?</label>
+        <label>¿Seguro que quiere eliminar el Permiso?</label>
         <input type="text" id="id"  name="id" value="${arrayDatos[0]}"/>
         <input type="text" id="Tipo"  name="Tipo" value="${arrayDatos[1]}"/>
         <input type="text" id="opcion"  name="opcion" value="${arrayDatos[arrayDatos.length - 1]}"/>
@@ -70,7 +88,10 @@ export function confirmarEliminacionPermisos(arrayDatos){
     document.getElementById("opcion").style.display = "none";
 }
 
-
+/**
+ * Esta función imprimirá mensaje con el exito de nuestra eliminación.
+ * @param respuesta con datos de si ha habiado exito en la eliminación
+ */
 
 export function eliminacionCorrecta(respuesta) {
     let main = document.getElementById("main");

@@ -44,7 +44,12 @@ function existeComentario(&$errores){
     return $res;
 }
 
-
+ /**
+ * Esta función borra el producto añadido por un usuario en concreto
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [Boolean] con resultado de la operación
+ */
 function borrarCarrito(&$errores){
     $sql = "DELETE FROM carrito where ID_Producto = :idPro and ID_comprador = :idCom";
     $producto= $_SESSION["datos"]["id"];
@@ -75,7 +80,12 @@ function borrarCarrito(&$errores){
 
     return $res;
 }
-
+ /**
+ * Esta función borrar todos los productos que un usario tiene en el carrito.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [Boolean] con resultado de la operación
+ */
 function borrarCarritoCompleto(&$errores){
     $sql = "DELETE FROM carrito where ID_comprador = :idCom";
     $comprador=$_SESSION["datosUsuario"]["id"] ;
@@ -259,6 +269,7 @@ function agregarCarrito(&$errores){
             var_dump($_SESSION["ErrorDepuracion"]);
         };
     }else{
+        //modificamos los datos del carrito del usuario
         modificarCarrito($errores);
     }
     return $respuesta;
@@ -365,6 +376,12 @@ function modificarCarrito(&$errores){
     
     return $respuesta;
 }
+ /**
+ * Esta función recupera de la BBDD los roles.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function recuperarRoles(&$errores){
    
     $array=[];
@@ -411,7 +428,12 @@ function recuperarRoles(&$errores){
      /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
          que coinciden con los de la sesión iniciada*/
 }
-
+/**
+ * Esta función recupera de la BBDD todos los usuarios.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación.
+ */
 function recuperarUsuariosGlobal(&$errores){
    
     $array=[];
@@ -468,6 +490,12 @@ function recuperarUsuariosGlobal(&$errores){
      /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
          que coinciden con los de la sesión iniciada*/
 }
+/**
+ * Esta función recupera de la BBDD los comentarios.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function recuperarComentariosGlobal(&$errores){
     $sql = "SELECT * FROM comentario";
     $array = [];
@@ -501,7 +529,12 @@ function recuperarComentariosGlobal(&$errores){
 
     return $array;
 }
-
+/**
+ * Esta función recupera de la BBDD los comentarios de un usuario en concreto.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function recuperarComentariosUsuario(&$errores)
 {
 
@@ -698,6 +731,12 @@ function recuperarProductosAgricultores(&$errores)
 
     return $array;
 }
+/**
+ * Esta función recupera de la BBDD los productos de un agricultor en concreto.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function productosAgricultor(&$errores)
 {
     $array = [];
@@ -748,6 +787,12 @@ function productosAgricultor(&$errores)
 
     return $array;
 }
+/**
+ * Esta función recupera los pedidos realizados por un usuario en concreto.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function recuperarPedidosUsuario(&$errores){
     $array = [];
     $sql = "SELECT * from pedido Where ID_comprador= :id";
@@ -790,6 +835,12 @@ function recuperarPedidosUsuario(&$errores){
 
     return $array;
 }
+/**
+ * Esta función recupera de la BBDD los productos que ha comprado un usuario.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function historial(&$errores)
 {
     $array = [];
@@ -834,6 +885,12 @@ function historial(&$errores)
 
     return $array;
 }
+/**
+ * Esta función recupera de la BBDD productos que han sido comprados al agricultor y debe de enviar.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function enviosAgricultor(&$errores) {
     $array = [];
     $sql = "SELECT Pro.Nombre_Producto,H.cantidad,H.estado,H.fecha_Envio,H.fecha_Entregado,CONCAT(U.Nombre , ' ',U.Apellido) 
@@ -883,7 +940,12 @@ function enviosAgricultor(&$errores) {
 
     return $array;
 }
-
+/**
+ * Esta función recupera de la BBDD productos que han sido comprados a todos los  agricultores y deben de enviar.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function enviosGlobal(&$errores) {
     $array = [];
     $sql = "SELECT Pro.Nombre_Producto,H.cantidad,H.estado,H.fecha_Envio,H.fecha_Entregado,CONCAT(U.Nombre , ' ',U.Apellido) 
@@ -932,8 +994,15 @@ function enviosGlobal(&$errores) {
 
     return $array;
 }
+/**
+ * Esta función recupera el ID rol del usuario mediante el nickname del usuario y lo mete dentro de
+ * la session para poder usarlo en el futuro.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function comprobarRol(&$errores){
-    $sql = "SELECT ID_rol FROM delatierra.usuario where nickname= :usuario";
+    $sql = "SELECT ID_rol FROM .usuario where nickname= :usuario";
      $ret = false;
 
     try {
@@ -967,7 +1036,12 @@ function comprobarRol(&$errores){
 
   
 }
-
+/**
+ * Esta función recupera de la BBDD todos los pedidos realizados.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function recuperarPedidos(&$errores)
 {
     $array = [];
@@ -1011,6 +1085,12 @@ function recuperarPedidos(&$errores)
 
     return $array;
 }
+/**
+ * Esta función recupera de la BBDD todos los permisos  y que rol puede realizarlos.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function recuperarPermisos(&$errores)
 {
     $array = [];
@@ -1192,7 +1272,12 @@ function registro(&$errores,&$session)
    
     return $respuesta;
 }
-
+/**
+ * Esta función recupera de la BBDD todas las acciones que puede realizar.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function accionesARealizar(&$errores,$rol){
     $ret = false;
     $arrayAcciones=[];    
@@ -1302,7 +1387,12 @@ function usuario(&$errores,&$session)
     /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
         que coinciden con los de la sesión iniciada*/
 }
-
+/**
+ * Esta función nos permitirá modificar de la BBDD cualquier comentario .
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function modificarComentariosGlobal(&$errores){
     $ret = false;
     //Por comodidad y ya que no son muchas variables usaremos una para usuario y otra para la contraseña
@@ -1348,6 +1438,12 @@ function modificarComentariosGlobal(&$errores){
     return $ret;
 
 }
+/**
+ * Esta función modifica de la BBDD comentarios realizado por un usuario en concreto.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function modificarComentariosPropio(&$errores){
     $ret = false;
     //Por comodidad y ya que no son muchas variables usaremos una para usuario y otra para la contraseña
@@ -1393,6 +1489,12 @@ function modificarComentariosPropio(&$errores){
     return $ret;
 
 }
+/**
+ * Esta función comprueba que una accion en concreto exista y pueda realizarse.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
 function existeAccion(&$errores)
 {   
     $ret = false;
@@ -1508,7 +1610,13 @@ function existeAccion(&$errores)
      /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
          que coinciden con los de la sesión iniciada*/
  }
-
+/**
+ * Esta función cambia la contraseña del usuario
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @param [<Object>] $session se insertarán los posible session.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
  function cambiarPass(&$errores,&$session)
  {   
      
@@ -1556,7 +1664,13 @@ function existeAccion(&$errores)
      /*Por si se borrara el localstorage manualmente y entraras de nuevo realmente la sesión la tienes ya abierta comprobaremoso
          que coinciden con los de la sesión iniciada*/
  }
-
+/**
+ * Esta función recupera de la BBDD todas las noticias.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @param [<Object>] $session se insertarán los posible session.
+ * @see conectar() conexión a la base de datos.
+ * @return [<Array>]  con resultado de la operación
+ */
  function noticia(&$errores){
     $sql = "SELECT * FROM noticia";
     $array = [];

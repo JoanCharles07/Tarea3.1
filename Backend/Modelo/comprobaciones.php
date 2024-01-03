@@ -235,6 +235,11 @@ function saneamientoDatos($cadena){
    
  }
  //Dos arrays el primero con tildes el segundo como quiero que se quede y el tercero la cadena  luego lo paso a minuscula
+  /** con str_replace cambiamos todas las tildes si las hubiera y luego lo devolvemos en minúsculas para hacer las 
+   * comparaciones
+  * @param Any cadena de texto a comprobar.
+  * @return Any modificado 
+ */
  function transformarPalabra($dato){
     $cadena=str_replace(array("Á","á","É","é","Í","í","Ó","ó","Ú","ú"," "),array("a","a","e","e","i","i","o","o","u","u",""),$dato);
     //devolvemos cadena en minusculas para el filtro no lo tenga en cuenta

@@ -334,7 +334,9 @@ export function cantidadDetalle() {
 }
 
 
-//toma como referencia la sesion
+/**
+ * Esta función realiza la suma del total de los productos en el carrito
+ */
 export function recorrerTotalProducto() {
   let totalPedido = document.getElementById("totalPedido");
   let totalIVA = document.getElementById("totalIva");
@@ -349,10 +351,12 @@ export function recorrerTotalProducto() {
   totalPedido.textContent = (sumaTotal + 3.99).toFixed(2);
 
 }
-//No se guarda en la sesion y es meramente visual
+/**
+ * Esta función realiza la suma del total de los productos si se altera las cantidades en el carrito
+ */
 export function recorrerTotalProductoAlterado(producto) {
 
-  console.log("entro 2");
+  
   let totalPedido = document.getElementById("totalPedido");
   let totalIVA = document.getElementById("totalIva");
   let sumaTotal = 0;
@@ -364,8 +368,10 @@ export function recorrerTotalProductoAlterado(producto) {
 
 }
 
+/**
+ * Esta función realiza cambios en los totales de cada uno de los productos.
+ */
 export function cantidadDetalleClase(producto) {
-  console.log("entro");
   let precio = parseFloat(producto.children[2].textContent);
   let cantidad = parseInt(producto.children[1].value);
   let total = producto.children[4];
@@ -416,18 +422,29 @@ export function funcionalidadInicioSesion() {
 
   location.href = "./login.html";
 }
+/**
+ * Nos redirigirá a tienda.html
+ */
 export function funcionalidadTienda() {
 
   location.href = "./tienda.html";
 }
+/**
+ * Nos redirigirá a listas.html
+ */
 export function funcionalidadModificarDatos() {
 
   location.href = "./listas.html";
-}
+}/**
+ * Nos redirigirá a pedido.html
+ */
 export function funcionalidadCompra() {
 
   location.href = "./pedido.html";
 }
+/**
+ * Nos  imprimirá los datos del usuario en el carrito.
+ */
 export function imprimirDatosUsuarioCarrito(datos) {
   let texto = `
   <h2>Datos de Envio</h2>
@@ -447,7 +464,9 @@ export function imprimirDatosUsuarioCarrito(datos) {
 
 
 }
-
+/**
+ * Nos  imprimirá los datos del usuario en el perfil.
+ */
 export function imprimirDatosUsuarioPerfil(datos) {
   let texto = `
   <h2>Datos de Usuario</h2>
@@ -468,11 +487,16 @@ export function imprimirDatosUsuarioPerfil(datos) {
   
 
 }
-
+/**
+ * Activa zona del usuario para que muestre los datos.
+ */
 export function activarZonaUsuario() {
   document.getElementById("datosUsuario").style.display = "flex";
   document.getElementById("inicioSesion").style.display = "none";
 }
+/**
+ * Nos  informará de que esta vacio el carrito y nos dara la opción de redirigirnos a la tienda.
+ */
 export function imprimirCarritoVacio() {
   let texto = `
     <p>No ha insertado ningún producto en el carrito</p>
@@ -487,7 +511,9 @@ export function imprimirCarritoVacio() {
   })
 }
 
-
+/**
+ * Nos borrará del carrito los productos.
+ */
 export function borrarDelCarrito(producto) {
 
   producto.remove();
@@ -500,6 +526,9 @@ export function borrarDelCarrito(producto) {
     recorrerTotalProducto();
   }
 }
+/**
+ * Nos  imprimirá en el carrito los datos que tengamos en él
+ */
 export function imprimirCarrito() {
   let containerProductos = document.getElementById("containerProductos");
   let array = JSON.parse(sessionStorage.getItem("carrito"));
@@ -525,7 +554,9 @@ export function imprimirCarrito() {
   paginaProducto("productos");
 
 }
-
+/**
+ * Nos  imprimirá las noticias.
+ */
 export function imprimirNoticias(noticias) {
   let containerNoticias = document.getElementById("noticias");
   let texto = "";
@@ -548,7 +579,9 @@ export function imprimirNoticias(noticias) {
 
 
 }
-
+/**
+ * Nos  informará de que el pedido se ha realizado correctamente.
+ */
 export function confirmarCompra(){
   let main = document.getElementById("main");
   main.innerHTML = `<div id="vacio"><p>Se ha realizado el pedido en breve le llegará</p></div>`;

@@ -23,10 +23,16 @@ $session = new stdClass;
 try {
     if (isset($_POST)) {
         $direccion = json_decode(file_get_contents('php://input'));
+        /*****************************************************************************/
+        /****************************PRODUCTOS****************************************/
+        /*****************************************************************************/
         if ($direccion->llamada == "Productos") {
             $respuesta = recuperarProductos($errores);
             //$respuesta=encriptarTodasPalabras($respuesta);
             echo json_encode($respuesta);
+        /*****************************************************************************/
+        /****************************REGISTRO*****************************************/
+        /*****************************************************************************/
         } else if ($direccion->llamada == "Registro") {
             inicioComprobaciones($direccion->datosIntroducidos, $errores);
             //Hacemos otras comprobaciones
@@ -47,7 +53,11 @@ try {
                 //El valor sesion que devolverremos lo convertimos en los errores
                 errores($errores);
             }
-        } else if ($direccion->llamada == "Usuario") {
+        }  
+        /*****************************************************************************/
+        /****************************USUARIO*****************************************/
+        /*****************************************************************************/ 
+        else if ($direccion->llamada == "Usuario") {
             inicioComprobaciones($direccion->datosIntroducidos, $errores);
             if (empty((array) $errores)) {
                 $_SESSION["datos"]["pass"] = encriptarPalabra($_SESSION["datos"]["pass"]);
@@ -60,6 +70,9 @@ try {
             } else {
                 errores($errores);
             }
+        /*****************************************************************************/
+        /****************************COMENTARIOS*****************************************/
+        /*****************************************************************************/
         } else if ($direccion->llamada == "Comentarios") {
 
             inicioComprobaciones($direccion->datosIntroducidos, $errores);
@@ -73,6 +86,9 @@ try {
             } else {
                 errores($errores);
             }
+             /*****************************************************************************/
+        /****************************AGREGAR COMENTARIOS***********************************/
+        /*****************************************************************************/
         } else if ($direccion->llamada == "agregarComentario" && isset($_SESSION["datosUsuario"])) {
             inicioComprobaciones($direccion->datosIntroducidos, $errores);
 
@@ -87,6 +103,9 @@ try {
             } else {
                 errores($errores);
             }
+        /*****************************************************************************/
+        /****************************AGREGAR CARRITO*****************************************/
+        /*****************************************************************************/
         } else if ($direccion->llamada == "agregarCarritoBBDD" && isset($_SESSION["datosUsuario"])) {
 
             inicioComprobaciones($direccion->datosIntroducidos, $errores);
@@ -104,6 +123,9 @@ try {
             } else {
                 errores($errores);
             }
+         /*****************************************************************************/
+        /****************************BORRAR CARRITO*************************************/
+        /*****************************************************************************/
         } else if ($direccion->llamada == "borrarCarritoBBDD" && isset($_SESSION["datosUsuario"])) {
 
             inicioComprobaciones($direccion->datosIntroducidos, $errores);
@@ -122,6 +144,9 @@ try {
                 echo "aqui";
                 errores($errores);
             }
+        /*****************************************************************************/
+        /****************************RECUPERAR CARRITO*****************************************/
+        /*****************************************************************************/
         } else if ($direccion->llamada == "recuperarCarrito" && isset($_SESSION["datosUsuario"])) {
 
             inicioComprobaciones($direccion->datosIntroducidos, $errores);
@@ -139,6 +164,9 @@ try {
             } else {
                 errores($errores);
             }
+        /*****************************************************************************/
+        /****************************RECUPERAR USUARIO*****************************************/
+        /*****************************************************************************/
         } else if ($direccion->llamada == "recuperarUsuario" && isset($_SESSION["datosUsuario"])) {
 
             inicioComprobaciones($direccion->datosIntroducidos, $errores);
@@ -156,6 +184,9 @@ try {
             } else {
                 errores($errores);
             }
+             /*****************************************************************************/
+        /****************************FINALIZAR COMPRA*****************************************/
+        /*****************************************************************************/
         } else if ($direccion->llamada == "finalizarCompra" && isset($_SESSION["datosUsuario"])) {
             // comprobar el direccion objeto
             
@@ -201,6 +232,9 @@ try {
             } else {
                 errores($errores);
             }
+         /*****************************************************************************/
+        /****************************NOTICIAS*****************************************/
+        /*****************************************************************************/
         }else if ($direccion->llamada == "noticias") {
 
 
@@ -212,6 +246,9 @@ try {
             } else {
                 errores($errores);
             }
+         /*****************************************************************************/
+        /****************************LISTAS CRUD LEER*****************************************/
+        /*****************************************************************************/
         } else if ($direccion->llamada == "listas" && isset($_SESSION["datosUsuario"])) {
             //llamar para comparar usuario y rol y ver si coinciden.Si no coinciden fuera directamente.
             //asegurarnos que tanto la palabra como la accion no se han adulterado y entramos al controlador de listas.
@@ -232,6 +269,9 @@ try {
             } else {
                 errores($errores);
             }
+        /*****************************************************************************/
+        /****************************LISTAS CRUD MODIFICAR*****************************************/
+        /*****************************************************************************/
         } else if ($direccion->llamada == "modificar" && isset($_SESSION["datosUsuario"])) {
             
              
@@ -260,7 +300,9 @@ try {
              * y en las listas puede haber información delicada.*/
 
             //Controlar errores
-
+               /*****************************************************************************/
+        /****************************LISTAS CRUD AGREGAR*****************************************/
+        /*****************************************************************************/
         } else if ($direccion->llamada == "agregar" && isset($_SESSION["datosUsuario"])) {
             
              
@@ -290,6 +332,9 @@ try {
             //Controlar errores
 
         } 
+           /*****************************************************************************/
+        /****************************LISTAS CRUD ELIMINAR*****************************************/
+        /*****************************************************************************/
         else if ($direccion->llamada == "eliminar" && isset($_SESSION["datosUsuario"])) {
             
              
@@ -316,7 +361,9 @@ try {
              * y en las listas puede haber información delicada.*/
 
             //Controlar errores
-
+        /*****************************************************************************/
+        /****************************CAMBIAR PASS*****************************************/
+        /*****************************************************************************/
         }else if ($direccion->llamada == "cambiarPass" && isset($_SESSION["datosUsuario"])) {
             
              
@@ -344,12 +391,18 @@ try {
              * y en las listas puede haber información delicada.*/
 
             //Controlar errores
-
+           /*****************************************************************************/
+        /****************************CERRAR SESIÓN*****************************************/
+        /*****************************************************************************/
         }else if ($direccion->llamada == "cerrarSesion" && isset($_SESSION["datosUsuario"])) {
             
             session_destroy();
             echo json_encode(true);
-        }else if ($direccion->llamada == "comprobarStock") {
+        }
+           /*****************************************************************************/
+        /****************************COMPROBAR STOCK*****************************************/
+        /*****************************************************************************/
+        else if ($direccion->llamada == "comprobarStock") {
             inicioComprobaciones($direccion->datosIntroducidos, $errores);
             if (empty((array) $errores)) {
                 $session->resultado=comprobarStock($errores);
@@ -364,6 +417,9 @@ try {
                 errores($errores);
             }
         }
+           /*****************************************************************************/
+        /****************************MENSAJES*****************************************/
+        /*****************************************************************************/
         else if ($direccion->llamada == "enviarMensaje" ) {
             
             inicioComprobaciones($direccion->datosIntroducidos,$errores);

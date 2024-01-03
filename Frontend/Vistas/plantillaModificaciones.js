@@ -1,3 +1,10 @@
+
+
+
+/**
+* Esta función imprimirá un formulario para modificar los comentarios a nivel global.
+ * @param arrayDatos contendra los datos necesarios para la modificación.
+ */
 export function modificacionComentariosGlobales(arrayDatos) {
 
     let Form = document.getElementById("formulario");
@@ -21,7 +28,10 @@ export function modificacionComentariosGlobales(arrayDatos) {
     document.getElementById("opcion").style.display = "none";
     document.getElementById("comprador").style.display = "none";
 }
-
+/**
+ * Esta función imprimirá un formulario para modificar los comentarios a nivel usuario.
+ * @param arrayDatos contendra los datos necesarios para la modificación.
+ */
 export function modificacionComentariosPropios(arrayDatos) {
     let Form = document.getElementById("formulario");
     let texto = `
@@ -39,8 +49,9 @@ export function modificacionComentariosPropios(arrayDatos) {
     document.getElementById("id").style.display = "none";
     document.getElementById("opcion").style.display = "none";
 }
-/**En este caso solo se puede cambiar el estado y segun el estado se pondra una fecha de envio
- * y fecha de entrega.
+/**
+* Esta función imprimirá un formulario para modificar los pedidos a nivel global.
+ * @param arrayDatos contendra los datos necesarios para la modificación.
  */
 export function modificacionPedido(arrayDatos) {
     let Form = document.getElementById("formulario");
@@ -58,7 +69,10 @@ export function modificacionPedido(arrayDatos) {
     document.getElementById("pedido").style.display = "none";
     document.getElementById("opcion").style.display = "none";
 }
-
+/**
+* Esta función imprimirá un formulario para modificar los envíos a nivel global.
+ * @param arrayDatos contendra los datos necesarios para la modificación.
+ */
 export function modificacionEnvio(arrayDatos) {
     let Form = document.getElementById("formulario");
     let texto = `
@@ -78,10 +92,10 @@ export function modificacionEnvio(arrayDatos) {
     document.getElementById("producto").style.display = "none";
     document.getElementById("opcion").style.display = "none";
 }
-
-
-
-
+/**
+* Esta función imprimirá un formulario para modificar las noticias a nivel global.
+ * @param arrayDatos contendra los datos necesarios para la modificación.
+ */
 export function modificacionNoticias(arrayDatos) {
     let Form = document.getElementById("formulario");
     let texto = `
@@ -108,7 +122,10 @@ export function modificacionNoticias(arrayDatos) {
     document.getElementById("id").style.display = "none";
     document.getElementById("opcion").style.display = "none";
 }
-
+/**
+* Esta función imprimirá un div con el exito de la modificación
+ * @param arrayDatos contendra los datos necesarios para la modificación.
+ */
 export function modificacionCorrecta(datosServidor) {
     let main = document.getElementById("main");
     main.innerHTML = `<div id="vacio"><p>Se ha realizado la modificación</p></div>`;
@@ -122,7 +139,10 @@ export function modificacionCorrecta(datosServidor) {
     }, 1500);
 
 }
-
+/**
+* Esta función imprimirá un formulario para modificar los datos propios del usuario.
+ * @param arrayDatos contendra los datos necesarios para la modificación.
+ */
 export function modificacionUsuarioPropio(arrayDatos) {
     let Form = document.getElementById("formulario");
     let texto = `
@@ -168,6 +188,10 @@ export function modificacionUsuarioPropio(arrayDatos) {
    
     document.getElementById("opcion").style.display = "none";
 }
+/**
+* Esta función imprimirá un formulario para modificar los datos  del usuario.
+ * @param arrayDatos contendra los datos necesarios para la modificación.
+ */
 export function modificacionUsuarioGlobal(arrayDatos) {
     let Form = document.getElementById("formulario");
     let texto = `
@@ -220,7 +244,10 @@ export function modificacionUsuarioGlobal(arrayDatos) {
     document.getElementById("id").style.display = "none";
     document.getElementById("opcion").style.display = "none";
 }
-
+/**
+* Esta función imprimirá un formulario para modificar los roles
+ * @param arrayDatos contendra los datos necesarios para la modificación.
+ */
 export function modificacionRol(arrayDatos) {
     let Form = document.getElementById("formulario");
     let texto = `
@@ -234,7 +261,10 @@ export function modificacionRol(arrayDatos) {
     document.getElementById("IDrol").style.display = "none";
     document.getElementById("opcion").style.display = "none";
 }
-
+/**
+* Esta función imprimirá un formulario para modificar los permisos.
+ * @param arrayDatos contendra los datos necesarios para la modificación.
+ */
 export function modificacionPermisos(arrayDatos) {
     let Form = document.getElementById("formulario");
     let texto = `
@@ -267,7 +297,10 @@ export function modificacionPermisos(arrayDatos) {
     document.getElementById("IDrol").style.display = "none";
     document.getElementById("opcion").style.display = "none";
 }
-
+/**
+* Esta función imprimirá un formulario para modificar los productos.
+ * @param arrayDatos contendra los datos necesarios para la modificación.
+ */
 export function modificacionProductos(arrayDatos) {
     let Form = document.getElementById("formulario");
     let texto = `

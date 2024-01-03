@@ -1,3 +1,7 @@
+/**
+ * Esta función imprimirá un formulario para añadir un nuevo rol
+ */
+
 export function agregarRol() {
     let formulario = document.getElementById("formulario");
     let texto = `
@@ -10,7 +14,9 @@ export function agregarRol() {
     formulario.innerHTML = texto;
     document.getElementById("opcion").style.display = "none";
 }
-
+/**
+ * Esta función imprimirá un formulario para añadir un nuevo usuario
+ */
 export function agregarUsuario() {
     let formulario = document.getElementById("formulario");
     let texto = `<form id="formulario" action="" method="post" enctype="application/x-www-form-urlencoded">
@@ -73,6 +79,9 @@ export function agregarUsuario() {
     formulario.innerHTML = texto;
     document.getElementById("opcion").style.display = "none";
 }
+/**
+ * Esta función imprimirá un formulario para añadir un nuevo Permiso
+ */
 export function agregarPermiso() {
     let formulario = document.getElementById("formulario");
     let texto = `<form id="formulario" action="">
@@ -110,6 +119,9 @@ export function agregarPermiso() {
 
     document.getElementById("opcion").style.display = "none";
 }
+/**
+ * Esta función imprimirá un formulario para añadir una nueva noticia
+ */
 export function agregarNoticia() {
     let formulario = document.getElementById("formulario");
     let texto = `
@@ -135,7 +147,9 @@ export function agregarNoticia() {
 
     document.getElementById("opcion").style.display = "none";
 }
-
+/**
+ * Esta función imprimirá un formulario para añadir un nuevo producto por parte del agricultor
+ */
 export function agregarProductoPropio() {
     let formulario = document.getElementById("formulario");
     let texto = `<span id="errorBBDD"></span>
@@ -158,6 +172,9 @@ export function agregarProductoPropio() {
     document.getElementById("opcion").style.display = "none";
 
 }
+/**
+ * Esta función imprimirá un formulario para añadir un nuevo producto por parte del administrador
+ */
 export function agregarProductoGlobal() {
 
     let formulario = document.getElementById("formulario");
@@ -182,7 +199,9 @@ export function agregarProductoGlobal() {
     document.getElementById("opcion").style.display = "none";
 
 }
-
+/**
+ * Esta función imprimirá un formulario para añadir un nuevo mensaje al administrador.
+ */
 export function enviarRespuesta(datos) {
     let mensaje=`${datos[1]}`;
     let parrafo=document.createElement("p");
@@ -204,6 +223,9 @@ export function enviarRespuesta(datos) {
 
 
 }
+/**
+ * Esta función imprimirá un div que informará al usuario de que se ha realizado la acción 
+ */
 export function agregarCorrecto() {
     let main = document.getElementById("main");
     main.innerHTML = `<div id="vacio"><p>Se ha realizado la acción</p></div>`;

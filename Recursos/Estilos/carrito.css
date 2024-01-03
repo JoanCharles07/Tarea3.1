@@ -2,6 +2,7 @@ main{
     transform: translateY(150px);
     display:grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
 }
 
 
@@ -74,6 +75,7 @@ h1{
 
 #datosCarrito{
     width: 80%;
+    height: 40vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -101,7 +103,7 @@ h1{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 15px
+    gap: 15px;
 }
 #vacio p{
     font-size: 26px;

@@ -1,5 +1,9 @@
 import { comprobarFecha } from "../Modelo/comprobaciones.js";
 
+/**
+ * Esta función redireccionará a distintos puntos de la página
+ * @param arrayDatos contendra los datos necesarios para borrar
+ */
 export function redireccionLista(eleccion) {
     if (eleccion == "Carrito") {
         location.href = "./carrito.html";
@@ -13,6 +17,10 @@ export function redireccionLista(eleccion) {
         location.href = "./listas.html" + datosPorURL;
     }
 }
+/**
+ * Esta función imprimirá una tabla con los comentarios realizados por el usuario
+ * @param datos contendra los datos necesarios para la lista.
+ */
 export function imprimirListaComentariosPropio(datos) {
   
     if (Object.values(datos.comentariosPropio).length == 0) {
@@ -50,7 +58,10 @@ export function imprimirListaComentariosPropio(datos) {
     }
 
 }
-
+/**
+ * Esta función imprimirá una tabla con los comentarios realizados por todos los usuarios
+ * @param datos contendra los datos necesarios para la lista.
+ */
 export function imprimirListaComentariosGlobal(datos) {
     if (Object.values(datos.comentariosGlobal).length == 0) {
         let main = document.getElementById("main");
@@ -85,7 +96,10 @@ export function imprimirListaComentariosGlobal(datos) {
     }
 
 }
-
+/**
+ * Esta función imprimirá una tabla con los usuarios.
+ * @param datos contendra los datos necesarios para la lista.
+ */
 export function imprimirListaUsuarios(datos) {
     
     const boton = document.getElementById("botonAgregar");
@@ -135,7 +149,10 @@ export function imprimirListaUsuarios(datos) {
     }
 
 }
-
+/**
+ * Esta función imprimirá una tabla con los roles .
+ * @param datos contendra los datos necesarios para la lista.
+ */
 export function imprimirListaRoles(datos) {
     
     
@@ -168,7 +185,10 @@ export function imprimirListaRoles(datos) {
     }
 
 }
-
+/**
+ * Esta función imprimirá una tabla con los todos los productos.
+ * @param datos contendra los datos necesarios para la lista.
+ */
 export function imprimirListaProductosGlobal(datos) {
     
     const boton = document.getElementById("botonAgregar");
@@ -218,6 +238,10 @@ export function imprimirListaProductosGlobal(datos) {
 
     }
 }
+/**
+ * Esta función imprimirá una tabla con los productos del agricultor.
+ * @param datos contendra los datos necesarios para la lista.
+ */
 export function imprimirListaProductosPropio(datos) {
     
    
@@ -265,7 +289,10 @@ export function imprimirListaProductosPropio(datos) {
 
     }
 }
-
+/**
+ * Esta función imprimirá una tabla con los permisos.
+ * @param datos contendra los datos necesarios para la lista.
+ */
 export function imprimirListaPermisos(datos) {
     const boton = document.getElementById("botonAgregar");
     if (Object.values(datos.permisos).length == 0) {
@@ -307,7 +334,10 @@ export function imprimirListaPermisos(datos) {
     boton.innerHTML = `<button id="agregar">Añadir Permiso</button>`
     }
 }
-
+/**
+* Esta función imprimirá una tabla con todos los pedidos.
+ * @param datos contendra los datos necesarios para la lista.
+ */
 export function imprimirListaPedidos(datos) {
     if (Object.values(datos.listaPedidos).length == 0) {
         let main = document.getElementById("main");
@@ -342,6 +372,10 @@ export function imprimirListaPedidos(datos) {
     lista.innerHTML = tabla;
     }
 }
+/**
+ * Esta función imprimirá una tabla con los pedidos del usuario.
+ * @param datos contendra los datos necesarios para la lista.
+ */
 export function imprimirListaPedidosUsuario(datos) {
     if (Object.values(datos.listaPedidosUsuario).length == 0) {
         let main = document.getElementById("main");
@@ -370,6 +404,10 @@ export function imprimirListaPedidosUsuario(datos) {
     lista.innerHTML = tabla;
     }
 }
+/**
+* Esta función imprimirá una tabla con los envios que debe realizar el agricultor.
+ * @param datos contendra los datos necesarios para la lista.
+ */
 export function imprimirEnvios(datos) {
     if (Object.values(datos.envios).length == 0) {
         let main = document.getElementById("main");
@@ -412,6 +450,10 @@ export function imprimirEnvios(datos) {
     lista.innerHTML = tabla;
 }
 }
+/**
+* Esta función imprimirá una tabla con todos los envios.
+ * @param datos contendra los datos necesarios para la lista.
+ */
 export function imprimirEnviosGlobal(datos) {
     if (Object.values(datos.enviosGlobal).length == 0) {
         let main = document.getElementById("main");
@@ -454,7 +496,10 @@ export function imprimirEnviosGlobal(datos) {
     lista.innerHTML = tabla;
 }
 }
-
+/**
+* Esta función imprimirá una tabla con las noticias.
+ * @param datos contendra los datos necesarios para la lista.
+ */
 export function imprimirListaNotcias(datos) {
     
     const boton = document.getElementById("botonAgregar");
@@ -494,7 +539,10 @@ export function imprimirListaNotcias(datos) {
     boton.innerHTML = `<button id="agregar">Añadir Noticia</button>`
 }
 }
-
+/**
+* Esta función imprimirá una tabla con todos los productos comprador por parte del usuario
+ * @param datos contendra los datos necesarios para la lista.
+ */
 export function imprimirHistorial(datos) {
     if (Object.values(datos.historial).length == 0) {
         let main = document.getElementById("main");
@@ -530,7 +578,10 @@ export function imprimirHistorial(datos) {
     lista.innerHTML = tabla;
 }
 }
-
+/**
+* Esta función imprimirá una tabla con los mensajes enviados al administrador.
+ * @param datos contendra los datos necesarios para la lista.
+ */
 export function imprimirMensajes(datos){
     if (Object.values(datos.listaMensajes).length == 0) {
         let main = document.getElementById("main");

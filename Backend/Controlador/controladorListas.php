@@ -1,7 +1,16 @@
 <?php 
 include_once '../Modelo/funcionesBBDDmodificar.php';
 include_once '../Modelo/funcionesBBDDeliminar.php';
-
+/**
+ * Esta función maneja la dirección de los datos y determina a que funciones de la BBDD
+ * debe llamarse en cada momento.
+ * @param [<Object>] $datos compone los datos recibidos por el usuario.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @param [<Object>] $session se insertará los resultados en caso afirmativo .
+ * @see existeAccion siempre se comprueba en primer lugar si la accion en concreto existe para el rol con el
+ * que esta registrado el usuario.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function controladorLista($datos,&$errores,&$session){
     
     $respuesta=existeAccion($errores);
@@ -59,7 +68,16 @@ function controladorLista($datos,&$errores,&$session){
     //Llega la accion que será CRUD y a lo que queremos pedir permiso por ejemplo accion ver, permiso Lista Productos.
     //Dentro de la base de datos primero comprobamos que id tiene el permiso buscando la palabra
 }
-
+/**
+ * Esta función maneja la dirección de los datos y determina a que funciones de la BBDD
+ * debe llamarse en cada momento para modificarla.
+ * @param [<Object>] $datos compone los datos recibidos por el usuario.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @param [<Object>] $session se insertará los resultados en caso afirmativo .
+ * @see existeAccion siempre se comprueba en primer lugar si la accion en concreto existe para el rol con el
+ * que esta registrado el usuario.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function controladorModificaciones($datos,&$errores,&$session){
     $respuesta=existeAccion($errores);
     if($respuesta){
@@ -126,6 +144,16 @@ function controladorModificaciones($datos,&$errores,&$session){
     //Llega la accion que será CRUD y a lo que queremos pedir permiso por ejemplo accion ver, permiso Lista Productos.
     //Dentro de la base de datos primero comprobamos que id tiene el permiso buscando la palabra
 }
+/**
+ * Esta función maneja la dirección de los datos y determina a que funciones de la BBDD
+ * debe llamarse en cada momento para eliminarlos.
+ * @param [<Object>] $datos compone los datos recibidos por el usuario.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @param [<Object>] $session se insertará los resultados en caso afirmativo .
+ * @see existeAccion siempre se comprueba en primer lugar si la accion en concreto existe para el rol con el
+ * que esta registrado el usuario.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function controladorEliminacion($datos,&$errores,&$session){
     $respuesta=existeAccion($errores);
     if($respuesta){
@@ -174,7 +202,16 @@ function controladorEliminacion($datos,&$errores,&$session){
     //Llega la accion que será CRUD y a lo que queremos pedir permiso por ejemplo accion ver, permiso Lista Productos.
     //Dentro de la base de datos primero comprobamos que id tiene el permiso buscando la palabra
 }
-
+/**
+ * Esta función maneja la dirección de los datos y determina a que funciones de la BBDD
+ * debe llamarse en cada momento para agregarlos.
+ * @param [<Object>] $datos compone los datos recibidos por el usuario.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @param [<Object>] $session se insertará los resultados en caso afirmativo .
+ * @see existeAccion siempre se comprueba en primer lugar si la accion en concreto existe para el rol con el
+ * que esta registrado el usuario.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function controladorAgregar($datos,&$errores,&$session){
     $respuesta=existeAccion($errores);
     

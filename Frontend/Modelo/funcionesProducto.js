@@ -120,7 +120,12 @@ export function borrarProductoSesion(id){
   return true;
 
 }
-
+/**
+ * Esta función comprueba si hay stock en primera instancia en nuestra session
+ * @param {} IDproducto con el id del producto en cuestion
+ * @param {*} cantidad con el número del producto que quiere el cliente.
+ * @returns Boolean con resultado de la expresión regular.
+ */
 export function comprobarStockJS(IDproducto,cantidad){
   let productos= JSON.parse(sessionStorage.getItem("productos"));
   let resultado=false;
@@ -135,7 +140,12 @@ export function comprobarStockJS(IDproducto,cantidad){
   return resultado;
 
 }
-
+/**
+ * Esta función comprueba si hay stock en el carrito
+ * @param {} IDproducto con el id del producto en cuestion
+ * @param {*} cantidad con el número del producto que quiere el cliente.
+ * @returns Boolean con resultado de la expresión regular.
+ */
 export function comprobarStockJSCarrito(){
   let productos= JSON.parse(sessionStorage.getItem("productos"));
   let carrito=JSON.parse(sessionStorage.getItem("carrito"));

@@ -1,4 +1,10 @@
 <?php 
+/**
+ * Esta función elimina un comentario de un comprador .
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function eliminarComentariosGlobal(&$errores){
     $ret = false;
      $sql ="DELETE FROM comentario where `ID_comprador`= :comprador AND `ID_Producto` = :producto";
@@ -34,7 +40,13 @@ function eliminarComentariosGlobal(&$errores){
  
      return $ret;
 }
-
+/**
+ * Esta función elimina un Permiso de un comprador .
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @see recuperarIDRol() recuperamos el el ID del rol ya que lo que se recibe por datos es el nombre del tipo de rol
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function eliminarPermiso(&$errores){
     $ret = false;
      $sql ="DELETE FROM obtencion where ID_Permiso= :permiso  and ID_Rol = :rol";
@@ -70,6 +82,12 @@ function eliminarPermiso(&$errores){
  
      return $ret;
 }
+/**
+ * Esta función elimina un comentario propio del usuario .
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function eliminarComentariosPropio(&$errores){
     $ret = false;
      $sql ="DELETE FROM comentario where `ID_comprador`= :comprador AND `ID_Producto` = :producto";
@@ -104,7 +122,12 @@ function eliminarComentariosPropio(&$errores){
  
      return $ret;
 }
-
+/**
+ * Esta función elimina un Pedido de la BBDD .
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function eliminarPedido(&$errores){
     $ret = false;
      $sql ="DELETE FROM pedido where ID_Pedido= :pedido";
@@ -140,7 +163,12 @@ function eliminarPedido(&$errores){
  
      return $ret;
 }
-
+/**
+ * Esta función elimina una Notcia de la BBDD .
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function eliminarNoticia(&$errores){
     $ret = false;
      $sql ="DELETE FROM Noticia where Id_Noticia= :noticia";
@@ -176,7 +204,12 @@ function eliminarNoticia(&$errores){
  
      return $ret;
 }
-
+/**
+ * Esta función elimina un usuario de la BBDD .
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function eliminarUsuariosGlobal(&$errores){
     $ret = false;
      $sql ="DELETE FROM usuario where ID_Usuario= :usuario";
@@ -212,7 +245,14 @@ function eliminarUsuariosGlobal(&$errores){
  
      return $ret;
 }
-
+/**
+ * Esta función elimina un Usuario dandose de baja asi mismo .
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @param [<Object>] $session inserta exito dentro del objeto si se ha podido borrar para tras ello destruir
+ * la sesión.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function eliminarUsuarioPropio(&$errores,&$session){
     $ret = false;
      $sql ="DELETE FROM usuario where ID_Usuario= :usuario";
@@ -250,7 +290,12 @@ function eliminarUsuarioPropio(&$errores,&$session){
  
      return $ret;
 }
-
+/**
+ * Esta función elimina un Rol de la BBDD.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function eliminarRol(&$errores){
     $ret = false;
      $sql ="DELETE FROM rol where ID_Rol= :rol";
@@ -286,7 +331,12 @@ function eliminarRol(&$errores){
  
      return $ret;
 }
-
+/**
+ * Esta función elimina un Producto de la BBDD  .
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function eliminarProductoGlobal(&$errores){
     $ret = false;
      $sql ="DELETE FROM producto where ID_Producto= :producto";
@@ -322,7 +372,12 @@ function eliminarProductoGlobal(&$errores){
  
      return $ret;
 }
-
+/**
+ * Esta función elimina un producto del agricultor .
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function eliminarProductoPropio(&$errores){
     $ret = false;
      $sql ="DELETE FROM producto where ID_Producto= :producto  and ID_vendedor =:vendedor";
@@ -358,7 +413,12 @@ function eliminarProductoPropio(&$errores){
  
      return $ret;
 }
-
+/**
+ * Esta función elimina slguno de los productos que se envia en el pedido .
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function eliminarEnvio(&$errores){
     $ret = false;
      $sql ="DELETE FROM Historial where ID_Pedido= :pedido  and ID_Producto =:producto";

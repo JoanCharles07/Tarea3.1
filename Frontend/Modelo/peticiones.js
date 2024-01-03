@@ -173,6 +173,11 @@ export function agregarCarrito(datosCarrito) {
   }
 
 }
+/**
+ * Esta función hará una petición a la base de datos para registrar o iniciar sesión del usuario
+ * @param {datosCarrito} Object con datos proporcionado por el usuario.
+ * @returns Objeto con datos de la petición o errores producidos en la BBDD
+ */
 export function borrarDelCarritoBBDD(datosCarrito) {
   try {
     return new Promise((resolve, reject) => {
@@ -289,7 +294,7 @@ export function recuperarDatosUsuario() {
 
 
 /**
- * Devuelve los datos del usaurio registrado.
+ * Hace la petición que cambia la contraseña del usuario
  * @returns datos del usuario si no hay errores.
  */
 export function cambiarPassBBDD() {
@@ -331,6 +336,10 @@ export function cambiarPassBBDD() {
   } catch (e) {
   }
 }
+/**
+ * Esta función hará una petición a la base de datos para recuperar todas las noticias
+ * @returns Objeto con datos del usuario o errores producidos en la BBDD
+ */
 export function recuperarNoticias() {
 
   try {
@@ -362,6 +371,10 @@ export function recuperarNoticias() {
   } catch (e) {
   }
 }
+/**
+ * Esta función hará una petición para cerrar la sesión del usuario.
+ * @returns Objeto con datos del usuario o errores producidos en la BBDD
+ */
 export function cerrarSesionBBDD() {
 
   try {
@@ -393,7 +406,10 @@ export function cerrarSesionBBDD() {
   } catch (e) {
   }
 }
-
+/**
+ * Esta función hará una petición a la base de datos que nos permitirá acceder a los distintos listados.
+ * @returns Objeto con datos del usuario o errores producidos en la BBDD
+ */
 export function accesoListados() {
 
     return new Promise(async(resolve, reject) => {
@@ -427,6 +443,10 @@ export function accesoListados() {
         
   
 }
+/**
+ * Esta función hará una petición a la base de datos que nos permitirá agregar datos.
+ * @returns Objeto con datos del usuario o errores producidos en la BBDD
+ */
 export  function accesoAgregar() {
 
   try {
@@ -465,6 +485,10 @@ export  function accesoAgregar() {
   } catch (e) {
   }
 }
+/**
+ * Esta función hará una petición a la base de datos que nos permitirá modificar datos.
+ * @returns Objeto con datos del usuario o errores producidos en la BBDD
+ */
 export  function accesoListadosModificado() {
 
   try {
@@ -499,7 +523,10 @@ export  function accesoListadosModificado() {
   } catch (e) {
   }
 }
-
+/**
+ * Esta función hará una petición a la base de datos que nos permitirá eliminar datos .
+ * @returns Objeto con datos del usuario o errores producidos en la BBDD
+ */
 export function accesoListadosEliminado() {
 
   try {
@@ -539,7 +566,10 @@ export function accesoListadosEliminado() {
   } catch (e) {
   }
 }
-
+/**
+ * Guarda los mensajes enviados al admin.
+ * @returns Objeto con datos del usuario o errores producidos en la BBDD
+ */
 export  function enviarMensajeAdmin() {
 
   try {
@@ -575,7 +605,10 @@ export  function enviarMensajeAdmin() {
   } catch (e) {
   }
 }
-
+/**
+ * Esta función comprueba el stock del producto en la BBDD.
+ * @returns Objeto con datos del usuario o errores producidos en la BBDD
+ */
 export  function comprobarStock() {
   
   try {
@@ -611,7 +644,10 @@ export  function comprobarStock() {
   } catch (e) {
   }
 }
-
+/**
+ * Esta función hará una petición a la base de datos que agregará los datos necesarios para terminar la compra.
+ * @returns Objeto con datos del usuario o errores producidos en la BBDD
+ */
 export  function finalizarCompraBBDD() {
   
   try {

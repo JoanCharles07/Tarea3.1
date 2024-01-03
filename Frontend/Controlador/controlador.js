@@ -20,7 +20,6 @@ import {
 import { datosBorrarProducto, comprobarCarrito, objetoCarrito, datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios, finalizarCompra } from "./controladorProductos.js";
 import { agregar, eliminacion, lista, modificaciones, noticia } from "./controladorListasNoticias.js";
 import { redireccionLista } from "../Vistas/plantillaListas.js";
-import { accesoListadosModificado } from "../Modelo/peticiones.js";
 import { modificacionCorrecta } from "../Vistas/plantillaModificaciones.js";
 import { eliminacionCorrecta } from "../Vistas/plantillaBorrar.js";
 import { agregarCorrecto } from "../Vistas/plantillaAgregar.js";

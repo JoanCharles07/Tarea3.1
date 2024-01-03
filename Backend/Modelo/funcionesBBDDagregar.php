@@ -1,5 +1,10 @@
 <?php 
-
+/**
+ * Esta función agrega una noticia a la BBDD
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function agregarNoticia(&$errores){
     $sql = "INSERT INTO `noticia` (`Titulo`, `Subtitulo`, `imagen`,`Fecha`, `Cuerpo`, `Id_Administrador`)
      VALUES ( :titulo, :subtitulo,:imagen,CURRENT_DATE, :cuerpo,:id)";
@@ -36,7 +41,12 @@ function agregarNoticia(&$errores){
 
     return $ret;
 }
-
+/**
+ * Esta función comprueba si existe Permiso en la BBDD y así poder agregarlo desde la otra función
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function existePermiso(&$errores){
     $ret = true;
     $sql = "SELECT nombre , codigo from permiso where codigo= :codigo and nombre= :nombre";
@@ -69,7 +79,12 @@ function existePermiso(&$errores){
     };
     return $ret;
 }
-
+/**
+ * Esta función agrega a un permiso el rol correspondiente que puede hacerlo.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function agregarRolPermiso(&$errores){
     try {
         $sql ="INSERT  INTO obtencion (ID_Rol ,ID_permiso ) VALUES( :rol ,:permiso )";
@@ -102,6 +117,13 @@ function agregarRolPermiso(&$errores){
 
     return $ret;
 }
+/**
+ * Esta función agrega un nuevo permiso a la BBDD.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @see existerPermiso() comprueba que no haya otro permiso igual.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function agregarPermiso(&$errores){
     
     
@@ -146,7 +168,13 @@ function agregarPermiso(&$errores){
 }
     return $ret;
 }
-
+/**
+ * Esta función agrega un nuevo usuario a la BBDD.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @see datosDuplicados() comprueba que no haya otro usuario igual.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function agregarUsuariosGlobal(&$errores)
 {
     //crear un select y evitar hacer insert si hay duplicaciones
@@ -203,6 +231,12 @@ function agregarUsuariosGlobal(&$errores)
    
     return $respuesta;
 }
+/**
+ * Esta función agrega un nuevo producto a la BBDD.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function agregarProductoGlobal(&$errores){
     $ret = false;
      $sql ="INSERT INTO `producto` (`Nombre_Producto`, `descripcion`,`imagen`, `precio`, `stock`, `descuento`,`ID_vendedor`) 
@@ -240,6 +274,12 @@ function agregarProductoGlobal(&$errores){
  
      return $ret;
 }
+/**
+ * Esta función agrega un nuevo producto a la BBDD de un agricultor en concreto.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function agregarProductoPropio(&$errores){
     $ret = false;
      $sql ="INSERT INTO `producto` (`Nombre_Producto`, `descripcion`,`imagen`,`precio`, `stock`, `descuento`,`ID_vendedor`) 
@@ -278,6 +318,14 @@ function agregarProductoPropio(&$errores){
  
      return $ret;
 }
+/**
+ * Esta función agrega un nuevo Rol a la BBDD.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @see todosTiposRol() comprueba que no haya otro Rol igual.
+ * @see agregamosENUMTipos() añadimos al enum tipos el nuevo tipo de rol.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function agregarRol(&$errores){
     $existentes=todosTiposRol($errores);
     agregamosENUMTipos($errores,$existentes);
@@ -314,7 +362,13 @@ function agregarRol(&$errores){
 
     return $ret;
 }
-
+/**
+ * Esta función agrega un nuevo mensaje de un usuario a la BBDD para que pueda verlo el administrador.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @see recuperarIDUsuario() nos proporciona el id del usuario para poder relacionar el mensaje con este usuario.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function enviarMensajeAdminUsuario($errores){
     $sql = "INSERT INTO mensajesprivados (`asunto`,`mensaje`,`fecha_envio`,`email`,`usuario`,`ID_Administrador`) VALUES(:asunto,:mensaje,CURRENT_DATE,:email,:usuario,1) ";
     $ret = false;
@@ -350,7 +404,12 @@ function enviarMensajeAdminUsuario($errores){
 
     return $ret;
 }
-
+/**
+ * Esta función agrega un nuevo mensaje de un usuario anonimo a la BBDD para que pueda verlo el administrador.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function enviarMensajeAdminAnonimo($errores){
     $sql = "INSERT INTO mensajesprivados (`asunto`,`mensaje`,`fecha_envio`,`email`,`ID_Administrador`) VALUES(:asunto,:mensaje,CURRENT_DATE,:email,1) ";
     $ret = false;
@@ -385,7 +444,13 @@ function enviarMensajeAdminAnonimo($errores){
 
     return $ret;
 }
-
+/**
+ * Esta función devuelve al administrador los diferentes mensajes privados para que pueda contestarlos.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @see recuperarIDUsuario() nos proporciona el id del usuario para poder relacionar el mensaje con este usuario.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function leerMensajesPrivados($errores){
     $sql = "SELECT * FROM mensajesprivados where ID_Administrador = :id";
     $ret = false;
@@ -432,6 +497,12 @@ function leerMensajesPrivados($errores){
 
     return  $array;
 }
+/**
+ * Esta función actualiza el estado de un mensaje en la BBDD .
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function contestadoMensaje($errores){
     $ret = false;
     $sql ="UPDATE `mensajesprivados` SET `estado` = 'Contestado' WHERE `ID_Mensaje` = :id";
@@ -468,7 +539,12 @@ function contestadoMensaje($errores){
 
     return $ret;
 }
-
+/**
+ * Esta función comprueba que hay Stock suficiente en la BBDD del producto para poder comprarla .
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function comprobarStock($errores){
     $ret = false;
     $sql ="SELECT * FROM delatierra.producto where stock >= :cantidad and ID_Producto = :producto";
@@ -505,7 +581,12 @@ function comprobarStock($errores){
 
     return $ret;
 }
-
+/**
+ * Esta función recupera el ID del usuario mediante el nickname guardado en la sesion.
+ * @param [<Object>] $errores se insertarán los posible errores.
+ * @see conectar() conexión a la base de datos.
+ * @return [BOOLEAN]  con resultado de la operación
+ */
 function recuperarIDUsuario(&$errores)
  {   
      
