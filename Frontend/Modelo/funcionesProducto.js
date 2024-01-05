@@ -34,9 +34,10 @@ export function creacionObjetoCarrito(product,cantidadTotal) {
   let cantidadProducto = cantidadTotal //PONER VALORES REGOGIDOS BBDD;
   //si no existen ni cantidad ni datos del producto y la cantidad es 0 o menor no se hará
   if (datoProducto != null && (!isNaN(cantidadProducto) && cantidadProducto > 0)) {
-    //A
+    
     for (let producto of productos) {
       if (producto.id == datoProducto) {
+        //const precioDescuento=producto.precio-(producto.precio*(producto.descuento/100));
         objetoCarrito = {
           id: producto.id,
           nombre: producto.nombre_producto,

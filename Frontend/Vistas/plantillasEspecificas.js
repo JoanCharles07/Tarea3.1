@@ -37,7 +37,7 @@ export function imprimirImagenesAzar() {
  * @param {Object} producto contiene los datos de nuestro producto escogido
  */
 export function imprimirDetalleProducto(producto) {
-  
+  //const precioDescuento = producto.precio*(producto.descuento/100);
   const texto = `
       <div id="imagen" class="imagenProducto">
       <img src="data:image/webp;base64,${producto["imagen"]}" class ="producto">
@@ -372,6 +372,7 @@ export function recorrerTotalProductoAlterado(producto) {
  * Esta función realiza cambios en los totales de cada uno de los productos.
  */
 export function cantidadDetalleClase(producto) {
+  console.log(producto);
   let precio = parseFloat(producto.children[2].textContent);
   let cantidad = parseInt(producto.children[1].value);
   let total = producto.children[4];

@@ -494,6 +494,7 @@ export  function accesoListadosModificado() {
   try {
     return new Promise(async(resolve, reject) => {
       const datosIntroducidos= await comprobacionUPDATE();
+      
       if(typeof Object.values(datosIntroducidos)[0] != "boolean"){
         let datos = { llamada: "modificar", datosIntroducidos };
         console.log(datosIntroducidos);

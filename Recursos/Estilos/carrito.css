@@ -75,7 +75,8 @@ h1{
 
 #datosCarrito{
     width: 80%;
-    height: 40vh;
+    padding: 15px;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -112,7 +113,7 @@ h1{
 
 .datosProducto{
     display: grid;
-    grid-template-columns: 3fr 1fr 0fr 2fr 2fr 1fr;
+    grid-template-columns: 3fr 1fr 1fr 2fr 2fr 1fr;
     width: 80%;
     gap: 20px;
     

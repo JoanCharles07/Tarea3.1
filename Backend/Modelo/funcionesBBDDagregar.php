@@ -685,7 +685,7 @@ function recuperarIDUsuario(&$errores)
      
      $ret = false;
      //Sentencia sql para conseguir los datos del usuario que deseamos usar.
-     $sql = "INSERT INTO  historial(cantidad,ID_Producto,ID_Pedido) VALUES(:cantidad,:producto,:pedido) ";
+     $sql = "INSERT INTO  historial(cantidad,precioVenta,ID_Producto,ID_Pedido) VALUES(:cantidad,:precio,:producto,:pedido) ";
      try {
          //Conectamos la base de datos
          $ret = false;
@@ -693,7 +693,7 @@ function recuperarIDUsuario(&$errores)
          
          //Hacemos la sentencia preparada
          $stmt = $pdo->prepare($sql);
-         $data=["pedido"=> $_SESSION["datos"]["nuevoPedido"], "cantidad"=>$productos[2], "producto"=>$productos[0]];
+         $data=["pedido"=> $_SESSION["datos"]["nuevoPedido"], "cantidad"=>$productos[2],"precio"=>$productos[1], "producto"=>$productos[0]];
          if ($stmt->execute($data)) {
              $res = $stmt->rowCount();
              //Si es correcta insertamos datos

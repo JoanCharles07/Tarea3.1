@@ -100,6 +100,8 @@ function modificarEstadoPedidoFinalizado(&$errores){
             
             if ($res != 0) {
                 $ret=true;
+                //comprobamos si es el ultimo
+                
             } else {
                 
                 $errores->errorBBDD[] = "No se han encontrado pedidos";
@@ -221,6 +223,9 @@ function modificarEstadoPedidoFinalizadoAdmin(&$errores){
             
             if ($res != 0) {
                 $ret=true;
+                comprobarTotalProductosFinalizado($errores);
+                //Buscar si se han finalizado todos
+
             } else {
                 
                 $errores->errorBBDD[] = "El pedido ya esta en ese estado";
@@ -241,7 +246,65 @@ function modificarEstadoPedidoFinalizadoAdmin(&$errores){
 
     return $ret;
 }
+function comprobarTotalProductosPedido(&$errores){
+    $sql = "SELECT count(*) FROM historial where ID_Pedido=:pedido" ;
+   
+    try {
+        
+        $pdo=conectar();
+        $stmt = $pdo->prepare($sql);
+        $data=["pedido"=> $_SESSION["datos"]["pedido"]];
+        if ($stmt->execute($data)) {
+            $res = $stmt->fetch();
+            
+        }else{
+              
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+        
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        /**En caso de haber excepción será atrapada por el catch*/
+         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+         //($_SESSION["ErrorDepuracion"]);
+         echo $ex->getMessage();
+         $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+    };
+    
+    return $res;
+}
 
+function comprobarTotalProductosFinalizado(&$errores){
+    $sql = "SELECT count(*) FROM historial where ID_Pedido=:pedido and  estado = 'Finalizado'" ;
+    $res = comprobarTotalProductosPedido($errores);
+    try {
+        
+        $pdo=conectar();
+        $stmt = $pdo->prepare($sql);
+        $data=["pedido"=> $_SESSION["datos"]["pedido"]];
+        if ($stmt->execute($data)) {
+            $ret = $stmt->fetch();
+            if($ret==$res){
+                modificarEstadoPedidoEntregadoAdmin($errores);
+            }
+            
+            
+        }else{
+              
+            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+        }
+        
+    } catch (PDOException $ex) {
+        /**En caso de haber excepción será atrapada por el catch*/
+        /**En caso de haber excepción será atrapada por el catch*/
+         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+         //($_SESSION["ErrorDepuracion"]);
+         echo $ex->getMessage();
+         $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+    };
+
+    return $res;
+}
 /**
  * Esta función modifica el estado del pedido a Entregado.
  * @param [<Object>] $errores se insertarán los posible errores.
@@ -261,6 +324,7 @@ function modificarEstadoPedidoEntregadoAdmin(&$errores){
             
             if ($res != 0) {
                 $ret=true;
+                
             } else {
                 
                 $errores->errorBBDD[] = "No se han encontrado pedidos";
@@ -805,15 +869,22 @@ function recuperarIDRol(&$errores){
  */
  function modificarProductoGlobal(&$errores){
     $ret = false;
-     $sql ="UPDATE `producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion,`imagen`= :imagen, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :id)";
-   
+    if($_SESSION["datos"]["imagen"]=="valido"){
+        $sql ="UPDATE `producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :id)";
+        $data=["nombre" =>  $_SESSION["datos"]["nombre"],"descripcion" =>  $_SESSION["datos"]["descripcion"],"stock" =>  $_SESSION["datos"]["stock"],
+         "descuento" =>  $_SESSION["datos"]["descuento"],"precio" =>  $_SESSION["datos"]["precio"],"id" => $_SESSION["datos"]["id"]];
+    }else{
+        $sql ="UPDATE `producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion,`imagen`= :imagen, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :id)";
+        
+        $data=["nombre" =>  $_SESSION["datos"]["nombre"],"descripcion" =>  $_SESSION["datos"]["descripcion"],"stock" =>  $_SESSION["datos"]["stock"],
+        "descuento" =>  $_SESSION["datos"]["descuento"],"precio" =>  $_SESSION["datos"]["precio"],"imagen" => $_SESSION["datos"]["imagen"],"id" => $_SESSION["datos"]["id"]];
+    }
+     
      
      try {
          
          $pdo=conectar();
          $stmt = $pdo->prepare($sql);
-         $data=["nombre" =>  $_SESSION["datos"]["nombre"],"descripcion" =>  $_SESSION["datos"]["descripcion"],"stock" =>  $_SESSION["datos"]["stock"],
-         "descuento" =>  $_SESSION["datos"]["descuento"],"precio" =>  $_SESSION["datos"]["precio"],"imagen" => $_SESSION["datos"]["imagen"],"id" => $_SESSION["datos"]["id"]];
          if ($stmt->execute($data)) {
             
              $res=$stmt->rowCount();
@@ -847,20 +918,27 @@ function recuperarIDRol(&$errores){
  */
 function modificarProductosPropio(&$errores){
     $ret = false;
+    try {
+        
+     if($_SESSION["datos"]["imagen"]=="valido"){
+        
+     $sql ="UPDATE `producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :producto) and `ID_vendedor` = :vendedor";
+     $data=["nombre" =>  $_SESSION["datos"]["nombre"],"descripcion" =>  $_SESSION["datos"]["descripcion"],"stock" =>  $_SESSION["datos"]["stock"],
+         "descuento" =>  $_SESSION["datos"]["descuento"],"precio" =>  $_SESSION["datos"]["precio"], "producto" => $_SESSION["datos"]["id"],"vendedor" => $_SESSION["datosUsuario"]["id"]];   
+    }else{
+        
      $sql ="UPDATE `producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion,`imagen`= :imagen, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :producto) and `ID_vendedor` = :vendedor";
-   
-     
-     try {
+     $data=["nombre" =>  $_SESSION["datos"]["nombre"],"descripcion" =>  $_SESSION["datos"]["descripcion"],"stock" =>  $_SESSION["datos"]["stock"],
+     "descuento" =>  $_SESSION["datos"]["descuento"],"precio" =>  $_SESSION["datos"]["precio"],"imagen" => $_SESSION["datos"]["imagen"], 
+     "producto" => $_SESSION["datos"]["id"],"vendedor" => $_SESSION["datosUsuario"]["id"]];  
+    }
          
          $pdo=conectar();
          $stmt = $pdo->prepare($sql);
-         $data=["nombre" =>  $_SESSION["datos"]["nombre"],"descripcion" =>  $_SESSION["datos"]["descripcion"],"stock" =>  $_SESSION["datos"]["stock"],
-         "descuento" =>  $_SESSION["datos"]["descuento"],"precio" =>  $_SESSION["datos"]["precio"],"imagen" => $_SESSION["datos"]["imagen"], 
-         "producto" => $_SESSION["datos"]["id"],"vendedor" => $_SESSION["datosUsuario"]["id"]];
          
          if ($stmt->execute($data)) {
             
-             $res=$stmt->fetch();
+             $res=$stmt->rowCount();
              if ($res != null) {
                  $ret=true;
              } else {

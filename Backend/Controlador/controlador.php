@@ -15,6 +15,7 @@ include_once '../Modelo/funcionesBBDDagregar.php';
 header('Content-Type: application/json');
 session_start();
 
+
 $errores = new stdClass;
 $session = new stdClass;
 /**En primer lugar comprobaremos si existe POST de existir entraremos en nuestro controlador
@@ -189,38 +190,42 @@ try {
         /*****************************************************************************/
         } else if ($direccion->llamada == "finalizarCompra" && isset($_SESSION["datosUsuario"])) {
             // comprobar el direccion objeto
+            // SANEAMIENTO pasar por todos si alguno es false cortamos y devolvemos el error
             
-            comprobacionCompra($direccion->objeto);
-            $correcto=true;
-            $direccion->objeto;
-            $respuesta = recuperarProductos($errores);
-            for($i=0;$i<count($respuesta);$i++){
-                for($j=0;$j<count( $direccion->objeto);++$j){
-                    if($respuesta[$i]->id == $direccion->objeto[$j][0]){
+            for ($i=0; $i < count($direccion->objeto) ; $i++) { 
+                foreach ($direccion->objeto[$i] as $key => $value) {
+
+                    
+                    if($key == 0 || $key==2){
+                        $validado= filter_var($value, FILTER_VALIDATE_INT, ["options" => ["min_range" => 0]]);
+                    }else{
+                        $validado= filter_var($value, FILTER_VALIDATE_FLOAT, ["options" => ["min_range" => 0]]);
+                    }
+                    //segun $key comprobar float o comprobar int
+                    if($validado){
                        
-                        if($respuesta[$i]->stock < $direccion->objeto[$j][2] || ($respuesta[$i]->precio * $direccion->objeto[$j][2] != $direccion->objeto[$j][3])){
-                            $errores->error="Algo no cuadra";
-                            $correcto=false;
-                            break;
-                            //podemos meter los dos arrays o uno con los datos que necesito del pedido.
-                        } 
+                        $arraySaneado[$i][$key]=$value;
+                       
+                    }else{
+                        $errores->invalido="Algún valor es incorrecto";
                     }
                 }
-                if(!$correcto){
-                    break;
-                }
-                
             }
+             var_dump($arraySaneado);
+            
+            $correcto=comprobacionCompra($direccion->objeto,$errores);
+            
             if (empty((array) $errores) && $correcto) {
                 //introducimos en base de datos primero el pedido y luego cada uno de los productos
-                agregarPedido($errores,$direccion->objeto);
+                agregarPedido($errores,$arraySaneado);
                 //si no hay errores introducimos en el historial los productos
-                for($j=0;$j<count( $direccion->objeto);++$j){
-                    agregarEnvio($errores,$direccion->objeto[$j]);
+                for($j=0;$j<count( $arraySaneado);++$j){
+                    agregarEnvio($errores,$arraySaneado[$j]);
                 }
 
                 //borrar datos Carrito
                 borrarCarritoCompleto($errores);
+                
                 if (empty((array) $errores)) {
                     unset($_SESSION["datos"]);
                     echo json_encode("exito");

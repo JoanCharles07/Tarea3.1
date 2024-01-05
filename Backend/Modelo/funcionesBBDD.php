@@ -644,7 +644,7 @@ function recuperarProductos(&$errores)
                     $clase->nombre_producto = $ret[$x][1];
                     $clase->descripcion = $ret[$x][2];
                     $clase->stock = $ret[$x][3];
-                    $clase->precio = $ret[$x][4];
+                    $clase->precio = $ret[$x][4]-($ret[$x][4]*($ret[$x][8]/100));
                     /**Leemos la imagen para que pueda verse correctamente en la aplicación web*/
                     $clase->imagen = base64_encode($ret[$x][5]);
                     $clase->valoracion_total = $ret[$x][6];
@@ -844,7 +844,7 @@ function recuperarPedidosUsuario(&$errores){
 function historial(&$errores)
 {
     $array = [];
-    $sql = "SELECT H.cantidad ,Pro.Nombre_Producto, H.ID_Pedido, Pro.precio , TRUNCATE(Pro.precio*H.cantidad,2) as Total,H.fecha_Envio , H.fecha_entregado   
+    $sql = "SELECT H.cantidad ,Pro.Nombre_Producto, H.ID_Pedido, H.precioVenta  ,H.fecha_Envio , H.fecha_entregado   
     FROM historial H , Producto Pro, Pedido P where P.ID_Pedido= H.ID_Pedido and Pro.ID_Producto= H.ID_Producto and P.ID_comprador= :id";
     $ret = false;
 
@@ -865,9 +865,10 @@ function historial(&$errores)
                     $clase->nombre = $ret[$x][1];
                     $clase->pedido = $ret[$x][2];
                     $clase->precio = $ret[$x][3];
-                    $clase->total = $ret[$x][4];
-                    $clase->fechaEnvio = $ret[$x][5];
-                    $clase->fechaLlegada = $ret[$x][6];
+                    //precio x cantidad
+                    $clase->total =  number_format($ret[$x][3]*$ret[$x][0],2);
+                    $clase->fechaEnvio = $ret[$x][4];
+                    $clase->fechaLlegada = $ret[$x][5];
                     $array[] = $clase;
                 }
             }

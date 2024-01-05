@@ -49,6 +49,7 @@ export function comprobarRegex(nombre, valor) {
       respuesta = comprobarRegexNoticia(valor);
       break;
       case "imagen":
+        console.log(valor);
         if(valor==false){
           respuesta=true;
         }
@@ -224,6 +225,7 @@ export async function comprobacionUPDATE() {
     for (const dato of datosModificados.entries()) {
       
       if(dato[0]!="imagen"){
+
         datosIntroducidos[dato[0]] = dato[1];
       }else{
         // Esperar a que se complete la carga de la imagen
@@ -289,7 +291,7 @@ export async function comprobacionMensaje() {
         // Esperar a que se complete la carga de la imagen
         
         datosIntroducidos[dato[0]] = await procesarImagen(dato);
-        
+        console.log( datosIntroducidos[dato[0]]);
       }
     }
     let datos = comprobarDatosRegex(datosIntroducidos);
@@ -307,14 +309,18 @@ export async function comprobacionMensaje() {
 //tamaño(tanto por arriba como que no sea 0 o menor) y paso de imagen a string
 async function procesarImagen(dato) {
   return new Promise((resolve) => {
-      
       if(dato[1].size < (1024*1024) && dato[1].size!= 0){
         let nuevaImagen = new FileReader();
       
         nuevaImagen.readAsDataURL(dato[1]);
         nuevaImagen.onload = () => {
         resolve(nuevaImagen.result);}
-      }else{
+      }
+      else if(dato[1].size==0){
+        resolve("valido");
+      }
+      else{
+        
         resolve(false);
       }
      

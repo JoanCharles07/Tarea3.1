@@ -10,9 +10,9 @@
 //Importaciones necesarias para el funcionamiento de controlador.js
 import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado, mostrarCantidadCarrito } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
-import { passIguales, recepcionDeDatosUsuario, datosUsuario,comprobarAccion, comprobarAccionModificacion, comprobarAccionEliminacion, cambiarPass, cerrarSesion, comprobarAgregar, comprobarMensaje  } from "./controladorUsuario.js";
+import { passIguales, recepcionDeDatosUsuario, datosUsuario, comprobarAccion, comprobarAccionModificacion, comprobarAccionEliminacion, cambiarPass, cerrarSesion, comprobarAgregar, comprobarMensaje } from "./controladorUsuario.js";
 import {
-  activarZonaUsuario, funcionalidadModificarDatos, funcionalidadCompra, recorrerTotalProducto, funcionalidadTienda, imprimirCarrito, imprimirCarritoVacio,
+  activarZonaUsuario, recorrerTotalProducto, imprimirCarrito, imprimirCarritoVacio,
   imprimirDatosUsuarioCarrito, funcionalidadInicioSesion, imprimirIniciarSesion, cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas,
   imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda,
   mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin, borrarDelCarrito, cantidadDetalleClase, imprimirNoticias, imprimirDatosUsuarioPerfil, exitoCambioPass, confirmarCompra
@@ -51,9 +51,9 @@ function requerimientosComunes() {
             //En las listas saldrán las distintas opciones según el rol que tengas.
             acciones();
             document.getElementById("lista").addEventListener("click", function (e) {
-            
+
               redireccionLista(e.target.id);
-              
+
             });
             //Mostraremos cantidad en el carrito.
             mostrarCantidadCarrito();
@@ -70,12 +70,12 @@ function requerimientosComunes() {
           //En las listas saldrán las distintas opciones según el rol que tengas.
           acciones();
           document.getElementById("lista").addEventListener("click", function (e) {
-            
+
             redireccionLista(e.target.id);
-            
+
           });
-          
-          
+
+
           //Mostraremos cantidad en el carrito.
           mostrarCantidadCarrito();
           //Cambiaremos los distintos elementos del DOM una vez que ya hay un usuario
@@ -214,8 +214,8 @@ async function interaccionesControlador() {
             }
           });
 
-          document.getElementById("registro").addEventListener("click",function(){
-            location.href="./registro.html";
+          document.getElementById("registro").addEventListener("click", function () {
+            location.href = "./registro.html";
           })
         } catch (error) {
           //Por aquí veremos el error para depurar
@@ -243,15 +243,15 @@ async function interaccionesControlador() {
             //nuestro carrito
             document.getElementById("validar").addEventListener("click", function () {
               objetoCarrito().then(respuesta => {
-                if(respuesta.errorBBDD){
-                  document.getElementById("error").textContent=respuesta.errorBBDD;
-                }else{
+                if (respuesta.errorBBDD) {
+                  document.getElementById("error").textContent = respuesta.errorBBDD;
+                } else {
                   mostrarCantidadCarrito();
                   location.href = "./carrito.html";
                 }
-                
-              }).catch(respuesta =>{
-                  document.getElementById("error").textContent=respuesta;
+
+              }).catch(respuesta => {
+                document.getElementById("error").textContent = respuesta;
               })
 
             });
@@ -279,19 +279,19 @@ async function interaccionesControlador() {
           document.getElementById("formEnvioComentario").addEventListener("submit", function (e) {
             e.preventDefault();
             if (sessionStorage.getItem("usuario")) {
-              
+
               envioDeComentarios().then(respuesta => {
                 //Si todo es correcto habrá respuesta.comentario
                 if (respuesta.comentario) {
-                  
+
                   recepcionDeComentarios().then(respuesta => {
-                    
+
                     imprimirComentarios(respuesta);
                   })
                 }
                 //En caso contrario mostraremos los errores.
                 else {
-                  
+
                   imprimirTodosResultados(respuesta);
                 }
               });
@@ -322,6 +322,7 @@ async function interaccionesControlador() {
               let producto = e.target.parentNode;
               datosBorrarProducto(producto.id).then(respuesta => {
                 if (respuesta) {
+
                   borrarDelCarrito(producto);
                   mostrarCantidadCarrito();
                 }
@@ -330,18 +331,22 @@ async function interaccionesControlador() {
             else if (e.target.classList.contains("inputCantidad")) {
 
               let producto = e.target.parentNode;
-              e.target.addEventListener("input", cantidadDetalleClase(producto));
+              e.target.addEventListener("input", function (e) {
+
+                cantidadDetalleClase(producto);
+              });
+              cantidadDetalleClase(producto);
               //FUNCION PARA CAMBIAR VALOR DEL CARRITO Y ASI CONTROLAR SI SE PUEDE O NO
-              let carrito=JSON.parse(sessionStorage.getItem("carrito"));
-              let index=carrito.findIndex(id => id.id == producto.id);
-              let nuevoCarrito=carrito.map(elemento => {
-                if(carrito[index]==elemento){
+              let carrito = JSON.parse(sessionStorage.getItem("carrito"));
+              let index = carrito.findIndex(id => id.id == producto.id);
+              let nuevoCarrito = carrito.map(elemento => {
+                if (carrito[index] == elemento) {
                   elemento.cantidad = producto.children[1].value;
                   elemento.precioTotal = producto.children[1].value * elemento.precioInicial;
                 };
                 return elemento;
               });
-              sessionStorage.setItem("carrito",JSON.stringify(nuevoCarrito));
+              sessionStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
 
             }
           })
@@ -353,28 +358,31 @@ async function interaccionesControlador() {
           document.getElementById("comprar").addEventListener("click", function () {
 
             //primero hacemos comprobacione de si hay stock
-           const sinStock=comprobarStockJSCarrito();
-           if(sinStock.length==0){
-              //location.href="./tienda.html";
-              //hacemos comprobaciones en php
-              finalizarCompra().then(respuesta =>  {
-                  if(respuesta=="exito"){
+            if (sessionStorage.getItem("usuario")) {
+              const sinStock = comprobarStockJSCarrito();
+              if (sinStock.length == 0) {
+                //location.href="./tienda.html";
+                //hacemos comprobaciones en php
+                finalizarCompra().then(respuesta => {
+                  if (respuesta == "exito") {
                     sessionStorage.removeItem("productos");
                     sessionStorage.removeItem("carrito");
                     sessionStorage.removeItem("productoSeleccionado");
                     confirmarCompra();
                   }
-                  else{
+                  else {
                     //manejar errores
                   }
-              });
-           }else{
-              let errorStock=document.createElement("span");
-              errorStock.textContent="Stock Insuficiente"
-              document.getElementById(sinStock[0]).style.border="1px solid red";
-              document.getElementById(sinStock[0]).appendChild(errorStock);
-           }
-              
+                });
+              } else {
+                let errorStock = document.createElement("span");
+                errorStock.textContent = "Stock Insuficiente"
+                document.getElementById(sinStock[0]).style.border = "1px solid red";
+                document.getElementById(sinStock[0]).appendChild(errorStock);
+              }
+            }
+
+
           })
         } else {
 
@@ -390,20 +398,20 @@ async function interaccionesControlador() {
           activarZonaUsuario();
           datosUsuario().then(respuesta => {
             imprimirDatosUsuarioCarrito(respuesta);
-          
-              document.getElementById("modificar").addEventListener("click", function (e) {
-                const arrayDatos=[]
-                const datos =e.target.parentNode.children;
-                for(let dato of datos){
-                 if(dato.tagName=="DIV"){
-                   arrayDatos.push(dato.children[1].textContent);
-                 }
-                  
+
+            document.getElementById("modificar").addEventListener("click", function (e) {
+              const arrayDatos = []
+              const datos = e.target.parentNode.children;
+              for (let dato of datos) {
+                if (dato.tagName == "DIV") {
+                  arrayDatos.push(dato.children[1].textContent);
                 }
-                arrayDatos.push("Perfil");
-                localStorage.setItem("modificar",JSON.stringify(arrayDatos));
-                location.href="./modificar.html";
-             })
+
+              }
+              arrayDatos.push("Perfil");
+              localStorage.setItem("modificar", JSON.stringify(arrayDatos));
+              location.href = "./modificar.html";
+            })
 
           })
 
@@ -428,41 +436,41 @@ async function interaccionesControlador() {
       /************************  ZONA LISTAS ******************************************************************************************/
       /******************************************************************************************************************************* */
       else if (window.location.pathname.includes("listas.html")) {
-        comprobarAccion().then(async respuesta =>{
+        comprobarAccion().then(async respuesta => {
           console.log(respuesta);
-          if(respuesta.errores || typeof Object.values(respuesta)[0] == "boolean"){
+          if (respuesta.errores || typeof Object.values(respuesta)[0] == "boolean") {
             alert("Hubo algún error vuelva a iniciar sesión");
             sessionStorage.removeItem("usuario");
-            location.href="./login.html";
-          }else{
+            location.href = "./login.html";
+          } else {
 
-            await lista(respuesta).then(respuesta =>{
+            await lista(respuesta).then(respuesta => {
               //Si existe agregar
-              if(document.getElementById("agregar")){
-                document.getElementById("agregar").addEventListener("click", function (e){
+              if (document.getElementById("agregar")) {
+                document.getElementById("agregar").addEventListener("click", function (e) {
                   const datosUrl = new URLSearchParams(window.location.search);
-                  let direccion=datosUrl.entries().next().value[1];
+                  let direccion = datosUrl.entries().next().value[1];
                   //Uso localSotarege porque sesion a veces no funciona correctamente.
-                  localStorage.setItem("agregar",direccion);
-                  location.href="./agregar.html";
+                  localStorage.setItem("agregar", direccion);
+                  location.href = "./agregar.html";
                 });
               }
-              
+
             });
           }
 
-        }).catch( respuesta =>{
+        }).catch(respuesta => {
           alert("Hubo algún error vuelva a iniciar sesión");
           sessionStorage.removeItem("usuario");
-          location.href="./login.html";
+          location.href = "./login.html";
         })
 
-        document.getElementById("listado").addEventListener("click", function (e){
+        document.getElementById("listado").addEventListener("click", function (e) {
           //En una función
-          let array=[];
-          let elementosFila=e.target.parentNode.parentNode.children;
-          if(e.target.textContent=="Modificar" && e.target.tagName=="BUTTON"){
-            for(let i=0;i<elementosFila.length -2; i++){
+          let array = [];
+          let elementosFila = e.target.parentNode.parentNode.children;
+          if (e.target.textContent == "Modificar" && e.target.tagName == "BUTTON") {
+            for (let i = 0; i < elementosFila.length - 2; i++) {
               array.push(elementosFila[i].textContent);
             }
             const datosUrl = new URLSearchParams(window.location.search);
@@ -470,95 +478,96 @@ async function interaccionesControlador() {
             /**Hago esto para cuando se entre en el controladorlistasNoticias sepa a que funcion de la plantilla debe de ir. */
             array.push(datosUrl.entries().next().value[1]);
             //Uso localSotarege porque sesion a veces no funciona correctamente.
-           
-            localStorage.setItem("modificar",JSON.stringify(array));
-            location.href="./modificar.html";
+
+            localStorage.setItem("modificar", JSON.stringify(array));
+            location.href = "./modificar.html";
           }
-          
+
         });
 
-        document.getElementById("listado").addEventListener("click", function (e){
+        document.getElementById("listado").addEventListener("click", function (e) {
           //En una función
-          let array=[];
-          let elementosFila=e.target.parentNode.parentNode.children;
-          if(e.target.textContent=="Eliminar" && e.target.tagName=="BUTTON"){
+          let array = [];
+          let elementosFila = e.target.parentNode.parentNode.children;
+          if (e.target.textContent == "Eliminar" && e.target.tagName == "BUTTON") {
             const datosUrl = new URLSearchParams(window.location.search);
-            let direccion=datosUrl.entries().next().value[1];
+            let direccion = datosUrl.entries().next().value[1];
             //Es el único que necesita más de un ID
-            if(direccion =="Lista comentarios"){
+            if (direccion == "Lista comentarios") {
               array.push(elementosFila[3].textContent);
               array.push(elementosFila[4].textContent);
-            }else if(direccion=="Lista permisos"){
+            } else if (direccion == "Lista permisos") {
               array.push(elementosFila[0].textContent);
               array.push(elementosFila[5].textContent);
             }
-            else if(direccion=="Lista Envios"){
+            else if (direccion == "Lista Envios") {
               array.push(elementosFila[7].textContent);
               array.push(elementosFila[8].textContent);
             }
-            else{
+            else {
               array.push(elementosFila[0].textContent);
             }
-           
+
             //Zona ha mejorar 
             /**Hago esto para cuando se entre en el controladorlistasNoticias sepa a que funcion de la plantilla debe de ir. */
             array.push(direccion);
             //Uso localSotarege porque sesion a veces no funciona correctamente.
-            localStorage.setItem("eliminar",JSON.stringify(array));
-            location.href="./borrar.html";
+            localStorage.setItem("eliminar", JSON.stringify(array));
+            location.href = "./borrar.html";
           }
         });
-        document.getElementById("listado").addEventListener("click", function (e){
+        document.getElementById("listado").addEventListener("click", function (e) {
           //En una función
-          let array=[];
-          let elementosFila=e.target.parentNode.parentNode.children;
-          if(e.target.textContent=="Contestar" && e.target.tagName=="BUTTON"){
-            
+          let array = [];
+          let elementosFila = e.target.parentNode.parentNode.children;
+          if (e.target.textContent == "Contestar" && e.target.tagName == "BUTTON") {
+
             const datosUrl = new URLSearchParams(window.location.search);
-            let direccion=datosUrl.entries().next().value[1];
+            let direccion = datosUrl.entries().next().value[1];
             //Es el único que necesita más de un ID
             array.push(elementosFila[0].textContent);
             //mensaje
             array.push(elementosFila[2].textContent);
             array.push(direccion);
             //Uso localSotarege porque sesion a veces no funciona correctamente.
-            localStorage.setItem("agregar",JSON.stringify(array));
-            location.href="./agregar.html";
+            localStorage.setItem("agregar", JSON.stringify(array));
+            location.href = "./agregar.html";
           }
         });
       }
       /*********************************************************************************************************************************/
       /************************  ZONA MODIFICAR ******************************************************************************************/
       /******************************************************************************************************************************* */
-        
-        else if (window.location.pathname.includes("modificar.html")) {
-          const arrayDatos=JSON.parse(localStorage.getItem("modificar"));
-          if(arrayDatos!=null){
-            modificaciones(arrayDatos);
-          }
-          else{
-            alert("Hubo algún error vuelva a iniciar sesión");
-            sessionStorage.removeItem("usuario");
-            localStorage.removeItem("modificar");
-            location.href="./login.html";
-          }
-          
-        
-        document.getElementById("formulario").addEventListener("submit",function(e){
+
+      else if (window.location.pathname.includes("modificar.html")) {
+        const arrayDatos = JSON.parse(localStorage.getItem("modificar"));
+        if (arrayDatos != null) {
+          modificaciones(arrayDatos);
+        }
+        else {
+          alert("Hubo algún error vuelva a iniciar sesión");
+          sessionStorage.removeItem("usuario");
+          localStorage.removeItem("modificar");
+          location.href = "./login.html";
+        }
+
+
+        document.getElementById("formulario").addEventListener("submit", function (e) {
           e.preventDefault();
+          
           comprobarAccionModificacion().then(respuesta => {
-            if(respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean"){
-            
-                imprimirTodosResultados(respuesta);
+            if (respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean") {
+
+              imprimirTodosResultados(respuesta);
             }
-            else{
-                
-                modificacionCorrecta(respuesta);
+            else {
+
+              modificacionCorrecta(respuesta);
             }
-            
+
           });
-          
-          
+
+
         })
         //Remove da problemas
         localStorage.removeItem("modificar");
@@ -567,126 +576,126 @@ async function interaccionesControlador() {
       /*********************************************************************************************************************************/
       /************************  ZONA ELIMINAR ******************************************************************************************/
       /******************************************************************************************************************************* */
-      
+
       else if (window.location.pathname.includes("borrar.html")) {
-        const arrayDatos=JSON.parse(localStorage.getItem("eliminar"));
+        const arrayDatos = JSON.parse(localStorage.getItem("eliminar"));
 
-          if(arrayDatos!=null){
-            eliminacion(arrayDatos);
-          }
-          else{
-            alert("Hubo algún error vuelva a iniciar sesión");
-            sessionStorage.removeItem("usuario");
-            localStorage.removeItem("eliminar");
-            location.href="./login.html";
-          }
-
-          document.getElementById("formulario").addEventListener("submit",function(e){
-            e.preventDefault();
-            comprobarAccionEliminacion().then(respuesta => {
-              console.log(respuesta);
-              if(respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean"){
-                alert("Hubo algún error vuelva a iniciar sesión");
-                sessionStorage.removeItem("usuario");
-                localStorage.removeItem("eliminar");
-                location.href="./login.html";
-                  
-              }
-              else{
-                  eliminacionCorrecta(respuesta);
-              }
-            });
-            
-            
-          })
-          //Remove da problemas
+        if (arrayDatos != null) {
+          eliminacion(arrayDatos);
+        }
+        else {
+          alert("Hubo algún error vuelva a iniciar sesión");
+          sessionStorage.removeItem("usuario");
           localStorage.removeItem("eliminar");
+          location.href = "./login.html";
+        }
+
+        document.getElementById("formulario").addEventListener("submit", function (e) {
+          e.preventDefault();
+          comprobarAccionEliminacion().then(respuesta => {
+            console.log(respuesta);
+            if (respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean") {
+              alert("Hubo algún error vuelva a iniciar sesión");
+              sessionStorage.removeItem("usuario");
+              localStorage.removeItem("eliminar");
+              location.href = "./login.html";
+
+            }
+            else {
+              eliminacionCorrecta(respuesta);
+            }
+          });
+
+
+        })
+        //Remove da problemas
+        localStorage.removeItem("eliminar");
       }
-    /*********************************************************************************************************************************/
+      /*********************************************************************************************************************************/
       /************************  ZONA AÑADIR ******************************************************************************************/
       /******************************************************************************************************************************* */
       else if (window.location.pathname.includes("agregar.html")) {
-        
-          //tengo que sabe que voy a agregar y poner el formulrio correspondiente
-          //haremos click en submit y nos iremos a la peticion, tras comprobar todo 
-          //iremos a php donde comprobaremos de nuevo todo y agregaremos lo que sea
-          //USUARIO,PRODUCTO,PERMISO,ROL,NOTICIA
-          
-          let datos= localStorage.getItem("agregar");
-          
-          agregar(datos);
-          document.getElementById("formulario").addEventListener("submit", function (e){
-            e.preventDefault();
-            comprobarAgregar().then(respuesta => {
-              console.log(respuesta);
-              if(respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean"){
-                //Hacer el imprimir resultados para mostrar errores en el formulario
-                imprimirTodosResultados(respuesta);
-                  
-              }
-              else{
-                  agregarCorrecto(respuesta);
-              }
-            });
-          })
-          localStorage.removeItem("agregar");
-        }
-        //Remove da problemas
-      
-    /*********************************************************************************************************************************/
+
+        //tengo que sabe que voy a agregar y poner el formulrio correspondiente
+        //haremos click en submit y nos iremos a la peticion, tras comprobar todo 
+        //iremos a php donde comprobaremos de nuevo todo y agregaremos lo que sea
+        //USUARIO,PRODUCTO,PERMISO,ROL,NOTICIA
+
+        let datos = localStorage.getItem("agregar");
+
+        agregar(datos);
+        document.getElementById("formulario").addEventListener("submit", function (e) {
+          e.preventDefault();
+          comprobarAgregar().then(respuesta => {
+            console.log(respuesta);
+            if (respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean") {
+              //Hacer el imprimir resultados para mostrar errores en el formulario
+              imprimirTodosResultados(respuesta);
+
+            }
+            else {
+              agregarCorrecto(respuesta);
+            }
+          });
+        })
+        localStorage.removeItem("agregar");
+      }
+      //Remove da problemas
+
+      /*********************************************************************************************************************************/
       /************************  ZONA CONTACTO ******************************************************************************************/
       /******************************************************************************************************************************* */
-      else if(window.location.pathname.includes("contacto.html")){
-          document.getElementById("formulario").addEventListener("submit",function (e) { 
-              e.preventDefault(); 
-              comprobarMensaje();
-              
-           })
+      else if (window.location.pathname.includes("contacto.html")) {
+        document.getElementById("formulario").addEventListener("submit", function (e) {
+          e.preventDefault();
+          comprobarMensaje();
 
-           document.getElementById("opcion").style.display = "none";
+        })
+
+        document.getElementById("opcion").style.display = "none";
       }
-    /*********************************************************************************************************************************/
+      /*********************************************************************************************************************************/
       /************************  ZONA PERFIL ******************************************************************************************/
       /******************************************************************************************************************************* */
       else if (window.location.pathname.includes("perfil.html")) {
         if (sessionStorage.getItem("usuario")) {
           //Siempre llamo a la base de datos o no?
 
-          
+
           datosUsuario().then(respuesta => {
             imprimirDatosUsuarioPerfil(respuesta);
             document.getElementById("modificar").addEventListener("click", function (e) {
-               const arrayDatos=[]
-               const datos =e.target.parentNode.children;
-               for(let dato of datos){
-                if(dato.tagName=="DIV"){
+              const arrayDatos = []
+              const datos = e.target.parentNode.children;
+              for (let dato of datos) {
+                if (dato.tagName == "DIV") {
                   arrayDatos.push(dato.children[1].textContent);
                 }
-                 
-               }
-               arrayDatos.push("Perfil");
-               localStorage.setItem("modificar",JSON.stringify(arrayDatos));
-               console.log(arrayDatos);
-               location.href="./modificar.html";
+
+              }
+              arrayDatos.push("Perfil");
+              localStorage.setItem("modificar", JSON.stringify(arrayDatos));
+              console.log(arrayDatos);
+              location.href = "./modificar.html";
             });
             document.getElementById("sesion").addEventListener("click", function (e) {
               cerrarSesion().then(respuesta => {
                 console.log(respuesta);
-                if(!respuesta){
+                if (!respuesta) {
 
-                }else{
+                } else {
                   sessionStorage.removeItem("usuario");
                   sessionStorage.removeItem("conectado");
-                location.href="./tienda.html";
+                  location.href = "./tienda.html";
                 }
               });
-           });
+            });
             document.getElementById("eliminar").addEventListener("click", function (e) {
-              const arrayDatos=["Perfil"]
+              const arrayDatos = ["Perfil"]
               arrayDatos.push("Perfil");
-              localStorage.setItem("eliminar",JSON.stringify(arrayDatos));
-              location.href="./borrar.html";
-           });
+              localStorage.setItem("eliminar", JSON.stringify(arrayDatos));
+              location.href = "./borrar.html";
+            });
 
           });
           document.getElementById("pass").addEventListener("blur", async function () {
@@ -699,15 +708,15 @@ async function interaccionesControlador() {
             imprimirIgualdadPass(pass);
           });
 
-          document.getElementById("cambiarPass").addEventListener("submit",async function (e) {
+          document.getElementById("cambiarPass").addEventListener("submit", async function (e) {
             e.preventDefault();
-            let resultado=await cambiarPass();
-            if(resultado.exito){
-                exitoCambioPass();
-            }else{
+            let resultado = await cambiarPass();
+            if (resultado.exito) {
+              exitoCambioPass();
+            } else {
               imprimirTodosResultados(resultado);
             }
-         })
+          })
 
         }
       }

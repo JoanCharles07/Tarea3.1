@@ -25,7 +25,7 @@ class testIntegracion extends TestCase {
         VALUES(2,"PEPE","Rodríguez","PEPILLO","jAS@gmail.com","calle","Motril","Granada","18600","87654321A","testeo",1)');
     }
 
-    public function testRecuperarUsuario() {
+    public function testRecuperarUsuarioCorrecto() {
         // Configurar datos de sesión de prueba
         $_SESSION["datosUsuario"]['usuario'] = "JCRM";
 
@@ -33,10 +33,23 @@ class testIntegracion extends TestCase {
         $errores = [];
         $session = new stdClass();
         //Para probarlo hay que hacer cambios, conf debe de ser include en controlador php y pasar la conexion temporal por parametro.
-        $usuario = recuperarUsuario($this->conexion,$errores,$session);
+       recuperarUsuario($this->conexion,$errores,$session);
         
         $this->assertEquals("Carlos", $session->nombre);
         $this->assertEquals('12345678A', $session->dni);
+    }
+    public function testRecuperarUsuarioIncorrecto() {
+        // Configurar datos de sesión de prueba
+        $_SESSION["datosUsuario"]['usuario'] = "JCRM";
+
+        // Llamar a la función y obtener los resultados
+        $errores = [];
+        $session = new stdClass();
+        //Para probarlo hay que hacer cambios, conf debe de ser include en controlador php y pasar la conexion temporalmente por parametro.
+        recuperarUsuario($this->conexion,$errores,$session);
+        
+        $this->assertNotEquals("PEPE", $session->nombre);
+        $this->assertNotEquals('87654321A', $session->dni);
     }
 
     protected function tearDown(): void {

@@ -262,7 +262,7 @@ table {
 footer{
     background-color: var(--color-fondo);
     color:var(--color-texto);
-    transform: translateY(180px);
+    transform: translateY(250px);
     width: 100%;
     padding: 20px;
     display: flex;
