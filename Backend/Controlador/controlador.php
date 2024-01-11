@@ -211,7 +211,6 @@ try {
                     }
                 }
             }
-             var_dump($arraySaneado);
             
             $correcto=comprobacionCompra($direccion->objeto,$errores);
             

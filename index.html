@@ -3,8 +3,21 @@
 he decidido ponerlas todas en vistas y así no hay problemas con las rutas-->
 <html lang="es">
     <head>
+        <meta charset="UTF-8">
         <meta http-equiv="Refresh" content="0;url=Frontend/Vistas/tienda.html">
     </head>
     <body>
+        <script>
+            if(!localStorage.getItem("Terminos")){
+                const resultado=confirm("Esta web es un proyecto académico y recolectará imprescindible para el correcto funcionamiento de la página web ningún dato será compartido y se procederá a su eliminación una vez sea evaluado");
+                if(!resultado){
+                alert("Si no acepta no puede seguir con la visualización de la página")
+                window.location.reload();
+                }else{
+                localStorage.setItem("Terminos",true);
+                }
+            }
+            
+        </script>
     </body>
 </html>

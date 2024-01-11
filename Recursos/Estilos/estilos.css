@@ -306,3 +306,19 @@ footer ul li:hover{
 #aviso{
     padding: 10px;
 }
+
+#exito{
+    width: 300px;
+    height: 150px;
+    background-color: var(--color-fondo);
+    color:var(--color-texto);
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+#exito p{
+    padding: 10px;
+}
+

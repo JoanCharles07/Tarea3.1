@@ -37,13 +37,16 @@ export function imprimirImagenesAzar() {
  * @param {Object} producto contiene los datos de nuestro producto escogido
  */
 export function imprimirDetalleProducto(producto) {
-  //const precioDescuento = producto.precio*(producto.descuento/100);
+  
   const texto = `
       <div id="imagen" class="imagenProducto">
       <img src="data:image/webp;base64,${producto["imagen"]}" class ="producto">
       </div>
-      <div id="detalles">
+      <div id="detalles" >
               <h2 id="nombreProducto">${producto["nombre"]}</h2>
+              <div class="flex">
+                <span>${producto["descripcion"]}</span>
+              </div>
               <div id="containerPrecio" class="flex">
                   <div id="imagenStock"></div>
                   <div id="stock"></div>
@@ -59,7 +62,8 @@ export function imprimirDetalleProducto(producto) {
               
           <div id="numeroComentarios" class="flex">
           
-              <p>Comentarios: <span id="comentariosTotal">${producto["comentariosTotales"]}</span></p>
+              <p>Comentarios: <span id="comentariosTotal">${producto["comentariosTotales"]}</span></p><br>
+              <p>Valoración media: <span id="comentariosTotal">${producto["valoracionTotal"]/producto["comentariosTotales"]}</span></p>
           </div>
 
       </div>
@@ -161,7 +165,7 @@ export function imprimirProductos() {
           <img src="data:image/webp;base64,${producto["imagen"]}" class="productos"></img>
           <p>${producto["nombre_producto"]} €/kilo</p>
           <p>${producto["precio"]} €/kilo</p>
-          
+          ${producto["descuento"] > 0 ? '<span id="oferta">¡OFERTA!</span>':''}
           </div>`;
     }
   }
@@ -249,6 +253,25 @@ export function exitoCambioPass(datosServidor) {
 
 }
 
+export function exitoRegistro() {
+  let main = document.getElementById("main");
+  main.style.gridTemplateColumns="1fr";
+  main.innerHTML = `<div id="exito"><p>Se ha registrado correctamente</p></div>`;
+  /*const intervalID = setInterval(function () {
+    
+      location.href="./tienda.html";
+  }, 1500);*/
+
+}
+export function avisoComentario(){
+  let span=document.createElement("span");
+  span.textContent="Debes de estar conectado para comentar";
+  span.style.border="3px solid red";
+  let form=document.getElementById("formEnvioComentario");
+  form.appendChild(span);
+
+}
+
 /**
  * Esta función se encarga de mostrar los comentarios que indica nuestro parámetro filtro
  * @param {String} filtro contendrá un String que nos ayudará a saber que comentarios debemos filtrar. 
@@ -308,9 +331,9 @@ export function imprimirComentarios(datos) {
 
     container.innerHTML = comentario;
   }
-  let comentario = document.getElementById("container_Comentarios").childNodes.length;
+  
 
-  document.getElementById("comentariosTotal").textContent = comentario;
+  
 }
 /**
  * Esta función se encargaá de mostrarnos el precio de nuestro producto según alteremos la cantidad que queremos comprar.
@@ -538,7 +561,7 @@ export function imprimirCarrito() {
 
     let texto = `<div class="datosProducto" id="${producto["id"]}">
           <img src="data:image/webp;base64,${producto["imagen"]}"  alt="" class="productos">
-          <input type="number" name="" id="cantidad${contador}" class="inputCantidad" value="${producto["cantidad"]}">
+          <input type="number" name="" id="cantidad${contador}" class="inputCantidad" min="0" value="${producto["cantidad"]}">
           <p class="idProducto"   id="precio${contador}" >${producto["precioInicial"]} <span>€</span></p>
           <p>${producto["nombre"]}</p>
           <p class="total" id="total${contador}">${producto["precioTotal"]} <span>€</span></p>
@@ -585,12 +608,24 @@ export function imprimirNoticias(noticias) {
  */
 export function confirmarCompra(){
   let main = document.getElementById("main");
-  main.innerHTML = `<div id="vacio"><p>Se ha realizado el pedido en breve le llegará</p></div>`;
+  main.innerHTML = `<div id="exito"><p>Se ha realizado el pedido en breve le llegará</p></div>`;
+  main.classList='carritoFinalizado';
   const intervalID = setInterval(function () {
       //Borramos productos para que se actualizen los datos si productos fuera alterado, por no complicar mas el codigo
-     
+      sessionStorage.removeItem("productos");
+                    sessionStorage.removeItem("carrito");
+                    sessionStorage.removeItem("productoSeleccionado");
       
       location.href="./listas.html?eleccion=Historial";
   }, 1500);
 
+}
+
+export function avisoInciarSesion(){
+  const containerInicio=document.getElementById("inicioSesion");
+  const parrafo=document.createElement("span");
+  containerInicio.style.border="3px solid red";
+  containerInicio.style.padding="5px";
+  parrafo.textContent="Inicie sesión si desea comprar";
+  containerInicio.appendChild(parrafo);
 }

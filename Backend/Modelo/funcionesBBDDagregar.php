@@ -23,7 +23,7 @@ function agregarNoticia(&$errores){
                 $ret=true;
             } else {
                 
-                $errores->errorBBDD[] = "No se han encontrado noticias";
+                $errores->errorBBDD[] = "No se ha podido agregar noticia";
             }
         }else{
               
@@ -99,7 +99,7 @@ function agregarRolPermiso(&$errores){
                 $ret=true;
             } else {
                 
-                $errores->errorBBDD[] = "No se han podido modificar rol";
+                $errores->errorBBDD[] = "No se han podido agregar rol permiso";
             }
         }else{
               
@@ -150,7 +150,7 @@ function agregarPermiso(&$errores){
                 agregarRolPermiso($errores);
             } else {
                 
-                $errores->errorBBDD[] = "No se han podido modificar rol";
+                $errores->errorBBDD[] = "No se han podido agregar permisos";
             }
         }else{
               
@@ -211,7 +211,7 @@ function agregarUsuariosGlobal(&$errores)
                     $respuesta = true;
                 } else {
 
-                    $errores->errorBBDD[] = "No se ha registrado correctamente";
+                    $errores->errorBBDD[] = "No se ha podido agregar usuario";
                 }
             } else {
 
@@ -256,7 +256,7 @@ function agregarProductoGlobal(&$errores){
                  $ret=true;
              } else {
                  
-                 $errores->errorBBDD[] = "No se han podido modificar Producto o son los mismos";
+                 $errores->errorBBDD[] = "No se han podido agregar Producto";
              }
          }else{
                
@@ -300,7 +300,7 @@ function agregarProductoPropio(&$errores){
                  $ret=true;
              } else {
                  
-                 $errores->errorBBDD[] = "No se han podido modificar Producto o son los mismos";
+                 $errores->errorBBDD[] = "No se han podido agregar Producto";
              }
          }else{
                
@@ -386,7 +386,7 @@ function enviarMensajeAdminUsuario($errores){
                 $ret=true;
             } else {
                 
-                $errores->errorBBDD[] = "No se han podido agregar rol";
+                $errores->errorBBDD[] = "No se han podido enviar mensaje al administrador, pruebe más tarde";
             }
         }else{
               
@@ -426,7 +426,7 @@ function enviarMensajeAdminAnonimo($errores){
                 $ret=true;
             } else {
                 
-                $errores->errorBBDD[] = "No se han podido agregar rol";
+                $errores->errorBBDD[] = "No se ha podido enviar el mensaje pruebe más tarde";
             }
         }else{
               
@@ -479,7 +479,7 @@ function leerMensajesPrivados($errores){
                 }
             }
             else{
-                $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
+                $errores->errorBBDD[] = "No se han podido recuperar los mensajes";
             }
         }else{
               
@@ -521,7 +521,7 @@ function contestadoMensaje($errores){
                 $ret=true;
             } else {
                 
-                $errores->errorBBDD[] =  "No se han podido modificar Producto o son los mismos";
+                $errores->errorBBDD[] =  "No se ha podido enviar mensaje";
             }
         }else{
               
@@ -609,7 +609,7 @@ function recuperarIDUsuario(&$errores)
                  $ret = $res["ID_Usuario"];
              }
              else{
-                 $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
+                 $errores->errorBBDD[] = "No se puede conseguir ID usuario";
              }
              
          }else{
@@ -656,7 +656,7 @@ function recuperarIDUsuario(&$errores)
                 
              }
              else{
-                 $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
+                 $errores->errorBBDD[] = "No se pudo calcular el total del pedido";
              }
              
          }else{
@@ -702,7 +702,7 @@ function recuperarIDUsuario(&$errores)
                 cambiarStockProducto($errores,$productos[0],$productos[2]);
              }
              else{
-                 $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
+                 $errores->errorBBDD[] = "No se pudo realizar envío,pruebe más tarde";
              }
              
          }else{

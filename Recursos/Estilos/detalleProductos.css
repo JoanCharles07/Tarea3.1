@@ -227,3 +227,9 @@ textarea{
 #enviarComentario:hover{
   width: 80%;
 }
+
+#numeroComentarios{
+  display: flex;
+  flex-direction: column;
+  gap:5px;
+}

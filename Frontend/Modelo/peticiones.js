@@ -59,17 +59,14 @@ export function usuario(datosUsuario, direccion) {
         })
         .then(data => {
           const datos = JSON.parse(data);
-          console.log(datos);
           resolve(datos);
         })
         .catch(error => {
           // Capturamos y manejamos el error
-          console.error("Error en la llamada fetch:", error);
           reject(error);
         });
     } catch (error) {
       // Capturamos y manejamos cualquier error sincrónico
-      console.error("Error en la función usuario:", error);
       reject(error);
     }
   });
@@ -281,7 +278,6 @@ export function recuperarDatosUsuario() {
         .then(response => response.text())
         .then(data => {
           const datos = JSON.parse(data);
-          console.log(datos);
           resolve(datos);
 
         }).catch(error => {
@@ -307,12 +303,10 @@ export function cambiarPassBBDD() {
       let usuario = JSON.parse(atob(sessionStorage.getItem("usuario")));
       let datosPass = new FormData(document.getElementById("cambiarPass"));
       let datosIntroducidos={};
-      console.log(comprobarDatosRegex(datosPass));
       for (const dato of datosPass.entries()) {
         datosIntroducidos[dato[0]] = dato[1];
       }
       datosIntroducidos["usuario"]=usuario[0];
-      console.log(datosIntroducidos);
       let datos = { llamada: "cambiarPass",  datosIntroducidos };
 
       fetch("../../Backend/Controlador/controlador.php", {
@@ -326,7 +320,6 @@ export function cambiarPassBBDD() {
         .then(response => response.text())
         .then(data => {
           const datos = JSON.parse(data);
-          console.log(datos);
           resolve(datos);
 
         }).catch(error => {
@@ -427,7 +420,6 @@ export function accesoListados() {
           .then(response => response.text())
           .then(data => {
             const datos = JSON.parse(data);
-            console.log(datos);
             resolve(datos);
 
           }).catch(error => {
@@ -454,11 +446,9 @@ export  function accesoAgregar() {
       //tambien sirver para agregar comprobacionUpdate
       const datosIntroducidos= await comprobacionUPDATE();
       
-      console.log(datosIntroducidos);
       if(typeof Object.values(datosIntroducidos)[0] != "boolean"){
         datosIntroducidos["accion"] = "crear";
         let datos = { llamada: "agregar", datosIntroducidos };
-        console.log(datosIntroducidos);
         fetch("../../Backend/Controlador/controlador.php", {
           method: 'POST',
           headers: {
@@ -470,7 +460,6 @@ export  function accesoAgregar() {
           .then(response => response.text())
           .then(data => {
             const datos = JSON.parse(data);
-            console.log(datos);
             resolve(datos);
   
           }).catch(error => {
@@ -497,7 +486,6 @@ export  function accesoListadosModificado() {
       
       if(typeof Object.values(datosIntroducidos)[0] != "boolean"){
         let datos = { llamada: "modificar", datosIntroducidos };
-        console.log(datosIntroducidos);
         fetch("../../Backend/Controlador/controlador.php", {
           method: 'POST',
           headers: {
@@ -509,7 +497,6 @@ export  function accesoListadosModificado() {
           .then(response => response.text())
           .then(data => {
             const datos = JSON.parse(data);
-            console.log(datos);
             resolve(datos);
   
           }).catch(error => {
@@ -544,7 +531,6 @@ export function accesoListadosEliminado() {
 
       datosIntroducidos["usuario"] = usuario[0];
       datosIntroducidos["accion"] = "borrar";
-      console.log(datosIntroducidos);
       let datos = { llamada: "eliminar", datosIntroducidos };
 
       fetch("../../Backend/Controlador/controlador.php", {
@@ -567,45 +553,7 @@ export function accesoListadosEliminado() {
   } catch (e) {
   }
 }
-/**
- * Guarda los mensajes enviados al admin.
- * @returns Objeto con datos del usuario o errores producidos en la BBDD
- */
-export  function enviarMensajeAdmin() {
 
-  try {
-    return new Promise(async(resolve, reject) => {
-      const datosIntroducidos= await comprobacionMensaje();
-      console.log(datosIntroducidos);
-      if(typeof Object.values(datosIntroducidos)[0] != "boolean"){
-        let datos = { llamada: "enviarMensaje", datosIntroducidos };
-        console.log(datosIntroducidos);
-        fetch("../../Backend/Controlador/controlador.php", {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(datos)
-  
-        })
-          .then(response => response.text())
-          .then(data => {
-            const datos = JSON.parse(data);
-            console.log(datos);
-            resolve(datos);
-  
-          }).catch(error => {
-            reject(error);
-          })
-      }
-      else{
-        resolve(datosIntroducidos)
-      }
-      
-    });
-  } catch (e) {
-  }
-}
 /**
  * Esta función comprueba el stock del producto en la BBDD.
  * @returns Objeto con datos del usuario o errores producidos en la BBDD
@@ -633,7 +581,6 @@ export  function comprobarStock() {
           .then(response => response.text())
           .then(data => {
             const datos = JSON.parse(data);
-            console.log(datos);
             resolve(datos);
   
           }).catch(error => {
@@ -656,7 +603,7 @@ export  function finalizarCompraBBDD() {
         let carrito = JSON.parse(sessionStorage.getItem("carrito"));
         const usuario = JSON.parse(atob(sessionStorage.getItem("usuario")));
         let carritoDatos=carrito.map(elemento => [elemento.id , elemento.precioInicial ,elemento.cantidad, elemento.precioTotal ]);
-        console.log(carritoDatos);
+        //Comprobar que sean numeros y todos mayores que 0
         carrito["usuario"]=usuario[0];
         let datos = { llamada: "finalizarCompra", objeto:carritoDatos };
         
@@ -671,7 +618,6 @@ export  function finalizarCompraBBDD() {
           .then(response => response.text())
           .then(data => {
             const datos = JSON.parse(data);
-            console.log(datos);
             resolve(datos);
   
           }).catch(error => {

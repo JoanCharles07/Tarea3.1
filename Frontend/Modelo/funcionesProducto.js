@@ -92,6 +92,7 @@ export function datosProducto(idProducto,productos){
         
         if(idProducto==producto.id){
             datosProductoSeleccionado.id=idProducto;
+            datosProductoSeleccionado.descripcion=producto.descripcion;
             datosProductoSeleccionado.nombre=producto.nombre_producto;
             datosProductoSeleccionado.stock=producto.stock;
             datosProductoSeleccionado.precio=producto.precio;

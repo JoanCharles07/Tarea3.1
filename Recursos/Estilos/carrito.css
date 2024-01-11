@@ -1,4 +1,4 @@
-main{
+.carritoTerminado{
     transform: translateY(150px);
     display:grid;
     grid-template-columns: 1fr 1fr;
@@ -16,6 +16,7 @@ main{
 }
 #inicioSesion{
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 60%;
@@ -132,3 +133,9 @@ h1{
     height: 30px;
 }
 
+.carritoFinalizado{
+    transform: translateY(150px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

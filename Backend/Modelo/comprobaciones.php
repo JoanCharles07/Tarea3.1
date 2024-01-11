@@ -278,13 +278,16 @@ function comprobacionCompra($productos,&$errores)
             if ($respuesta[$i]->id == $productos[$j][0]) {
                 //se calcula si hay descuento y luego se multiplica la cantidad
                 $precioBBDD = number_format($respuesta[$i]->precio * $productos[$j][2], 2);
-                if (($precioBBDD != $productos[$j][3])) {
-                    $errores->error = "No coinciden importes";
+                echo $precioBBDD;
+                echo "+";
+                echo  $productos[$j][1] * $productos[$j][2];
+                if (($precioBBDD != $productos[$j][3]) || $precioBBDD!= number_format($productos[$j][1] * $productos[$j][2],2)) {
+                    $errores->invalido = "No coinciden importes";
                     $correcto = false;
                     break;
                     //podemos meter los dos arrays o uno con los datos que necesito del pedido.
                 }else if($respuesta[$i]->stock < $productos[$j][2]){
-                    $errores->error = "No hay stock suficiente de ".$respuesta[$i]->nombre_producto;
+                    $errores->invalido = "No hay stock suficiente de ".$respuesta[$i]->nombre_producto;
                     $correcto = false;
                     break;
                 }

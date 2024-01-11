@@ -22,7 +22,7 @@ function eliminarComentariosGlobal(&$errores){
                  $ret=true;
              } else {
                  
-                 $errores->errorBBDD[] =  "No se han podido borrar Producto.";
+                 $errores->errorBBDD[] =  "No se han podido borrar Comentario.";
              }
          }else{
                
@@ -64,7 +64,7 @@ function eliminarPermiso(&$errores){
                  $ret=true;
              } else {
                  
-                 $errores->errorBBDD[] =  "No se han podido borrar Producto.";
+                 $errores->errorBBDD[] =  "No se han podido borrar permisos.";
              }
          }else{
                
@@ -104,7 +104,7 @@ function eliminarComentariosPropio(&$errores){
                  $ret=true;
              } else {
                  
-                 $errores->errorBBDD[] =  "No se han podido borrar Producto.";
+                 $errores->errorBBDD[] =  "No se han podido borrar comentarios.";
              }
          }else{
                
@@ -186,7 +186,7 @@ function eliminarNoticia(&$errores){
                  $ret=true;
              } else {
                  
-                 $errores->errorBBDD[] =  "No se han podido borrar Pedido.";
+                 $errores->errorBBDD[] =  "No se han podido borrar Noticias.";
              }
          }else{
                
@@ -227,7 +227,7 @@ function eliminarUsuariosGlobal(&$errores){
                  $ret=true;
              } else {
                  
-                 $errores->errorBBDD[] =  "No se han podido borrar Pedido.";
+                 $errores->errorBBDD[] =  "No se ha podido borrar Usuario.";
              }
          }else{
                
@@ -272,7 +272,7 @@ function eliminarUsuarioPropio(&$errores,&$session){
                  session_destroy();
              } else {
                  
-                 $errores->errorBBDD[] =  "No se han podido borrar Pedido.";
+                 $errores->errorBBDD[] =  "No se han podido borrar Usuario.";
              }
          }else{
                
@@ -313,7 +313,7 @@ function eliminarRol(&$errores){
                  $ret=true;
              } else {
                  
-                 $errores->errorBBDD[] =  "No se han podido borrar Pedido.";
+                 $errores->errorBBDD[] =  "No se han podido borrar Rol.";
              }
          }else{
                
@@ -436,7 +436,7 @@ function eliminarEnvio(&$errores){
                  $ret=true;
              } else {
                  
-                 $errores->errorBBDD[] =  "No se han podido borrar Producto.";
+                 $errores->errorBBDD[] =  "No se han podido borrar Envio.";
              }
          }else{
                

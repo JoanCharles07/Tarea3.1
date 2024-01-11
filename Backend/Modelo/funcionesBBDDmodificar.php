@@ -23,7 +23,7 @@ function modificarEstadoPedidoTramitando(&$errores){
                 $ret=true;
             } else {
                 
-                $errores->errorBBDD[] = "No se han encontrado pedidos";
+                $errores->errorBBDD[] = "No se ha podido modificar pedidos";
             }
         }else{
               
@@ -62,7 +62,7 @@ function modificarEstadoPedidoEnviado(&$errores){
                 $ret=true;
             } else {
                 
-                $errores->errorBBDD[] = "No se han encontrado pedidos";
+                $errores->errorBBDD[] = "No se ha podido modificar pedidos";
             }
         }else{
               
@@ -104,7 +104,7 @@ function modificarEstadoPedidoFinalizado(&$errores){
                 
             } else {
                 
-                $errores->errorBBDD[] = "No se han encontrado pedidos";
+                $errores->errorBBDD[] = "No se ha podido modificar pedidos";
             }
         }else{
               
@@ -144,7 +144,7 @@ function modificarEstadoPedidoTramitandoAdmin(&$errores){
                 $ret=true;
             } else {
                 
-                $errores->errorBBDD[] = "No se han encontrado pedidos";
+                $errores->errorBBDD[] = "No se ha podido modificar pedidos";
             }
         }else{
               
@@ -185,7 +185,7 @@ function modificarEstadoPedidoEnviadoAdmin(&$errores){
                 $ret=true;
             } else {
                 
-                $errores->errorBBDD[] = "No se han encontrado pedidos";
+                $errores->errorBBDD[] = "No se ha podido modificar pedido";
             }
         }else{
               
@@ -327,7 +327,7 @@ function modificarEstadoPedidoEntregadoAdmin(&$errores){
                 
             } else {
                 
-                $errores->errorBBDD[] = "No se han encontrado pedidos";
+                $errores->errorBBDD[] = "No se ha podido modificar pedidos";
             }
         }else{
               
@@ -366,7 +366,7 @@ function modificarEstadoPedidoRealizadoAdmin(&$errores){
                 $ret=true;
             } else {
                 
-                $errores->errorBBDD[] = "No se han encontrado pedidos";
+                $errores->errorBBDD[] = "No se ha podido modificar pedidos";
             }
         }else{
               
@@ -407,7 +407,7 @@ function modificarNoticia(&$errores){
                 $ret=true;
             } else {
                 
-                $errores->errorBBDD[] = "No se han encontrado noticias";
+                $errores->errorBBDD[] = "No se ha podido modificar noticias";
             }
         }else{
               
@@ -446,7 +446,7 @@ function passActual(&$errores, $id){
                 $ret=$res;
             } else {
                 
-                $errores->errorBBDD[] = "No se han podido modificar usuario";
+                $errores->errorBBDD[] = "No se han podido comprobar contraseñas";
             }
         }else{
               
@@ -493,7 +493,7 @@ function modificarUsuariosGlobal(&$errores){
 
             } else {
                 
-                $errores->errorBBDD[] = "No se han podido modificar usuario";
+                $errores->errorBBDD[] = "No se han podido modificar datos usuario";
             }
         }else{
               
@@ -541,7 +541,7 @@ function modificarUsuariosPropio(&$errores){
                 $_SESSION["datosUsuario"]["usuario"]=$_SESSION["datos"]["nickname"];
 
             } else {
-                $errores->errorBBDD[] = "No se han podido modificar datos";
+                $errores->errorBBDD[] = "No se han podido modificar datos usuario";
             }
         }else{
               
@@ -583,7 +583,7 @@ function todosTiposRol(&$errores){
                 }
             } else {
                 
-                $errores->errorBBDD[] = "No se han podido modificar rol";
+                $errores->errorBBDD[] = "No se han podido conseguir tipos de roles";
             }
         }else{
               
@@ -618,13 +618,7 @@ function agregamosENUMTipos(&$errores,$existentes){
         $data=["nuevo" =>  $_SESSION["datos"]["nombreRol"]];
         if ($stmt->execute($data)) {
            
-            /*
-            if ($res != 0) {
-                $ret=true;
-            } else {
-                
-                $errores->errorBBDD[] = "No se han podido modificar rol";
-            }*/
+           $ret=true;
         }else{
               
             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
@@ -706,7 +700,7 @@ function existeObtencion(&$errores){
                 $ret=true;
             } else {
                 
-                $errores->errorBBDD[] = "No se han podido modificar rol";
+                $errores->errorBBDD[] = "No existe el permiso para ese rol";
             }
         }else{
               
@@ -744,7 +738,7 @@ function modificaRolPermiso(&$errores){
                 $ret=true;
             } else {
                 
-                $errores->errorBBDD[] = "No se han podido modificar rol";
+                $errores->errorBBDD[] = "No se han podido modificar rol del permiso";
             }
         }else{
               
@@ -799,7 +793,7 @@ function modificarPermiso(&$errores){
                 $ret=true;
             } else {
                 
-                $errores->errorBBDD[] = "No se han podido modificar rol";
+                $errores->errorBBDD[] = "No se han podido modificar permiso";
             }
         }else{
               
@@ -841,7 +835,7 @@ function recuperarIDRol(&$errores){
                  $ret=$res[0];
              } else {
                  
-                 $errores->errorBBDD[] = "No se han podido modificar rol";
+                 $errores->errorBBDD[] = "No se han podido conseguir rol";
              }
          }else{
                

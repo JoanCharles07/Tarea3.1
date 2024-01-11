@@ -48,3 +48,12 @@ span{
 span p{
     padding: 5px;
 }
+#iconoInformacion{
+    width: 25px;
+    height: auto;
+}
+small{
+    font-size: 12px;
+    display:flex;
+    gap:5px;
+}

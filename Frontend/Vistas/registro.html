@@ -22,63 +22,75 @@
             <label for="usuarioNuevo">Usuario</label>
             <input type="text" name="usuarioNuevo" id="usuarioNuevo" required minlength="4" maxlength="25" 
             pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
-            title="Usuario no válido">
+            title="Usuario no válido" placeholder="Tu nombre de usuario">
+            <small><img src="../../Recursos/Imagenes/informacion.webp" alt="icono que avisa de informacion" id="iconoInformacion">mínimo 4 caracteres.</small> 
             <span id="errorU"></span>
             <label for="pass">Contraseña</label>
             <input type="password" name="pass" id="pass" required minlength="4" maxlength="25" 
             pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
-            title="Contraseña no válida">
+            title="Contraseña no válida" placeholder="Tu contraseña">
+            <small><img src="../../Recursos/Imagenes/informacion.webp" alt="icono que avisa de informacion" id="iconoInformacion">mínimo 4 caracteres.</small> 
             <span id="errorP"></span>
             <label for="pass2">Repetir Contraseña</label>
             <input type="password" name="pass2" id="pass2" required minlength="4" maxlength="25" 
             pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
-            title="Contraseña no válida">
+            title="Contraseña no válida" placeholder="Repite contraseña">
+            <small><img src="../../Recursos/Imagenes/informacion.webp" alt="icono que avisa de informacion" id="iconoInformacion">mínimo 4 caracteres.</small> 
             <span id="errorP2"></span>
             <label for="nombre">Nombre</label>
             <input type="text" name="nombre" id="nombre" required minlength="4" maxlength="25" 
             pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
-            title="Nombre no válido">
+            title="Nombre no válido" placeholder="Francisco">
+            <small><img src="../../Recursos/Imagenes/informacion.webp" alt="icono que avisa de informacion" id="iconoInformacion">mínimo 4 caracteres.</small> 
             <span id="errorN"></span>
             <label for="apellidos">Apellidos</label>
             <input type="text" name="apellidos" id="apellidos" required minlength="4" maxlength="50"
             pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
-            title="Apellidos no válidos">
+            title="Apellidos no válidos" placeholder="Rodríguez">
+            <small><img src="../../Recursos/Imagenes/informacion.webp" alt="icono que avisa de informacion" id="iconoInformacion">mínimo 4 caracteres.</small> 
             <span id="errorA"></span>
             <label for="direccion">Dirección</label>
             <input type="text" name="direccion" id="direccion" required minlength="4" maxlength="25"
             pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
-            title="Dirección no válido">
+            title="Dirección no válido" placeholder="Calle Principal">
+            <small><img src="../../Recursos/Imagenes/informacion.webp" alt="icono que avisa de informacion" id="iconoInformacion">mínimo 4 caracteres.</small> 
             <span id="errorD"></span>
             <label for="provincia">Provincia</label>
             <input type="text" name="provincia" id="provincia" required minlength="4" maxlength="25"
             pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
-            title="Provincia no válida">
+            title="Provincia no válida" placeholder="Granada">
+            <small><img src="../../Recursos/Imagenes/informacion.webp" alt="icono que avisa de informacion" id="iconoInformacion">mínimo 4 caracteres.</small> 
             <span id="errorProvincia"></span>
             <label for="ciudad">Ciudad</label>
             <input type="text" name="ciudad" id="ciudad" required minlength="4" maxlength="25"
             pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
-            title="Ciudad no válida">
+            title="Ciudad no válida" placeholder="Motril">
+            <small><img src="../../Recursos/Imagenes/informacion.webp" alt="icono que avisa de informacion" id="iconoInformacion">mínimo 4 caracteres.</small> 
             <span id="errorCiudad"></span>
             <label for="cpostal">Código Postal</label>
             <input type="text" name="cpostal" id="cpostal" required minlength="5" maxlength="5"
             pattern="^[0-9]{3,5}$"
-            title="Solo compuesto por 5 números">
+            title="Solo compuesto por 5 números" placeholder="18600">
+            <small><img src="../../Recursos/Imagenes/informacion.webp" alt="icono que avisa de informacion" id="iconoInformacion">Debe contener 5 dígitos</small> 
             <span id="errorCpostal"></span>
             <label for="email">Email</label>
             <input type="email" name="email" id="email" required minlength="4" maxlength="25"
              pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(^.{4,25}$)"
-             title="Emailno válido">
+             title="Emailno válido" placeholder="nombre@host.com">
+             <small><img src="../../Recursos/Imagenes/informacion.webp" alt="icono que avisa de informacion" id="iconoInformacion">Debe tener formato email "nombre@host.com"</small> 
             <span id="errorE"></span>
             <label for="DNI">DNI</label>
             <input type="text" name="DNI" id="DNI" required minlength="9" maxlength="9"
             pattern="^[0-9]{8}[A-Za-z]$"
-            title="Debe tener 8 digitos y una letra">
+            title="Debe tener 8 digitos y una letra" placeholder="12345678A">
+            <small><img src="../../Recursos/Imagenes/informacion.webp" alt="icono que avisa de informacion" id="iconoInformacion">Debe tener 8 digitos y una letra</small> 
             <span id="errorDNI"></span>
             <label for="rol">¿Que desea ser?</label>
             <select name="nombreRol" id="rol" required>
                 <option value="usuario" selected>Usuario</option>
                 <option value="agricultor">Agricultor</option>
             </select>
+            <small><img src="../../Recursos/Imagenes/informacion.webp" alt="icono que avisa de informacion" id="iconoInformacion">Debe escoger una de las dos opciones</small>
             <input class="botonSubmit" type="submit" value="Crear Usuario">
         </form>
     </main>

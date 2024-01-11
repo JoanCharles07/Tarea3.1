@@ -66,7 +66,7 @@ function borrarCarrito(&$errores){
             } 
             else{
                 $res=false;
-                $errores->errorBBDD[] = "Ya has comentado en este producto.";
+                $errores->errorBBDD[] = "No se ha podido borrar carrito";
             }
         }else{
             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
@@ -101,7 +101,7 @@ function borrarCarritoCompleto(&$errores){
             } 
             else{
                 $res=false;
-                $errores->errorBBDD[] = "Ya has comentado en este producto.";
+                $errores->errorBBDD[] = "No se ha podido borrar carrito";
             }
         }else{
             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
@@ -137,7 +137,7 @@ function existeEnCarrito(&$errores){
             } 
             else{
                 $res=false;
-                $errores->errorBBDD[] = "Ya has comentado en este producto.";
+                $errores->errorBBDD[] = "Ya existe en el carrito";
             }
         }else{
             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
@@ -185,13 +185,13 @@ function existeEnCarrito(&$errores){
                 $ret = $stmt->rowCount();
                 if ($ret == 1) {
                     
-
                     $respuesta = true;
-                    //Añadimos datos que nos faltan para el usuario dentro del servidor.
+                    sumarComentario($errores);
+                    
                 } else {
 
 
-                    $errores->errorBBDD[] = "No se ha registrado correctamente";
+                    $errores->errorBBDD[] = "No se ha agregado comentario correctamente";
                 }
             } else {
 
@@ -210,7 +210,47 @@ function existeEnCarrito(&$errores){
     }
     return $respuesta;
 }
+function sumarComentario(&$errores){
+   
+        $ret = false;
+        $sql = "UPDATE `producto` SET comentarios_totales=comentarios_totales +1, valoracion_total=(valoracion_total + :valoracion) where ID_Producto= :producto";
+        $data = [
+            'valoracion' =>  $_SESSION["datos"]["estrellasEscogidas"],
+            'producto' =>   $_SESSION["datos"]["IDproducto"]
+        ];
+        try {
+            $pdo = conectar();
+            $stmt = $pdo->prepare($sql);
+            
 
+            if ($stmt->execute($data)) {
+                $ret = $stmt->rowCount();
+                if ($ret == 1) {
+                    
+                    $respuesta = true;
+                    
+                } else {
+
+
+                    $errores->errorBBDD[] = "No se ha agregado comentario correctamente";
+                }
+            } else {
+
+                $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
+            }
+        }
+
+        //Else por si hay algún error
+        catch (PDOException $ex) {
+            /**En caso de haber excepción será atrapada por el catch*/
+            
+            //Usarlo si es necesario.
+            $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
+            echo json_encode($_SESSION["ErrorDepuracion"]);
+        };
+    
+    return $respuesta;
+}
 /**
  * Esta función agrega producto al carrito.
  * @param [<Object>] $errores se insertarán los posible errores.
@@ -251,8 +291,7 @@ function agregarCarrito(&$errores){
                     //Añadimos datos que nos faltan para el usuario dentro del servidor.
                 } else {
                     
-
-                    $errores->errorBBDD[] = "No se ha registrado correctamente";
+                    $errores->errorBBDD[] = "No se ha agregado carrito correctamente";
                 }
             } else {
                 
@@ -357,7 +396,7 @@ function modificarCarrito(&$errores){
                 } else {
                     
 
-                    $errores->errorBBDD[] = "No se ha registrado correctamente";
+                    $errores->errorBBDD[] = "No se ha  podido modificar carrito";
                 }
             } else {
                 
@@ -406,7 +445,7 @@ function recuperarRoles(&$errores){
                  
              }
              else{
-                 $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
+                 $errores->errorBBDD[] = "No se ha podido recuperar roles";
              }
              
          }else{
@@ -437,7 +476,6 @@ function recuperarRoles(&$errores){
 function recuperarUsuariosGlobal(&$errores){
    
     $array=[];
-     $usuario= $_SESSION["datosUsuario"]["usuario"];
      //Sentencia sql para conseguir los datos del usuario que deseamos usar.
      $sql = "select * from usuario";
      try {
@@ -468,7 +506,7 @@ function recuperarUsuariosGlobal(&$errores){
                  
              }
              else{
-                 $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
+                 $errores->errorBBDD[] = "No se ha podido recuperar Usuario";
              }
              
          }else{
@@ -820,7 +858,7 @@ function recuperarPedidosUsuario(&$errores){
                 }
             }
             else{
-                $errores->errorBBDD[] = "No hay Permisos";
+                $errores->errorBBDD[] = "No hay Pedidos";
             }
         }
         else{
@@ -926,7 +964,7 @@ function enviosAgricultor(&$errores) {
                 }
             }
             else{
-                $errores->errorBBDD[] = "No hay Permisos";
+                $errores->errorBBDD[] = "No hay envios pendientes";
             }
         }
         else{
@@ -980,7 +1018,7 @@ function enviosGlobal(&$errores) {
                 }
             }
             else{
-                $errores->errorBBDD[] = "No hay Permisos";
+                $errores->errorBBDD[] = "No hay envíos.";
             }
         }
         else{
@@ -1022,7 +1060,7 @@ function comprobarRol(&$errores){
                 
             }
             else{
-                $errores->errorBBDD[] = "No hay Permisos";
+                $errores->errorBBDD[] = "No se ha podido comprobar rol";
             }
         }
         else{
@@ -1071,7 +1109,7 @@ function recuperarPedidos(&$errores)
                 }
             }
             else{
-                $errores->errorBBDD[] = "No hay Permisos";
+                $errores->errorBBDD[] = "No hay pedidos";
             }
         }
         else{
@@ -1417,7 +1455,7 @@ function modificarComentariosGlobal(&$errores){
                 
             }
             else{
-                $errores->errorBBDD[] = "No se pudo hacer modificaciones";
+                $errores->errorBBDD[] = "No se pudo modificar comentarios";
             }
             
         }else{
@@ -1468,7 +1506,7 @@ function modificarComentariosPropio(&$errores){
                 
             }
             else{
-                $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
+                $errores->errorBBDD[] = "No se ha podido modificar comentarios";
             }
             
         }else{
@@ -1589,7 +1627,7 @@ function existeAccion(&$errores)
                     $session= $clase;
              }
              else{
-                 $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
+                 $errores->errorBBDD[] = "No se puede recuperar usuario";
              }
              
          }else{
@@ -1643,7 +1681,7 @@ function existeAccion(&$errores)
                  $session->exito="Conseguido";
              }
              else{
-                 $errores->errorBBDD[] = "Usuario o contraseña incorrectos";
+                 $errores->errorBBDD[] = "No se puede cambiar contraseña";
              }
              
          }else{

@@ -22,12 +22,14 @@
                 <label for="usuario">Usuario</label>
                 <input type="text" name="usuario" id="usuario" required minlength="4" maxlength="25"
                 pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
-                title="Usuario no válido">
+                title="Usuario no válido" placeholder="Minimo 4 carácteres">
+                <small><img src="../../Recursos/Imagenes/informacion.webp" alt="icono que avisa de informacion" id="iconoInformacion">Usuario con el que se registro</small>
                 <span id="errorU"></span>
                 <label for="pass">Contraseña</label>
                 <input type="password" name="pass" id="pass" required minlength="4" maxlength="25"
                 pattern="(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*null)(?!.*[\*=\$\&\|\(\)])(^.{4,25}$)"
-                title="Contraseña no válida">
+                title="Contraseña no válida" placeholder="Minimo 4 carácteres">
+                <small><img src="../../Recursos/Imagenes/informacion.webp" alt="icono que avisa de informacion" id="iconoInformacion">Contraseña con la que se registro</small>
                 <span id="errorP"></span>
                 <input class="botonSubmit" type="submit" value="Iniciar Sesión">
                 <hr>

@@ -185,7 +185,7 @@ export function validarNumero(dato) {
   let respuesta=false;
   if(!isNaN(dato)){
     respuesta =true;
-  }else if(valor < 0){
+  }else if(dato < 0){
     respuesta =true;
   }
   return respuesta;
@@ -343,4 +343,16 @@ export function comprobarFecha(datoFecha){
             cadenaFecha="Pendiente";
         }
   return cadenaFecha;
+}
+
+export function comprobarTerminos(){
+  if(!localStorage.getItem("Terminos")){
+    const resultado=confirm("Esta web es un proyecto académico y recolectará imprescindible para el correcto funcionamiento de la página web ningún dato será compartido y se procederá a su eliminación una vez sea evaluado");
+    if(!resultado){
+    alert("Si no acepta no puede seguir con la visualización de la página")
+    window.location.reload();
+    }else{
+      localStorage.setItem("Terminos",true);
+    }
+}
 }

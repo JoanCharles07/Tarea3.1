@@ -10,12 +10,15 @@
 //Importaciones necesarias para el funcionamiento de controlador.js
 import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado, mostrarCantidadCarrito } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
-import { passIguales, recepcionDeDatosUsuario, datosUsuario, comprobarAccion, comprobarAccionModificacion, comprobarAccionEliminacion, cambiarPass, cerrarSesion, comprobarAgregar, comprobarMensaje } from "./controladorUsuario.js";
+import { passIguales, recepcionDeDatosUsuario, datosUsuario, comprobarAccion, comprobarAccionModificacion, comprobarAccionEliminacion, cambiarPass, cerrarSesion, comprobarAgregar } from "./controladorUsuario.js";
 import {
   activarZonaUsuario, recorrerTotalProducto, imprimirCarrito, imprimirCarritoVacio,
   imprimirDatosUsuarioCarrito, funcionalidadInicioSesion, imprimirIniciarSesion, cantidadDetalle, imprimirComentarios, imprimirFiltradoEstrellas,
   imprimirImagenesAzar, imprimirDetalleProducto, imprimirIgualdadPass, imprimirTodosResultados, imprimirProductos, mostrarResultadoBusqueda,
-  mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin, borrarDelCarrito, cantidadDetalleClase, imprimirNoticias, imprimirDatosUsuarioPerfil, exitoCambioPass, confirmarCompra
+  mostrarResultadoAside, imprimirConectadoRegistro, imprimirConectadoLogin, borrarDelCarrito, cantidadDetalleClase, imprimirNoticias, imprimirDatosUsuarioPerfil, exitoCambioPass, confirmarCompra,
+  exitoRegistro,
+  avisoComentario,
+  avisoInciarSesion
 } from "../Vistas/plantillasEspecificas.js";
 import { datosBorrarProducto, comprobarCarrito, objetoCarrito, datosLupa, datosFiltroLateral, recepcionDeDatosProducto, recepcionDeComentarios, recepcionDeFiltro, envioDeComentarios, finalizarCompra } from "./controladorProductos.js";
 import { agregar, eliminacion, lista, modificaciones, noticia } from "./controladorListasNoticias.js";
@@ -24,6 +27,7 @@ import { modificacionCorrecta } from "../Vistas/plantillaModificaciones.js";
 import { eliminacionCorrecta } from "../Vistas/plantillaBorrar.js";
 import { agregarCorrecto } from "../Vistas/plantillaAgregar.js";
 import { comprobarStockJSCarrito } from "../Modelo/funcionesProducto.js";
+import { comprobarTerminos } from "../Modelo/comprobaciones.js";
 
 
 
@@ -36,6 +40,7 @@ import { comprobarStockJSCarrito } from "../Modelo/funcionesProducto.js";
 function requerimientosComunes() {
   return new Promise((resolve, reject) => {
     try {
+      comprobarTerminos();
       //En estas dos promesosas nos aeguraremos de imprimir la cabezera de nuestra página(header/nav)
       const Promesa1 = imprimirCabezera();
       //Comprobue que tengamos en sessionStorage los productos
@@ -173,7 +178,7 @@ async function interaccionesControlador() {
               }
               //Si ha sido un exito rediccionaremos a tienda.html.
               else {
-                location.href = "./tienda.html";
+                exitoRegistro();
               }
             }
             //En caso de que no coincidan las contraseñas lo mostrará por pantalla.
@@ -219,7 +224,7 @@ async function interaccionesControlador() {
           })
         } catch (error) {
           //Por aquí veremos el error para depurar
-          //console.log(error);
+          
         }
 
 
@@ -233,7 +238,6 @@ async function interaccionesControlador() {
           //Conseguimos los datos del productoSelccionado
           recepcionDeDatosProducto().then((resultado) => {
             //Lo imprimimos
-            console.log(resultado);
             imprimirDetalleProducto(resultado);
             //Cambiamos datos del total si se utiliza el input de cantidad
             document.getElementById("cantidad").addEventListener("input", function () {
@@ -285,7 +289,7 @@ async function interaccionesControlador() {
                 if (respuesta.comentario) {
 
                   recepcionDeComentarios().then(respuesta => {
-
+                    sessionStorage.removeItem("productos");
                     imprimirComentarios(respuesta);
                   })
                 }
@@ -297,7 +301,8 @@ async function interaccionesControlador() {
               });
             }
             else {
-              console.log("Debes conectarte para comentar");
+              
+              avisoComentario();
             }
           });
           //Si no existe productoSeleccionado redireccionamos a tienda.html para que pueda conseguirlo
@@ -365,13 +370,17 @@ async function interaccionesControlador() {
                 //hacemos comprobaciones en php
                 finalizarCompra().then(respuesta => {
                   if (respuesta == "exito") {
-                    sessionStorage.removeItem("productos");
-                    sessionStorage.removeItem("carrito");
-                    sessionStorage.removeItem("productoSeleccionado");
+                    
                     confirmarCompra();
                   }
+                  else if(respuesta.invalido){
+                    alert("Hubo un error, Reinicie sesión");
+                    sessionStorage.clear();
+                    location.href="./tienda.html";
+                  }
                   else {
-                    //manejar errores
+                    imprimirTodosResultados(respuesta);
+                    //avisar de que ha habido algun error y luego reiniciar 
                   }
                 });
               } else {
@@ -380,6 +389,9 @@ async function interaccionesControlador() {
                 document.getElementById(sinStock[0]).style.border = "1px solid red";
                 document.getElementById(sinStock[0]).appendChild(errorStock);
               }
+            }
+            else{
+              avisoInciarSesion();
             }
 
 
@@ -648,11 +660,24 @@ async function interaccionesControlador() {
       else if (window.location.pathname.includes("contacto.html")) {
         document.getElementById("formulario").addEventListener("submit", function (e) {
           e.preventDefault();
-          comprobarMensaje();
+          emailjs.init('Y_PO8Sidn7vaOXCtg');
+          const btn = document.getElementById('boton');
+            e.preventDefault();
+               btn.value = 'Enviando...';
+            
+               const serviceID = 'default_service';
+               const templateID = 'template_p4rbqx2';
+            
+               emailjs.sendForm(serviceID, templateID,this)
+                .then(() => {
+                  btn.value = 'Enviar';
+                  alert('Su mensaje ha sido enviado en breve nos pondremos en contacto con usted');
+                }, (err) => {
+                  btn.value = 'Enviar';
+                  alert(JSON.stringify(err));
+                });
+        });
 
-        })
-
-        document.getElementById("opcion").style.display = "none";
       }
       /*********************************************************************************************************************************/
       /************************  ZONA PERFIL ******************************************************************************************/
