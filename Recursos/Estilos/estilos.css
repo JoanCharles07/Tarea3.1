@@ -3,6 +3,14 @@
     --color-texto: rgb(243, 219, 81);
     --color-fondo-hover: rgb(219, 111, 129);
     --color-texto-hover: black;
+    --color-fondo-oscuro: rgb(37, 35, 35);
+    --color-texto-oscuro:  rgb(216, 209, 209);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+      --color-fondo-oscuro: rgb(37, 35, 35);
+      --color-texto-oscuro:  rgb(216, 209, 209);
+    }
 }
 
 * {
@@ -21,6 +29,7 @@ body {
     background-size: 100vw 100vh;
    
 }
+
 a{
     text-decoration: none;
     color: var(--color-texto);
@@ -162,7 +171,7 @@ nav {
     z-index: 1;
 }
 
-#boton {
+.botonNAV {
     align-items: center;
     display: flex;
     height: 100%;
@@ -170,8 +179,7 @@ nav {
     width: 100%;
 }
 
-#boton a {
-    color: var(--color-texto);
+.botonNAV a {
     font-weight: bolder;
     height: 100%;
     padding: 10px;
@@ -183,7 +191,7 @@ nav {
 
 }
 
-#boton a:hover {
+.botonNAV a:hover {
     color: var(--color-texto-hover);
     background-color: var(--color-fondo-hover);
     font-weight: bolder;
@@ -295,30 +303,40 @@ footer ul li:hover{
 #aviso{
     width: 300px;
     height: 150px;
-    background-color: var(--color-fondo);
-    color:var(--color-texto);
+    /*background-color: var(--color-fondo);
+    color:var(--color-texto);*/
     font-size: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-}
-#aviso{
     padding: 10px;
 }
+
 
 #exito{
     width: 300px;
     height: 150px;
-    background-color: var(--color-fondo);
-    color:var(--color-texto);
+    /*background-color: var(--color-fondo);
+    color:var(--color-texto);*/
     font-size: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-}
-#exito p{
     padding: 10px;
 }
 
+.oscuro{
+    background-color:var(--color-fondo-oscuro) !important;
+    color: var(--color-texto-oscuro) !important;
+    background-image: none;
+}
+.oscuro:hover{
+    
+    color: var(--color-texto) !important;
+}
+.claro{
+    background-color: var(--color-fondo);
+    color:var(--color-texto);
+}

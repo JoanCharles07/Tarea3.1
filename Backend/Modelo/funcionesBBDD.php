@@ -99,10 +99,6 @@ function borrarCarritoCompleto(&$errores){
             if ($res != 0) {
                 $res=true;
             } 
-            else{
-                $res=false;
-                $errores->errorBBDD[] = "No se ha podido borrar carrito";
-            }
         }else{
             $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
         }

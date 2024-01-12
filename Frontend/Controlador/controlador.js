@@ -239,6 +239,7 @@ async function interaccionesControlador() {
           recepcionDeDatosProducto().then((resultado) => {
             //Lo imprimimos
             imprimirDetalleProducto(resultado);
+            
             //Cambiamos datos del total si se utiliza el input de cantidad
             document.getElementById("cantidad").addEventListener("input", function () {
               cantidadDetalle();
@@ -745,7 +746,41 @@ async function interaccionesControlador() {
 
         }
       }
+
+     //Al final comprobamos si hay modo oscuro
+      
+    }).then( ()=>{
+      if(localStorage.getItem("oscuro")){
+        let elementosDOM=document.body.getElementsByTagName("*");
+        for(let i=0;i<elementosDOM.length;i++){
+         
+          elementosDOM[i].classList.toggle('oscuro');
+          
+        }
+        document.body.classList.toggle('oscuro');
+      }
     });
+    /*********************************************************************************************************************************/
+      /************************  ZONA ACCESIBILIDAD ******************************************************************************************/
+      /******************************************************************************************************************************* */
+      function modoOscuro(){
+        let elementosDOM=document.body.getElementsByTagName("*");
+        for(let i=0;i<elementosDOM.length;i++){
+         
+          elementosDOM[i].classList.toggle('oscuro');
+          
+        }
+        document.body.classList.toggle('oscuro');
+        if(localStorage.getItem("oscuro")){
+          localStorage.removeItem("oscuro");
+        }
+        else{
+          localStorage.setItem("oscuro",true);
+        }
+      }
+
+      
+      document.getElementById("modoOscuro").addEventListener("click",modoOscuro);  
 }
 interaccionesControlador();
 

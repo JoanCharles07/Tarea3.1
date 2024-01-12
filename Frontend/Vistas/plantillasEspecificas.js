@@ -37,7 +37,7 @@ export function imprimirImagenesAzar() {
  * @param {Object} producto contiene los datos de nuestro producto escogido
  */
 export function imprimirDetalleProducto(producto) {
-  
+
   const texto = `
       <div id="imagen" class="imagenProducto">
       <img src="data:image/webp;base64,${producto["imagen"]}" class ="producto">
@@ -63,21 +63,21 @@ export function imprimirDetalleProducto(producto) {
           <div id="numeroComentarios" class="flex">
           
               <p>Comentarios: <span id="comentariosTotal">${producto["comentariosTotales"]}</span></p><br>
-              <p>Valoración media: <span id="comentariosTotal">${producto["valoracionTotal"]/producto["comentariosTotales"]}</span></p>
+              <p>Valoración media: <span id="comentariosTotal">${producto["valoracionTotal"] / producto["comentariosTotales"]}</span></p>
           </div>
 
       </div>
       `;
   //<img src="../../Recursos/Imagenes/${producto["valoracionTotal"]}estrellas.webp" id="valoracionTotal" alt="Valoracion">
   document.getElementById("container_producto").innerHTML = texto;
-  const stock=document.getElementById("stock");
-  const imagenStock=document.getElementById("imagenStock");
-  if(producto.stock==0){
-    imagenStock.className="stockRojo";
-    stock.textContent="Sin Stock";
-  }else{
-    imagenStock.className="stockVerde";
-    stock.textContent="En Stock";
+  const stock = document.getElementById("stock");
+  const imagenStock = document.getElementById("imagenStock");
+  if (producto.stock == 0) {
+    imagenStock.className = "stockRojo";
+    stock.textContent = "Sin Stock";
+  } else {
+    imagenStock.className = "stockVerde";
+    stock.textContent = "En Stock";
   }
 }
 /**
@@ -105,8 +105,15 @@ function paginaProducto(clase) {
 */
 export function mostrarResultadoBusqueda(resultado) {
   todosDisplay(false);
-  for (let id of resultado) {
-    document.getElementById(id).style.display = "flex";
+  if (resultado.length == 0) {
+    sinResultados();
+  }
+  else {
+    let div = document.getElementById("ninguno");
+    div.style.display="none";
+    for (let id of resultado) {
+      document.getElementById(id).style.display = "flex";
+    }
   }
 }
 /**
@@ -118,12 +125,22 @@ export function mostrarResultadoBusqueda(resultado) {
 export function mostrarResultadoAside(resultado, contador) {
   if (contador == 0) {
     todosDisplay(true);
+    let div = document.getElementById("ninguno");
+      div.style.display="none";
   }
   else {
     todosDisplay(false);
-    for (let id of resultado) {
-      document.getElementById(id).style.display = "flex";
+    if (resultado.length == 0) {
+      sinResultados();
     }
+    else{
+      let div = document.getElementById("ninguno");
+      div.style.display="none";
+      for (let id of resultado) {
+        document.getElementById(id).style.display = "flex";
+      }
+    }
+    
   }
 
 
@@ -165,12 +182,13 @@ export function imprimirProductos() {
           <img src="data:image/webp;base64,${producto["imagen"]}" class="productos"></img>
           <p>${producto["nombre_producto"]} €/kilo</p>
           <p>${producto["precio"]} €/kilo</p>
-          ${producto["descuento"] > 0 ? '<span id="oferta">¡OFERTA!</span>':''}
+          ${producto["descuento"] > 0 ? '<span id="oferta">¡OFERTA!</span>' : ''}
           </div>`;
     }
   }
-  seccion.innerHTML = texto;
-
+  seccion.innerHTML += texto;
+  let div = document.getElementById("ninguno");
+  div.style.display="none";
   //Damos funcionalidad a los productos
   paginaProducto("producto");
 
@@ -242,32 +260,38 @@ export function imprimirIgualdadPass(resultado) {
   }
 }
 
-export function exitoCambioPass(datosServidor) {
-  let main = document.getElementById("main");
-  main.style.gridTemplateColumns="1fr";
-  main.innerHTML = `<div id="vacio"><p>Se ha realizado el cambio de contraseña correctamente</p></div>`;
+export function sinResultados() {
+  let div = document.getElementById("ninguno");
+  div.style.display="flex";
+  
+
+
+}
+export function exitoCambioPass() {
+  let section = document.getElementById("containerProductos");
+  section.innerHTML = `<div id="vacio"><p>Se ha realizado el cambio de contraseña correctamente</p></div>`;
   const intervalID = setInterval(function () {
-    
-      location.href="./tienda.html";
+
+    location.href = "./tienda.html";
   }, 1500);
 
 }
 
 export function exitoRegistro() {
   let main = document.getElementById("main");
-  main.style.gridTemplateColumns="1fr";
+  main.style.gridTemplateColumns = "1fr";
   main.innerHTML = `<div id="exito"><p>Se ha registrado correctamente</p></div>`;
-  /*const intervalID = setInterval(function () {
+  const intervalID = setInterval(function () {
     
       location.href="./tienda.html";
-  }, 1500);*/
+  }, 1500);
 
 }
-export function avisoComentario(){
-  let span=document.createElement("span");
-  span.textContent="Debes de estar conectado para comentar";
-  span.style.border="3px solid red";
-  let form=document.getElementById("formEnvioComentario");
+export function avisoComentario() {
+  let span = document.createElement("span");
+  span.textContent = "Debes de estar conectado para comentar";
+  span.style.border = "3px solid red";
+  let form = document.getElementById("formEnvioComentario");
   form.appendChild(span);
 
 }
@@ -331,9 +355,9 @@ export function imprimirComentarios(datos) {
 
     container.innerHTML = comentario;
   }
-  
 
-  
+
+
 }
 /**
  * Esta función se encargaá de mostrarnos el precio de nuestro producto según alteremos la cantidad que queremos comprar.
@@ -379,7 +403,7 @@ export function recorrerTotalProducto() {
  */
 export function recorrerTotalProductoAlterado(producto) {
 
-  
+
   let totalPedido = document.getElementById("totalPedido");
   let totalIVA = document.getElementById("totalIva");
   let sumaTotal = 0;
@@ -484,7 +508,7 @@ export function imprimirDatosUsuarioCarrito(datos) {
   <button id="modificar" class="botonesProducto">Modificar datos</button>
   `;
   document.getElementById("datosUsuario").innerHTML = texto;
-  
+
 
 
 }
@@ -508,7 +532,7 @@ export function imprimirDatosUsuarioPerfil(datos) {
   <button id="eliminar" class="botonesProducto">Darse de baja</button>
   `;
   document.getElementById("datosUsuario").innerHTML = texto;
-  
+
 
 }
 /**
@@ -606,26 +630,26 @@ export function imprimirNoticias(noticias) {
 /**
  * Nos  informará de que el pedido se ha realizado correctamente.
  */
-export function confirmarCompra(){
+export function confirmarCompra() {
   let main = document.getElementById("main");
   main.innerHTML = `<div id="exito"><p>Se ha realizado el pedido en breve le llegará</p></div>`;
-  main.classList='carritoFinalizado';
+  main.classList = 'carritoFinalizado';
   const intervalID = setInterval(function () {
-      //Borramos productos para que se actualizen los datos si productos fuera alterado, por no complicar mas el codigo
-      sessionStorage.removeItem("productos");
-                    sessionStorage.removeItem("carrito");
-                    sessionStorage.removeItem("productoSeleccionado");
-      
-      location.href="./listas.html?eleccion=Historial";
+    //Borramos productos para que se actualizen los datos si productos fuera alterado, por no complicar mas el codigo
+    sessionStorage.removeItem("productos");
+    sessionStorage.removeItem("carrito");
+    sessionStorage.removeItem("productoSeleccionado");
+
+    location.href = "./listas.html?eleccion=Historial";
   }, 1500);
 
 }
 
-export function avisoInciarSesion(){
-  const containerInicio=document.getElementById("inicioSesion");
-  const parrafo=document.createElement("span");
-  containerInicio.style.border="3px solid red";
-  containerInicio.style.padding="5px";
-  parrafo.textContent="Inicie sesión si desea comprar";
+export function avisoInciarSesion() {
+  const containerInicio = document.getElementById("inicioSesion");
+  const parrafo = document.createElement("span");
+  containerInicio.style.border = "3px solid red";
+  containerInicio.style.padding = "5px";
+  parrafo.textContent = "Inicie sesión si desea comprar";
   containerInicio.appendChild(parrafo);
 }

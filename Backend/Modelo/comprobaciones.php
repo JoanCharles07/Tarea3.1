@@ -278,9 +278,6 @@ function comprobacionCompra($productos,&$errores)
             if ($respuesta[$i]->id == $productos[$j][0]) {
                 //se calcula si hay descuento y luego se multiplica la cantidad
                 $precioBBDD = number_format($respuesta[$i]->precio * $productos[$j][2], 2);
-                echo $precioBBDD;
-                echo "+";
-                echo  $productos[$j][1] * $productos[$j][2];
                 if (($precioBBDD != $productos[$j][3]) || $precioBBDD!= number_format($productos[$j][1] * $productos[$j][2],2)) {
                     $errores->invalido = "No coinciden importes";
                     $correcto = false;

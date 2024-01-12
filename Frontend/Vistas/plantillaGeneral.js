@@ -33,7 +33,7 @@ function imprimirCabezera() {
                 <li> 
                     <img id="accesibilidad" class="iconosHeader" src="../../Recursos/Imagenes/accesibilidad.webp" alt="">
                     <ul id="lista2">
-                        <li class="listaIconos">texto texto largo largo</li>
+                        <li class="listaIconos" id="modoOscuro">Modo Oscuro</li>
                         <li class="listaIconos">texto</li>
                         <li class="listaIconos">texto</li>
                         <li class="listaIconos">texto</li>
@@ -46,10 +46,10 @@ function imprimirCabezera() {
 
             let nav = `
             
-            <div id="boton"><a href="tienda.html">Tienda</a></div>
-            <div id="boton"><a href="sobrenosotros.html">Sobre nosotros</a></div>
-            <div id="boton"><a href="noticias.html">Noticias</a></div>
-            <div id="boton"><a href="contacto.html">Contacto</a></div>
+            <div  class="claro botonNAV"><a href="tienda.html">Tienda</a></div>
+            <div  class="claro botonNAV"><a href="sobrenosotros.html">Sobre nosotros</a></div>
+            <div  class="claro botonNAV"><a href="noticias.html">Noticias</a></div>
+            <div  class="claro botonNAV"><a href="contacto.html">Contacto</a></div>
            
             `;
             let footer = `
@@ -63,8 +63,8 @@ function imprimirCabezera() {
         <ul>
             <h2>Información Relevante</h2>
             <li><a href="./proyectoEducativo.html">Aviso Legal</a></li>
-            <li><a href="./proyectoEducativo.html">Atribuciones</a></li>
-            <li><a href="./proyectoEducativo.html">Licencia</a></li>
+            <li><a href="./atribuciones.html">Atribuciones</a></li>
+            <li><a href="./licencia.html">Licencia</a></li>
         </ul>
         <ul>
             <h2>Como funcionamos</h2>

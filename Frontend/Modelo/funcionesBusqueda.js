@@ -19,11 +19,9 @@ export function resultadoBusqueda() {
     let resultado = []
     let datos = JSON.parse(sessionStorage.getItem("productos"));
     palabraBuscador = palabraPreparada(palabraBuscador);
-    console.log("Palabra " + palabraBuscador );
     for (let dato of datos) {
         let palabraArray = palabraPreparada(dato.nombre_producto);
         
-         console.log("Palabra Array" + palabraArray );
         if (palabraArray.includes(palabraBuscador)) {
             resultado.push(dato.id);
         }
