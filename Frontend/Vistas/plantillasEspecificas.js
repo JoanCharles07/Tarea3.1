@@ -37,7 +37,11 @@ export function imprimirImagenesAzar() {
  * @param {Object} producto contiene los datos de nuestro producto escogido
  */
 export function imprimirDetalleProducto(producto) {
+  let resultado=producto["valoracionTotal"] / producto["comentariosTotales"];
 
+  if(isNaN(resultado)){
+    resultado=0;
+  }
   const texto = `
       <div id="imagen" class="imagenProducto">
       <img src="data:image/webp;base64,${producto["imagen"]}" class ="producto">
@@ -63,7 +67,7 @@ export function imprimirDetalleProducto(producto) {
           <div id="numeroComentarios" class="flex">
           
               <p>Comentarios: <span id="comentariosTotal">${producto["comentariosTotales"]}</span></p><br>
-              <p>Valoración media: <span id="comentariosTotal">${producto["valoracionTotal"] / producto["comentariosTotales"]}</span></p>
+              <p>Valoración media: <span id="comentariosTotal">${resultado}</span></p>
           </div>
 
       </div>
@@ -280,7 +284,7 @@ export function exitoCambioPass() {
 export function exitoRegistro() {
   let main = document.getElementById("main");
   main.style.gridTemplateColumns = "1fr";
-  main.innerHTML = `<div id="exito"><p>Se ha registrado correctamente</p></div>`;
+  main.innerHTML = `<div id="exito" class="claro"><p>Se ha registrado correctamente</p></div>`;
   const intervalID = setInterval(function () {
     
       location.href="./tienda.html";
@@ -632,7 +636,7 @@ export function imprimirNoticias(noticias) {
  */
 export function confirmarCompra() {
   let main = document.getElementById("main");
-  main.innerHTML = `<div id="exito"><p>Se ha realizado el pedido en breve le llegará</p></div>`;
+  main.innerHTML = `<div id="exito" class="claro"><p>Se ha realizado el pedido en breve le llegará</p></div>`;
   main.classList = 'carritoFinalizado';
   const intervalID = setInterval(function () {
     //Borramos productos para que se actualizen los datos si productos fuera alterado, por no complicar mas el codigo

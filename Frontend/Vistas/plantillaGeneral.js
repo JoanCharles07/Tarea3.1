@@ -34,9 +34,8 @@ function imprimirCabezera() {
                     <img id="accesibilidad" class="iconosHeader" src="../../Recursos/Imagenes/accesibilidad.webp" alt="">
                     <ul id="lista2">
                         <li class="listaIconos" id="modoOscuro">Modo Oscuro</li>
-                        <li class="listaIconos">texto</li>
-                        <li class="listaIconos">texto</li>
-                        <li class="listaIconos">texto</li>
+                        <li class="listaIconos" id="aumentarFuente">Aumentar Fuente</li>
+                        <li class="listaIconos" id="disminuirFuente">Disminuir Fuente</li>
                     </ul>
                 </li>
                 <li><img id="carrito" src="../../Recursos/Imagenes/CarritoCompra.webp"  class="iconosHeader" alt="">
@@ -55,22 +54,22 @@ function imprimirCabezera() {
             let footer = `
             <ul>
             <h2>Conócenos</h2>
-            <li><a href="./tienda.html">Tienda</a></li>
-            <li><a href="./sobrenosotros.html">Sobre Nosotros</a></li>
-            <li><a href="./noticias.html">Noticias</a></li>
-            <li><a href="./contacto.html">Contacto</a></li>
+            <li class="listaFooter"><a href="./tienda.html">Tienda</a></li>
+            <li class="listaFooter"><a href="./sobrenosotros.html">Sobre Nosotros</a></li>
+            <li class="listaFooter"><a href="./noticias.html">Noticias</a></li>
+            <li class="listaFooter"> <a href="./contacto.html">Contacto</a></li>
         </ul>
         <ul>
             <h2>Información Relevante</h2>
-            <li><a href="./proyectoEducativo.html">Aviso Legal</a></li>
-            <li><a href="./atribuciones.html">Atribuciones</a></li>
-            <li><a href="./licencia.html">Licencia</a></li>
+            <li class="listaFooter"><a href="./proyectoEducativo.html">Aviso Legal</a></li>
+            <li class="listaFooter"><a href="./atribuciones.html">Atribuciones</a></li>
+            <li class="listaFooter"><a href="./licencia.html">Licencia</a></li>
         </ul>
         <ul>
             <h2>Como funcionamos</h2>
-            <li><a href="./contacto.html">Atención al cliente</a></li>
-            <li><a href="./proyectoEducativo.html">Políticas de Envío</a></li>
-            <li><a href="./proyectoEducativo.html">Métodos de pago</a></li>
+            <li class="listaFooter"><a href="./contacto.html">Atención al cliente</a></li>
+            <li class="listaFooter"><a href="./proyectoEducativo.html">Políticas de Envío</a></li>
+            <li class="listaFooter"><a href="./proyectoEducativo.html">Métodos de pago</a></li>
         </ul>
             `;
             document.getElementById("header").innerHTML = header;
@@ -90,6 +89,13 @@ function imprimirCabezera() {
  * Esta función dara direccionalidad a nuestras imagenes del header según la vista donde este, no afecta estar conectado.
  */
 function redireccionesBasicas() {
+    const footer=document.getElementsByClassName("listaFooter");
+    for(let i=0;i<footer.length;i++){
+        footer[i].addEventListener("click",function(){
+            const direccion=footer[i].children[0].href;
+            location.href=direccion;
+        });
+    }
     document.getElementById("logo").addEventListener("click", function () {
         location.href = "tienda.html";
     });

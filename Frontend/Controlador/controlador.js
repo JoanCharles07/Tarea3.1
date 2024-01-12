@@ -224,7 +224,7 @@ async function interaccionesControlador() {
           })
         } catch (error) {
           //Por aquí veremos el error para depurar
-          
+
         }
 
 
@@ -239,7 +239,7 @@ async function interaccionesControlador() {
           recepcionDeDatosProducto().then((resultado) => {
             //Lo imprimimos
             imprimirDetalleProducto(resultado);
-            
+
             //Cambiamos datos del total si se utiliza el input de cantidad
             document.getElementById("cantidad").addEventListener("input", function () {
               cantidadDetalle();
@@ -302,7 +302,7 @@ async function interaccionesControlador() {
               });
             }
             else {
-              
+
               avisoComentario();
             }
           });
@@ -371,13 +371,13 @@ async function interaccionesControlador() {
                 //hacemos comprobaciones en php
                 finalizarCompra().then(respuesta => {
                   if (respuesta == "exito") {
-                    
+
                     confirmarCompra();
                   }
-                  else if(respuesta.invalido){
+                  else if (respuesta.invalido) {
                     alert("Hubo un error, Reinicie sesión");
                     sessionStorage.clear();
-                    location.href="./tienda.html";
+                    location.href = "./tienda.html";
                   }
                   else {
                     imprimirTodosResultados(respuesta);
@@ -391,7 +391,7 @@ async function interaccionesControlador() {
                 document.getElementById(sinStock[0]).appendChild(errorStock);
               }
             }
-            else{
+            else {
               avisoInciarSesion();
             }
 
@@ -567,7 +567,7 @@ async function interaccionesControlador() {
 
         document.getElementById("formulario").addEventListener("submit", function (e) {
           e.preventDefault();
-          
+
           comprobarAccionModificacion().then(respuesta => {
             if (respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean") {
 
@@ -663,20 +663,20 @@ async function interaccionesControlador() {
           e.preventDefault();
           emailjs.init('Y_PO8Sidn7vaOXCtg');
           const btn = document.getElementById('boton');
-            e.preventDefault();
-               btn.value = 'Enviando...';
-            
-               const serviceID = 'default_service';
-               const templateID = 'template_p4rbqx2';
-            
-               emailjs.sendForm(serviceID, templateID,this)
-                .then(() => {
-                  btn.value = 'Enviar';
-                  alert('Su mensaje ha sido enviado en breve nos pondremos en contacto con usted');
-                }, (err) => {
-                  btn.value = 'Enviar';
-                  alert(JSON.stringify(err));
-                });
+          e.preventDefault();
+          btn.value = 'Enviando...';
+
+          const serviceID = 'default_service';
+          const templateID = 'template_p4rbqx2';
+
+          emailjs.sendForm(serviceID, templateID, this)
+            .then(() => {
+              btn.value = 'Enviar';
+              alert('Su mensaje ha sido enviado en breve nos pondremos en contacto con usted');
+            }, (err) => {
+              btn.value = 'Enviar';
+              alert(JSON.stringify(err));
+            });
         });
 
       }
@@ -747,40 +747,97 @@ async function interaccionesControlador() {
         }
       }
 
-     //Al final comprobamos si hay modo oscuro
-      
-    }).then( ()=>{
-      if(localStorage.getItem("oscuro")){
-        let elementosDOM=document.body.getElementsByTagName("*");
-        for(let i=0;i<elementosDOM.length;i++){
-         
-          elementosDOM[i].classList.toggle('oscuro');
-          
+
+
+    }).then(() => {
+      if (localStorage.getItem("oscuro")) {
+        let elementosDOM = document.body.getElementsByTagName("*");
+        for (let i = 0; i < elementosDOM.length; i++) {
+          if (elementosDOM[i].id != "imagenStock") {
+            elementosDOM[i].classList.toggle('oscuro');
+          }
         }
         document.body.classList.toggle('oscuro');
       }
-    });
-    /*********************************************************************************************************************************/
-      /************************  ZONA ACCESIBILIDAD ******************************************************************************************/
-      /******************************************************************************************************************************* */
-      function modoOscuro(){
-        let elementosDOM=document.body.getElementsByTagName("*");
-        for(let i=0;i<elementosDOM.length;i++){
-         
-          elementosDOM[i].classList.toggle('oscuro');
-          
-        }
-        document.body.classList.toggle('oscuro');
-        if(localStorage.getItem("oscuro")){
-          localStorage.removeItem("oscuro");
-        }
-        else{
-          localStorage.setItem("oscuro",true);
+      if(localStorage.getItem("Fuente")){
+        let valorFuente=parseInt(localStorage.getItem("Fuente"))*2;
+        let elementosDOM = document.body.getElementsByTagName("*");
+        
+        for (let i = 0; i < elementosDOM.length; i++) {
+          let propiedades = window.getComputedStyle(elementosDOM[i]);
+          let fuente = parseFloat(propiedades.getPropertyValue('font-size'));
+          fuente = fuente + valorFuente;
+          elementosDOM[i].style.fontSize = `${fuente}px`;
+
         }
       }
 
-      
-      document.getElementById("modoOscuro").addEventListener("click",modoOscuro);  
+    });
+  /*********************************************************************************************************************************/
+  /************************  ZONA ACCESIBILIDAD ******************************************************************************************/
+  /******************************************************************************************************************************* */
+  function modoOscuro() {
+    let elementosDOM = document.body.getElementsByTagName("*");
+    for (let i = 0; i < elementosDOM.length; i++) {
+      if (elementosDOM[i].id != "imagenStock") {
+        elementosDOM[i].classList.toggle('oscuro');
+
+      }
+    }
+    document.body.classList.toggle('oscuro');
+    if (localStorage.getItem("oscuro")) {
+      localStorage.removeItem("oscuro");
+    }
+    else {
+      localStorage.setItem("oscuro", true);
+    }
+  }
+
+
+  document.getElementById("modoOscuro").addEventListener("click", modoOscuro);
+  document.getElementById("aumentarFuente").addEventListener("click", function () {
+    if(localStorage.getItem("Fuente") ){
+      if (localStorage.getItem("Fuente") < 5) {
+        let valor = parseInt(localStorage.getItem("Fuente"));
+        
+        let elementosDOM = document.body.getElementsByTagName("*");
+        for (let i = 0; i < elementosDOM.length; i++) {
+          let propiedades = window.getComputedStyle(elementosDOM[i]);
+          let fuente = parseFloat(propiedades.getPropertyValue('font-size'));
+          fuente = fuente + 2;
+          elementosDOM[i].style.fontSize = `${fuente}px`;
+
+        }
+        localStorage.setItem("Fuente", valor + 1);
+      }
+    }
+    else if (!localStorage.getItem("Fuente")) {
+      localStorage.setItem("Fuente", 1);
+    }
+  });
+
+  document.getElementById("disminuirFuente").addEventListener("click", function () {
+    if(localStorage.getItem("Fuente") ){
+      if (localStorage.getItem("Fuente") > 0) {
+        let valor = parseInt(localStorage.getItem("Fuente"));
+        
+        let elementosDOM = document.body.getElementsByTagName("*");
+        for (let i = 0; i < elementosDOM.length; i++) {
+          let propiedades = window.getComputedStyle(elementosDOM[i]);
+          let fuente = parseFloat(propiedades.getPropertyValue('font-size'));
+          fuente = fuente - 2;
+          elementosDOM[i].style.fontSize = `${fuente}px`;
+
+        }
+        localStorage.setItem("Fuente", valor - 1);
+      }
+    }
+    else if (!localStorage.getItem("Fuente")) {
+      localStorage.setItem("Fuente", 0);
+    }
+
+  });
+  
 }
 interaccionesControlador();
 

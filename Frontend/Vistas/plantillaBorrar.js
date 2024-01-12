@@ -95,7 +95,7 @@ export function confirmarEliminacionPermisos(arrayDatos){
 
 export function eliminacionCorrecta(respuesta) {
     let main = document.getElementById("main");
-    main.innerHTML = `<div id="vacio"><p>Se ha realizado la eliminación</p></div>`;
+    main.innerHTML = `<div id="vacio" class="claro"><p>Se ha realizado la eliminación</p></div>`;
     if(respuesta.borradoUsuario){
         sessionStorage.removeItem("usuario");
     }
