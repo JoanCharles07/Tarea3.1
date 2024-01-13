@@ -47,27 +47,27 @@ export function imprimirDetalleProducto(producto) {
       <img src="data:image/webp;base64,${producto["imagen"]}" class ="producto">
       </div>
       <div id="detalles" >
-              <h2 id="nombreProducto">${producto["nombre"]}</h2>
+              <h2 id="nombreProducto" class="fuente">${producto["nombre"]}</h2>
               <div class="flex">
-                <span>${producto["descripcion"]}</span>
+                <span class="fuente">${producto["descripcion"]}</span>
               </div>
               <div id="containerPrecio" class="flex">
                   <div id="imagenStock"></div>
-                  <div id="stock"></div>
+                  <div id="stock" class="fuente"></div>
               </div>
-              <div class="flex"><p>Precio: <span id="precio">${producto["precio"]}</span> €/kilo</p></div>
+              <div class="flex"><p>Precio: <span id="precio" class="fuente">${producto["precio"]}</span> €/kilo</p></div>
               <div id="containerCantidad" class="flex">
-                  <label name="cantidad">Cantidad: </label>
+                  <label name="cantidad" class="fuente">Cantidad: </label>
                   <input type="number" name="cantidad" id="cantidad" class="inputCantidad">
-                  <p>Total: <span id="total"></span> €</p>
+                  <p>Total: <span id="total" class="fuente"></span> €</p>
               </div >
               <div id="error" class="flex"></div>
               <input type="button" name="validar" id="validar" value="Comprar" class="botonesProducto">
               
           <div id="numeroComentarios" class="flex">
           
-              <p>Comentarios: <span id="comentariosTotal">${producto["comentariosTotales"]}</span></p><br>
-              <p>Valoración media: <span id="comentariosTotal">${resultado}</span></p>
+              <p>Comentarios: <span id="comentariosTotal" class="fuente">${producto["comentariosTotales"]}</span></p><br>
+              <p>Valoración media: <span id="comentariosTotal" class="fuente">${resultado}</span></p>
           </div>
 
       </div>
@@ -182,10 +182,10 @@ export function imprimirProductos() {
 
   if (productos != null) {
     for (const producto of productos) {
-      texto += `<div class="producto" id=${producto["id"]}>
+      texto += `<div class="producto fuente" id=${producto["id"]}>
           <img src="data:image/webp;base64,${producto["imagen"]}" class="productos"></img>
-          <p>${producto["nombre_producto"]} €/kilo</p>
-          <p>${producto["precio"]} €/kilo</p>
+          <p class="fuente">${producto["nombre_producto"]} €/kilo</p>
+          <p class="fuente">${producto["precio"]} €/kilo</p>
           ${producto["descuento"] > 0 ? '<span id="oferta">¡OFERTA!</span>' : ''}
           </div>`;
     }
@@ -273,7 +273,7 @@ export function sinResultados() {
 }
 export function exitoCambioPass() {
   let section = document.getElementById("containerProductos");
-  section.innerHTML = `<div id="vacio"><p>Se ha realizado el cambio de contraseña correctamente</p></div>`;
+  section.innerHTML = `<div id="vacio"><p class="fuente">Se ha realizado el cambio de contraseña correctamente</p></div>`;
   const intervalID = setInterval(function () {
 
     location.href = "./tienda.html";
@@ -284,7 +284,7 @@ export function exitoCambioPass() {
 export function exitoRegistro() {
   let main = document.getElementById("main");
   main.style.gridTemplateColumns = "1fr";
-  main.innerHTML = `<div id="exito" class="claro"><p>Se ha registrado correctamente</p></div>`;
+  main.innerHTML = `<div id="exito" class="claro"><p class="fuente">Se ha registrado correctamente</p></div>`;
   const intervalID = setInterval(function () {
     
       location.href="./tienda.html";
@@ -339,12 +339,12 @@ export function imprimirComentarios(datos) {
       comentario += `<div class="comentario"><div id="parteSuperiorComentario" class="parteSuperiorComentario">
         <div class="zonanombre">
         <img src="../../Recursos/Imagenes/usuarioAnonimo.webp" alt="imagen de usuario estandar" id="imagenUsuario">
-        <p id="nombreUsuario">${dato.nombre_comprador}</p>
+        <p id="nombreUsuario" class="fuente">${dato.nombre_comprador}</p>
         </div>
         <img src="../../Recursos/Imagenes/${dato.valoracion}estrellas.webp" alt="valoración" class="${dato.valoracion}_Estrellas">
         </div>
-        <p>${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}</p>
-        <p>${dato.mensaje}</p>
+        <p class="fuente">${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}</p>
+        <p class="fuente">${dato.mensaje}</p>
        
         </div>`;
 
@@ -353,8 +353,8 @@ export function imprimirComentarios(datos) {
   }
   else {
     let comentario = `<div class="sinComentarios"> 
-      <p class="sinComentario">NO HAY COMENTARIOS TODAVIA</p>
-      <p class="sinComentario">¡SE EL PRIMERO EN HACERLO!</p>
+      <p class="sinComentario" class="fuente">NO HAY COMENTARIOS TODAVIA</p>
+      <p class="sinComentario" class="fuente">¡SE EL PRIMERO EN HACERLO!</p>
       </div>`;
 
     container.innerHTML = comentario;
@@ -500,15 +500,15 @@ export function funcionalidadCompra() {
 export function imprimirDatosUsuarioCarrito(datos) {
   let texto = `
   <h2>Datos de Envio</h2>
-  <div><span>Nombre:</span><span id="nombre" class="textoDatos">${datos.nombre}</span></div>
-  <div><span >Apellidos: </span><span id="Apellidos" class="textoDatos">${datos.apellido}</span></div>
-  <div><span >Usuario: </span><span id="ciudad" class="textoDatos">${datos.nickname}</span></div>
-  <div><span >Dirección: </span><span id="direccion" class="textoDatos">${datos.direccion}</span></div>
-  <div><span >Provincia: </span><span id="provincia" class="textoDatos">${datos.provincia}</span></div>
-  <div><span >Ciudad: </span><span id="ciudad" class="textoDatos">${datos.ciudad}</span></div>
-  <div><span>Código Postal: </span><span id="cpostal" class="textoDatos">${datos.cpostal}</span></div>
-  <div><span>Email: </span><span id="email" class="textoDatos">${datos.email}</span></div>
-  <div><span>DNI: </span><span id="dni" class="textoDatos">${datos.dni}</span></div>
+  <div><span  class="fuente">Nombre:</span><span id="nombre" class="textoDatos fuente">${datos.nombre}</span></div>
+  <div><span  class="fuente">Apellidos: </span><span id="Apellidos" class="textoDatos fuente">${datos.apellido}</span></div>
+  <div><span  class="fuente">Usuario: </span><span id="ciudad" class="textoDatos fuente">${datos.nickname}</span></div>
+  <div><span  class="fuente">Dirección: </span><span id="direccion" class="textoDatos fuente">${datos.direccion}</span></div>
+  <div><span  class="fuente">Provincia: </span><span id="provincia" class="textoDatos fuente">${datos.provincia}</span></div>
+  <div><span  class="fuente">Ciudad: </span><span id="ciudad" class="textoDatos fuente">${datos.ciudad}</span></div>
+  <div><span class="fuente">Código Postal: </span><span id="cpostal" class="textoDatos fuente">${datos.cpostal}</span></div>
+  <div><span class="fuente">Email: </span><span id="email" class="textoDatos fuente">${datos.email}</span></div>
+  <div><span class="fuente">DNI: </span><span id="dni" class="textoDatos fuente">${datos.dni}</span></div>
   <button id="modificar" class="botonesProducto">Modificar datos</button>
   `;
   document.getElementById("datosUsuario").innerHTML = texto;
@@ -522,15 +522,15 @@ export function imprimirDatosUsuarioCarrito(datos) {
 export function imprimirDatosUsuarioPerfil(datos) {
   let texto = `
   <h2>Datos de Usuario</h2>
-  <div><span>Nombre:</span><span id="nombre" class="textoDatos">${datos.nombre}</span></div>
-  <div><span >Apellidos: </span><span id="Apellidos" class="textoDatos">${datos.apellido}</span></div>
-  <div><span >Usuario: </span><span id="ciudad" class="textoDatos">${datos.nickname}</span></div>
-  <div><span >Dirección: </span><span id="direccion" class="textoDatos">${datos.direccion}</span></div>
-  <div><span >Provincia: </span><span id="provincia" class="textoDatos">${datos.provincia}</span></div>
-  <div><span >Ciudad: </span><span id="ciudad" class="textoDatos">${datos.ciudad}</span></div>
-  <div><span>Código Postal: </span><span id="cpostal" class="textoDatos">${datos.cpostal}</span></div>
-  <div><span>Email: </span><span id="email" class="textoDatos">${datos.email}</span></div>
-  <div><span>DNI: </span><span id="dni" class="textoDatos">${datos.dni}</span></div>
+  <div><span  class="fuente">Nombre:</span><span id="nombre" class="textoDatos fuente">${datos.nombre}</span></div>
+  <div><span  class="fuente">Apellidos: </span><span id="Apellidos" class="textoDatos fuente">${datos.apellido}</span></div>
+  <div><span  class="fuente">Usuario: </span><span id="ciudad" class="textoDatos fuente">${datos.nickname}</span></div>
+  <div><span  class="fuente">Dirección: </span><span id="direccion" class="textoDatos fuente">${datos.direccion}</span></div>
+  <div><span  class="fuente">Provincia: </span><span id="provincia" class="textoDatos fuente">${datos.provincia}</span></div>
+  <div><span  class="fuente">Ciudad: </span><span id="ciudad" class="textoDatos fuente">${datos.ciudad}</span></div>
+  <div><span class="fuente">Código Postal: </span><span id="cpostal" class="textoDatos fuente">${datos.cpostal}</span></div>
+  <div><span class="fuente">Email: </span><span id="email" class="textoDatos fuente">${datos.email}</span></div>
+  <div><span class="fuente">DNI: </span><span id="dni" class="textoDatos fuente">${datos.dni}</span></div>
   <button id="modificar" class="botonesProducto">Modificar datos</button>
   <button id="sesion" class="botonesProducto">Cerrar Sesión</button>
   <button id="eliminar" class="botonesProducto">Darse de baja</button>
@@ -590,9 +590,9 @@ export function imprimirCarrito() {
     let texto = `<div class="datosProducto" id="${producto["id"]}">
           <img src="data:image/webp;base64,${producto["imagen"]}"  alt="" class="productos">
           <input type="number" name="" id="cantidad${contador}" class="inputCantidad" min="0" value="${producto["cantidad"]}">
-          <p class="idProducto"   id="precio${contador}" >${producto["precioInicial"]} <span>€</span></p>
-          <p>${producto["nombre"]}</p>
-          <p class="total" id="total${contador}">${producto["precioTotal"]} <span>€</span></p>
+          <p class="idProducto fuente"   id="precio${contador}" >${producto["precioInicial"]} <span class="fuente">€</span></p>
+          <p class="fuente">${producto["nombre"]}</p>
+          <p class="total fuente" id="total${contador}">${producto["precioTotal"]} <span class="fuente">€</span></p>
           <img src="../../Recursos/imagenes/x.png" id="cruz${contador}" class="iconosHeader cruz" alt="">
           </div>`;
     contador++;
@@ -615,14 +615,14 @@ export function imprimirNoticias(noticias) {
   for (let noticia of noticias) {
     texto = `<section class="noticia">
       <div class="containerTitulos">
-      <h2>${noticia.titulo}</h2>
-      <h3> ${noticia.subtitulo}</h3>
-      <p>${noticia.fecha}</p>
+      <h2 class="fuente">${noticia.titulo}</h2>
+      <h3 class="fuente"> ${noticia.subtitulo}</h3>
+      <p class="fuente">${noticia.fecha}</p>
   </div>
  
   <div class="containerNoticia">
       <img src="data:image/webp;base64,${noticia.imagen}" class="imagenNoticia" alt="">
-      <p class="textoNoticia">${noticia.cuerpo}</p>
+      <p class="textoNoticia fuente">${noticia.cuerpo}</p>
   </div>
   </section>`;
     containerNoticias.innerHTML += texto;
@@ -630,13 +630,14 @@ export function imprimirNoticias(noticias) {
   ;
 
 
+  console.log("Fin noticias");
 }
 /**
  * Nos  informará de que el pedido se ha realizado correctamente.
  */
 export function confirmarCompra() {
   let main = document.getElementById("main");
-  main.innerHTML = `<div id="exito" class="claro"><p>Se ha realizado el pedido en breve le llegará</p></div>`;
+  main.innerHTML = `<div id="exito" class="claro fuente"><p>Se ha realizado el pedido en breve le llegará</p></div>`;
   main.classList = 'carritoFinalizado';
   const intervalID = setInterval(function () {
     //Borramos productos para que se actualizen los datos si productos fuera alterado, por no complicar mas el codigo

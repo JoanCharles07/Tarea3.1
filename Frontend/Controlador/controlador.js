@@ -8,7 +8,7 @@
 
 
 //Importaciones necesarias para el funcionamiento de controlador.js
-import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado, mostrarCantidadCarrito } from "../Vistas/plantillaGeneral.js";
+import { imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado, mostrarCantidadCarrito, mantenerFuente } from "../Vistas/plantillaGeneral.js";
 import { comprobarProductos } from "./controladorInicial.js";
 import { passIguales, recepcionDeDatosUsuario, datosUsuario, comprobarAccion, comprobarAccionModificacion, comprobarAccionEliminacion, cambiarPass, cerrarSesion, comprobarAgregar } from "./controladorUsuario.js";
 import {
@@ -113,7 +113,7 @@ function requerimientosComunes() {
 async function interaccionesControlador() {
   //llamada a la primera función y si se completa seguiremos con el resto.
   requerimientosComunes()
-    .then(() => {
+    .then(async () => {
       /*********************************************************************************************************************************/
       /************************  ZONA TIENDA ******************************************************************************************/
       /******************************************************************************************************************************* */
@@ -265,7 +265,7 @@ async function interaccionesControlador() {
           imprimirImagenesAzar();
 
           //Comprobamos los comentarios y mostramos el resultado
-          recepcionDeComentarios().then(resultado => {
+          await recepcionDeComentarios().then(resultado => {
 
             imprimirComentarios(resultado);
             //Manejo del filtro de valoración que nos mostrará los comentarios según las estrellas que escojamos
@@ -409,7 +409,7 @@ async function interaccionesControlador() {
           //Siempre llamo a la base de datos o no?
 
           activarZonaUsuario();
-          datosUsuario().then(respuesta => {
+         await datosUsuario().then(respuesta => {
             imprimirDatosUsuarioCarrito(respuesta);
 
             document.getElementById("modificar").addEventListener("click", function (e) {
@@ -440,9 +440,9 @@ async function interaccionesControlador() {
       /************************  ZONA NOTICIAS ******************************************************************************************/
       /******************************************************************************************************************************* */
       else if (window.location.pathname.includes("noticias.html")) {
-        noticia().then(respuesta => {
-          imprimirNoticias(respuesta);
-
+        await noticia().then( respuesta => {
+           imprimirNoticias(respuesta);
+          
         });
       }
       /*********************************************************************************************************************************/
@@ -688,7 +688,7 @@ async function interaccionesControlador() {
           //Siempre llamo a la base de datos o no?
 
 
-          datosUsuario().then(respuesta => {
+         await datosUsuario().then(respuesta => {
             imprimirDatosUsuarioPerfil(respuesta);
             document.getElementById("modificar").addEventListener("click", function (e) {
               const arrayDatos = []
@@ -750,6 +750,7 @@ async function interaccionesControlador() {
 
 
     }).then(() => {
+      /**Esta parte es para mantener cambios anteriores */
       if (localStorage.getItem("oscuro")) {
         let elementosDOM = document.body.getElementsByTagName("*");
         for (let i = 0; i < elementosDOM.length; i++) {
@@ -759,18 +760,8 @@ async function interaccionesControlador() {
         }
         document.body.classList.toggle('oscuro');
       }
-      if(localStorage.getItem("Fuente")){
-        let valorFuente=parseInt(localStorage.getItem("Fuente"))*2;
-        let elementosDOM = document.body.getElementsByTagName("*");
-        
-        for (let i = 0; i < elementosDOM.length; i++) {
-          let propiedades = window.getComputedStyle(elementosDOM[i]);
-          let fuente = parseFloat(propiedades.getPropertyValue('font-size'));
-          fuente = fuente + valorFuente;
-          elementosDOM[i].style.fontSize = `${fuente}px`;
-
-        }
-      }
+      mantenerFuente();
+      
 
     });
   /*********************************************************************************************************************************/
@@ -795,49 +786,55 @@ async function interaccionesControlador() {
 
 
   document.getElementById("modoOscuro").addEventListener("click", modoOscuro);
-  document.getElementById("aumentarFuente").addEventListener("click", function () {
-    if(localStorage.getItem("Fuente") ){
-      if (localStorage.getItem("Fuente") < 5) {
-        let valor = parseInt(localStorage.getItem("Fuente"));
-        
-        let elementosDOM = document.body.getElementsByTagName("*");
-        for (let i = 0; i < elementosDOM.length; i++) {
-          let propiedades = window.getComputedStyle(elementosDOM[i]);
-          let fuente = parseFloat(propiedades.getPropertyValue('font-size'));
-          fuente = fuente + 2;
-          elementosDOM[i].style.fontSize = `${fuente}px`;
 
-        }
+  function cambioFuente(simbolo) {
+    
+    let elementosDOM = document.body.getElementsByClassName("fuente");
+
+    for (let i = 0; i < elementosDOM.length; i++) {
+      let propiedades = window.getComputedStyle(elementosDOM[i]);
+      let fuente = parseFloat(propiedades.getPropertyValue('font-size'));
+      if (simbolo == "suma") {
+
+        fuente = fuente + 2;
+      } else if(simbolo == "resta"){
+        fuente = fuente - 2;
+      }
+      elementosDOM[i].style.fontSize = `${fuente}px`;
+
+    }
+  }
+
+  document.getElementById("aumentarFuente").addEventListener("click", function () {
+    
+    if (localStorage.getItem("Fuente")) {
+      let valor = parseInt(localStorage.getItem("Fuente"));
+      if (localStorage.getItem("Fuente") < 5) {
+        cambioFuente("suma");
         localStorage.setItem("Fuente", valor + 1);
       }
     }
     else if (!localStorage.getItem("Fuente")) {
       localStorage.setItem("Fuente", 1);
+      cambioFuente("suma");
     }
   });
 
   document.getElementById("disminuirFuente").addEventListener("click", function () {
-    if(localStorage.getItem("Fuente") ){
+    if (localStorage.getItem("Fuente")) {
+      let valor = parseInt(localStorage.getItem("Fuente"));
       if (localStorage.getItem("Fuente") > 0) {
-        let valor = parseInt(localStorage.getItem("Fuente"));
-        
-        let elementosDOM = document.body.getElementsByTagName("*");
-        for (let i = 0; i < elementosDOM.length; i++) {
-          let propiedades = window.getComputedStyle(elementosDOM[i]);
-          let fuente = parseFloat(propiedades.getPropertyValue('font-size'));
-          fuente = fuente - 2;
-          elementosDOM[i].style.fontSize = `${fuente}px`;
-
-        }
+        cambioFuente("resta");
         localStorage.setItem("Fuente", valor - 1);
       }
     }
     else if (!localStorage.getItem("Fuente")) {
       localStorage.setItem("Fuente", 0);
+      cambioFuente("resta");
     }
 
   });
-  
+
 }
 interaccionesControlador();
 

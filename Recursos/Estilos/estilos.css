@@ -138,20 +138,29 @@ header {
     opacity: 1;
     
 }
-#carrito{
+#containerImagenCarrito{
+    display: flex;
+    flex-direction: column;
     position: relative;
+}
+#carrito{
+    order:2;
+    align-self: center;
+    justify-self: center;
+ 
 }
 #cantidadProductosCarro{
     position: absolute;
-    border: 2px solid black;
+    align-self: flex-end;
+    justify-content: flex-start;
     background-color: var(--color-fondo-hover);
-    color:var(--color-texto-hover);
-    width: 20px;
-    text-align: center;
-    border-radius: 20px;
-    bottom: 60%;
-    right: 4.5%;
+    color: var(--color-texto-hover);
+    top:-10px;
+    left: 22px;
     visibility: visible;
+    border:1px solid black;
+    border-radius: 100%;
+    padding: 3px;
 }
 
 /********************************************************************************************/

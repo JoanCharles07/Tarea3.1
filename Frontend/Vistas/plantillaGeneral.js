@@ -20,7 +20,7 @@ function imprimirCabezera() {
             <div class="divheader" id="containerLogo"><img id="logo"   src="../../Recursos/Imagenes/logo.webp" alt="Logo de la tierra"></div>
             <div class="divheader" id="containerBuscador"><input type="text" name="texto" id="buscador"><img id="lupa"
             src="../../Recursos/Imagenes//lupa.webp"  class="iconosHeader" alt=""> </div>
-            <div class="divheader" id="containerSpan"><span id="spanBienvenida" class="bienvenida">Iniciar sesión</span></div>
+            <div class="divheader" id="containerSpan"><span id="spanBienvenida" class="bienvenida fuente">Iniciar sesión</span></div>
             <div class="divheader" id="containerOpciones">
     
             <ul id="iconos">
@@ -32,44 +32,44 @@ function imprimirCabezera() {
                 </li>
                 <li> 
                     <img id="accesibilidad" class="iconosHeader" src="../../Recursos/Imagenes/accesibilidad.webp" alt="">
-                    <ul id="lista2">
+                    <ul id="lista2" class="fuente">
                         <li class="listaIconos" id="modoOscuro">Modo Oscuro</li>
                         <li class="listaIconos" id="aumentarFuente">Aumentar Fuente</li>
                         <li class="listaIconos" id="disminuirFuente">Disminuir Fuente</li>
                     </ul>
                 </li>
-                <li><img id="carrito" src="../../Recursos/Imagenes/CarritoCompra.webp"  class="iconosHeader" alt="">
-                    <div id="cantidadProductosCarro">0</div></li>
+                <li><div id="containerImagenCarrito"><img id="carrito" src="../../Recursos/Imagenes/CarritoCompra.webp"  class="iconosHeader" alt="">
+                <div id="cantidadProductosCarro" class="fuente">0</div></div></li>
             </ul>
             </div>`;
 
             let nav = `
             
-            <div  class="claro botonNAV"><a href="tienda.html">Tienda</a></div>
-            <div  class="claro botonNAV"><a href="sobrenosotros.html">Sobre nosotros</a></div>
-            <div  class="claro botonNAV"><a href="noticias.html">Noticias</a></div>
-            <div  class="claro botonNAV"><a href="contacto.html">Contacto</a></div>
+            <div  class="claro botonNAV"><a href="tienda.html" class="fuente">Tienda</a></div>
+            <div  class="claro botonNAV"><a href="sobrenosotros.html" class="fuente">Sobre nosotros</a></div>
+            <div  class="claro botonNAV"><a href="noticias.html" class="fuente">Noticias</a></div>
+            <div  class="claro botonNAV"><a href="contacto.html" class="fuente">Contacto</a></div>
            
             `;
             let footer = `
             <ul>
             <h2>Conócenos</h2>
-            <li class="listaFooter"><a href="./tienda.html">Tienda</a></li>
-            <li class="listaFooter"><a href="./sobrenosotros.html">Sobre Nosotros</a></li>
-            <li class="listaFooter"><a href="./noticias.html">Noticias</a></li>
-            <li class="listaFooter"> <a href="./contacto.html">Contacto</a></li>
+            <li class="listaFooter"><a href="./tienda.html" class="fuente">Tienda</a></li>
+            <li class="listaFooter"><a href="./sobrenosotros.html" class="fuente">Sobre Nosotros</a></li>
+            <li class="listaFooter"><a href="./noticias.html" class="fuente">Noticias</a></li>
+            <li class="listaFooter"> <a href="./contacto.html" class="fuente">Contacto</a></li>
         </ul>
         <ul>
             <h2>Información Relevante</h2>
-            <li class="listaFooter"><a href="./proyectoEducativo.html">Aviso Legal</a></li>
-            <li class="listaFooter"><a href="./atribuciones.html">Atribuciones</a></li>
-            <li class="listaFooter"><a href="./licencia.html">Licencia</a></li>
+            <li class="listaFooter"><a href="./proyectoEducativo.html" class="fuente">Aviso Legal</a></li>
+            <li class="listaFooter"><a href="./atribuciones.html" class="fuente">Atribuciones</a></li>
+            <li class="listaFooter"><a href="./licencia.html" class="fuente">Licencia</a></li>
         </ul>
         <ul>
             <h2>Como funcionamos</h2>
-            <li class="listaFooter"><a href="./contacto.html">Atención al cliente</a></li>
-            <li class="listaFooter"><a href="./proyectoEducativo.html">Políticas de Envío</a></li>
-            <li class="listaFooter"><a href="./proyectoEducativo.html">Métodos de pago</a></li>
+            <li class="listaFooter"><a href="./contacto.html" class="fuente">Atención al cliente</a></li>
+            <li class="listaFooter"><a href="./proyectoEducativo.html" class="fuente">Políticas de Envío</a></li>
+            <li class="listaFooter"><a href="./proyectoEducativo.html" class="fuente">Métodos de pago</a></li>
         </ul>
             `;
             document.getElementById("header").innerHTML = header;
@@ -148,11 +148,11 @@ function acciones() {
     const listaOpciones = document.querySelector("#lista");
     for (const accion of acciones) {
         if (accion == "Carrito") {
-            lista = `<li class="listaIconos" id="${accion}" ><a href="./carrito.html">${accion}</a></li>`
+            lista = `<li class="listaIconos fuente" id="${accion}" ><a href="./carrito.html">${accion}</a></li>`
             listaOpciones.innerHTML += lista;
         }
         else {
-            lista = `<li class="listaIconos" id="${accion}" >${accion}</li>`
+            lista = `<li class="listaIconos fuente" id="${accion}" >${accion}</li>`
             listaOpciones.innerHTML += lista;
         }
 
@@ -175,6 +175,21 @@ function mostrarCantidadCarrito() {
 
 }
 
+export function mantenerFuente(){
+    if (localStorage.getItem("Fuente")) {
+        console.log("entro");
+        let valorFuente = parseInt(localStorage.getItem("Fuente")) * 2;
+        let elementosDOM = document.body.getElementsByClassName("fuente");
+        for (let i = 0; i < elementosDOM.length; i++) {
+          //evitamos que el header se sume dos veces
+          let propiedades = window.getComputedStyle(elementosDOM[i]);
+          let fuente = parseFloat(propiedades.getPropertyValue('font-size'));
+          fuente = fuente + valorFuente;
+          elementosDOM[i].style.fontSize = `${fuente}px`;
+
+        }
+      }
+}
  
 
 export { mostrarCantidadCarrito, imprimirCabezera, mostrarUsuario, acciones, redireccionesConectado };

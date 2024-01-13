@@ -76,7 +76,7 @@ p{
 
 
 #ninguno{
-    display: none;
+    display: flex;
     width: 300px;
     height: 150px;
     background-color: var(--color-fondo);
@@ -86,3 +86,8 @@ p{
     align-items: center;
     text-align: center;
 }
+@media screen and (max-width: 600px) {
+    p{
+        font-size: 10px;
+    }
+  }
