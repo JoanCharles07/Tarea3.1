@@ -589,9 +589,9 @@ export function imprimirCarrito() {
     let texto = `<div class="datosProducto" id="${producto["id"]}">
           <img src="data:image/webp;base64,${producto["imagen"]}"  alt="" class="productos">
           <input type="number" name="" id="cantidad${contador}" class="inputCantidad" min="0" value="${producto["cantidad"]}">
-          <p class="idProducto fuente"   id="precio${contador}" >${producto["precioInicial"]} <span class="fuente">€</span></p>
+          <p class="idProducto fuente euros"   id="precio${contador}" >${producto["precioInicial"]} <span class="fuente">€</span></p>
           <p class="fuente">${producto["nombre"]}</p>
-          <p class="total fuente" id="total${contador}">${producto["precioTotal"]} <span class="fuente">€</span></p>
+          <p class="total fuente euros" id="total${contador}">${producto["precioTotal"]} <span class="fuente">€</span></p>
           <img src="../../Recursos/imagenes/x.png" id="cruz${contador}" class="iconosHeader cruz" alt="">
           </div>`;
     contador++;
