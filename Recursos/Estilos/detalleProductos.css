@@ -4,33 +4,37 @@
 
 /*Imagenes de la plantilla detalles producto con sus diferentes tamaños*/
 
-.producto{
-    width: 300px;
-    height: 300px;
-    border: 1px solid black;
+.producto {
+  width: 300px;
+  height: 300px;
+  border: 1px solid black;
 }
-#imagen{
+
+#imagen {
   display: flex;
   justify-content: end;
   /*Conseguimos separación con el otro div de detalles*/
   width: 90%;
 }
-.otrasImagenes{
-    width: 120px;
-    height: 120px;
-    cursor: pointer;
-    border: 1px solid black;
+
+.otrasImagenes {
+  width: 120px;
+  height: 120px;
+  cursor: pointer;
+  border: 1px solid black;
 }
+
 /*Imagen en el comentario*/
-#imagenUsuario{
+#imagenUsuario {
   width: 80px;
   height: 80px;
 }
+
 /*****************************************************************************************************************/
 /******************************************** BOTONES ****************************************************************/
 /******************************************************************************************************************/
 /*Efectos y tamaño del botón para comprar y comentar*/
-.botonesProducto{
+.botonesProducto {
   width: 30%;
   height: 40px;
   background-color: var(--color-fondo);
@@ -38,64 +42,71 @@
   font-weight: bold;
   transition: all 0.50s ease;
 }
-.botonesProducto:hover{
-    background-color: var(--color-fondo-hover);
-    color: var(--color-texto-hover);
-    width: 40%;
+
+.botonesProducto:hover {
+  background-color: var(--color-fondo-hover);
+  color: var(--color-texto-hover);
+  width: 40%;
 }
+
 /*****************************************************************************************************************/
 /******************************************** MAIN ****************************************************************/
 /******************************************************************************************************************/
 /*Conetnido principal donde se ubica el producto este se divide en imagen,detalles,otrosProductos y un hr*/
-main{
+main {
   transform: translateY(200px);
 }
 
-#container_producto{
-    
-  
+#container_producto {
+
+
   display: grid;
-  grid-template-columns: repeat(2,1fr);
-  grid-auto-columns: 2fr;
+  grid-template-columns: repeat(2, 1fr);
   align-self: center;
   justify-items: center;
   width: 100%;
 
-  
+
 }
-  /*Zona donde esta la información del producto y la compra de la misma tiene diferentes apartados para
+
+/*Zona donde esta la información del producto y la compra de la misma tiene diferentes apartados para
   estilizarlo mejor*/
-#detalles{
+#detalles {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap:20px;
+  gap: 20px;
 }
+
 /*Distintas zonas de detalle que estilizamos con flex*/
-.flex{
+.flex {
   font-size: 30px;
   display: flex;
   align-items: center;
-  gap:15px;
+  gap: 15px;
 }
+
 /*Estilo de los encabezados*/
-h2{
+h2 {
   font-size: 40px;
 }
-h3{
+
+h3 {
   text-align: center;
   padding: 30px;
 }
+
 /*Tanto el encabezado como el hr de separación ocuparan todo el ancho de nuestra cuadricula*/
-.todoAnchoGrid{
-   
-   width: 100%;
-  
-    
+.todoAnchoGrid {
+
+  width: 100%;
+
+
 }
+
 /*Zona debajo del producto que mostrará otros 4 productos*/
-#otrosProductos{
+#otrosProductos {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -106,36 +117,38 @@ h3{
 }
 
 /*Añado un poco más de separación en la zona de cantidad*/
-#containerCantidad{
-  gap:10px;
-  }
+#containerCantidad {
+  gap: 10px;
+}
+
 /*Reducimos el tamaño del input para la cantidad*/
-input[type=number]{
+input[type=number] {
   width: 15%;
 }
 
 /*Circulo que determina si hay o no hay stock del producto*/
-  .stockVerde{
-    border:1px solid black;
-    border-radius: 60%;
-    background-color: green;
-    width: 15px;
-    height: 15px;
-  }
-  .stockRojo{
-    border:1px solid black;
-    border-radius: 60%;
-    background-color: red;
-    width: 15px;
-    height: 15px;
-  }
+.stockVerde {
+  border: 1px solid black;
+  border-radius: 60%;
+  background-color: green;
+  width: 15px;
+  height: 15px;
+}
+
+.stockRojo {
+  border: 1px solid black;
+  border-radius: 60%;
+  background-color: red;
+  width: 15px;
+  height: 15px;
+}
 
 /*****************************************************************************************************************/
 /******************************************** SECTION ****************************************************************/
 /******************************************************************************************************************/
 
 /*En esta sección saldrá los comentarios y valoraciones de los usuarios*/
-section{
+section {
   display: grid;
   transform: translateY(200px);
   grid-template-columns: 1fr 2fr;
@@ -143,24 +156,24 @@ section{
 }
 
 /*Estilización de diferentes zonas de los comentarios*/
-  .flexComentarios{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 80%;
-    gap:20px;
-  }
+.flexComentarios {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  gap: 20px;
+}
 
-  /*Colocamos la zona donde filtramos por valoración donde queremos*/
-  #filtroValoracion{
-    width: 30%;;
-    justify-self: center;
-    align-self: start;
-  }
- 
+/*Colocamos la zona donde filtramos por valoración donde queremos*/
+#filtroValoracion {
+  width: 30%;
+  justify-self: center;
+  align-self: start;
+}
+
 /**Proporcionamos estilos a las zonas de comentarios*/
-.parteSuperiorComentario{
+.parteSuperiorComentario {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -168,44 +181,51 @@ section{
   justify-content: space-around;
   gap: 40px;
 }
-.zonanombre{
+
+.zonanombre {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: start;
-  gap:15px;
+  gap: 15px;
   width: 80%;
 }
-.comentario{
+
+.comentario {
   display: flex;
   flex-direction: column;
-  gap:20px;
+  gap: 20px;
 }
-#nombreUsuario{
+
+#nombreUsuario {
   font-size: 20px;
   font-weight: bold;
 }
-textarea{
+
+textarea {
   width: 80%;
   height: auto;
 }
 
-#container_Comentarios{
+#container_Comentarios {
   display: flex;
   flex-direction: column;
-  gap:40px;
+  gap: 40px;
 }
-.estrellas{
+
+.estrellas {
   cursor: pointer;
 }
-#containerCantidadEstrellas{
+
+#containerCantidadEstrellas {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
   font-weight: bold;
 }
-#todas{
+
+#todas {
   background-color: white;
   padding: 5px;
   width: 90%;
@@ -213,23 +233,112 @@ textarea{
   font-weight: bold;
 }
 
-#formEnvioComentario{
+#formEnvioComentario {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 15px;
-  
+
 }
-#enviarComentario{
+
+#enviarComentario {
   width: 50%;
 }
-#enviarComentario:hover{
+
+#enviarComentario:hover {
   width: 80%;
 }
 
-#numeroComentarios{
+#numeroComentarios {
   display: flex;
   flex-direction: column;
-  gap:5px;
+  gap: 5px;
+}
+
+@media screen and (max-width: 600px) {
+/*Parte del producto*/
+  #container_producto {
+    grid-template-columns:  1fr;
+
+  }
+  .producto {
+    width: 150px;
+    height: 150px;
+  }
+  /*Centramos la imagen en vez de que este al final*/
+  #imagen {
+    justify-content: center;
+    width: 50%;
+  }
+  /*Estructura de los detalles*/
+  #detalles {
+    width: 65%;
+    align-items: center;
+    gap: 10px;
+    
+  }
+  /*Cambio de fuentes*/
+  h2{
+    font-size: 26px;
+  }
+  .flex{
+    font-size: 18px;
+  }
+  #containerCantidad {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /*Parte de otro productos*/
+  
+  .otrasImagenes {
+    width: 70px;
+    height: 70px;
+  }
+  /*Parte Comentarios*/
+  section {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  #filtroValoracion{
+    width: 30%;
+    display: grid;
+    grid-template-areas: "h3 h3 h3 h3 h3 h3"
+                          "star1 star2 star3 star4 star5 star6";
+  }
+  #valoracion{
+    grid-area: h3;
+  }
+  .estrellas{
+    width: 50px;
+    height: 30px;
+  }
+  #todas{
+    grid-area: star1;
+  }
+  #estrellas5{
+    grid-area: star2;
+  }
+  #estrellas4{
+    grid-area: star3; 
+  }
+  #estrellas3{
+    grid-area: star4;
+  }
+  #estrellas2{
+    grid-area: star5;
+  }
+  #estrellas1{
+    grid-area: star6;
+  }
+  #imagenUsuario {
+    width: 40px;
+    height: 40px;
+  }
+  #nombreUsuario{
+    font-size: 14px;
+  }
 }

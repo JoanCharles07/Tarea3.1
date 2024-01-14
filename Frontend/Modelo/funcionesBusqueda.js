@@ -141,22 +141,22 @@ export function filtradoEstrellas(id){
     let respuesta="";
     
         switch (id) {
-          case "5estrellas":
+          case "estrellas5":
             respuesta = "5_Estrellas";
             break;
-          case "4estrellas":
+          case "estrellas4":
             respuesta = "4_Estrellas";
   
             break;
-          case "3estrellas":
+          case "estrellas3":
             respuesta = "3_Estrellas";
   
             break;
-          case "2estrellas":
+          case "estrellas2":
             respuesta = "2_Estrellas";
   
             break;
-          case "1estrellas":
+          case "estrellas1":
             respuesta = "1_Estrellas";
   
             break;

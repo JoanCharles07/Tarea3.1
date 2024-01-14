@@ -72,7 +72,6 @@ export function imprimirDetalleProducto(producto) {
 
       </div>
       `;
-  //<img src="../../Recursos/Imagenes/${producto["valoracionTotal"]}estrellas.webp" id="valoracionTotal" alt="Valoracion">
   document.getElementById("container_producto").innerHTML = texto;
   const stock = document.getElementById("stock");
   const imagenStock = document.getElementById("imagenStock");

@@ -4,12 +4,13 @@
     --color-fondo-hover: rgb(219, 111, 129);
     --color-texto-hover: black;
     --color-fondo-oscuro: rgb(37, 35, 35);
-    --color-texto-oscuro:  rgb(216, 209, 209);
+    --color-texto-oscuro: rgb(216, 209, 209);
 }
+
 @media (prefers-color-scheme: dark) {
     :root {
-      --color-fondo-oscuro: rgb(37, 35, 35);
-      --color-texto-oscuro:  rgb(216, 209, 209);
+        --color-fondo-oscuro: rgb(37, 35, 35);
+        --color-texto-oscuro: rgb(216, 209, 209);
     }
 }
 
@@ -18,25 +19,28 @@
     padding: 0px;
     margin: 0px;
 }
-ul{
+
+ul {
     list-style: none;
 }
+
 /*Imagen de fondo*/
 body {
     /*Con el gradiente conseguimos que solo tenga opacidad el fondo para que no destaque sobre las imagenes*/
-    background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("../Imagenes/fondoFruta3.webp");
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url("../Imagenes/fondoFruta3.webp");
     background-repeat: repeat;
     background-size: 100vw 100vh;
-   
+
 }
 
-a{
+a {
     text-decoration: none;
     color: var(--color-texto);
     transition: all 0.65s ease;
 }
-a:hover{
-    
+
+a:hover {
+
     color: var(--color-texto-hover);
 }
 
@@ -56,25 +60,29 @@ header {
     width: 100%;
     z-index: 2;
 }
+
 /*Dividimos los espacios*/
-#containerLogo{
+#containerLogo {
     width: 10%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-#containerBuscador{
+
+#containerBuscador {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 40%;
 }
-#containerSpan{
+
+#containerSpan {
     width: 15%;
     display: flex;
     justify-content: end;
 }
-.bienvenida{
+
+.bienvenida {
     display: flex;
     cursor: pointer;
     justify-content: center;
@@ -84,29 +92,34 @@ header {
     padding: 5px;
     width: 100%;
 }
-#containerOpciones{
-    
+
+#containerOpciones {
+
     width: 35%;
 }
-#iconos{
+
+#iconos {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
 }
-.iconosHeader{
+
+.iconosHeader {
     height: 30px;
     width: 30px;
     cursor: pointer;
 }
-#logo{
+
+#logo {
     cursor: pointer;
     height: 50px;
     width: 50px;
 }
 
 
-#lista, #lista2{
+#lista,
+#lista2 {
     cursor: pointer;
     display: block;
     visibility: hidden;
@@ -115,50 +128,59 @@ header {
     transition: all 0.5s ease-in;
     z-index: 0;
 }
-.listaIconos{
+
+.listaIconos {
     border: 1px solid var(--color-texto);
     padding: 5px;
     transition: all 0.65s ease;
 }
-.listaIconos:hover{
+
+.listaIconos:hover {
     border: 1px solid black;
     background-color: var(--color-fondo-hover);
-    color:var(--color-texto-hover);
-}
-.listaIconos:hover a{
-    color:var(--color-texto-hover);
-    
+    color: var(--color-texto-hover);
 }
 
-#inicio:hover + ul, #lista:hover,#accesibilidad:hover +ul, #lista2:hover{
+.listaIconos:hover a {
+    color: var(--color-texto-hover);
+
+}
+
+#inicio:hover+ul,
+#lista:hover,
+#accesibilidad:hover+ul,
+#lista2:hover {
     background-color: var(--color-fondo);
     display: flex;
     visibility: visible;
     flex-direction: column;
     opacity: 1;
-    
+
 }
-#containerImagenCarrito{
+
+#containerImagenCarrito {
     display: flex;
     flex-direction: column;
     position: relative;
 }
-#carrito{
-    order:2;
+
+#carrito {
+    order: 2;
     align-self: center;
     justify-self: center;
- 
+
 }
-#cantidadProductosCarro{
+
+#cantidadProductosCarro {
     position: absolute;
     align-self: flex-end;
     justify-content: flex-start;
     background-color: var(--color-fondo-hover);
     color: var(--color-texto-hover);
-    top:-10px;
+    top: -10px;
     left: 22px;
     visibility: visible;
-    border:1px solid black;
+    border: 1px solid black;
     border-radius: 100%;
     padding: 3px;
 }
@@ -204,7 +226,6 @@ nav {
     color: var(--color-texto-hover);
     background-color: var(--color-fondo-hover);
     font-weight: bolder;
-    font-weight: bolder;
 
 }
 
@@ -233,7 +254,7 @@ tr:nth-child(even) {
 /********************************************************************************************/
 /**************** main********************************************************************/
 /********************************************************************************************/
-main{
+main {
     min-height: 300px;
 }
 
@@ -276,40 +297,42 @@ table {
     align-items: center;
 }
 
-footer{
+footer {
     background-color: var(--color-fondo);
-    color:var(--color-texto);
+    color: var(--color-texto);
     transform: translateY(250px);
     width: 100%;
     padding: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    gap:10px;
+    gap: 10px;
     bottom: 0;
-    
+
 }
 
-footer ul{
+footer ul {
     display: flex;
     flex-direction: column;
-    gap:10px;
-    
-}
-footer ul:hover li:hover a{
-    color:var(--color-texto-hover);
+    gap: 10px;
+
 }
 
-footer ul li{
+footer ul:hover li:hover a {
+    color: var(--color-texto-hover);
+}
+
+footer ul li {
     padding: 10px;
 }
-footer ul li:hover{
+
+footer ul li:hover {
     transition: 100ms;
     cursor: pointer;
     background-color: var(--color-fondo-hover);
 }
 
-#aviso{
+#aviso {
     width: 300px;
     height: 150px;
     /*background-color: var(--color-fondo);
@@ -323,7 +346,7 @@ footer ul li:hover{
 }
 
 
-#exito{
+#exito {
     width: 300px;
     height: 150px;
     /*background-color: var(--color-fondo);
@@ -336,16 +359,82 @@ footer ul li:hover{
     padding: 10px;
 }
 
-.oscuro{
-    background-color:var(--color-fondo-oscuro) !important;
+.oscuro {
+    background-color: var(--color-fondo-oscuro) !important;
     color: var(--color-texto-oscuro) !important;
     background-image: none;
 }
-.oscuro:hover{
-    
+
+.oscuro:hover {
+
     color: var(--color-texto) !important;
 }
-.claro{
+
+.claro {
     background-color: var(--color-fondo);
-    color:var(--color-texto);
+    color: var(--color-texto);
+}
+
+@media screen and (max-width: 600px) {
+    #spanBienvenida {
+        display: none;
+    }
+
+    main {
+        grid-template-columns: 1fr;
+    }
+
+    section {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-left: 0px;
+        justify-items: center;
+        align-items: center;
+        width: 100%;
+        padding-top: none;
+    }
+
+    header {
+        display: grid;
+        grid-template-areas: "logo opciones opciones opciones"
+            "busca busca busca busca";
+        grid-template-rows: 50px 50px;
+        grid-template-columns: 1fr 3fr;
+        height: 90px;
+
+    }
+
+    #containerLogo {
+        grid-area: logo;
+        width: 100%;
+    }
+
+    #containerOpciones {
+        width: 100%;
+        grid-area: opciones;
+    }
+
+
+    #containerBuscador {
+        grid-area: busca;
+        width: 100%;
+
+    }
+    #buscador{
+        width: 80%;
+    }
+
+    #iconos {
+        height: 50px;
+    }
+
+    nav {
+        top: 90px;
+        font-size: 14px;
+        height: 60px;
+        padding: 5px;
+        
+    }
+    
+
 }

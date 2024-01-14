@@ -11,5 +11,17 @@ main form{
     align-items: center;
     justify-content: center;
     gap: 10px;
-    width: 20%;
+    width: 25%;
 }
+#mensaje{
+    width: 100%;
+}
+@media screen and (max-width: 600px) {
+
+    main{
+        transform: translateY(180px);
+    }
+    main form{
+        width: 50%;
+    }
+   }

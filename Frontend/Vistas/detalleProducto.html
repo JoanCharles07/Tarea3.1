@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle Producto</title>
-
-    <script src="./plantillaGeneral.js" type="module"></script>
-    <script src="../Controlador/controlador.js" type="module"></script>
+    
     <link rel="stylesheet" href="../../Recursos/Estilos/estilos.css">
     <link rel="stylesheet" href="../../Recursos/Estilos/detalleProductos.css">
+    <script src="./plantillaGeneral.js" type="module"></script>
+    <script src="../Controlador/controlador.js" type="module"></script>
 </head>
 
 <body>
@@ -17,29 +17,7 @@
     <nav id="nav"> </nav>
     <main id="main">
         <div id="container_producto">
-            <div id="imagen" class="imagenProducto">
-
-            </div>
-            <div id="detalles">
-               
-                    <h2 id="nombreProducto"></h2>
-                    <div id="containerPrecio" class="flex">
-                        <div id="stock"></div>
-                        <p>Precio: <span id="precio"></span> €/kilo</p>
-                    </div>
-                    <div id="containerCantidad" class="flex">
-                        <label name="cantidad">Cantidad: </label>
-                        <input type="number" name="cantidad" id="cantidad" class="inputCantidad">
-                        <p>Total: <span id="total"></span> €</p>
-                    </div>
-                    <input type="button" name="validar" id="validar" value="Comprar" class="botonesProducto">
-                    
-                <div id="numeroComentarios" class="flex">
-                    <img id="valoracionTotal" alt="Valoracion">
-                    <p>Comentarios: <span id="comentariosTotal"></span></p>
-                </div>
-    
-            </div>
+            
             
         </div>
         <h3 id="encabezadoOtrosProductos" class="todoAnchoGrid fuente">Otros Productos</h3>
@@ -50,14 +28,14 @@
     </main>
     <section>
         <div id="filtroValoracion" class="flexComentarios">
-            <h3 class="fuente">Filtrar por valoración</h3>
+            <h3 id="valoracion" class="fuente">Filtrar por valoración</h3>
             <div id="todas" class="estrellas fuente">Reiniciar
             </div>
-            <img src="../../Recursos/Imagenes/5estrellas.webp" id="5estrellas" alt="5 estrellas" class="estrellas">
-            <img src="../../Recursos/Imagenes/4estrellas.webp" id="4estrellas" alt="4 estrellas" class="estrellas">
-            <img src="../../Recursos/Imagenes/3estrellas.webp" id="3estrellas" alt="3 estrellas" class="estrellas">
-            <img src="../../Recursos/Imagenes/2estrellas.webp" id="2estrellas" alt="2 estrellas" class="estrellas">
-            <img src="../../Recursos/Imagenes/1estrellas.webp" id="1estrellas" alt="1 estrellas" class="estrellas">
+            <img src="../../Recursos/Imagenes/5estrellas.webp" id="estrellas5" alt="5 estrellas" class="estrellas">
+            <img src="../../Recursos/Imagenes/4estrellas.webp" id="estrellas4" alt="4 estrellas" class="estrellas">
+            <img src="../../Recursos/Imagenes/3estrellas.webp" id="estrellas3" alt="3 estrellas" class="estrellas">
+            <img src="../../Recursos/Imagenes/2estrellas.webp" id="estrellas2" alt="2 estrellas" class="estrellas">
+            <img src="../../Recursos/Imagenes/1estrellas.webp" id="estrellas1" alt="1 estrellas" class="estrellas">
         </div>
         <div id="zonaComentarios" class="flexComentarios">
             <h3>Comentarios y Valoraciones</h3>

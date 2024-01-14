@@ -49,7 +49,7 @@ function imprimirCabezera() {
             <div  class="claro botonNAV"><a href="sobrenosotros.html" class="fuente">Sobre nosotros</a></div>
             <div  class="claro botonNAV"><a href="noticias.html" class="fuente">Noticias</a></div>
             <div  class="claro botonNAV"><a href="contacto.html" class="fuente">Contacto</a></div>
-           
+            <div  class="claro botonNAV"><a href="ayuda.html" class="fuente">Ayuda</a></div>
             `;
             let footer = `
             <ul>

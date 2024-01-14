@@ -7,8 +7,8 @@ main{
     gap: 15px;
 }
 .imagenNoticia{
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
 }
 .textoNoticia{
     width: 80%;
@@ -37,3 +37,19 @@ main{
     justify-content: center;
     gap:15px;
 }
+
+@media screen and (max-width: 600px) {
+    
+    .imagenNoticia{
+        width: 120px;
+        height: 120px;
+    }
+    .containerNoticia{
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-items: center;
+        align-items: center;
+        width: 100%;
+    
+    }
+  }
