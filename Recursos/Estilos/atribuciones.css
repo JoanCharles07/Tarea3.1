@@ -8,20 +8,48 @@ main{
 #atribuciones{
     display: grid;
     grid-template-columns: repeat(5,1fr);
+    justify-items: center;
+    align-items: center;
     gap: 10px;
 }
 article{
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 80%;
 }
 .recurso{
     
     background-color: var(--color-fondo);
     color:var(--color-texto);
     padding: 5px;
+    width: 80%;
 }
 
 .recurso:hover{
     background-color: var(--color-fondo-hover);
+}
+p{
+    text-decoration: underline;
+}
+
+
+@media screen and (max-width: 900px) {
+
+    #atribuciones{
+        
+        grid-template-columns: repeat(4,1fr);
+       
+    }
+    
+}
+
+@media screen and (max-width: 600px) {
+
+    #atribuciones{
+        
+        grid-template-columns: repeat(2,1fr);
+       
+    }
+    
 }

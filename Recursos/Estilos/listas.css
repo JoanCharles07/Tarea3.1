@@ -3,6 +3,7 @@ main{
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
+    align-content: start;
 }
 main div{
     
@@ -62,4 +63,12 @@ form{
     background-color: var(--color-fondo);
     padding: 15px;
     width: 18%;
+}
+
+@media screen and (max-width: 600px) {
+
+    main{
+        transform: translateY(180px);
+    }
+    
 }

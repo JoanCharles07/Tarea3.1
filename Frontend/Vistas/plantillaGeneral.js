@@ -19,13 +19,13 @@ function imprimirCabezera() {
             let header = `
             <div class="divheader" id="containerLogo"><img id="logo"   src="../../Recursos/Imagenes/logo.webp" alt="Logo de la tierra"></div>
             <div class="divheader" id="containerBuscador"><input type="text" name="texto" id="buscador"><img id="lupa"
-            src="../../Recursos/Imagenes//lupa.webp"  class="iconosHeader" alt=""> </div>
+            src="../../Recursos/Imagenes//lupa.webp"  class="iconoLupa" alt=""> </div>
             <div class="divheader" id="containerSpan"><span id="spanBienvenida" class="bienvenida fuente">Iniciar sesión</span></div>
             <div class="divheader" id="containerOpciones">
     
             <ul id="iconos">
                 <li id="container_lista">
-                    <img id="inicio" class="iconosHeader" src="../../Recursos/Imagenes/InicioSesion.webp" alt="">
+                    <img id="inicio" class="iconosHeader" src="../../Recursos/Imagenes/sinConexion.webp" alt="">
                     <ul id="lista">
                     
                     </ul>
@@ -42,7 +42,7 @@ function imprimirCabezera() {
                 <div id="cantidadProductosCarro" class="fuente">0</div></div></li>
             </ul>
             </div>`;
-
+            document.getElementById("header").innerHTML = header;
             let nav = `
             
             <div  class="claro botonNAV"><a href="tienda.html" class="fuente">Tienda</a></div>
@@ -52,37 +52,51 @@ function imprimirCabezera() {
             <div  class="claro botonNAV"><a href="ayuda.html" class="fuente">Ayuda</a></div>
             `;
             let footer = `
-            <ul>
+            <div>
             <h2>Conócenos</h2>
-            <li class="listaFooter"><a href="./tienda.html" class="fuente">Tienda</a></li>
-            <li class="listaFooter"><a href="./sobrenosotros.html" class="fuente">Sobre Nosotros</a></li>
-            <li class="listaFooter"><a href="./noticias.html" class="fuente">Noticias</a></li>
-            <li class="listaFooter"> <a href="./contacto.html" class="fuente">Contacto</a></li>
-        </ul>
-        <ul>
+            <ul>
+                <li class="listaFooter"><a href="./tienda.html" class="fuente">Tienda</a></li>
+                <li class="listaFooter"><a href="./sobrenosotros.html" class="fuente">Sobre Nosotros</a></li>
+                <li class="listaFooter"><a href="./noticias.html" class="fuente">Noticias</a></li>
+                <li class="listaFooter"> <a href="./contacto.html" class="fuente">Contacto</a></li>
+            </ul>
+            </div>
+            <div>
             <h2>Información Relevante</h2>
-            <li class="listaFooter"><a href="./proyectoEducativo.html" class="fuente">Aviso Legal</a></li>
-            <li class="listaFooter"><a href="./atribuciones.html" class="fuente">Atribuciones</a></li>
-            <li class="listaFooter"><a href="./licencia.html" class="fuente">Licencia</a></li>
-        </ul>
-        <ul>
+            <ul>
+                <li class="listaFooter"><a href="./proyectoEducativo.html" class="fuente">Aviso Legal</a></li>
+                <li class="listaFooter"><a href="./atribuciones.html" class="fuente">Atribuciones</a></li>
+                <li class="listaFooter"><a href="./licencia.html" class="fuente">Licencia</a></li>
+            </ul>
+            </div>
+            <div>
+       
             <h2>Como funcionamos</h2>
+            <ul>
             <li class="listaFooter"><a href="./contacto.html" class="fuente">Atención al cliente</a></li>
             <li class="listaFooter"><a href="./proyectoEducativo.html" class="fuente">Políticas de Envío</a></li>
             <li class="listaFooter"><a href="./proyectoEducativo.html" class="fuente">Métodos de pago</a></li>
-        </ul>
+            </ul>
+            </div>
             `;
-            document.getElementById("header").innerHTML = header;
+          
             document.getElementById("nav").innerHTML = nav;
             document.getElementById("footer").innerHTML = footer;
             //Una vez imprimido dirección de imagenes.
             redireccionesBasicas();
+            if(sessionStorage.getItem("usuario")){
+                document.getElementById("inicio").src="../../Recursos/Imagenes/usuarioActivo.webp"
+            }
+            console.log("antes");
             resolve();
             //Tras esto debemos añadir funcionalidad a las cosas
         } catch (error) {
             reject(error);
         }
+
+        
     });
+
 }
 
 /**
@@ -145,14 +159,14 @@ function mostrarUsuario() {
  */
 function acciones() {
     const acciones = JSON.parse(atob(sessionStorage.getItem("acciones")));
-    const listaOpciones = document.querySelector("#lista");
+    const listaOpciones = document.getElementById("lista");
     for (const accion of acciones) {
         if (accion == "Carrito") {
-            lista = `<li class="listaIconos fuente" id="${accion}" ><a href="./carrito.html">${accion}</a></li>`
+            let lista = `<li class="listaIconos fuente" id="${accion}" ><a href="./carrito.html">${accion}</a></li>`
             listaOpciones.innerHTML += lista;
         }
         else {
-            lista = `<li class="listaIconos fuente" id="${accion}" >${accion}</li>`
+            let lista = `<li class="listaIconos fuente" id="${accion}" >${accion}</li>`
             listaOpciones.innerHTML += lista;
         }
 
@@ -177,7 +191,6 @@ function mostrarCantidadCarrito() {
 
 export function mantenerFuente(){
     if (localStorage.getItem("Fuente")) {
-        console.log("entro");
         let valorFuente = parseInt(localStorage.getItem("Fuente")) * 2;
         let elementosDOM = document.body.getElementsByClassName("fuente");
         for (let i = 0; i < elementosDOM.length; i++) {

@@ -14,7 +14,7 @@
 * @see paginaProducto añadimos la dirección a cada una de las imagenes.
 */
 export function imprimirImagenesAzar() {
-  const productos = JSON.parse(sessionStorage.getItem("productos"));
+  const productos = JSON.parse(sessionStorage.getItem("Productos"));
   let contador = 0;
   let elegidos = [];
   //Para que no incluya el que ya tenemos elegido
@@ -23,7 +23,7 @@ export function imprimirImagenesAzar() {
     let azar = Math.floor(Math.random() * (productos.length));
     if (!elegidos.includes(productos[azar].id)) {
       elegidos.push(productos[azar]["id"]);
-      let img = `<img src="data:image/webp;base64,${productos[azar]["imagen"]}" class="otrasImagenes" id="${productos[azar]["id"]}"</img>`;
+      let img = `<img src=${productos[azar]["imagen"]} class="otrasImagenes" id="${productos[azar]["id"]}"</img>`;
       contador++;
       document.getElementById("otrosProductos").innerHTML += img;
 
@@ -37,16 +37,17 @@ export function imprimirImagenesAzar() {
  * @param {Object} producto contiene los datos de nuestro producto escogido
  */
 export function imprimirDetalleProducto(producto) {
-  let resultado=producto["valoracionTotal"] / producto["comentariosTotales"];
-
-  if(isNaN(resultado)){
-    resultado=0;
+  let resultado = producto["valoracionTotal"] / producto["comentariosTotales"];
+  //Interesante numberformat
+  //new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format( number,  ),
+  if (isNaN(resultado)) {
+    resultado = 0;
   }
   const texto = `
       <div id="imagen" class="imagenProducto">
-      <img src="data:image/webp;base64,${producto["imagen"]}" class ="producto">
+      <img src=${producto["imagen"]} class ="producto">
       </div>
-      <div id="detalles" >
+      <div id="detalles">
               <h2 id="nombreProducto" class="fuente">${producto["nombre"]}</h2>
               <div class="flex">
                 <span class="fuente">${producto["descripcion"]}</span>
@@ -55,11 +56,11 @@ export function imprimirDetalleProducto(producto) {
                   <div id="imagenStock"></div>
                   <div id="stock" class="fuente"></div>
               </div>
-              <div class="flex"><p>Precio: <span id="precio" class="fuente">${producto["precio"]}</span> €/kilo</p></div>
+              <div class="flex"><p>Precio: <span id="precio" class="fuente">${producto["precio"].toFixed(2)}</span> €/kilo</p></div>
               <div id="containerCantidad" class="flex">
                   <label name="cantidad" class="fuente">Cantidad: </label>
-                  <input type="number" name="cantidad" id="cantidad" class="inputCantidad">
-                  <p>Total: <span id="total" class="fuente"></span> €</p>
+                  <input type="number" name="cantidad" id="cantidad" class="inputCantidad" value=1>
+                  <p>Total: <span id="total" class="fuente">${producto["precio"].toFixed(2)}</span> €</p>
               </div >
               <div id="error" class="flex"></div>
               <input type="button" name="validar" id="validar" value="Comprar" class="botonesProducto">
@@ -67,7 +68,7 @@ export function imprimirDetalleProducto(producto) {
           <div id="numeroComentarios" class="flex">
           
               <p>Comentarios: <span id="comentariosTotal" class="fuente">${producto["comentariosTotales"]}</span></p><br>
-              <p>Valoración media: <span id="comentariosTotal" class="fuente">${resultado}</span></p>
+              <p>Valoración media: <span id="comentariosTotal" class="fuente">${resultado.toFixed(2)}</span></p>
           </div>
 
       </div>
@@ -112,8 +113,9 @@ export function mostrarResultadoBusqueda(resultado) {
     sinResultados();
   }
   else {
-    let div = document.getElementById("ninguno");
-    div.style.display="none";
+    if (document.getElementById("ninguno")) {
+      document.getElementById("ninguno").remove();
+    }
     for (let id of resultado) {
       document.getElementById(id).style.display = "flex";
     }
@@ -128,22 +130,21 @@ export function mostrarResultadoBusqueda(resultado) {
 export function mostrarResultadoAside(resultado, contador) {
   if (contador == 0) {
     todosDisplay(true);
-    let div = document.getElementById("ninguno");
-      div.style.display="none";
   }
   else {
     todosDisplay(false);
     if (resultado.length == 0) {
       sinResultados();
     }
-    else{
-      let div = document.getElementById("ninguno");
-      div.style.display="none";
+    else {
+      if (document.getElementById("ninguno")) {
+        document.getElementById("ninguno").remove();
+      }
       for (let id of resultado) {
         document.getElementById(id).style.display = "flex";
       }
     }
-    
+
   }
 
 
@@ -175,23 +176,25 @@ function todosDisplay(boolean) {
 * 
 */
 export function imprimirProductos() {
-  const productos = JSON.parse(sessionStorage.getItem("productos"));
   let seccion = document.getElementById("containerProductos");
+  let productos = JSON.parse(sessionStorage.getItem("Productos"));
   let texto = "";
+  seccion.innerHTML = `<img src="../../Recursos/Imagenes/load.gif"/>`;
+  let contador = 0;
+  productos.forEach(producto => {
+    contador++;
+    texto += `<div class="producto fuente" id=${producto.id}>
+    <div class="containerImagen"><img src=${producto.imagen} class="productos"  ${contador > 3 ? "loading='lazy'" : ""}></img></div>
+    <div><p class="fuente">${producto.nombre_producto} </p>
+    <p class="fuente">${producto.precio} €/kilo</p>
+    ${producto.descuento > 0 ? '<span id="oferta">¡OFERTA!</span>' : ''}</div>
+  </div>`;
 
-  if (productos != null) {
-    for (const producto of productos) {
-      texto += `<div class="producto fuente" id=${producto["id"]}>
-          <img src="data:image/webp;base64,${producto["imagen"]}" class="productos"></img>
-          <p class="fuente">${producto["nombre_producto"]} €/kilo</p>
-          <p class="fuente">${producto["precio"]} €/kilo</p>
-          ${producto["descuento"] > 0 ? '<span id="oferta">¡OFERTA!</span>' : ''}
-          </div>`;
-    }
-  }
-  seccion.innerHTML += texto;
-  let div = document.getElementById("ninguno");
-  div.style.display="none";
+  });
+
+
+
+  seccion.innerHTML = texto;
   //Damos funcionalidad a los productos
   paginaProducto("producto");
 
@@ -213,6 +216,8 @@ export function imprimirTodosResultados(objetoComprobaciones) {
       }
     } else {
       //Esto se envia a imprimir resultado y borde rojo si no es correcto
+     
+
       imprimirResultado(clave, objetoComprobaciones[clave]);
     }
 
@@ -229,6 +234,7 @@ export function imprimirTodosResultados(objetoComprobaciones) {
 */
 function imprimirResultado(id, resultado) {
   let input = document.getElementById(id);
+  console.log(input);
   if (input != null) {
     let span = input.nextElementSibling;
     let texto = input.title;
@@ -264,10 +270,14 @@ export function imprimirIgualdadPass(resultado) {
 }
 
 export function sinResultados() {
-  let div = document.getElementById("ninguno");
-  div.style.display="flex";
-  
-
+  let div = document.createElement("div");
+  div.id = "ninguno";
+  div.classList = "ninguno";
+  let p = document.createElement("p");
+  p.classList = "fuente";
+  p.textContent = "No se ha encontrado ningún producto con esas carácteristicas";
+  div.appendChild(p);
+  document.getElementById("containerProductos").appendChild(div);
 
 }
 export function exitoCambioPass() {
@@ -285,17 +295,21 @@ export function exitoRegistro() {
   main.style.gridTemplateColumns = "1fr";
   main.innerHTML = `<div id="exito" class="claro"><p class="fuente">Se ha registrado correctamente</p></div>`;
   const intervalID = setInterval(function () {
-    
-      location.href="./tienda.html";
+
+    location.href = "./tienda.html";
   }, 1500);
 
 }
 export function avisoComentario() {
-  let span = document.createElement("span");
-  span.textContent = "Debes de estar conectado para comentar";
-  span.style.border = "3px solid red";
-  let form = document.getElementById("formEnvioComentario");
-  form.appendChild(span);
+  if (!document.getElementById("erroresSpan")) {
+    let span = document.createElement("span");
+    span.textContent = "Debes de estar conectado para comentar";
+    span.style.border = "3px solid red";
+    span.id = "erroresSpan";
+    let form = document.getElementById("formEnvioComentario");
+    form.appendChild(span);
+  }
+
 
 }
 
@@ -329,8 +343,14 @@ export function imprimirFiltradoEstrellas(filtro) {
  */
 export function imprimirComentarios(datos) {
   let container = document.getElementById("container_Comentarios");
-
-  console.log(datos);
+  let form= document.getElementById("formEnvioComentario");
+  let elementos=form.getElementsByTagName("span");
+  //borramos posibles errores antes de imprimir los comentarios
+  for(let elemento of elementos){
+    elemento.textContent="";
+    elemento.parentNode.childNodes[5].style.border="1px solid black";
+    
+  }
   if (datos.datosComentarios) {
     let comentario = "";
     for (let dato of datos.datosComentarios) {
@@ -348,7 +368,9 @@ export function imprimirComentarios(datos) {
         </div>`;
 
       container.innerHTML = comentario;
+      form.reset();
     }
+    
   }
   else {
     let comentario = `<div class="sinComentarios"> 
@@ -392,14 +414,12 @@ export function recorrerTotalProducto() {
   let totalIVA = document.getElementById("totalIva");
   let productos = JSON.parse(sessionStorage.getItem("carrito"));
   let sumaTotal = 0;
+  productos.forEach(producto => {
 
-  for (producto of productos) {
     sumaTotal = sumaTotal + parseFloat(producto.precioTotal);
-
-  }
+  });
   totalIVA.textContent = sumaTotal.toFixed(2);
   totalPedido.textContent = (sumaTotal + 3.99).toFixed(2);
-
 }
 /**
  * Esta función realiza la suma del total de los productos si se altera las cantidades en el carrito
@@ -422,7 +442,6 @@ export function recorrerTotalProductoAlterado(producto) {
  * Esta función realiza cambios en los totales de cada uno de los productos.
  */
 export function cantidadDetalleClase(producto) {
-  console.log(producto);
   let precio = parseFloat(producto.children[2].textContent);
   let cantidad = parseInt(producto.children[1].value);
   let total = producto.children[4];
@@ -584,20 +603,19 @@ export function imprimirCarrito() {
   let containerProductos = document.getElementById("containerProductos");
   let array = JSON.parse(sessionStorage.getItem("carrito"));
   let contador = 0;
-  for (producto of array) {
-
+  array.forEach(producto => {
     let texto = `<div class="datosProducto" id="${producto["id"]}">
-          <img src="data:image/webp;base64,${producto["imagen"]}"  alt="" class="productos">
-          <input type="number" name="" id="cantidad${contador}" class="inputCantidad" min="0" value="${producto["cantidad"]}">
-          <p class="idProducto fuente euros"   id="precio${contador}" >${producto["precioInicial"]} <span class="fuente">€</span></p>
-          <p class="fuente">${producto["nombre"]}</p>
-          <p class="total fuente euros" id="total${contador}">${producto["precioTotal"]} <span class="fuente">€</span></p>
-          <img src="../../Recursos/imagenes/x.png" id="cruz${contador}" class="iconosHeader cruz" alt="">
-          </div>`;
+    <img src=${producto["imagen"]}  alt="" class="productos">
+    <input type="number" name="" id="cantidad${contador}" class="inputCantidad" min="0" value="${producto["cantidad"]}">
+    <p class="idProducto fuente euros"   id="precio${contador}" >${producto["precioInicial"]} <span class="fuente">€</span></p>
+    <p class="fuente">${producto["nombre"]}</p>
+    <p class="total fuente euros" id="total${contador}">${producto["precioTotal"]} <span class="fuente">€</span></p>
+    <img src="../../Recursos/Imagenes/x.png" id="cruz${contador}" class="iconosHeader cruz" alt="">
+    </div>`;
     contador++;
     containerProductos.innerHTML += texto;
 
-  }
+  });
 
 
   document.getElementById("vacio").style.display = "none";
@@ -620,7 +638,7 @@ export function imprimirNoticias(noticias) {
   </div>
  
   <div class="containerNoticia">
-      <img src="data:image/webp;base64,${noticia.imagen}" class="imagenNoticia" alt="">
+      <img src=${noticia.imagen} class="imagenNoticia" alt="">
       <p class="textoNoticia fuente">${noticia.cuerpo}</p>
   </div>
   </section>`;
@@ -629,7 +647,6 @@ export function imprimirNoticias(noticias) {
   ;
 
 
-  console.log("Fin noticias");
 }
 /**
  * Nos  informará de que el pedido se ha realizado correctamente.
@@ -650,10 +667,14 @@ export function confirmarCompra() {
 }
 
 export function avisoInciarSesion() {
-  const containerInicio = document.getElementById("inicioSesion");
-  const parrafo = document.createElement("span");
-  containerInicio.style.border = "3px solid red";
-  containerInicio.style.padding = "5px";
-  parrafo.textContent = "Inicie sesión si desea comprar";
-  containerInicio.appendChild(parrafo);
+  if (!document.getElementById("errorIniciarSesion")) {
+    const containerInicio = document.getElementById("inicioSesion");
+    const parrafo = document.createElement("span");
+    containerInicio.style.border = "3px solid red";
+    containerInicio.style.padding = "5px";
+    parrafo.textContent = "Inicie sesión si desea comprar";
+    parrafo.id = "errorIniciarSesion";
+    containerInicio.appendChild(parrafo);
+  }
+
 }

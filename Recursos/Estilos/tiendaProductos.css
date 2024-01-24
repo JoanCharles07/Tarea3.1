@@ -7,107 +7,150 @@
 /*Trasladamos hacia abajo para que no interfiera en las zonas fijas de header y nav*/
 main{
     
-  transform: translateY(99px);
-  display: grid;
-  grid-template-columns: 1fr 6fr;
-  grid-auto-rows: auto;
-  height: auto;
-
-}
-/*Zona con los distintos filtros  que aparecera en la parte izquierda de la pantalla*/
-aside{
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    opacity: 0.8;
-    padding-top:10px;
-}
-/*Estilización de la zona interior del aside*/
-aside div{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    padding: 20px;
-    font-size: 23px;
-    
-}
-aside label{
-    width: 80%;
-}
-/*En esta zona pareceran nuestros productos de 2 en 2*/
-section{
-    margin-top: 40px;
+    transform: translateY(99px);
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 6fr;
     grid-auto-rows: auto;
-    gap:100px;
-    margin-left: 100px;
-    padding:10px;
-    padding-top:initial;
-}
-/*Distintos estilos para que se vea mejor cada producto*/
-section div{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid black;
-    background-color: white;
-    width: 70%;
-    padding-top: 10px;
-}
-/*Fuente y tamaño imagenes.*/
-p{
-    font-size: 25px;
- 
-}
-.productos{
-    width: 85%;
-    height: 85%;
-    cursor: pointer;
-}
+    height: auto;
+  
+  }
+  /*Zona con los distintos filtros  que aparecera en la parte izquierda de la pantalla*/
+  aside{
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      opacity: 0.8;
+      padding-top:10px;
+  }
+  /*Estilización de la zona interior del aside*/
+  aside div{
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      padding: 20px;
+      font-size: 23px;
+      
+  }
+  aside label{
+      width: 80%;
+  }
+  /*En esta zona pareceran nuestros productos de 2 en 2*/
+  section{
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-auto-rows: 260px;
+      gap:100px;
+      margin-left: 100px;
+      padding:10px;
+      padding-top:initial;
+  }
+  
+  /*Fuente y tamaño imagenes.*/
+  p{
+      font-size: 25px;
+   
+  }
+  .productos{
+      width: 140px;
+      height: 140px;
+      cursor: pointer;
+  }
+  .producto{
+      border: 1px solid black;
+      background-color: white;
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+  }
+  .containerImagen{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  
+  
+  #containerProductos{
+      width: 80%;
+  }
+  
+  #oferta{
+      color:green;
+  }
+  
+  
+  #ninguno{
+      display: flex;
+      width: 300px;
+      height: 150px;
+      background-color: var(--color-fondo);
+      color:var(--color-texto);
+      font-size: 20px;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+  }
+  
 
-#oferta{
-    color:green;
-}
+     @media screen and (max-width: 1000px) {
+      
+         
+         section{
+             grid-template-columns:1fr 1fr;
+             gap:50px;
+             grid-auto-rows: 300px;
+            
+         }
+        #containerProductos{
+            width: 100%;
+            margin-left: 0;
+        }
+         .productos{
+             
+            width: 110px;
+            height: 110px;
+         }
+        .producto{
+            
+            justify-self: center;
+            width: 220px;
+            height: 220px;
+         }
+       }
 
-
-#ninguno{
-    display: flex;
-    width: 300px;
-    height: 150px;
-    background-color: var(--color-fondo);
-    color:var(--color-texto);
-    font-size: 20px;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-@media screen and (max-width: 600px) {
-    aside,#spanBienvenida{
-         display: none;
-     }
-     main{
-          grid-template-columns:1fr;
-          transform: translateY(140px);
-     }
-     section{
-         grid-template-columns:1fr;
-         gap: 40px;
-         margin-left: 0px;
-         justify-items: center;
-         align-items: center;
-         width: 100%;
-         padding-top:none;
-     }
-     section div{
-        width: 60%;
+       @media screen and (max-width: 750px) {
+      aside,#spanBienvenida{
+           display: none;
+       }
+       main{
+            grid-template-columns:1fr;
+            transform: translateY(140px);
+            
+       }
+       section{
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           justify-content: center;
+           width: 100%;
+           height: auto;
+           margin-left:0;
+       }
+       .productos{
+          width: 130px;
+          height: 130px;
+       }
+       #containerProductos{
+        width: 100%;
     }
-     .productos{
-        width: 160px;
-        height: 160px;
+      .producto{
+          width: 250px;
+          height: 250px;
+       }
      }
-   }

@@ -3,7 +3,7 @@
     align-items: center;
     display: flex;
     justify-content: center;
-    padding: 50px;
+    transform: translateY(80px);
     width: 100%;
 }
 form{
@@ -11,7 +11,7 @@ form{
     gap: 15px;
     margin:120px;
     padding: 30px;
-    width: 15%;
+    width: 20%;
     
 }
 /*Estilo de la linea que separa iniciar sesión y crear usuario*/
@@ -20,6 +20,26 @@ hr{
     width: 80%;
     
 }
+@media screen and (max-width: 1000px) {
+
+    form{
+        width: 40%;
+        
+    }
+    
+}
+@media screen and (max-width: 600px) {
+
+    form{
+        font-size: 16px;
+        padding: 20px;
+        width: 50%;
+        
+    }
+    
+}
+
+
 
 
 

@@ -43,7 +43,7 @@ form{
     gap: 10px;
     background-color: whitesmoke;
     opacity: 0.9;
-    width: 60%;
+    width: 70%;
 }
 #datosUsuario div{
     width: 90%;
@@ -87,3 +87,13 @@ form{
 #vacio p{
     padding: 10px;
 }
+
+@media screen and (max-width: 600px) {
+
+ 
+   main{
+    grid-template-columns: 1fr ;
+    gap:10px;
+   }
+        
+    }

@@ -6,7 +6,7 @@
  * @return [BOOLEAN]  con resultado de la operación
  */
 function agregarNoticia(&$errores){
-    $sql = "INSERT INTO `noticia` (`Titulo`, `Subtitulo`, `imagen`,`Fecha`, `Cuerpo`, `Id_Administrador`)
+    $sql = "INSERT INTO `Noticia` (`Titulo`, `Subtitulo`, `imagen`,`Fecha`, `Cuerpo`, `Id_Administrador`)
      VALUES ( :titulo, :subtitulo,:imagen,CURRENT_DATE, :cuerpo,:id)";
     $ret = false;
     try {
@@ -49,7 +49,7 @@ function agregarNoticia(&$errores){
  */
 function existePermiso(&$errores){
     $ret = true;
-    $sql = "SELECT nombre , codigo from permiso where codigo= :codigo and nombre= :nombre";
+    $sql = "SELECT nombre , codigo from Permiso where codigo= :codigo and nombre= :nombre";
     try {
         
         $pdo=conectar();
@@ -87,7 +87,7 @@ function existePermiso(&$errores){
  */
 function agregarRolPermiso(&$errores){
     try {
-        $sql ="INSERT  INTO obtencion (ID_Rol ,ID_permiso ) VALUES( :rol ,:permiso )";
+        $sql ="INSERT  INTO Obtencion (ID_Rol ,ID_permiso ) VALUES( :rol ,:permiso )";
         $pdo=conectar();
         $ret=false;
         $stmt = $pdo->prepare($sql);
@@ -132,7 +132,7 @@ function agregarPermiso(&$errores){
     $existe=existePermiso($errores);
     //si coincide ese Permiso con rol quiere decir que no es necesario cambiarlo y aplicaremos los cambios necesarios.
     $ret = false;
-    $sql = "INSERT INTO permiso (`descripcion` , `nombre` , `codigo`, `accion`) VALUES(:descripcion,:nombre,:codigo,:accion)";
+    $sql = "INSERT INTO Permiso (`descripcion` , `nombre` , `codigo`, `accion`) VALUES(:descripcion,:nombre,:codigo,:accion)";
     if($existe){
        
     try {
@@ -184,7 +184,7 @@ function agregarUsuariosGlobal(&$errores)
     if ($NoDuplicado) {
         $ret = false;
         IDrol();
-        $sql = "INSERT INTO `usuario` (`Nombre`, `Apellido`, `nickname`,`email`, `dirección`, `ciudad`, `provincia`, `Codigo_Postal`, `DNI`, `pass`, `Id_Rol`) 
+        $sql = "INSERT INTO `Usuario` (`Nombre`, `Apellido`, `nickname`,`email`, `dirección`, `ciudad`, `provincia`, `Codigo_Postal`, `DNI`, `pass`, `Id_Rol`) 
         VALUES (:nombre, :apellido,:usuario,:email, :direccion, :ciudad, :provincia, :codigopostal, :DNI, :pass, :rol);";
 
         try {
@@ -239,12 +239,12 @@ function agregarUsuariosGlobal(&$errores)
  */
 function agregarProductoGlobal(&$errores){
     $ret = false;
-     $sql ="INSERT INTO `producto` (`Nombre_Producto`, `descripcion`,`imagen`, `precio`, `stock`, `descuento`,`ID_vendedor`) 
+     $sql ="INSERT INTO `Producto` (`Nombre_Producto`, `descripcion`,`imagen`, `precio`, `stock`, `descuento`,`ID_vendedor`) 
      VALUES(:nombre,:descripcion,:imagen,:precio,:stock,:descuento,:id)";
    
      
      try {
-         
+         //valido si va vacio
          $pdo=conectar();
          $stmt = $pdo->prepare($sql);
          $data=["nombre" =>  $_SESSION["datos"]["nombre"],"descripcion" =>  $_SESSION["datos"]["descripcion"],"stock" =>  $_SESSION["datos"]["stock"],
@@ -282,7 +282,7 @@ function agregarProductoGlobal(&$errores){
  */
 function agregarProductoPropio(&$errores){
     $ret = false;
-     $sql ="INSERT INTO `producto` (`Nombre_Producto`, `descripcion`,`imagen`,`precio`, `stock`, `descuento`,`ID_vendedor`) 
+     $sql ="INSERT INTO `Producto` (`Nombre_Producto`, `descripcion`,`imagen`,`precio`, `stock`, `descuento`,`ID_vendedor`) 
      VALUES(:nombre,:descripcion,:imagen,:precio,:stock,:descuento,:id)";
    
      
@@ -329,7 +329,7 @@ function agregarProductoPropio(&$errores){
 function agregarRol(&$errores){
     $existentes=todosTiposRol($errores);
     agregamosENUMTipos($errores,$existentes);
-    $sql = "INSERT INTO rol (`Tipo`) VALUES(:nuevo) ";
+    $sql = "INSERT INTO Rol (`Tipo`) VALUES(:nuevo) ";
     $ret = false;
     
     try {
@@ -362,183 +362,7 @@ function agregarRol(&$errores){
 
     return $ret;
 }
-/**
- * Esta función agrega un nuevo mensaje de un usuario a la BBDD para que pueda verlo el administrador.
- * @param [<Object>] $errores se insertarán los posible errores.
- * @see conectar() conexión a la base de datos.
- * @see recuperarIDUsuario() nos proporciona el id del usuario para poder relacionar el mensaje con este usuario.
- * @return [BOOLEAN]  con resultado de la operación
- */
-function enviarMensajeAdminUsuario($errores){
-    $sql = "INSERT INTO mensajesprivados (`asunto`,`mensaje`,`fecha_envio`,`email`,`usuario`,`ID_Administrador`) VALUES(:asunto,:mensaje,CURRENT_DATE,:email,:usuario,1) ";
-    $ret = false;
-    $id=recuperarIDUsuario($errores);
-    try {
-        
-        $pdo=conectar();
-        $stmt = $pdo->prepare($sql);
-        $data=["asunto" =>  $_SESSION["datos"]["asunto"],"mensaje" =>  $_SESSION["datos"]["mensaje"],"email" =>  $_SESSION["datos"]["email"],
-        "usuario" =>  $id];
-        if ($stmt->execute($data)) {
-           
-            $res=$stmt->rowCount();
-            if ($res != 0) {
-                $ret=true;
-            } else {
-                
-                $errores->errorBBDD[] = "No se han podido enviar mensaje al administrador, pruebe más tarde";
-            }
-        }else{
-              
-            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
-        }
-        
-    } catch (PDOException $ex) {
-        /**En caso de haber excepción será atrapada por el catch*/
-        /**En caso de haber excepción será atrapada por el catch*/
-         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
-         //($_SESSION["ErrorDepuracion"]);
-         echo $ex->getMessage();
-         $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
-    };
 
-    return $ret;
-}
-/**
- * Esta función agrega un nuevo mensaje de un usuario anonimo a la BBDD para que pueda verlo el administrador.
- * @param [<Object>] $errores se insertarán los posible errores.
- * @see conectar() conexión a la base de datos.
- * @return [BOOLEAN]  con resultado de la operación
- */
-function enviarMensajeAdminAnonimo($errores){
-    $sql = "INSERT INTO mensajesprivados (`asunto`,`mensaje`,`fecha_envio`,`email`,`ID_Administrador`) VALUES(:asunto,:mensaje,CURRENT_DATE,:email,1) ";
-    $ret = false;
-    
-    try {
-        
-        $pdo=conectar();
-        $stmt = $pdo->prepare($sql);
-        $data=["asunto" =>  $_SESSION["datos"]["asunto"],"mensaje" =>  $_SESSION["datos"]["mensaje"],"email" =>  $_SESSION["datos"]["email"]];
-        if ($stmt->execute($data)) {
-           
-            $res=$stmt->rowCount();
-            if ($res != 0) {
-                $ret=true;
-            } else {
-                
-                $errores->errorBBDD[] = "No se ha podido enviar el mensaje pruebe más tarde";
-            }
-        }else{
-              
-            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
-        }
-        
-    } catch (PDOException $ex) {
-        /**En caso de haber excepción será atrapada por el catch*/
-        /**En caso de haber excepción será atrapada por el catch*/
-         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
-         //($_SESSION["ErrorDepuracion"]);
-         echo $ex->getMessage();
-         $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
-    };
-
-    return $ret;
-}
-/**
- * Esta función devuelve al administrador los diferentes mensajes privados para que pueda contestarlos.
- * @param [<Object>] $errores se insertarán los posible errores.
- * @see conectar() conexión a la base de datos.
- * @see recuperarIDUsuario() nos proporciona el id del usuario para poder relacionar el mensaje con este usuario.
- * @return [BOOLEAN]  con resultado de la operación
- */
-function leerMensajesPrivados($errores){
-    $sql = "SELECT * FROM mensajesprivados where ID_Administrador = :id";
-    $ret = false;
-    
-    try {
-        
-        $pdo=conectar();
-        $stmt = $pdo->prepare($sql);
-        $data= ["id"=> $_SESSION["datosUsuario"]["id"]];
-        if ($stmt->execute($data)) {
-            
-            $res=$stmt->fetchAll();
-            if ($res != null) {
-                $ret=true;
-                for ($x = 0; $x < count($res); $x++) {
-                    $clase = new stdClass();
-                    $clase->id = $res[$x][0];
-                    $clase->asunto = $res[$x][1];
-                    $clase->mensaje = $res[$x][2];
-                    $clase->fechaEnvio = $res[$x][3];
-                    $clase->email = $res[$x][4];
-                    $clase->usuario = $res[$x][5];
-                    $clase->estado = $res[$x][6];
-
-                    $array[] = $clase;
-                }
-            }
-            else{
-                $errores->errorBBDD[] = "No se han podido recuperar los mensajes";
-            }
-        }else{
-              
-            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
-        }
-        
-    } catch (PDOException $ex) {
-        /**En caso de haber excepción será atrapada por el catch*/
-        /**En caso de haber excepción será atrapada por el catch*/
-         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
-         //($_SESSION["ErrorDepuracion"]);
-         echo $ex->getMessage();
-         $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
-    };
-
-    return  $array;
-}
-/**
- * Esta función actualiza el estado de un mensaje en la BBDD .
- * @param [<Object>] $errores se insertarán los posible errores.
- * @see conectar() conexión a la base de datos.
- * @return [BOOLEAN]  con resultado de la operación
- */
-function contestadoMensaje($errores){
-    $ret = false;
-    $sql ="UPDATE `mensajesprivados` SET `estado` = 'Contestado' WHERE `ID_Mensaje` = :id";
-  
-    
-    try {
-        
-        $pdo=conectar();
-        $stmt = $pdo->prepare($sql);
-        $data=["id" =>  $_SESSION["datos"]["id"]];
-        
-        if ($stmt->execute($data)) {
-           
-            $res=$stmt->rowCount();
-            if ($res != 0) {
-                $ret=true;
-            } else {
-                
-                $errores->errorBBDD[] =  "No se ha podido enviar mensaje";
-            }
-        }else{
-              
-            $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
-        }
-        
-    } catch (PDOException $ex) {
-        /**En caso de haber excepción será atrapada por el catch*/
-        /**En caso de haber excepción será atrapada por el catch*/
-         // $_SESSION["ErrorDepuracion"]=[$ex->getMessage(),$ex->getFile(),$ex->getTraceAsString()];
-         //($_SESSION["ErrorDepuracion"]);
-         echo $ex->getMessage();
-         $errores->errorBBDD[] = "Ha habido algún problema intenteló de nuevo";
-    };
-
-    return $ret;
-}
 /**
  * Esta función comprueba que hay Stock suficiente en la BBDD del producto para poder comprarla .
  * @param [<Object>] $errores se insertarán los posible errores.
@@ -547,7 +371,7 @@ function contestadoMensaje($errores){
  */
 function comprobarStock($errores){
     $ret = false;
-    $sql ="SELECT * FROM delatierra.producto where stock >= :cantidad and ID_Producto = :producto";
+    $sql ="SELECT * FROM Producto where stock >= :cantidad and ID_Producto = :producto";
   
     
     try {
@@ -593,7 +417,7 @@ function recuperarIDUsuario(&$errores)
      $ret = false;
      $usuario= $_SESSION["datos"]["usuario"];
      //Sentencia sql para conseguir los datos del usuario que deseamos usar.
-     $sql = "select ID_Usuario from usuario where nickname = :usuario";
+     $sql = "select ID_Usuario from Usuario where nickname = :usuario";
      try {
          //Conectamos la base de datos
          $ret = false;
@@ -639,7 +463,7 @@ function recuperarIDUsuario(&$errores)
      $ret = false;
      $total=calcularTotalPedido($productos);
      //Sentencia sql para conseguir los datos del usuario que deseamos usar.
-     $sql = "INSERT INTO  pedido(fecha_realizado,total,ID_comprador) VALUES(CURRENT_DATE,:total,:usuario) ";
+     $sql = "INSERT INTO  Pedido(fecha_realizado,total,ID_comprador) VALUES(CURRENT_DATE,:total,:usuario) ";
      try {
          //Conectamos la base de datos
          $ret = false;
@@ -685,7 +509,7 @@ function recuperarIDUsuario(&$errores)
      
      $ret = false;
      //Sentencia sql para conseguir los datos del usuario que deseamos usar.
-     $sql = "INSERT INTO  historial(cantidad,precioVenta,ID_Producto,ID_Pedido) VALUES(:cantidad,:precio,:producto,:pedido) ";
+     $sql = "INSERT INTO  Historial(cantidad,precioVenta,ID_Producto,ID_Pedido) VALUES(:cantidad,:precio,:producto,:pedido) ";
      try {
          //Conectamos la base de datos
          $ret = false;
@@ -732,7 +556,7 @@ function recuperarIDUsuario(&$errores)
      
      $ret = false;
      //Sentencia sql para conseguir los datos del usuario que deseamos usar.
-     $sql = "UPDATE producto  set `stock` = (`stock` - :cantidad) where ID_Producto = :producto ";
+     $sql = "UPDATE Producto  set `stock` = (`stock` - :cantidad) where ID_Producto = :producto ";
      try {
          //Conectamos la base de datos
          $ret = false;

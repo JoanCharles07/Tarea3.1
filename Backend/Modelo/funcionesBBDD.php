@@ -209,7 +209,7 @@ function existeEnCarrito(&$errores){
 function sumarComentario(&$errores){
    
         $ret = false;
-        $sql = "UPDATE `producto` SET comentarios_totales=comentarios_totales +1, valoracion_total=(valoracion_total + :valoracion) where ID_Producto= :producto";
+        $sql = "UPDATE `Producto` SET comentarios_totales=comentarios_totales +1, valoracion_total=(valoracion_total + :valoracion) where ID_Producto= :producto";
         $data = [
             'valoracion' =>  $_SESSION["datos"]["estrellasEscogidas"],
             'producto' =>   $_SESSION["datos"]["IDproducto"]
@@ -421,7 +421,7 @@ function recuperarRoles(&$errores){
    
     $array=[];
      //Sentencia sql para conseguir los datos del usuario que deseamos usar.
-     $sql = "select * from rol";
+     $sql = "select * from Rol";
      try {
          //Conectamos la base de datos
          $pdo = conectar();
@@ -473,7 +473,7 @@ function recuperarUsuariosGlobal(&$errores){
    
     $array=[];
      //Sentencia sql para conseguir los datos del usuario que deseamos usar.
-     $sql = "select * from usuario";
+     $sql = "select * from Usuario";
      try {
          //Conectamos la base de datos
          $pdo = conectar();
@@ -572,7 +572,7 @@ function recuperarComentariosGlobal(&$errores){
 function recuperarComentariosUsuario(&$errores)
 {
 
-    $sql = "SELECT C.Mensaje, C.valoracion , C.fecha, P.Nombre_Producto, P.imagen, C.ID_Producto FROM comentario C,producto P where C.ID_Producto=P.ID_Producto and C.ID_comprador = :id";
+    $sql = "SELECT C.Mensaje, C.valoracion , C.fecha, P.Nombre_Producto, P.imagen, C.ID_Producto FROM comentario C,Producto P where C.ID_Producto=P.ID_Producto and C.ID_comprador = :id";
     $array = [];
     try {
         $pdo=conectar();
@@ -587,7 +587,7 @@ function recuperarComentariosUsuario(&$errores)
                     $clase->valoracion = $res[$x][1];
                     $clase->fecha = $res[$x][2];
                     $clase->nombreProducto = $res[$x][3];
-                    $clase->imagen = base64_encode($res[$x][4]);
+                    $clase->imagen = $res[$x][4];
                     $clase->IDProducto = $res[$x][5];
                     $array []= $clase;
                 }
@@ -616,7 +616,7 @@ function recuperarComentariosUsuario(&$errores)
 function recuperarComentarios($id,&$errores)
 {
 
-    $sql = "SELECT C.mensaje,c.valoracion,c.fecha, U.nickname,c.ID_Producto FROM comentario C  ,usuario U where ID_Producto = :id and C.ID_comprador=U.ID_Usuario" ;
+    $sql = "SELECT C.mensaje,C.valoracion,C.fecha, U.nickname,C.ID_Producto FROM comentario C  ,Usuario U where ID_Producto = :id and C.ID_comprador=U.ID_Usuario" ;
     $array = [];
     try {
         $pdo=conectar();
@@ -659,7 +659,7 @@ function recuperarComentarios($id,&$errores)
 function recuperarProductos(&$errores)
 {
     $array = [];
-    $sql = "select * from producto";
+    $sql = "select * from Producto";
     $ret = false;
 
     try {
@@ -680,7 +680,11 @@ function recuperarProductos(&$errores)
                     $clase->stock = $ret[$x][3];
                     $clase->precio = $ret[$x][4]-($ret[$x][4]*($ret[$x][8]/100));
                     /**Leemos la imagen para que pueda verse correctamente en la aplicación web*/
-                    $clase->imagen = base64_encode($ret[$x][5]);
+                    if($ret[$x][5]=="valido"){
+                        $clase->imagen = "../../Recursos/Imagenes/sinFoto.webp";
+                    }else{
+                        $clase->imagen = $ret[$x][5];
+                    }
                     $clase->valoracion_total = $ret[$x][6];
                     $clase->comentarios_totales = $ret[$x][7];
                     $clase->descuento = $ret[$x][8];
@@ -718,7 +722,7 @@ function recuperarProductos(&$errores)
 function recuperarProductosAgricultores(&$errores)
 {
     $array = [];
-    $sql = "select * from producto";
+    $sql = "select * from Producto";
     $ret = false;
 
     try {
@@ -739,7 +743,7 @@ function recuperarProductosAgricultores(&$errores)
                     $clase->stock = $ret[$x][3];
                     $clase->precio = $ret[$x][4];
                     /**Leemos la imagen para que pueda verse correctamente en la aplicación web*/
-                    $clase->imagen = base64_encode($ret[$x][5]);
+                    $clase->imagen = $ret[$x][5];
                     $clase->valoracion_total = $ret[$x][6];
                     $clase->comentarios_totales = $ret[$x][7];
                     $clase->descuento = $ret[$x][8];
@@ -774,7 +778,7 @@ function recuperarProductosAgricultores(&$errores)
 function productosAgricultor(&$errores)
 {
     $array = [];
-    $sql = "select * from producto where ID_vendedor= :id";
+    $sql = "select * from Producto where ID_vendedor= :id";
     $ret = false;
 
     try {
@@ -796,7 +800,7 @@ function productosAgricultor(&$errores)
                     $clase->stock = $ret[$x][3];
                     $clase->precio = $ret[$x][4];
                     /**Leemos la imagen para que pueda verse correctamente en la aplicación web*/
-                    $clase->imagen = base64_encode($ret[$x][5]);
+                    $clase->imagen = $ret[$x][5];
                     $clase->valoracion_total = $ret[$x][6];
                     $clase->comentarios_totales = $ret[$x][7];
                     $clase->descuento = $ret[$x][8];
@@ -829,7 +833,7 @@ function productosAgricultor(&$errores)
  */
 function recuperarPedidosUsuario(&$errores){
     $array = [];
-    $sql = "SELECT * from pedido Where ID_comprador= :id";
+    $sql = "SELECT * from Pedido Where ID_comprador= :id";
      $ret = false;
 
     try {
@@ -879,7 +883,7 @@ function historial(&$errores)
 {
     $array = [];
     $sql = "SELECT H.cantidad ,Pro.Nombre_Producto, H.ID_Pedido, H.precioVenta  ,H.fecha_Envio , H.fecha_entregado   
-    FROM historial H , Producto Pro, Pedido P where P.ID_Pedido= H.ID_Pedido and Pro.ID_Producto= H.ID_Producto and P.ID_comprador= :id";
+    FROM Historial H , Producto Pro, Pedido P where P.ID_Pedido= H.ID_Pedido and Pro.ID_Producto= H.ID_Producto and P.ID_comprador= :id";
     $ret = false;
 
     try {
@@ -930,7 +934,7 @@ function enviosAgricultor(&$errores) {
     $array = [];
     $sql = "SELECT Pro.Nombre_Producto,H.cantidad,H.estado,H.fecha_Envio,H.fecha_Entregado,CONCAT(U.Nombre , ' ',U.Apellido) 
     AS Nombre ,CONCAT( U.dirección, ', ', U.ciudad, ' (', U.provincia,') ,', U.Codigo_Postal)As direccion,H.ID_Pedido, H.ID_Producto
-    from historial H, Producto Pro, Pedido P, Usuario U where H.ID_Producto=Pro.ID_Producto and H.ID_Pedido=P.ID_Pedido and  
+    from Historial H, Producto Pro, Pedido P, Usuario U where H.ID_Producto=Pro.ID_Producto and H.ID_Pedido=P.ID_Pedido and  
     P.ID_Comprador= U.ID_Usuario and Pro.ID_vendedor= :id";
      $ret = false;
 
@@ -985,7 +989,7 @@ function enviosGlobal(&$errores) {
     $array = [];
     $sql = "SELECT Pro.Nombre_Producto,H.cantidad,H.estado,H.fecha_Envio,H.fecha_Entregado,CONCAT(U.Nombre , ' ',U.Apellido) 
     AS Nombre ,CONCAT( U.dirección, ', ', U.ciudad, ' (', U.provincia,') ,', U.Codigo_Postal)As direccion,H.ID_Pedido, H.ID_Producto
-    from historial H, Producto Pro, Pedido P, Usuario U where H.ID_Producto=Pro.ID_Producto and H.ID_Pedido=P.ID_Pedido and  
+    from Historial H, Producto Pro, Pedido P, Usuario U where H.ID_Producto=Pro.ID_Producto and H.ID_Pedido=P.ID_Pedido and  
     P.ID_Comprador= U.ID_Usuario";
      $ret = false;
 
@@ -1037,7 +1041,7 @@ function enviosGlobal(&$errores) {
  * @return [<Array>]  con resultado de la operación
  */
 function comprobarRol(&$errores){
-    $sql = "SELECT ID_rol FROM .usuario where nickname= :usuario";
+    $sql = "SELECT ID_rol FROM Usuario where nickname= :usuario";
      $ret = false;
 
     try {
@@ -1080,7 +1084,7 @@ function comprobarRol(&$errores){
 function recuperarPedidos(&$errores)
 {
     $array = [];
-    $sql = "SELECT * from pedido";
+    $sql = "SELECT * from Pedido";
      $ret = false;
 
     try {
@@ -1129,7 +1133,7 @@ function recuperarPedidos(&$errores)
 function recuperarPermisos(&$errores)
 {
     $array = [];
-    $sql = "SELECT P.ID_Permiso,P.nombre,P.descripcion,P.codigo,P.accion , R.tipo, R.ID_Rol FROM rol R,obtencion O,permiso P where O.ID_Rol=R.ID_Rol and P.ID_Permiso=O.ID_Permiso ORDER BY P.ID_Permiso";
+    $sql = "SELECT P.ID_Permiso,P.nombre,P.descripcion,P.codigo,P.accion , R.tipo, R.ID_Rol FROM Rol R,Obtencion O,Permiso P where O.ID_Rol=R.ID_Rol and P.ID_Permiso=O.ID_Permiso ORDER BY P.ID_Permiso";
     $ret = false;
 
     try {
@@ -1183,7 +1187,7 @@ function recuperarPermisos(&$errores)
 function datosDuplicados(&$errores)
 {
     $res = false;
-    $sql = "select nickname,email,DNI from usuario where nickname=:usuario || email=:email  || DNI=:DNI;";
+    $sql = "select nickname,email,DNI from Usuario where nickname=:usuario || email=:email  || DNI=:DNI;";
 
     try {
 
@@ -1250,7 +1254,7 @@ function registro(&$errores,&$session)
     if ($NoDuplicado) {
         $ret = false;
         
-        $sql = "INSERT INTO `usuario` (`Nombre`, `Apellido`, `nickname`,`email`, `dirección`, `ciudad`, `provincia`, `Codigo_Postal`, `DNI`, `pass`, `Id_Rol`) 
+        $sql = "INSERT INTO `Usuario` (`Nombre`, `Apellido`, `nickname`,`email`, `dirección`, `ciudad`, `provincia`, `Codigo_Postal`, `DNI`, `pass`, `Id_Rol`) 
         VALUES (:nombre, :apellido,:usuario,:email, :direccion, :ciudad, :provincia, :codigopostal, :DNI, :pass, :rol);";
 
         try {
@@ -1316,7 +1320,7 @@ function registro(&$errores,&$session)
 function accionesARealizar(&$errores,$rol){
     $ret = false;
     $arrayAcciones=[];    
-        $sql = "SELECT P.nombre FROM permiso P ,rol R, obtencion O where P.ID_Permiso=O.ID_Permiso and O.ID_Rol= :rol group by P.nombre
+        $sql = "SELECT P.nombre FROM Permiso P ,Rol R, Obtencion O where P.ID_Permiso=O.ID_Permiso and O.ID_Rol= :rol group by P.nombre
         order by P.nombre;";
 
         try {
@@ -1375,7 +1379,7 @@ function usuario(&$errores,&$session)
     $usuario= $_SESSION["datos"]["usuario"];
     $pass=$_SESSION["datos"]["pass"];
     //Sentencia sql para conseguir los datos del usuario que deseamos usar.
-    $sql = "select * from usuario where nickname = :usuario and pass = :password ";
+    $sql = "select * from Usuario where nickname = :usuario and pass = :password ";
     try {
         //Conectamos la base de datos
         $ret = false;
@@ -1538,7 +1542,7 @@ function existeAccion(&$errores)
     $accion=$_SESSION["datos"]["accion"];
     $rol=$_SESSION["datosUsuario"]["rol"];
     //Sentencia sql para conseguir los datos del usuario que deseamos usar.
-    $sql = "SELECT count(*) FROM permiso P ,rol R, obtencion O where P.ID_Permiso=O.ID_Permiso and O.ID_Rol=R.ID_Rol AND O.ID_Rol= :rol
+    $sql = "SELECT count(*) FROM Permiso P ,Rol R, Obtencion O where P.ID_Permiso=O.ID_Permiso and O.ID_Rol=R.ID_Rol AND O.ID_Rol= :rol
     and P.nombre= :opcion and P.accion= :accion";
     try {
         $pdo = conectar();
@@ -1590,18 +1594,19 @@ function existeAccion(&$errores)
  * @return [Boolean] que devuelve si se ha podido o no realizar la acción
  */
  
- function recuperarUsuario(&$errores,&$session)
+ function recuperarUsuario(/*$conexion,*/&$errores,&$session)
  {   
      
      $ret = false;
      $usuario= $_SESSION["datosUsuario"]["usuario"];
      //Sentencia sql para conseguir los datos del usuario que deseamos usar.
-     $sql = "select * from usuario where nickname = :usuario";
+     $sql = "select * from Usuario where nickname = :usuario";
      try {
          //Conectamos la base de datos
          $ret = false;
          $pdo = conectar();
          
+        /*$pdo=$conexion;*/
          //Hacemos la sentencia preparada
          $stmt = $pdo->prepare($sql);
          $stmt->bindParam(":usuario",$usuario,PDO::PARAM_STR);
@@ -1659,7 +1664,7 @@ function existeAccion(&$errores)
      $pass= $_SESSION["datos"]["pass"];
      $usuario= $_SESSION["datosUsuario"]["usuario"];
      //Sentencia sql para conseguir los datos del usuario que deseamos usar.
-     $sql = "UPDATE  usuario set `pass` = :pass  where `nickname` = :usuario";
+     $sql = "UPDATE  Usuario set `pass` = :pass  where `nickname` = :usuario";
      try {
          //Conectamos la base de datos
          $ret = false;
@@ -1707,13 +1712,14 @@ function existeAccion(&$errores)
  * @return [<Array>]  con resultado de la operación
  */
  function noticia(&$errores){
-    $sql = "SELECT * FROM noticia";
+    $sql = "SELECT * FROM Noticia";
     $array = [];
     try {
         $pdo=conectar();
         $stmt = $pdo->prepare($sql);
         if ($stmt->execute()) {
             $res = $stmt->fetchAll();
+            //imagen o null
             
             if ($res != null) {
                 for ($x = 0; $x < count($res); $x++) {
@@ -1721,7 +1727,13 @@ function existeAccion(&$errores)
                     $clase->IDNoticia = $res[$x][0];
                     $clase->titulo = $res[$x][1];
                     $clase->subtitulo = $res[$x][2];
-                    $clase->imagen = base64_encode($res[$x][3]);
+                    if($res[$x][3]==""){
+                        
+                        $clase->imagen = "../../Recursos/Imagenes/sinFoto.webp";
+                    }else{
+                        
+                        $clase->imagen = $res[$x][3];
+                    }
                     $clase->fecha = $res[$x][4];
                     $clase->cuerpo = $res[$x][5];
                     $array []= $clase;

@@ -116,7 +116,7 @@ function otrasComprobaciones(&$errores)
  */
 function RegexBoolean($dato, $name)
 {
-    $expresionRegular = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)(?!.*[*=$|()])(^.{4,25}$)/";
+    $expresionRegular = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*alter)(?!.*script)(?!.*drop)(?!.*[*=$|()])(^.{4,25}$)/";
     $resultado = false;
     $dato = str_replace("\n", '', $dato);
     //comparamos con la expresión regular
@@ -169,6 +169,12 @@ function RegexBoolean($dato, $name)
                 $formato = getimagesizefromstring($imagen)["mime"];
                 if (strlen($imagen) < (1024 * 1024) && ($formato == "image/png" || $formato == "image/jpg" || $formato == "image/webp" || $formato == "image/jpeg")) {
                     $_SESSION["datos"]["imagen"] = $imagen;
+                    //Añadimos fecha en la que se ha subido y numero al azar entre 0 y 10000 para evitar duplicaciones
+                    //En el futuro se debería comprobar que en la carpeta no existe ese archivo.
+                    $fecha=(new DateTime())->getTimestamp();
+                    $numeroAzar=random_int(0,10000);
+                    $_SESSION["datos"]["imagen"]="../../Recursos/Productos/".$fecha.$numeroAzar.".webp";
+                    file_put_contents($_SESSION["datos"]["imagen"],$imagen);
                 } else {
                     $resultado = true;
                 }
@@ -189,14 +195,14 @@ function RegexBoolean($dato, $name)
         case 'subtitulo':
         case 'direccion':
         case 'comentarioTexto':
-            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)(?!.*[*=$|()])(^.{4,250}$)/";
+            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*alter)(?!.*script)(?!.*drop)(?!.*[*=$|()])(^.{4,250}$)/";
             $resultado = false;
             if (!preg_match($expresionRegular2, $dato)) {
                 $resultado = true;
             }
             break;
         case "cuerpo": //ponemos s al final para que nos deje añadir saltos de linea
-            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)(?!.*[*=$|()])(^.{4,1000}$)/s";
+            $expresionRegular2 = "/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*alter)(?!.*script)(?!.*drop)(?!.*[*=$|()])(^.{4,1000}$)/s";
             $resultado = false;
             if (!preg_match($expresionRegular2, $dato)) {
                 $resultado = true;

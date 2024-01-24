@@ -117,6 +117,7 @@ export async function comprobarAccion() {
             
             return respuesta;
         } catch (error) {
+            console.log(error);
             throw new Error(error);
         }
         

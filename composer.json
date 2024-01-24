@@ -1,22 +1,5 @@
 {
-    "name": "joancharles/tarea31",
-    "autoload": {
-        "psr-4": {
-            "Joancharles\\Tarea31\\": "Backend/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tarea31\\Tests\\": "test/"
-        }
-    },
-    "authors": [
-        {
-            "name": "JoanCharles",
-            "email": "JoanCharles07@hotmail.com"
-        }
-    ],
     "require-dev": {
-        "phpunit/phpunit": "^9.6"
+        "phpunit/phpunit": "^9.0"
     }
 }

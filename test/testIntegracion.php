@@ -1,19 +1,12 @@
 <?php
-
-namespace TAREA31\test;
-
-require __DIR__ . '/../Backend/Controlador/controlador.php';
+//namespace TAREA31\test;
 require __DIR__ . '/../Backend/Modelo/funcionesBBDD.php';
-require __DIR__ . '/../Backend/Conf/conn.php';
-require_once __DIR__ . './../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use PHPUnit\Framework\TestCase;
-use PDO;
-use stdClass;
 
 class testIntegracion extends TestCase {
     protected $conexion; // Conexión a la base de datos de prueba
-
     protected function setUp(): void {
         // Configurar la conexión a la base de datos de prueba antes de cada prueba
         $this->conexion = new PDO('sqlite::memory:');

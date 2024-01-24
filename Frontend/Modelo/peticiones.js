@@ -22,10 +22,14 @@ export function getProductos() {
 
   })
     .then(response => response.text())
-    .then(data => {
-      const datos = JSON.parse(data);
+    .then(  data => {
+      const datos =  JSON.parse(data);
+      
+      console.log(datos);
       return datos;
 
+    }).catch(error =>{
+      console.error('Error al realizar la solicitud:', error);
     });
 
 }

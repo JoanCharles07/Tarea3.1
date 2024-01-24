@@ -38,15 +38,12 @@ import { comprobarTerminos } from "../Modelo/comprobaciones.js";
  * @returns Devuelve el resultado de la promesa
  */
 function requerimientosComunes() {
-  return new Promise((resolve, reject) => {
+  return new Promise( (resolve, reject) => {
     try {
-      comprobarTerminos();
-      //En estas dos promesosas nos aeguraremos de imprimir la cabezera de nuestra página(header/nav)
-      const Promesa1 = imprimirCabezera();
-      //Comprobue que tengamos en sessionStorage los productos
-      const Promesa2 = comprobarProductos();
-      //Antes de hacer nada más debemos completar las promesas anteriores.
-      Promise.all([Promesa1, Promesa2]).then(respuestas => {
+      
+     
+           
+      comprobarProductos().then(respuestas => {
         //Tras tener nuestra plantilla y los datos que necesitamos comprobamos si esta conectado el usuario
         if (sessionStorage.getItem("usuario") && !sessionStorage.getItem("conectado")) {
           //Si no esta conectado quiere decir que es la primera vez y comprobaremos el carrito del usuario en la BBDD
@@ -55,16 +52,21 @@ function requerimientosComunes() {
             mostrarUsuario();
             //En las listas saldrán las distintas opciones según el rol que tengas.
             acciones();
-            document.getElementById("lista").addEventListener("click", function (e) {
+            if(document.getElementById("lista")){
+              document.getElementById("lista").addEventListener("click", function (e) {
 
-              redireccionLista(e.target.id);
-
-            });
+                redireccionLista(e.target.id);
+  
+              });
+            }
+            
             //Mostraremos cantidad en el carrito.
             mostrarCantidadCarrito();
             //Cambiaremos los distintos elementos del DOM una vez que ya hay un usuario
             redireccionesConectado();
 
+          }).catch(error => {
+            //error
           });
         }
         //si estan las dos quiere decir que ya sea conectado y haremos el resto de las acciones
@@ -74,11 +76,13 @@ function requerimientosComunes() {
           mostrarUsuario();
           //En las listas saldrán las distintas opciones según el rol que tengas.
           acciones();
-          document.getElementById("lista").addEventListener("click", function (e) {
+          if(document.getElementById("lista")){
+            document.getElementById("lista").addEventListener("click", function (e) {
 
-            redireccionLista(e.target.id);
+              redireccionLista(e.target.id);
 
-          });
+            });
+          }
 
 
           //Mostraremos cantidad en el carrito.
@@ -111,6 +115,9 @@ function requerimientosComunes() {
  * @throws(error)Saltará si alguna de las promesas no puede llevar a cabo su función.
  */
 async function interaccionesControlador() {
+  comprobarTerminos();
+      //En estas dos promesosas nos aeguraremos de imprimir la cabezera de nuestra página(header/nav)
+   imprimirCabezera();
   //llamada a la primera función y si se completa seguiremos con el resto.
   requerimientosComunes()
     .then(async () => {
@@ -121,7 +128,9 @@ async function interaccionesControlador() {
       if (window.location.pathname.includes("tienda.html")) {
         //Implementación busqueda dentro de tienda.html
         //comprobar si hay una busqueda. Y usamos controlador productos para enviar las distintas respuestas
-        imprimirProductos();
+        
+          imprimirProductos();
+        
 
         //Comprobamos si existe busqueda,de existir quiere decir que alguien ha iniciado busqueda desde otra vista.
         if (sessionStorage.getItem("busqueda")) {
@@ -189,7 +198,6 @@ async function interaccionesControlador() {
           });
         } catch (error) {
           //Por aquí veremos el error para depurar
-          //console.log(error);
         }
 
 
@@ -260,6 +268,8 @@ async function interaccionesControlador() {
               })
 
             });
+          }).catch( error =>{
+            //error
           });
           //Esta función nos motrará las imagenes al azar para dar otras opciones a los usuarios.
           imprimirImagenesAzar();
@@ -282,27 +292,29 @@ async function interaccionesControlador() {
 
           //Envio del comentario y valoración del producto tendrá en cuenta si el usuario esta conectado o no
           document.getElementById("formEnvioComentario").addEventListener("submit", function (e) {
+            
             e.preventDefault();
             if (sessionStorage.getItem("usuario")) {
 
               envioDeComentarios().then(respuesta => {
                 //Si todo es correcto habrá respuesta.comentario
+                console.log(respuesta);
                 if (respuesta.comentario) {
-
+                
                   recepcionDeComentarios().then(respuesta => {
-                    sessionStorage.removeItem("productos");
+                    sessionStorage.removeItem("Productos");
                     imprimirComentarios(respuesta);
                   })
                 }
                 //En caso contrario mostraremos los errores.
                 else {
-
+                
                   imprimirTodosResultados(respuesta);
                 }
               });
             }
             else {
-
+              
               avisoComentario();
             }
           });
@@ -332,7 +344,9 @@ async function interaccionesControlador() {
                   borrarDelCarrito(producto);
                   mostrarCantidadCarrito();
                 }
-              });
+              }).catch( error =>{
+                //error
+            });
             }
             else if (e.target.classList.contains("inputCantidad")) {
 
@@ -340,12 +354,9 @@ async function interaccionesControlador() {
               e.target.addEventListener("input", function (e) {
 
                 cantidadDetalleClase(producto);
-              });
-              cantidadDetalleClase(producto);
-              //FUNCION PARA CAMBIAR VALOR DEL CARRITO Y ASI CONTROLAR SI SE PUEDE O NO
-              let carrito = JSON.parse(sessionStorage.getItem("carrito"));
-              let index = carrito.findIndex(id => id.id == producto.id);
-              let nuevoCarrito = carrito.map(elemento => {
+                let carrito = JSON.parse(sessionStorage.getItem("carrito"));
+                let index = carrito.findIndex(id => id.id == producto.id);
+                let nuevoCarrito = carrito.map(elemento => {
                 if (carrito[index] == elemento) {
                   elemento.cantidad = producto.children[1].value;
                   elemento.precioTotal = producto.children[1].value * elemento.precioInicial;
@@ -353,7 +364,10 @@ async function interaccionesControlador() {
                 return elemento;
               });
               sessionStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
-
+              });
+              cantidadDetalleClase(producto);
+              //FUNCION PARA CAMBIAR VALOR DEL CARRITO Y ASI CONTROLAR SI SE PUEDE O NO
+             
             }
           })
           //Si se hace click en cantidad busco el padre y luego uso children para escoger precio y precioTotal.
@@ -383,7 +397,9 @@ async function interaccionesControlador() {
                     imprimirTodosResultados(respuesta);
                     //avisar de que ha habido algun error y luego reiniciar 
                   }
-                });
+                }).catch( error =>{
+                  //error
+              });
               } else {
                 let errorStock = document.createElement("span");
                 errorStock.textContent = "Stock Insuficiente"
@@ -409,7 +425,7 @@ async function interaccionesControlador() {
           //Siempre llamo a la base de datos o no?
 
           activarZonaUsuario();
-         await datosUsuario().then(respuesta => {
+          await datosUsuario().then(respuesta => {
             imprimirDatosUsuarioCarrito(respuesta);
 
             document.getElementById("modificar").addEventListener("click", function (e) {
@@ -440,9 +456,10 @@ async function interaccionesControlador() {
       /************************  ZONA NOTICIAS ******************************************************************************************/
       /******************************************************************************************************************************* */
       else if (window.location.pathname.includes("noticias.html")) {
-        await noticia().then( respuesta => {
-           imprimirNoticias(respuesta);
-          
+        await noticia().then(respuesta => {
+          console.log(respuesta)
+          imprimirNoticias(respuesta);
+
         });
       }
       /*********************************************************************************************************************************/
@@ -450,7 +467,7 @@ async function interaccionesControlador() {
       /******************************************************************************************************************************* */
       else if (window.location.pathname.includes("listas.html")) {
         comprobarAccion().then(async respuesta => {
-          console.log(respuesta);
+          
           if (respuesta.errores || typeof Object.values(respuesta)[0] == "boolean") {
             alert("Hubo algún error vuelva a iniciar sesión");
             sessionStorage.removeItem("usuario");
@@ -469,10 +486,14 @@ async function interaccionesControlador() {
                 });
               }
 
+            }).catch(error => {
+              
+              //error
             });
           }
 
         }).catch(respuesta => {
+           console.log(respuesta);
           alert("Hubo algún error vuelva a iniciar sesión");
           sessionStorage.removeItem("usuario");
           location.href = "./login.html";
@@ -507,6 +528,7 @@ async function interaccionesControlador() {
             let direccion = datosUrl.entries().next().value[1];
             //Es el único que necesita más de un ID
             if (direccion == "Lista comentarios") {
+              
               array.push(elementosFila[3].textContent);
               array.push(elementosFila[4].textContent);
             } else if (direccion == "Lista permisos") {
@@ -578,6 +600,8 @@ async function interaccionesControlador() {
               modificacionCorrecta(respuesta);
             }
 
+          }).catch(error => {
+            //error
           });
 
 
@@ -606,7 +630,6 @@ async function interaccionesControlador() {
         document.getElementById("formulario").addEventListener("submit", function (e) {
           e.preventDefault();
           comprobarAccionEliminacion().then(respuesta => {
-            console.log(respuesta);
             if (respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean") {
               alert("Hubo algún error vuelva a iniciar sesión");
               sessionStorage.removeItem("usuario");
@@ -640,7 +663,6 @@ async function interaccionesControlador() {
         document.getElementById("formulario").addEventListener("submit", function (e) {
           e.preventDefault();
           comprobarAgregar().then(respuesta => {
-            console.log(respuesta);
             if (respuesta.errores || respuesta.errorBBDD || typeof Object.values(respuesta)[0] == "boolean") {
               //Hacer el imprimir resultados para mostrar errores en el formulario
               imprimirTodosResultados(respuesta);
@@ -649,6 +671,8 @@ async function interaccionesControlador() {
             else {
               agregarCorrecto(respuesta);
             }
+          }).catch(error => {
+            //error
           });
         })
         localStorage.removeItem("agregar");
@@ -666,13 +690,14 @@ async function interaccionesControlador() {
           e.preventDefault();
           btn.value = 'Enviando...';
 
-          const serviceID = 'default_service';
+          const serviceID = 'service_0wbbsv8';
           const templateID = 'template_p4rbqx2';
 
           emailjs.sendForm(serviceID, templateID, this)
             .then(() => {
               btn.value = 'Enviar';
               alert('Su mensaje ha sido enviado en breve nos pondremos en contacto con usted');
+              document.getElementById("formulario").reset();
             }, (err) => {
               btn.value = 'Enviar';
               alert(JSON.stringify(err));
@@ -688,7 +713,7 @@ async function interaccionesControlador() {
           //Siempre llamo a la base de datos o no?
 
 
-         await datosUsuario().then(respuesta => {
+          await datosUsuario().then(respuesta => {
             imprimirDatosUsuarioPerfil(respuesta);
             document.getElementById("modificar").addEventListener("click", function (e) {
               const arrayDatos = []
@@ -701,12 +726,10 @@ async function interaccionesControlador() {
               }
               arrayDatos.push("Perfil");
               localStorage.setItem("modificar", JSON.stringify(arrayDatos));
-              console.log(arrayDatos);
               location.href = "./modificar.html";
             });
             document.getElementById("sesion").addEventListener("click", function (e) {
               cerrarSesion().then(respuesta => {
-                console.log(respuesta);
                 if (!respuesta) {
 
                 } else {
@@ -714,6 +737,8 @@ async function interaccionesControlador() {
                   sessionStorage.removeItem("conectado");
                   location.href = "./tienda.html";
                 }
+              }).catch(error => {
+                //error
               });
             });
             document.getElementById("eliminar").addEventListener("click", function (e) {
@@ -723,6 +748,8 @@ async function interaccionesControlador() {
               location.href = "./borrar.html";
             });
 
+          }).catch(error => {
+            //error
           });
           document.getElementById("pass").addEventListener("blur", async function () {
             let pass = await passIguales();
@@ -761,8 +788,10 @@ async function interaccionesControlador() {
         document.body.classList.toggle('oscuro');
       }
       mantenerFuente();
-      
 
+
+    }).catch(error => {
+      //error
     });
   /*********************************************************************************************************************************/
   /************************  ZONA ACCESIBILIDAD ******************************************************************************************/
@@ -788,7 +817,7 @@ async function interaccionesControlador() {
   document.getElementById("modoOscuro").addEventListener("click", modoOscuro);
 
   function cambioFuente(simbolo) {
-    
+
     let elementosDOM = document.body.getElementsByClassName("fuente");
 
     for (let i = 0; i < elementosDOM.length; i++) {
@@ -797,7 +826,7 @@ async function interaccionesControlador() {
       if (simbolo == "suma") {
 
         fuente = fuente + 2;
-      } else if(simbolo == "resta"){
+      } else if (simbolo == "resta") {
         fuente = fuente - 2;
       }
       elementosDOM[i].style.fontSize = `${fuente}px`;
@@ -806,7 +835,7 @@ async function interaccionesControlador() {
   }
 
   document.getElementById("aumentarFuente").addEventListener("click", function () {
-    
+
     if (localStorage.getItem("Fuente")) {
       let valor = parseInt(localStorage.getItem("Fuente"));
       if (localStorage.getItem("Fuente") < 5) {

@@ -6,7 +6,7 @@
  * @version 1.0.0
 */
 
-import{getProductos}from "../Modelo/peticiones.js";
+import { getProductos } from "../Modelo/peticiones.js";
 /**
  * Esta función comprobará si tenemos en el sessionStorage lo productos, si no los tenemos hará una llamada a la
  * base de datos para recuperarlos, esto será asincrono por lo que usaremos async await para esperar la respuesta
@@ -15,24 +15,24 @@ import{getProductos}from "../Modelo/peticiones.js";
  * 
  */
 export function comprobarProductos() {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         //Comprobamos si no existe los productos para que siempre esten en nuestra sesión y podamos usarlo correctamente.
-        
-        try{
-            if(!sessionStorage.getItem("productos")){
+
+        try {
+            if (!sessionStorage.getItem("Productos")) {
                 //Llamamos a la base de datos y esperamos a que termine.
-                const Productos=await getProductos();
-                sessionStorage.setItem("productos",JSON.stringify(Productos));
+                const Productos = await getProductos();
+                sessionStorage.setItem("Productos",JSON.stringify(Productos));
                 resolve();
-            }else{  
-                
+                } else {
+
                 resolve();
-            }  
-        }catch(e){
-            
+            }
+        } catch (e) {
+
             reject(e);
         }
-         
+
 
     });
 }

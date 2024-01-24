@@ -19,7 +19,7 @@ export function recepcionDeDatosProducto() {
     return new Promise(async(resolve, reject) => {
         
         const idProducto=sessionStorage.getItem("productoSeleccionado");
-        const productos=JSON.parse(sessionStorage.getItem("productos"));
+        const productos=JSON.parse(sessionStorage.getItem("Productos"));
         const resultado= datosProducto(idProducto,productos);
         resolve(resultado);
     })
@@ -86,9 +86,7 @@ export function objetoCarrito() {
 export function comprobarCarrito(){
     return new Promise(async(resolve, reject) => {
         //carrito vacio
-        console.log("entro aqui")
         let datosCarrito= await recuperarCarrito();
-        console.log(datosCarrito)
         if(datosCarrito.carrito){
             
             rellenarCarritoUsuario(datosCarrito.carrito);
@@ -145,9 +143,9 @@ export function datosLupa() {
         //Uso try catch porque es asincrono
         try {
             let resultado ="";
-        if(!sessionStorage.getItem("productos")){
+        if(!sessionStorage.getItem("Productos")){
             const Productos=await getProductos();
-            sessionStorage.setItem("productos",JSON.stringify(Productos));
+            sessionStorage.setItem("Productos",JSON.stringify(Productos));
             resultado = await resultadoBusqueda();
             
         }else{
@@ -174,7 +172,7 @@ export function datosLupa() {
  */
 export function datosFiltroLateral() {
         return new Promise(async (resolve, reject) => {
-            if(!sessionStorage.getItem("productos")){
+            if(!sessionStorage.getItem("Productos")){
                 const Productos=await getProductos();
                 sessionStorage.setItem("productos",JSON.stringify(Productos));
                 
@@ -210,7 +208,6 @@ export function comprobarCompra() {
         //comprobar primero si hay stock, actualizamos productos tras esto.
         let producto=sessionStorage.getItem("productoSeleccionado");
         let cantidadProducto=document.getElementById("cantidad").value;
-        console.log(cantidadProducto + " " + producto);
         //comprobar en el carrito
         if(comprobarStockJS(producto,cantidadProducto)){
             let resultado = await comprobarStock();
@@ -242,7 +239,6 @@ export function finalizarCompra(){
     return new Promise(async(resolve, reject) => {
         
         let respuesta=await finalizarCompraBBDD();
-        console.log(respuesta);
         resolve(respuesta)
     });
 }

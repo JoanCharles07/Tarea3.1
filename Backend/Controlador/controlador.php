@@ -29,6 +29,7 @@ try {
         /*****************************************************************************/
         if ($direccion->llamada == "Productos") {
             $respuesta = recuperarProductos($errores);
+           
             //$respuesta=encriptarTodasPalabras($respuesta);
             echo json_encode($respuesta);
         /*****************************************************************************/
@@ -429,14 +430,7 @@ try {
             inicioComprobaciones($direccion->datosIntroducidos,$errores);
             if (empty((array) $errores)) {
                 
-                if(isset($direccion->datosIntroducidos->usuario)){
-                    enviarMensajeAdminUsuario($errores);
-                }else{
-                    
-                    enviarMensajeAdminAnonimo($errores);
-                }
 
-                
                 if (!empty((array) $errores)) {
                    
                     errores($errores);

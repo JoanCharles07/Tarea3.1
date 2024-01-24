@@ -1,4 +1,5 @@
 <?php 
+
 /**
  * Esta función elimina un comentario de un comprador .
  * @param [<Object>] $errores se insertarán los posible errores.
@@ -49,7 +50,7 @@ function eliminarComentariosGlobal(&$errores){
  */
 function eliminarPermiso(&$errores){
     $ret = false;
-     $sql ="DELETE FROM obtencion where ID_Permiso= :permiso  and ID_Rol = :rol";
+     $sql ="DELETE FROM Obtencion where ID_Permiso= :permiso  and ID_Rol = :rol";
      
      try {
          
@@ -130,7 +131,7 @@ function eliminarComentariosPropio(&$errores){
  */
 function eliminarPedido(&$errores){
     $ret = false;
-     $sql ="DELETE FROM pedido where ID_Pedido= :pedido";
+     $sql ="DELETE FROM Pedido where ID_Pedido= :pedido";
      
      try {
          
@@ -212,7 +213,7 @@ function eliminarNoticia(&$errores){
  */
 function eliminarUsuariosGlobal(&$errores){
     $ret = false;
-     $sql ="DELETE FROM usuario where ID_Usuario= :usuario";
+     $sql ="DELETE FROM Usuario where ID_Usuario= :usuario";
      
      try {
          
@@ -255,7 +256,7 @@ function eliminarUsuariosGlobal(&$errores){
  */
 function eliminarUsuarioPropio(&$errores,&$session){
     $ret = false;
-     $sql ="DELETE FROM usuario where ID_Usuario= :usuario";
+     $sql ="DELETE FROM Usuario where ID_Usuario= :usuario";
      
      try {
          
@@ -298,7 +299,7 @@ function eliminarUsuarioPropio(&$errores,&$session){
  */
 function eliminarRol(&$errores){
     $ret = false;
-     $sql ="DELETE FROM rol where ID_Rol= :rol";
+     $sql ="DELETE FROM Rol where ID_Rol= :rol";
      
      try {
          
@@ -339,7 +340,7 @@ function eliminarRol(&$errores){
  */
 function eliminarProductoGlobal(&$errores){
     $ret = false;
-     $sql ="DELETE FROM producto where ID_Producto= :producto";
+     $sql ="DELETE FROM Producto where ID_Producto= :producto";
      
      try {
          
@@ -380,7 +381,7 @@ function eliminarProductoGlobal(&$errores){
  */
 function eliminarProductoPropio(&$errores){
     $ret = false;
-     $sql ="DELETE FROM producto where ID_Producto= :producto  and ID_vendedor =:vendedor";
+     $sql ="DELETE FROM Producto where ID_Producto= :producto  and ID_vendedor =:vendedor";
      
      try {
          

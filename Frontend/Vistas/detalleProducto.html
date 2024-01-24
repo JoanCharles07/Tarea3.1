@@ -46,10 +46,10 @@
                 <span id="errorBBDD"></span>
                 <div id="containerCantidadEstrellas">
                     <label for="estrellasEscogidas">Escoja el número de estrellas</label>
-                    <input type="number" name="estrellasEscogidas" id="estrellasEscogidas" min="1" max="5">
+                    <input type="number" name="estrellasEscogidas" id="estrellasEscogidas" min="1" max="5" required>
                     <span id="errorEstrellas"></span>
                 </div>
-                <textarea  cols="30" rows="5" name="comentarioTexto" form="formEnvioComentario"></textarea>
+                <textarea  cols="30" rows="5" name="comentarioTexto" id="comentarioTexto" form="formEnvioComentario"  title="Comentario no válido" required></textarea>
                 <span id="errorTextoComentario"></span>
                 <input type="submit" id="enviarComentario" class="botonesProducto" value="Comentar">
                 

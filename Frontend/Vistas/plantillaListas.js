@@ -33,7 +33,7 @@ export function imprimirListaComentariosPropio(datos) {
             <th style="display:none">ID producto</th>
             <th>Mensaje</th>
             <th>Valoración</th>
-            <th>Fecha</th>
+            <th class="responsive">Fecha</th>
             <th>Producto</th>
             <th>Imagen</th>
             <th>Modificar</th>
@@ -45,9 +45,9 @@ export function imprimirListaComentariosPropio(datos) {
         <td style="display:none">${key.IDProducto}</td>
         <td>${key.mensaje}</td>
         <td>${key.valoracion}</td>
-        <td>${key.fecha}</td>
+        <td class="responsive">${key.fecha}</td>
         <td>${key.nombreProducto}</td>
-        <td><img src="data:image/webp;base64,${key.imagen}" class="imagen" alt=""></td>
+        <td><img src=${key.imagen} class="imagen" alt=""></td>
         
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
@@ -74,7 +74,7 @@ export function imprimirListaComentariosGlobal(datos) {
             <th>Valoración</th>
             <th>Fecha</th>
             <th>Producto</th>
-            <th>Comprador</th>
+            <th class="responsive">Comprador</th>
             <th>Modificar</th>
             <th>Eliminar</th>
         </tr>
@@ -85,7 +85,7 @@ export function imprimirListaComentariosGlobal(datos) {
         <td>${key.valoracion}</td>
         <td>${key.fecha}</td>
         <td>${key.ID_Producto}</td>
-        <td>${key.nombreComprador}</td>
+        <td class="responsive">${key.nombreComprador}</td>
         
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
@@ -111,34 +111,34 @@ export function imprimirListaUsuarios(datos) {
         const lista = document.getElementById("listado");
         let tabla = `<thead>
         <tr>
+            <th class="responsive">ID Usuario</th>
+            <th class="responsive">Nombre</th>
+            <th class="responsive">Apellidos</th>
             <th>Usuario</th>
-            <th>Nombre</th>
-            <th>Apellidos</th>
-            <th>Usuario</th>
-            <th>Dirección</th>
-            <th>Ciudad</th>
-            <th>Provincia</th>
-            <th>Código Postal</th>
+            <th class="responsive">Dirección</th>
+            <th class="responsive">Ciudad</th>
+            <th class="responsive">Provincia</th>
+            <th class="responsive">Código Postal</th>
             <th>email</th>
-            <th>DNI</th>
-            <th>Rol</th>
+            <th class="responsive">DNI</th>
+            <th class="responsive">Rol</th>
             <th>Modificar</th>
             <th>Eliminar</th>
         </tr>
     </thead><tbody>`;
         for (const key of datos.usuarios) {
             tabla += `<tr>
-        <td>${key.usuario}</td>
-        <td>${key.nombre}</td>
-        <td>${key.apellido}</td>
-        <td>${key.nickname}</td>
-        <td>${key.direccion}</td>
-        <td>${key.ciudad}</td>
-        <td>${key.provincia}</td>
-        <td>${key.cpostal}</td>
+        <td class="responsive">${key.usuario}</td>
+        <td class="responsive">${key.nombre}</td>
+        <td class="responsive">${key.apellido}</td>
+        <td >${key.nickname}</td>
+        <td class="responsive">${key.direccion}</td>
+        <td class="responsive">${key.ciudad}</td>
+        <td class="responsive">${key.provincia}</td>
+        <td class="responsive">${key.cpostal}</td>
         <td>${key.email}</td>
-        <td>${key.dni}</td>
-        <td>${key.rol}</td>
+        <td class="responsive">${key.dni}</td>
+        <td class="responsive">${key.rol}</td>
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
         </tr>`
@@ -204,14 +204,14 @@ export function imprimirListaProductosGlobal(datos) {
         <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Descripcion</th>
-            <th>Comentarios</th>
-            <th>Valoraciones</th>
+            <th class="responsive">Descripcion</th>
+            <th class="responsive">Comentarios</th>
+            <th class="responsive">Valoraciones</th>
             <th>imagenes</th>
             <th>precio</th>
             <th>Stock</th>
             <th>descuento</th>
-            <th>Id Agricultor</th>
+            <th class="responsive">Id Agricultor</th>
             <th>Modificar</th>
             <th>eliminar</th>
         </tr>
@@ -220,14 +220,14 @@ export function imprimirListaProductosGlobal(datos) {
             tabla += `<tr>
         <td>${key.id}</td>
         <td>${key.nombre_producto}</td>
-        <td>${key.descripcion}</td>
-        <td>${key.comentarios_totales}</td>
-        <td>${key.valoracion_total}</td>
-        <td><img src="data:image/webp;base64,${key.imagen}" class="imagen" alt=""></td>
+        <td class="responsive">${key.descripcion}</td>
+        <td class="responsive">${key.comentarios_totales}</td>
+        <td class="responsive">${key.valoracion_total}</td>
+        <td><img src=${key.imagen} class="imagen" alt=""></td>
         <td>${key.precio}</td>
         <td>${key.stock}</td>
         <td>${key.descuento}</td>
-        <td>${key.Id_Vendedor}</td>
+        <td class="responsive">${key.Id_Vendedor}</td>
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
         </tr>`
@@ -257,9 +257,9 @@ export function imprimirListaProductosPropio(datos) {
         <tr>
             <th style="display:none">ID</th>
             <th>Nombre</th>
-            <th>Descripcion</th>
-            <th>Comentarios</th>
-            <th>Valoraciones</th>
+            <th class="responsive">Descripcion</th>
+            <th class="responsive">Comentarios</th>
+            <th class="responsive">Valoraciones</th>
             <th>imagenes</th>
             <th>precio</th>
             <th>Stock</th>
@@ -272,10 +272,10 @@ export function imprimirListaProductosPropio(datos) {
             tabla += `<tr>
         <td style="display:none">${key.id}</td>    
         <td>${key.nombre_producto}</td>
-        <td>${key.descripcion}</td>
-        <td>${key.comentarios_totales}</td>
-        <td>${key.valoracion_total}</td>
-        <td><img src="data:image/webp;base64,${key.imagen}" class="imagen" alt=""></td>
+        <td class="responsive">${key.descripcion}</td>
+        <td class="responsive">${key.comentarios_totales}</td>
+        <td class="responsive">${key.valoracion_total}</td>
+        <td><img src=${key.imagen} class="imagen" alt=""></td>
         <td>${key.precio}</td>
         <td>${key.stock}</td>
         <td>${key.descuento}</td>
@@ -307,8 +307,8 @@ export function imprimirListaPermisos(datos) {
         <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Descripcion</th>
-            <th>Código</th>
+            <th class="responsive">Descripcion</th>
+            <th class="responsive">Código</th>
             <th>Acción</th>
             <th>Permitido a</th>
             <th style="display:none">ID ROL </th>
@@ -320,8 +320,8 @@ export function imprimirListaPermisos(datos) {
         tabla += `<tr>
         <td>${key.id_permiso}</td>
         <td>${key.nombre}</td>
-        <td>${key.descripcion}</td>
-        <td>${key.codigo}</td>
+        <td class="responsive">${key.descripcion}</td>
+        <td class="responsive">${key.codigo}</td>
         <td>${key.accion}</td>
         <td>${key.roles}</td>
         <td style="display:none">${key.idRol}</td>
@@ -357,7 +357,6 @@ export function imprimirListaPedidos(datos) {
         </tr>
     </thead><tbody>`;
     for (const key of datos.listaPedidos) {
-        console.log("entro");
         tabla += `<tr>
         <td>${key.idPedido}</td>
         <td>${key.fechaRealizado}</td>
@@ -418,26 +417,28 @@ export function imprimirEnvios(datos) {
     let tabla = `<thead>
         <tr>
             
-            <th>Nombre producto</th>
-            <th>Cantidad</th>
+            <th class="responsive">Nombre producto</th>
+            <th class="responsive">Cantidad</th>
             <th>Estado</th>
-            <th>Fecha Envio</th>
-            <th>Fecha entrega</th>
+            <th class="responsive">Fecha Envio</th>
+            <th class="responsive">Fecha entrega</th>
             <th>Nombre Comprador</th>
             <th>Direccion Comprador</th>
             <th style="display:none">Id Pedido</th>
             <th style="display:none">Id Producto</th>
             <th>Modificar</th>
-            <th>eliminar</th>
+            <th>Eliminar</th>
         </tr>
     </thead><tbody>`;
     for (const key of datos.envios) {
+        
         tabla += `<tr>
-        <td>${key.nombreProducto}</td>
-        <td>${key.cantidad}</td>
+        <td class="responsive">${key.nombreProducto}</td>
+        <td class="responsive">${key.cantidad}</td>
         <td>${key.estado}</td>
-        <td>${comprobarFecha(key.fechaEnvio)}</td>
-        <td>${comprobarFecha(key.fechaLlegada)}</td>
+        <td class="responsive">${comprobarFecha(key.fechaEnvio)}</td>
+        
+        <td class="responsive">${comprobarFecha(key.fechaLlegada)}</td>
         <td>${key.nombreComprador}</td>
         <td>${key.direccionComprador}</td>
         <td style="display:none">${key.IDPedido}</td>
@@ -464,30 +465,31 @@ export function imprimirEnviosGlobal(datos) {
     let tabla = `<thead>
         <tr>
             
-            <th>Nombre producto</th>
-            <th>Cantidad</th>
+            <th class="responsive">Nombre producto</th>
+            <th class="responsive">Cantidad</th>
             <th>Estado</th>
-            <th>Fecha Envio</th>
-            <th>Fecha entrega</th>
+            <th class="responsive">Fecha Envio</th>
+            <th class="responsive">Fecha entrega</th>
             <th>Nombre Comprador</th>
             <th>Direccion Comprador</th>
             <th >Id Pedido</th>
-            <th >Id Producto</th>
+            <th class="responsive">Id Producto</th>
             <th>Modificar</th>
             <th>eliminar</th>
         </tr>
     </thead><tbody>`;
     for (const key of datos.enviosGlobal) {
+        
         tabla += `<tr>
-        <td>${key.nombreProducto}</td>
-        <td>${key.cantidad}</td>
+        <td class="responsive">${key.nombreProducto}</td>
+        <td class="responsive">${key.cantidad}</td>
         <td>${key.estado}</td>
-        <td>${comprobarFecha(key.fechaEnvio)}</td>
-        <td>${comprobarFecha(key.fechaLlegada)}</td>
+        <td class="responsive">${comprobarFecha(key.fechaEnvio)}</td>
+        <td class="responsive">${comprobarFecha(key.fechaLlegada)}</td>
         <td>${key.nombreComprador}</td>
         <td>${key.direccionComprador}</td>
         <td >${key.IDPedido}</td>
-        <td >${key.IDProducto}</td>
+        <td class="responsive">${key.IDProducto}</td>
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
         </tr>`
@@ -517,7 +519,7 @@ export function imprimirListaNotcias(datos) {
             <th>Subtítulo</th>
             <th>imagen</th>
             <th>fecha</th>
-            <th>cuerpo </th>
+            <th class="responsive">cuerpo </th>
             <th>Modificar</th>
             <th>eliminar</th>
         </tr>
@@ -527,9 +529,9 @@ export function imprimirListaNotcias(datos) {
         <td>${key.IDNoticia}</td>
         <td>${key.titulo}</td>
         <td>${key.subtitulo}</td>
-        <td><img src="data:image/webp;base64,${key.imagen}" class="imagen" alt=""></td>
+        <td><img src=${key.imagen} class="imagen" alt=""></td>
         <td>${key.fecha}</td>
-        <td>${key.cuerpo}</td>
+        <td class="responsive">${key.cuerpo}</td>
         <td><button>Modificar</button></td>
         <td><button>Eliminar</button></td>
         </tr>`
@@ -562,8 +564,6 @@ export function imprimirHistorial(datos) {
         </tr>
     </thead><tbody>`;
     for (const key of datos.historial) {
-        console.log(typeof key.fechaLlegada);
-        console.log(comprobarFecha(key.fechaLlegada));
         tabla += `<tr>
         <td>${key.pedido}</td>
         <td>${key.nombre}</td>

@@ -53,9 +53,7 @@ function controladorLista($datos,&$errores,&$session){
         else if($datos->opcion=="Pedidos"){
             $session->listaPedidosUsuario=recuperarPedidosUsuario($errores);
         }//Solo el administrador que es el 1 puede verlos
-        else if($datos->opcion=="Mensajes" && $_SESSION["datosUsuario"]["id"]==1){
-            $session->listaMensajes=leerMensajesPrivados($errores);
-        }
+       
         else if($datos->opcion=="Lista Envios" && $_SESSION["datosUsuario"]["id"]==1){
             $session->enviosGlobal=enviosGlobal($errores);
         }
@@ -237,9 +235,6 @@ function controladorAgregar($datos,&$errores,&$session){
         else if($datos->opcion=="Productos" && ($_SESSION["datosUsuario"]["rol"]==3 || $_SESSION["datosUsuario"]["rol"]==2)){
             
            agregarProductoPropio($errores);
-        }else if($datos->opcion=="Mensajes" && $_SESSION["datosUsuario"]["id"]==1){
-            //Cambiar a mensaje a contestar y enviar email.
-            contestadoMensaje($errores);
         }
     }
     else{

@@ -6,3 +6,11 @@ main{
     justify-items: center;
     align-self: center;
 }
+
+@media screen and (max-width: 600px) {
+
+    main{
+        transform: translateY(160px);
+    }
+    
+}

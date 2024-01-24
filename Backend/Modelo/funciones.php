@@ -130,6 +130,6 @@ function calcularTotalPedido($productos){
    for($j=0;$j<count($productos);++$j){
       $total=$total +(floatval($productos[$j][1])*floatval($productos[$j][2]));
   }
-   $total=$total + 3.99;
+   $total=number_format($total + 3.99,2);
    return $total;
 }

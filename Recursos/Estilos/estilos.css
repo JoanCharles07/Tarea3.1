@@ -106,8 +106,14 @@ header {
 }
 
 .iconosHeader {
-    height: 30px;
-    width: 30px;
+    height: 40px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.iconoLupa{
+    height: 40px;
+    width: 40px;
     cursor: pointer;
 }
 
@@ -177,8 +183,8 @@ header {
     justify-content: flex-start;
     background-color: var(--color-fondo-hover);
     color: var(--color-texto-hover);
-    top: -10px;
-    left: 22px;
+    top: -5px;
+    left: 24px;
     visibility: visible;
     border: 1px solid black;
     border-radius: 100%;
@@ -235,12 +241,13 @@ nav {
 table {
     border-collapse: collapse;
     text-align: center;
+    width: 80%;
 }
 
 th {
     background-color: lightblue;
     border: 1px solid black;
-    padding: 5px;
+    padding: 2px;
 }
 
 tr:nth-child(odd) {
@@ -255,7 +262,7 @@ tr:nth-child(even) {
 /**************** main********************************************************************/
 /********************************************************************************************/
 main {
-    min-height: 300px;
+    min-height: 500px;
 }
 
 #contenedor {
@@ -301,6 +308,7 @@ footer {
     background-color: var(--color-fondo);
     color: var(--color-texto);
     transform: translateY(250px);
+    position: sticky;
     width: 100%;
     padding: 20px;
     display: flex;
@@ -435,6 +443,28 @@ footer ul li:hover {
         padding: 5px;
         
     }
+    footer h2{
+        font-size: 16px;
+    }
+    
+    footer ul li a{
+        font-size: 12px;
+    }
     
 
+
+    
+
+}
+@media screen and (max-width: 900px) {
+
+ 
+table {
+    font-size: 12px;
+}
+
+.responsive {
+   display: none;
+}
+    
 }

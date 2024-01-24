@@ -22,13 +22,13 @@
         <form id="formulario" action="" class="fuente">
             <h2>Formulario de contacto</h2>
             <label for="asunto">Asunto
-                <input type="text" name="asunto">
+                <input type="text" name="asunto" required>
             </label>
             <label for="email">Email
-                <input name="email" type="email">
+                <input name="email" type="email" required>
             </label>
             <label for="mensaje">Mensaje<br>
-                <textarea name="mensaje" id="mensaje" cols="30" rows="10" form="formulario"></textarea>
+                <textarea name="mensaje" id="mensaje" cols="30" rows="10" form="formulario" required></textarea>
             </label>
             <input type="submit" id="boton" class="botonSubmit" value="Enviar mensaje">
         </form>

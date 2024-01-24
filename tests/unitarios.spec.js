@@ -1,5 +1,5 @@
-import { comprobarRegex, comprobarRegexEstrellas, validarNumero } from "../Frontend/Modelo/comprobaciones.js";
-import { palabraPreparada } from "../Frontend/Modelo/funcionesBusqueda.js";
+import { comprobarFecha, comprobarRegex, comprobarRegexEstrellas, validarNumero } from "../Frontend/Modelo/comprobaciones.js";
+import { filtradoEstrellas, palabraPreparada } from "../Frontend/Modelo/funcionesBusqueda.js";
 
 describe("Distintas pruebas unitarias para probar funciones de nuestra aplicación",function(){
     it("Frase ejemplo con mayusculas y tilde",function(){
@@ -21,10 +21,18 @@ describe("Distintas pruebas unitarias para probar funciones de nuestra aplicaci�
         expect(validarNumero("Otra cosa")).toBe(false);
         
      })
-     
-    
+     it("Esta función comprueba que es una fecha valida o sino esta pendiente",function () {  
+         const timestamp=1706080230;
+         let tiempo=new Date(timestamp *1000);
+         expect(comprobarFecha(tiempo)).toBe("24/1/2024");
+     })
+     it("Esta función devuelve un String según el id que entre como parametro", function(){
+      let id="estrellas4";
+      let id2="Otra cosa";
+      expect(filtradoEstrellas(id)).toBe("4_Estrellas");
+      expect(filtradoEstrellas(id2)).toBe("");
+     })
 })
-
 describe("Distintas pruebas de integración de las comparaciones al llegar un objeto",function(){
     it("Frase ejemplo con datos correctos",function(){
         let booleano=comprobarRegex("Dato",palabraPreparada("Ejemplo de cadena normal"));
@@ -39,9 +47,6 @@ describe("Distintas pruebas de integración de las comparaciones al llegar un ob
   it("Frase incorrecta que contiene una palabra prohibida",function(){
    let booleano=comprobarRegex("Dato",palabraPreparada("delete no debe poder ser usado"));
    expect(booleano).toBe(true);
-})
-    
-    
-     
+    }) 
     
 })

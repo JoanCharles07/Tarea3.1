@@ -232,7 +232,7 @@ export function agregarCorrecto() {
     
     const intervalID = setInterval(function () {
         //Borramos productos para que se actualizen los datos si productos fuera alterado, por no complicar mas el codigo
-        sessionStorage.removeItem("productos");
+        sessionStorage.removeItem("Productos");
         location.href="./tienda.html";
     }, 1500);
 

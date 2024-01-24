@@ -247,7 +247,7 @@ function modificarEstadoPedidoFinalizadoAdmin(&$errores){
     return $ret;
 }
 function comprobarTotalProductosPedido(&$errores){
-    $sql = "SELECT count(*) FROM historial where ID_Pedido=:pedido" ;
+    $sql = "SELECT count(*) FROM Historial where ID_Pedido=:pedido" ;
    
     try {
         
@@ -275,7 +275,7 @@ function comprobarTotalProductosPedido(&$errores){
 }
 
 function comprobarTotalProductosFinalizado(&$errores){
-    $sql = "SELECT count(*) FROM historial where ID_Pedido=:pedido and  estado = 'Finalizado'" ;
+    $sql = "SELECT count(*) FROM Historial where ID_Pedido=:pedido and  estado = 'Finalizado'" ;
     $res = comprobarTotalProductosPedido($errores);
     try {
         
@@ -312,7 +312,7 @@ function comprobarTotalProductosFinalizado(&$errores){
  * @return [BOOLEAN]  con resultado de la operación
  */
 function modificarEstadoPedidoEntregadoAdmin(&$errores){
-    $sql = "UPDATE `pedido` SET `estado` = 'Entregado'  WHERE (`ID_Pedido` = :pedido) ";
+    $sql = "UPDATE `Pedido` SET `estado` = 'Entregado'  WHERE (`ID_Pedido` = :pedido) ";
     $ret = false;
     try {
         
@@ -352,7 +352,7 @@ function modificarEstadoPedidoEntregadoAdmin(&$errores){
  * @return [BOOLEAN]  con resultado de la operación
  */
 function modificarEstadoPedidoRealizadoAdmin(&$errores){
-    $sql = "UPDATE `pedido` SET `estado` =  'Realizado' WHERE (`ID_Pedido` = :pedido)";
+    $sql = "UPDATE `Pedido` SET `estado` =  'Realizado' WHERE (`ID_Pedido` = :pedido)";
     $ret = false;
     try {
         
@@ -391,7 +391,7 @@ function modificarEstadoPedidoRealizadoAdmin(&$errores){
  * @return [BOOLEAN]  con resultado de la operación
  */
 function modificarNoticia(&$errores){
-    $sql = "UPDATE `delatierra`.`noticia` SET `Titulo`= :titulo, `Subtitulo`= :subtitulo,`imagen` = :imagen, `Fecha`= CURRENT_DATE, `Cuerpo`= :cuerpo, `Id_Administrador` = :idAdministrador WHERE (`Id_Noticia` = :idNoticia)";
+    $sql = "UPDATE `Noticia` SET `Titulo`= :titulo, `Subtitulo`= :subtitulo,`imagen` = :imagen, `Fecha`= CURRENT_DATE, `Cuerpo`= :cuerpo, `Id_Administrador` = :idAdministrador WHERE (`Id_Noticia` = :idNoticia)";
     $ret = false;
     try {
         
@@ -432,7 +432,7 @@ function modificarNoticia(&$errores){
  * @return [BOOLEAN]  con resultado de la operación
  */
 function passActual(&$errores, $id){
-    $sql = "SELECT pass FROM `usuario`  WHERE (`ID_Usuario` = :id)";
+    $sql = "SELECT pass FROM `Usuario`  WHERE (`ID_Usuario` = :id)";
     $ret = "";
     try {
         
@@ -471,7 +471,7 @@ function passActual(&$errores, $id){
  * @return [BOOLEAN]  con resultado de la operación
  */
 function modificarUsuariosGlobal(&$errores){
-    $sql = "UPDATE `usuario` SET `Nombre`= :nombre, `Apellido`= :apellidos,`nickname` = :usuario, `email`= :email, `dirección`= :direccion
+    $sql = "UPDATE `Usuario` SET `Nombre`= :nombre, `Apellido`= :apellidos,`nickname` = :usuario, `email`= :email, `dirección`= :direccion
     , `ciudad` = :ciudad, `provincia` = :provincia,`Codigo_Postal` = :cpostal,  `Id_Rol` = :rol  WHERE (`ID_Usuario` = :id)";
     $ret = false;
     //Usar para los acentos añadir a saneamiento
@@ -519,7 +519,7 @@ function modificarUsuariosGlobal(&$errores){
  * @return [BOOLEAN]  con resultado de la operación
  */
 function modificarUsuariosPropio(&$errores){
-    $sql = "UPDATE `usuario` SET `Nombre`= :nombre, `Apellido`= :apellidos,`nickname` = :usuario, `email`= :email, `dirección`= :direccion
+    $sql = "UPDATE `Usuario` SET `Nombre`= :nombre, `Apellido`= :apellidos,`nickname` = :usuario, `email`= :email, `dirección`= :direccion
     , `ciudad` = :ciudad, `provincia` = :provincia,`Codigo_Postal` = :cpostal  WHERE (`ID_Usuario` = :id)";
     $ret = false;
     //Usar para los acentos añadir a saneamiento
@@ -568,7 +568,7 @@ function modificarUsuariosPropio(&$errores){
  */
 function todosTiposRol(&$errores){
     $existentes=[];
-    $sql = "select Tipo from rol";
+    $sql = "select Tipo from Rol";
     
     try {
         
@@ -608,7 +608,7 @@ function todosTiposRol(&$errores){
  * @return [BOOLEAN]  con resultado de la operación
  */
 function agregamosENUMTipos(&$errores,$existentes){
-    $sql = "ALTER table rol MODIFY Tipo ENUM('".implode("','",$existentes)."',:nuevo)";
+    $sql = "ALTER table Rol MODIFY Tipo ENUM('".implode("','",$existentes)."',:nuevo)";
     $ret = false;
        
     try {
@@ -647,7 +647,7 @@ function agregamosENUMTipos(&$errores,$existentes){
 function modificarRol(&$errores){
     $existentes=todosTiposRol($errores);
     agregamosENUMTipos($errores,$existentes);
-    $sql = "UPDATE rol SET `Tipo` = :nuevo WHERE ID_Rol = :rol ";
+    $sql = "UPDATE Rol SET `Tipo` = :nuevo WHERE ID_Rol = :rol ";
     $ret = false;
     
     try {
@@ -688,7 +688,7 @@ function modificarRol(&$errores){
  */
 function existeObtencion(&$errores){
     try {
-        $sql ="SELECT R.ID_Rol FROM obtencion O  ,rol R where  O.ID_Rol = R.ID_Rol and  R.Tipo = :tipo and ID_permiso = :id ";
+        $sql ="SELECT R.ID_Rol FROM Obtencion O  ,Rol R where  O.ID_Rol = R.ID_Rol and  R.Tipo = :tipo and ID_permiso = :id ";
         $pdo=conectar();
         $ret=false;
         $stmt = $pdo->prepare($sql);
@@ -726,7 +726,7 @@ function existeObtencion(&$errores){
  */
 function modificaRolPermiso(&$errores){
     try {
-        $sql ="UPDATE  obtencion SET ID_Rol = :idRol  where  ID_permiso = :id ";
+        $sql ="UPDATE  Obtencion SET ID_Rol = :idRol  where  ID_permiso = :id ";
         $pdo=conectar();
         $ret=false;
         $stmt = $pdo->prepare($sql);
@@ -772,7 +772,7 @@ function modificarPermiso(&$errores){
     $existe=existeObtencion($errores);
     //si coincide ese Permiso con rol quiere decir que no es necesario cambiarlo y aplicaremos los cambios necesarios.
     $ret = false;
-    $sql = "UPDATE permiso SET `descripcion` = :descripcion, `nombre` = :nombre, `codigo` = :codigo, accion = :accion WHERE ID_Permiso = :id ";
+    $sql = "UPDATE Permiso SET `descripcion` = :descripcion, `nombre` = :nombre, `codigo` = :codigo, accion = :accion WHERE ID_Permiso = :id ";
     if(!$existe){
         $_SESSION["datos"]["nuevoRol"]=recuperarIDRol($errores);
         if($_SESSION["datos"]["nuevoRol"] != false){
@@ -821,7 +821,7 @@ function recuperarIDRol(&$errores){
     
      $ret = false;
      
-     $sql = "SELECT ID_Rol from rol where Tipo = :tipo";
+     $sql = "SELECT ID_Rol from Rol where Tipo = :tipo";
      
      try {
          
@@ -864,11 +864,11 @@ function recuperarIDRol(&$errores){
  function modificarProductoGlobal(&$errores){
     $ret = false;
     if($_SESSION["datos"]["imagen"]=="valido"){
-        $sql ="UPDATE `producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :id)";
+        $sql ="UPDATE `Producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :id)";
         $data=["nombre" =>  $_SESSION["datos"]["nombre"],"descripcion" =>  $_SESSION["datos"]["descripcion"],"stock" =>  $_SESSION["datos"]["stock"],
          "descuento" =>  $_SESSION["datos"]["descuento"],"precio" =>  $_SESSION["datos"]["precio"],"id" => $_SESSION["datos"]["id"]];
     }else{
-        $sql ="UPDATE `producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion,`imagen`= :imagen, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :id)";
+        $sql ="UPDATE `Producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion,`imagen`= :imagen, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :id)";
         
         $data=["nombre" =>  $_SESSION["datos"]["nombre"],"descripcion" =>  $_SESSION["datos"]["descripcion"],"stock" =>  $_SESSION["datos"]["stock"],
         "descuento" =>  $_SESSION["datos"]["descuento"],"precio" =>  $_SESSION["datos"]["precio"],"imagen" => $_SESSION["datos"]["imagen"],"id" => $_SESSION["datos"]["id"]];
@@ -916,12 +916,12 @@ function modificarProductosPropio(&$errores){
         
      if($_SESSION["datos"]["imagen"]=="valido"){
         
-     $sql ="UPDATE `producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :producto) and `ID_vendedor` = :vendedor";
+     $sql ="UPDATE `Producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :producto) and `ID_vendedor` = :vendedor";
      $data=["nombre" =>  $_SESSION["datos"]["nombre"],"descripcion" =>  $_SESSION["datos"]["descripcion"],"stock" =>  $_SESSION["datos"]["stock"],
          "descuento" =>  $_SESSION["datos"]["descuento"],"precio" =>  $_SESSION["datos"]["precio"], "producto" => $_SESSION["datos"]["id"],"vendedor" => $_SESSION["datosUsuario"]["id"]];   
     }else{
         
-     $sql ="UPDATE `producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion,`imagen`= :imagen, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :producto) and `ID_vendedor` = :vendedor";
+     $sql ="UPDATE `Producto` SET `Nombre_Producto` = :nombre, `descripcion`= :descripcion,`imagen`= :imagen, `stock` = :stock, `descuento` = :descuento ,`precio` = :precio WHERE (`ID_Producto` = :producto) and `ID_vendedor` = :vendedor";
      $data=["nombre" =>  $_SESSION["datos"]["nombre"],"descripcion" =>  $_SESSION["datos"]["descripcion"],"stock" =>  $_SESSION["datos"]["stock"],
      "descuento" =>  $_SESSION["datos"]["descuento"],"precio" =>  $_SESSION["datos"]["precio"],"imagen" => $_SESSION["datos"]["imagen"], 
      "producto" => $_SESSION["datos"]["id"],"vendedor" => $_SESSION["datosUsuario"]["id"]];  

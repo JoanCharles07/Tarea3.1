@@ -57,7 +57,7 @@ export function comprobarRegex(nombre, valor) {
         break;
         
     default:
-      let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)(?!.*[*=$&|()])(^.{4,40}$)/);
+      let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*alter)(?!.*script)(?!.*drop)(?!.*[*=$&|()])(^.{4,40}$)/);
       respuesta = !(regex.test(valor));
   }
 
@@ -77,7 +77,7 @@ export function comprobarRegexComentarios(valor) {
   //Con esta expresión regular podemos confirmar var
   valor=sinSaltos(valor);
   valor=palabraPreparada(valor);
-  let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*script)(?!.*drop)(?!.*[*=$&|()])(^.{4,500}$)/);
+  let regex = new RegExp(/(?!.*delete)(?!.*select)(?!.*insert)(?!.*update)(?!.*undefined)(?!.*alter)(?!.*script)(?!.*drop)(?!.*[*=$&|()])(^.{4,500}$)/);
   respuesta = !(regex.test(valor));
 
   return respuesta;
@@ -335,7 +335,8 @@ async function procesarImagen(dato) {
  */
 export function comprobarFecha(datoFecha){
   let cadenaFecha="";
-        if(datoFecha != undefined || datoFecha != null){
+
+        if(datoFecha instanceof Date && !isNaN(datoFecha)){
             let fecha = new Date(datoFecha);
             cadenaFecha=`${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
            

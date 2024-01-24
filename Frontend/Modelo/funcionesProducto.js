@@ -30,7 +30,7 @@ export function creacionObjetoCarrito(product,cantidadTotal) {
   //variables necesarias para crear nuestro objeto carrito
   let objetoCarrito = new Object();
   let datoProducto = product //PONER VALORES REGOGIDOS BBDD;
-  let productos = JSON.parse(sessionStorage.getItem("productos"));
+  let productos = JSON.parse(sessionStorage.getItem("Productos"));
   let cantidadProducto = cantidadTotal //PONER VALORES REGOGIDOS BBDD;
   //si no existen ni cantidad ni datos del producto y la cantidad es 0 o menor no se hará
   if (datoProducto != null && (!isNaN(cantidadProducto) && cantidadProducto > 0)) {
@@ -111,7 +111,7 @@ export function datosProducto(idProducto,productos){
 export function borrarProductoSesion(id){
   let productos= JSON.parse(sessionStorage.getItem("carrito"));
   
-  for(producto of productos){
+  for(let producto of productos){
       if(producto.id==id){
         let index=productos.indexOf(producto);
         productos.splice(index, 1);
@@ -129,7 +129,7 @@ export function borrarProductoSesion(id){
  * @returns Boolean con resultado de la expresión regular.
  */
 export function comprobarStockJS(IDproducto,cantidad){
-  let productos= JSON.parse(sessionStorage.getItem("productos"));
+  let productos= JSON.parse(sessionStorage.getItem("Productos"));
   let resultado=false;
   for(let producto of productos){
     
@@ -149,7 +149,7 @@ export function comprobarStockJS(IDproducto,cantidad){
  * @returns Boolean con resultado de la expresión regular.
  */
 export function comprobarStockJSCarrito(){
-  let productos= JSON.parse(sessionStorage.getItem("productos"));
+  let productos= JSON.parse(sessionStorage.getItem("Productos"));
   let carrito=JSON.parse(sessionStorage.getItem("carrito"));
   //conseguimos las coincidencias filtramos y luego con some hacemos las comparaciones de lo que necesitamos.Se puede añadir precio
   const coincidencias=  productos.filter( IDproducto => 

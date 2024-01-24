@@ -17,7 +17,7 @@ export function resultadoBusqueda() {
     }
     
     let resultado = []
-    let datos = JSON.parse(sessionStorage.getItem("productos"));
+    let datos = JSON.parse(sessionStorage.getItem("Productos"));
     palabraBuscador = palabraPreparada(palabraBuscador);
     for (let dato of datos) {
         let palabraArray = palabraPreparada(dato.nombre_producto);
@@ -109,7 +109,7 @@ export function filtroLateral() {
  * @returns {Array} resultado con los ids que contengan la palabra que se busca por el buscador.
  */
 function filtroComparacion(tipo) {
-    let datos = JSON.parse(sessionStorage.getItem("productos"));
+    let datos = JSON.parse(sessionStorage.getItem("Productos"));
     let palabraTipo = "";
     let palabraDatos = "";
     let arrayResultado=[]

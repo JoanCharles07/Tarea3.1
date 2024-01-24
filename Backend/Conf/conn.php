@@ -10,7 +10,8 @@ function conectar(){
         $pdo=new PDO(DB_DSN, DB_USER, DB_PASSWD);
         $pdo -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
    } catch (PDOException $e)
-   {
+   {    
+    var_dump($e);
         $pdo=false;
    }
    
